@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>CEDA Streamlit App Template</h1>
+  <h1>CEDA Assistentie Agents</h1>
 
   <p>🚀 A simple template to quickly build interactive data science applications!</p>
 
