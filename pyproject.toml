@@ -1,0 +1,16 @@
+[tool.uv]
+cache-dir = "./.uv_cache"
+
+[project]
+name = "streamlit-app-template"
+version = "0.1.0"
+description = "CEDA Python Streamlit App Template"
+authors = [
+    {name = "Ash Sewnandan", email = "asewnandan@hhs.nl"},
+    {name = "Iwan Tomer", email = "t.iwan@vu.nl"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "streamlit>=1.46.0",
+]
