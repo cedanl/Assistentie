@@ -25,17 +25,15 @@
 
 
 
-## PvA | CEDAssistentie
-
-**Hoe kunnen we…**
+## Hoe kunnen we...
 
 ….alle (potentiële) eindgebruikers *-middels het aanbieden van altijd beschikbare, kwalitatieve en betrouwbare digitale ontwikkelassistentie-* helpen om in hun werk (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
 
 door het **C**entrum **E**ducatieve **D**igitale **A**ssistentie te ontwerpen!
 
-### Het ecosysteem van samenwerkende autonome digitale Agents
+### Het ecosysteem van samenwerkende autonome digitale assistenten
 
-Om AI & data echt waarde(n)vol in te zetten, moet het ecosysteem bestaan uit meerdere Agents die bepaalde skills zeer goed beheersen: van het vinden van informatie, het uitvoeren van juiste statistische toetsen bij testen van hypothesen, tot aan het maken van descriptieve, diagnostische, en voorspellende analyses. In het ecosystemen produceren onafhankelijke agents autonoom iets (nieuws) voor de eindgebruikers. Door zoveel mogelijk onafhankelijk, lees open source, te ontwikkelen, kunnen we als samenleving, in een wereld die steeds sneller verandert, beter grip houden op onze toekomst.
+Om AI & data echt waarde(n)vol in te zetten, moet het ecosysteem bestaan uit meerdere assistenten die bepaalde skills zeer goed beheersen: van het vinden van informatie, het uitvoeren van juiste statistische toetsen bij testen van hypothesen, tot aan het maken van descriptieve, diagnostische, en voorspellende analyses. In het ecosystemen produceren onafhankelijke assistenten autonoom iets (nieuws) voor de eindgebruikers. Door zoveel mogelijk onafhankelijk, lees open source, te ontwikkelen, kunnen we als samenleving, in een wereld die steeds sneller verandert, beter grip houden op onze toekomst.
 
 ### Digitale Ontwikkelingsassistentie voor overmorgen
 
