@@ -71,7 +71,9 @@ De eerste gegevens die we hiervoor nodig hebben zijn: data uit kernregistratiesy
 
 De eerste assistent gaat voor de onderwijsprofessional in het mbo:
 - 
+De eerste samenwerkende autonome digitale assistenten zullen lerende-begeleiders (Mentoren) in het mbo helpen om, op basis van een uitvalprognose van de lerenden die onder hun verantwoordelijkheid vallen, op het eerst mogelijke beschikbare moment een één-op-één voortgangsgesprek in te plannen. 
 
+Het doel hiervan is om met begrip en aandacht samen te kijken naar de mogelijke oorzaken van de verwachte uitval. Tijdens dit gesprek kan vervolgens een concreet actieplan worden opgesteld met duidelijke doelen, om zo uitval te voorkomen.
 
 
 **Snel leren**
