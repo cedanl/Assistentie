@@ -27,9 +27,7 @@
 
 ## Hoe kunnen we...
 
-….alle (potentiële) eindgebruikers *-middels het aanbieden van altijd beschikbare, kwalitatieve en betrouwbare digitale ontwikkelassistentie-* helpen om in hun werk (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
-
-door het **C**entrum **E**ducatieve **D**igitale **A**ssistentie te ontwerpen!
+…alle (potentiële) eindgebruikers *-middels het aanbieden van altijd beschikbare, kwalitatieve en betrouwbare digitale ontwikkelassistentie-* helpen om in hun werk (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
 
 
 ### Het ecosysteem van samenwerkende autonome digitale assistenten
