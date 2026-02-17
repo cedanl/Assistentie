@@ -31,30 +31,32 @@
 
 door het **C**entrum **E**ducatieve **D**igitale **A**ssistentie te ontwerpen!
 
+
 ### Het ecosysteem van samenwerkende autonome digitale assistenten
 
 Om AI & data echt waarde(n)vol in te zetten, moet het ecosysteem bestaan uit meerdere assistenten die bepaalde skills zeer goed beheersen: van het vinden van informatie, het uitvoeren van juiste statistische toetsen bij testen van hypothesen, tot aan het maken van descriptieve, diagnostische, en voorspellende analyses. In het ecosystemen produceren onafhankelijke assistenten autonoom iets (nieuws) voor de eindgebruikers. Door zoveel mogelijk onafhankelijk, lees open source, te ontwikkelen, kunnen we als samenleving, in een wereld die steeds sneller verandert, beter grip houden op onze toekomst.
 
+
 ### Digitale Ontwikkelingsassistentie voor overmorgen
 
-Met de focus op samenwerkende digitale assistenten zetten we in op een andere manier van ontwikkelen. In plaats van menselijke gebruikers die stap voor stap inzichten verzamelen en vervolg instructies geven, zetten we nu meerdere autonome digitale assistenten in die parallel van elkaar opereren aan verschillende onderdelen van een specifieke grote ontwikkelopdracht.
+Met de focus op samenwerkende autonome digitale assistenten zetten we in op een andere manier van ontwikkeling. In plaats van menselijke gebruikers die stap voor stap inzichten verzamelen en Met de focus op samenwerkende digitale assistenten zetten we in op een andere manier van ontwikkelen. In plaats van menselijke gebruikers die stap voor stap inzichten verzamelen en vervolg instructies geven, zetten we nu meerdere autonome digitale assistenten in die parallel van elkaar opereren aan verschillende onderdelen van een specifieke grote ontwikkelopdracht -van individu tot land. 
 
 Het systeem kan realtime, iteratief oplossingen verfijnen, soms autonoom soms met "the-human-in-the-loop" en zo in meerder rondes een (ontwikkel)taken goed voor je uitvoeren.
 
-### De opdracht
 
-**MVP als startpunt**
 
-Ontwerp en beproef direct de technische (on)mogelijkheden van het werken met Agents als basis voor het nieuwe ‘**C**entrum **E**ducatieve **D**igitale **A**ssistentie’. Ontwerp het zodat het niet (meer) aanvoelt als Dashboarding/Software, maar meer als een actieve, co-intelligentie, en meedenkende/werkende assistent die je begrijpt terwijl je ermee werkt.
+### Direct met waarde(n) starten
+
+Ontwerp en beproef direct de technische (on)mogelijkheden van het werken met assistentie als basis voor het nieuwe ‘**C**entrum **E**ducatieve **D**igitale **A**ssistentie’.  Ontwerp het zodat het niet (meer) aanvoelt als Dashboarding/Software, maar meer als een actieve, co-intelligentie, en meedenkende/werkende assistent die je begrijpt terwijl je ermee werkt.
 
 Het **C**entrum **E**ducatieve **D**igitale **A**ssistentie kan:
+* jouw data input opschonen, analyseren, visualiseren, aanbevelingen doen en rapporteren 
+* trends herkennen zonder te verversen
+* afwijkingen signaleren voordat jij ze ziet
+* nieuwe inzichten direct tonen
+* autonoom taken bijwerken/verwerken
+* …
 
-- jouw data input opschonen, analyseren, visualiseren, aanbevelingen doen en rapporteren 
-- trends herkennen zonder te verversen
-- afwijkingen signaleren voordat jij ze ziet
-- nieuwe inzichten direct tonen
-- autonoom taken bijwerken/verwerken
-- …
 
 **De Eindgebruikers**
 
@@ -64,6 +66,8 @@ We willen beginnen bij de **onderwijsprofessionals in het mbo** die werken op st
 **De dataset**
 
 De eerste gegevens die we hiervoor nodig hebben zijn: data uit kernregistratiesystemen zoals Eduarte, voortgangsresultaten (summatief in kernregistratiesysteem, formatief vaak in LMS), 
+
+
 
 **De Assistentie**
 
@@ -89,48 +93,11 @@ Hoofdaanname: “Wij geloven dat onderwijsprofessionals de kracht van digitale a
 - ORGANISATIE  
 Hoofdaanname: “Wij geloven dat het mogelijk is om het **C**entrum **E**ducatieve **D**igitale** A**ssistentie goed in te richten is binnen mbo instellingen”
 
+
+
 **Aannames **technologie
 
 Wij geloven dat het mogelijk is om…
-
-1. een flexibele, datagedreven, voorspellende, zelflerende en zelfgenerende architectuur op te stellen
-2. een schaalbare ontwikkelstack samen te stellen
-3. een dialoog-gestuurde-interface te bouwen
-4. een algoritme te bouwen is dat op basis van data ter inzage, inzichten kan creëren
-5. een gespecialiseerde digitale assistenten, die op basis van de veranderende -gedeelde- context, taakvoortgang en de mogelijkheden van andere digitale assistenten taken uitvoert te bouwen
-6. een digitale assistent die de dynamische samenwerking coördineert te bouwen
-7. …
-
-**Aannames **Wenselijkheid 
-
-Wij geloven dat…
-
-1. onderwijsprofessionals in het mbo samen willen werken met digitale assistenten
-2. onderwijsproffesionals in het mbo hun eigen taken willen delegeren aan digitale assistenten
-3. …
-
-**Aannames **Organisatie 
-
-Wij geloven dat…
-
-1. …
-
-**De benodigde expertises**
-
-Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrevende blik:
-
-multidisciplinair team waarin meerdere experts (bijvoorbeeld visionaire uitvinders) verschillende rollen vervullen. De teams gaan iteratief leren over de (deel)aannames. 
-
-- Visionaire uitvinders (voor de technologie)
-- Omdenkende creatievelingen (voor de wenselijkheid)
-- Ruimdenkende regelmakers (voor de organisatorische inrichting)
-- …
-
-
-
-**Aannames **technologie
-
-Wij geloven dat…
 
 1. Een assistent een taak kan interpreteren zonder volledige menselijke specificatie.
 2. Een assistent plannen kan genereren die correct en uitvoerbaar zijn.
@@ -156,6 +123,61 @@ Wij geloven dat…
 22. Privacy en compliance kunnen worden gegarandeerd.
 23. Kosten (compute, energie) acceptabel zijn voor real-world gebruik.
 24. Latency laag genoeg is voor samenwerking in real time.
+25. …
+7. …
+
+**Aannames **Wenselijkheid 
+
+Wij geloven dat…
+
+1. Wij geloven dat onderwijsprofessionals…
+2. Het verschil herkennen tussen simpele tools (zoals spellingscontrole) en geavanceerde assistentie (zoals digitale assistenten dei zelfstandig een taak uitvoeren).
+3. Inzien dat de taken die de digitale assistent uitvoert aansluit bij hun dagelijkse werkzaamheden (en systemen).
+4. Ervaren dat assistenten helpen de werkdruk te verminderen.
+5. Ervaren dat assistenten tijdwinst opleveren en de kwaliteit van hun werk verhoogt.
+6. Vertrouwen dat de output van de assistenten accuraat en bruikbaar is
+7. Vertrouwen dat de assistent niet te veel fouten maakt
+8. Vertrouwen dat de assistenten consistent werken
+9. Zich comfortabel voelen met het delen van gegevens.
+10. Vertrouwen hebben in de ethische kaders van de assistenten
+11. Inzien dat het geen extra kost om te gebruiken.
+12. Ervaren dat het eenvoudig genoeg is om te gaan gebruiken
+13. Het gebruik van de assistenten eenvoudig vinden
+14. Open staan voor samenwerkende autonome digitale assistentie. 
+15. Inzien dat digitale assistentie een versterking van hun vakmanschap is.
+16. Vertrouwen hebben in de organisatie die de assistenten aanbiedt.
+17. …
+
+**Aannames **Organisatie 
+
+Wij geloven dat…
+
+1. Assistenten stabiel kunnen functioneren binnen de bestaande IT‑architectuur.
+2. Er API’s beschikbaar zijn en veilig te gebruiken.
+3. De assistenten kunnen omgaan met heterogene systemen.
+4. Netwerk, devices en cloud‑toegang stabiel genoeg zijn.
+5. Er voldoende rekenkracht en opslag beschikbaar is.
+6. Er een juridisch houdbare verwerkers-overeenkomst mogelijk is.
+7. Er bescherming tegen datalekken, manipulatie en ongeautoriseerde toegang mogelijk is.
+8. De assistenten binnen vooraf ingestelde grenzen kunnenopereren.
+9. De instelling beleid en governance kunnen inrichten rond autonoom gedrag.
+10. Er duidelijk kan zijn wie er verantwoordelijk is voor een digitale assistent die autonoom handelt.
+11. Een organisatie voldoende capaciteit voor monitoring en governance kan creëren.
+12. De instelling beleid voor ethiek, AI‑gebruik en datagebruik kan ontwikkelen.
+13. …
+    
+
+**De benodigde expertises**
+
+Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrevende blik, een multidisciplinair team gaat iteratief leren over de (deel)aannames. 
+
+* Visionaire uitvinders (voor de technologie)
+* Omdenkende creatievelingen (voor de wenselijkheid)
+* Ruimdenkende regelmakers (voor de organisatorische inrichting)
+* …
+
+
+
 
 ## 🙏 Contributors
 Thank you to all the [people](https://github.com/cedanl/streamlit-app-template/graphs/contributors) who have contributed to this template.
