@@ -1,7 +1,7 @@
 <div align="center">
-  <h1>CEDA Assistentie Agents</h1>
+  <h1>CEDAssistentie </h1>
 
-  <p>🚀 Een demo van een Assistentie Agent voor het MBO </p>
+  <p>🚀 Een demo van samenwerkende autonome digitale assistenten in het mbo</p>
 
   <p>
     <a href="#"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows"></a>
