@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CEDA Assistentie Agents</h1>
 
-  <p>🚀 A simple template to quickly build interactive data science applications!</p>
+  <p>🚀 Een demo van een Assistentie Agent voor het MBO </p>
 
   <p>
     <a href="#"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows"></a>
@@ -14,7 +14,7 @@
 
 ## 📋 Overview
 > [!NOTE]
-> **Quick Start**: [![Use Template](https://img.shields.io/badge/Use-Template-green)](https://github.com/cedanl/streamlit-app-template/generate) → Clone Locally → [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/getting-started/installation/) → Run `uv run streamlit run src/main.py`
+> **Quick Start**: [![Use Template](https://img.shields.io/badge/Use-Template-green)](https://github.com/cedanl/streamlit-app-template/generate) → Clone Locally → [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/getting-started/installation/) → Run `uv run src/main.py`
 
 # **C**entrum **E**ducatieve **D**igitale **A**ssistentie 
 ## Plan van aanpak
