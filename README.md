@@ -16,130 +16,146 @@
 > [!NOTE]
 > **Quick Start**: [![Use Template](https://img.shields.io/badge/Use-Template-green)](https://github.com/cedanl/streamlit-app-template/generate) → Clone Locally → [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/getting-started/installation/) → Run `uv run streamlit run src/main.py`
 
-The CEDA Streamlit App Template helps researchers and data scientists quickly build interactive web applications for data analysis and visualization. Perfect for creating:
+# **C**entrum **E**ducatieve **D**igitale **A**ssistentie 
+## Plan van aanpak
 
-- Data analysis dashboards
-- Interactive visualizations
-- Machine learning demos
-- Research presentation tools
+| Doel |  Van     | Datum | Status |
+| :----		| :----		| :---- | :----|
+| PvA/ Sprint | Edwin Lieftink & Ed. de Feber | 16-02-2026 | Concept  |
 
-## ✨ Features
-- [x] **Ready-to-Use Structure**: Pre-organized folders and files for instant development
-- [x] **User-Friendly Interface**: Streamlit-based UI requiring no web development knowledge
-- [x] **Easy Page Creation**: Add new pages with just a few lines of code
-- [x] **Professional Layout**: Clean, organized project structure
-- [x] **`uv` Powered Setup**: One-click installation that handles Python and dependencies automatically
 
-<br>
 
-## 🔧 First Time Setup
-> [!WARNING]
-> Do not skip these steps if this is your first time using this template. It will not work without them.
+## PvA | CEDAssistentie
 
-> [!TIP]
-> Save the repository in a Projects/CEDA folder on your main drive for quick access.
+**Hoe kunnen we…**
 
-### 1. Get the Template
+….alle (potentiële) eindgebruikers *-middels het aanbieden van altijd beschikbare, kwalitatieve en betrouwbare digitale ontwikkelassistentie-* helpen om in hun werk (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
 
-#### Option A: Use Template (For CEDA Members)
-1. Click the green **"Use this template"** button on GitHub
-2. Name your new app repository
-3. Choose Public or Private
-4. Click **"Create repository"**
+door het **C**entrum **E**ducatieve **D**igitale **A**ssistentie te ontwerpen!
 
-#### Option B: Download ZIP
-[![Download Template](https://img.shields.io/badge/Download-Template-green)](https://github.com/cedanl/streamlit-app-template/archive/refs/heads/main.zip)
+### Het ecosysteem van samenwerkende autonome digitale Agents
 
-After downloading, extract the ZIP file and navigate into the folder.
+Om AI & data echt waarde(n)vol in te zetten, moet het ecosysteem bestaan uit meerdere Agents die bepaalde skills zeer goed beheersen: van het vinden van informatie, het uitvoeren van juiste statistische toetsen bij testen van hypothesen, tot aan het maken van descriptieve, diagnostische, en voorspellende analyses. In het ecosystemen produceren onafhankelijke agents autonoom iets (nieuws) voor de eindgebruikers. Door zoveel mogelijk onafhankelijk, lees open source, te ontwikkelen, kunnen we als samenleving, in een wereld die steeds sneller verandert, beter grip houden op onze toekomst.
 
-### 2. Install [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/)
+### Digitale Ontwikkelingsassistentie voor overmorgen
 
-#### MacOS & Linux (Terminal)
-```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
-```
+Met de focus op samenwerkende digitale assistenten zetten we in op een andere manier van ontwikkelen. In plaats van menselijke gebruikers die stap voor stap inzichten verzamelen en vervolg instructies geven, zetten we nu meerdere autonome digitale assistenten in die parallel van elkaar opereren aan verschillende onderdelen van een specifieke grote ontwikkelopdracht.
 
-#### Windows (Powershell or [Windows Terminal](https://apps.microsoft.com/detail/9n0dx20hk701?hl=nl-NL&gl=NL))
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-```
-Close and reopen your terminal after installation.
+Het systeem kan realtime, iteratief oplossingen verfijnen, soms autonoom soms met "the-human-in-the-loop" en zo in meerder rondes een (ontwikkel)taken goed voor je uitvoeren.
 
-#### Verify installation
-```bash
-uv self update
-```
+### De opdracht
 
-<br>
+**MVP als startpunt**
 
-## 🚀 Running Your App
+Ontwerp en beproef direct de technische (on)mogelijkheden van het werken met Agents als basis voor het nieuwe ‘**C**entrum **E**ducatieve **D**igitale **A**ssistentie’. Ontwerp het zodat het niet (meer) aanvoelt als Dashboarding/Software, maar meer als een actieve, co-intelligentie, en meedenkende/werkende assistent die je begrijpt terwijl je ermee werkt.
 
-Ready to see your app come to life? It's just one command away! ✨
+Het **C**entrum **E**ducatieve **D**igitale **A**ssistentie kan:
 
-### First, get to the right spot:
+- jouw data input opschonen, analyseren, visualiseren, aanbevelingen doen en rapporteren 
+- trends herkennen zonder te verversen
+- afwijkingen signaleren voordat jij ze ziet
+- nieuwe inzichten direct tonen
+- autonoom taken bijwerken/verwerken
+- …
 
-Open a terminal in your app folder - it's super easy!
-- **Windows**: `Shift + Right-click` in folder → `Open in Windows Terminal` 
-- **Mac**: `Right-click` folder → `New Terminal at Folder`
-- **VS Code**: Just click `Terminal` → `New Terminal`
+**De Eindgebruikers**
 
-Or navigate there:
-```bash
-cd path/to/your-app-folder
-```
+We willen beginnen bij de **onderwijsprofessionals in het mbo** die werken op strategisch, tactisch of operationeel niveau en vragen kunnen hebben op gebieden als beleidsimpact, toekomstscenario’s, sectorprestaties, instroom/uitstroom/doorstroom, capaciteitsplanning, cohortanalyses, effect interventies, risicosignalering, inspectievragen, groepsinzichten, handelingsadvies, ... 
 
-### Then, launch with a single command:
 
-```bash
-uv run streamlit run src/main.py
-```
+**De dataset**
 
-That's it! Your app will automatically open in your browser. If you've completed the setup correctly, this is the **only command** you'll need going forward. 🎉
+De eerste gegevens die we hiervoor nodig hebben zijn: data uit kernregistratiesystemen zoals Eduarte, voortgangsresultaten (summatief in kernregistratiesysteem, formatief vaak in LMS), 
 
-<br>
+**De Assistentie**
 
-## 🎯 Building Your First App
+De eerste assistent gaat voor de onderwijsprofessional in het mbo:
+- 
 
-### Adding New Pages
-1. Create a new `.py` file in the `src/frontend/` folder
-2. Add your page to the navigation in `src/main.py`
-3. Your page appears automatically in the sidebar!
 
-### Example Page Structure
-```python
-import streamlit as st
 
-def show():
-    st.title("My New Page")
-    st.write("Hello, world!")
-    
-    # Add your content here
-    user_input = st.text_input("Enter something:")
-    if user_input:
-        st.success(f"You entered: {user_input}")
-```
+**Snel leren**
 
-### What You Can Build
-- **Data Upload & Analysis**: Let users upload CSV files and see instant insights
-- **Interactive Charts**: Build dynamic visualizations that respond to user input  
-- **Machine Learning Demos**: Create interfaces for ML models and predictions
-- **Research Dashboards**: Display your research findings in an interactive format
+We doen een integrale verkenning waarin we gericht bewijs verzamelen om onzekerheden over het ecosysteem van samenwerkende autonome digitale ontwikkelassistenten zo snel mogelijk weg te nemen. 
 
-<br>
+Die onzekerheden zitten op drie aspecten die in samenhang nodig zijn. Per aspect hebben we een hoofdaanname die we in delen gaan onderzoeken:
 
-## 🛠️ Built With
-[![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/)
-[![Streamlit Badge](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=fff&style=flat)](https://streamlit.io/)
-[![Python Badge](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=fff&style=flat)](https://www.python.org/)
+- TECHNOLOGIE  
+Hoofdaanname: “Wij geloven dat het technisch mogelijk is om samenwerkende autonome digitale assistentie te bouwen”
 
-## 🤲 Support
-If you find this template helpful, please consider:
-- ⭐ Starring the repo
-- 🐛 Reporting bugs
-- 💡 Suggesting improvements
-- 💻 Contributing code
+- WENSELIJKHEID  
+Hoofdaanname: “Wij geloven dat onderwijsprofessionals de kracht van digitale assistentie inzien”
 
-Need help? Feel free to [open an issue](https://github.com/cedanl/streamlit-app-template/issues) or contact us at a.sewnandan@hhs.nl
+- ORGANISATIE  
+Hoofdaanname: “Wij geloven dat het mogelijk is om het **C**entrum **E**ducatieve **D**igitale** A**ssistentie goed in te richten is binnen mbo instellingen”
+
+**Aannames **technologie
+
+Wij geloven dat het mogelijk is om…
+
+1. een flexibele, datagedreven, voorspellende, zelflerende en zelfgenerende architectuur op te stellen
+2. een schaalbare ontwikkelstack samen te stellen
+3. een dialoog-gestuurde-interface te bouwen
+4. een algoritme te bouwen is dat op basis van data ter inzage, inzichten kan creëren
+5. een gespecialiseerde digitale assistenten, die op basis van de veranderende -gedeelde- context, taakvoortgang en de mogelijkheden van andere digitale assistenten taken uitvoert te bouwen
+6. een digitale assistent die de dynamische samenwerking coördineert te bouwen
+7. …
+
+**Aannames **Wenselijkheid 
+
+Wij geloven dat…
+
+1. onderwijsprofessionals in het mbo samen willen werken met digitale assistenten
+2. onderwijsproffesionals in het mbo hun eigen taken willen delegeren aan digitale assistenten
+3. …
+
+**Aannames **Organisatie 
+
+Wij geloven dat…
+
+1. …
+
+**De benodigde expertises**
+
+Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrevende blik:
+
+multidisciplinair team waarin meerdere experts (bijvoorbeeld visionaire uitvinders) verschillende rollen vervullen. De teams gaan iteratief leren over de (deel)aannames. 
+
+- Visionaire uitvinders (voor de technologie)
+- Omdenkende creatievelingen (voor de wenselijkheid)
+- Ruimdenkende regelmakers (voor de organisatorische inrichting)
+- …
+
+
+
+**Aannames **technologie
+
+Wij geloven dat…
+
+1. Een assistent een taak kan interpreteren zonder volledige menselijke specificatie.
+2. Een assistent plannen kan genereren die correct en uitvoerbaar zijn.
+3. Een assistent kan omgaan met onvolledige of inconsistente informatie.
+4. De onderliggende data- en AI-modellen accuraat genoeg zijn voor complexe beslissingen.
+5. Fouten binnen acceptabele marges blijven voor het domein waarin ze opereren.
+6. Assistenten hun eigen onzekerheid kunnen herkennen en escaleren wanneer nodig.
+7. Er een een gedeeld protocol of taal te ontwikkelen is waarmee assistenten informatie kunnen uitwisselen.
+8. Assistenten elkaars berichten consistent kunnen interpreteren.
+9. Assistenten conflicten kunnen detecteren en oplossen.
+10. Assisteten gedeelde doelen kunnen vormen of individuele doelen afstemmen.
+11. Er een mechanisme voor taakverdeling te bouwen is.
+12. Assistenten elkaars voortgang kunnen monitoren en daarop anticiperen.
+13. Het systeem blijft performant bij groeiend aantal assistenten met aanvullende en of complexere taken
+14. API’s, databases en tools autonoom kunnen worden aangestuurd.
+15. Assistenten kunnen omgaan met onverwachte responses of systeemfouten.
+16. Assistenten begrip hebben van hun -veranderende- context
+17. Assistenten hun gedrag kunnen verbeteren op basis van resultaten.
+18. Er een feedbackmechanisme te bouwen is dat niet leidt tot ongewenste optimalisatie.
+19. Er duidelijke interventiepunten in te bouwen zijn (human-in-the-loop / human-on-the-loop).
+20. Assistenten hun beslissingen kunnen uitleggen.
+21. Er een mechanisme is te bouwen om assitenten te stoppen of te overrulen.
+22. Privacy en compliance kunnen worden gegarandeerd.
+23. Kosten (compute, energie) acceptabel zijn voor real-world gebruik.
+24. Latency laag genoeg is voor samenwerking in real time.
 
 ## 🙏 Contributors
 Thank you to all the [people](https://github.com/cedanl/streamlit-app-template/graphs/contributors) who have contributed to this template.
