@@ -16,7 +16,7 @@
 > **Quick Start**: [![Use Template](https://img.shields.io/badge/Use-Template-green)](https://github.com/cedanl/streamlit-app-template/generate) → Clone Locally → [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/getting-started/installation/) → Run `uv run src/main.py`
 
 # **C**entrum **E**ducatieve **D**igitale **A**ssistentie 
-Hoe kunnen we (leven-lang-)lerende *-middels het aanbieden van altijd beschikbare, kwalitatieve en betrouwbare digitale assistentie-* helpen om in hun ontwikkeling (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
+Hoe kunnen we (leven-lang-)lerende *-middels het aanbieden van altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie-* helpen om in hun ontwikkeling (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
 
 
 ### Digitale assistentie voor overmorgen
@@ -33,128 +33,50 @@ Het systeem kan realtime en iteratief oplossingen verfijnen, soms volledig auton
 
 ### Direct -met waarde(n)- starten
 
-Ontwerp en beproef direct de technische (on)mogelijkheden van het werken met assistentie als basis voor het nieuwe ‘**C**entrum **E**ducatieve **D**igitale **A**ssistentie’.  Ontwerp het zodat het niet (meer) aanvoelt als Dashboarding/Software, maar meer als een actieve, co-intelligentie, en meedenkende/werkende assistent die je begrijpt terwijl je ermee werkt.
+We beginnen met het verkennen van de (on)mogelijkheden van werken met digitale assistentie. Daarbij ontwerpen we de assistentie zó dat het niet langer aanvoelt als traditionele software of dashboarding, maar als een actieve, meedenkende en meewerkende assistent die je begrijpt terwijl je ermee werkt.
 
-Het **C**entrum **E**ducatieve **D**igitale **A**ssistentie kan:
-* jouw data input opschonen, analyseren, visualiseren, aanbevelingen doen en rapporteren 
+Technisch gezien kan de assitent:
+* jouw data (input) opschonen, analyseren, en visualiseren
+* aanbevelingen doen en rapporteren 
 * trends herkennen zonder te verversen
 * afwijkingen signaleren voordat jij ze ziet
 * nieuwe inzichten direct tonen
-* autonoom taken bijwerken/verwerken
-* …
-
-
-**De Eindgebruikers**
-
-We willen beginnen bij de **onderwijsprofessionals in het mbo** die werken op strategisch, tactisch of operationeel niveau en vragen kunnen hebben op gebieden als beleidsimpact, toekomstscenario’s, sectorprestaties, instroom/uitstroom/doorstroom, capaciteitsplanning, cohortanalyses, effect interventies, risicosignalering, inspectievragen, groepsinzichten, handelingsadvies, ... 
-
-
-**De dataset**
-
-De eerste gegevens die we hiervoor nodig hebben zijn: data uit kernregistratiesystemen zoals Eduarte, voortgangsresultaten (summatief in kernregistratiesysteem, formatief vaak in LMS), 
+* autonoom taken bij- en verwerken
 
 
 
-De eerste assistent gaat voor de onderwijsprofessional in het mbo:
+
+De eerste samenwerkende autonome digitale assistenten:
 - 
-De digitale assistenten zullen lerende-begeleiders (Mentoren) in het mbo helpen om, op basis van een uitvalprognose van de lerenden die onder hun verantwoordelijkheid vallen, op het eerst mogelijke beschikbare moment een één-op-één voortgangsgesprek in te plannen. 
+We willen beginnen met digitale assisitentie voor **onderwijsprofessionals in het mbo** die werken op strategisch, tactisch of operationeel niveau aan de (door)ontwikkelen van (leven-lang-)lerende. 
 
-Het doel hiervan is om met begrip en aandacht samen te kijken naar de mogelijke oorzaken van de verwachte uitval. Tijdens dit gesprek kan vervolgens een concreet actieplan worden opgesteld met duidelijke doelen, om zo uitval te voorkomen.
+Waarbij ze continue hun eigen ontwikkeling, die van het vak, het curriculum, de opleiding, het beleid, de sector willen verbeteren ten diensten van de ontwikkeling van de (leven-lang-)lerenden.
+
+
+En daarbij vragen hebben op gebieden als beleidsimpact, toekomstscenario’s, sectorprestaties, instroom/uitstroom/doorstroom, capaciteitsplanning, cohortanalyses, effect interventies, risicosignalering, inspectievragen, groepsinzichten, handelingsadvies, enzovoorts. 
+
 
 
 **Snel leren**
 
-We doen een integrale verkenning waarin we gericht bewijs verzamelen om onzekerheden over het ecosysteem van samenwerkende autonome digitale ontwikkelassistenten zo snel mogelijk weg te nemen. 
+We doen een integrale verkenning waarin we gericht bewijs verzamelen om onzekerheden over het (maatschappelijk aanvaardbare) ecosysteem van samenwerkende autonome digitale ontwikkelassistenten zo snel mogelijk weg te nemen. 
 
 Die onzekerheden zitten op drie aspecten die in samenhang nodig zijn. Per aspect hebben we een hoofdaanname die we in delen gaan onderzoeken:
 
 - TECHNOLOGIE  
-Hoofdaanname: “Wij geloven dat het technisch mogelijk is om samenwerkende autonome digitale assistentie te bouwen”
+Hoofdaanname: “Wij geloven dat het technisch mogelijk is om (maatschappelijk aanvaardbare) samenwerkende autonome digitale assistentie te bouwen”
 
 - WENSELIJKHEID  
-Hoofdaanname: “Wij geloven dat onderwijsprofessionals de kracht van digitale assistentie inzien”
+Hoofdaanname: “Wij geloven dat onderwijsprofessionals in het mbo de kracht van digitale assistentie inzien”
 
 - ORGANISATIE  
-Hoofdaanname: “Wij geloven dat het mogelijk is om het **C**entrum **E**ducatieve **D**igitale** A**ssistentie goed in te richten is binnen mbo instellingen”
+Hoofdaanname: “Wij geloven dat het mogelijk is om het **C**entrum **E**ducatieve **D**igitale **A**ssistentie goed in te richten is binnen mbo instellingen”
 
 
-
-**Aannames **technologie
-
-Wij geloven dat het mogelijk is om…
-
-1. Een assistent een taak kan interpreteren zonder volledige menselijke specificatie.
-2. Een assistent plannen kan genereren die correct en uitvoerbaar zijn.
-3. Een assistent kan omgaan met onvolledige of inconsistente informatie.
-4. De onderliggende data- en AI-modellen accuraat genoeg zijn voor complexe beslissingen.
-5. Fouten binnen acceptabele marges blijven voor het domein waarin ze opereren.
-6. Assistenten hun eigen onzekerheid kunnen herkennen en escaleren wanneer nodig.
-7. Er een een gedeeld protocol of taal te ontwikkelen is waarmee assistenten informatie kunnen uitwisselen.
-8. Assistenten elkaars berichten consistent kunnen interpreteren.
-9. Assistenten conflicten kunnen detecteren en oplossen.
-10. Assisteten gedeelde doelen kunnen vormen of individuele doelen afstemmen.
-11. Er een mechanisme voor taakverdeling te bouwen is.
-12. Assistenten elkaars voortgang kunnen monitoren en daarop anticiperen.
-13. Het systeem blijft performant bij groeiend aantal assistenten met aanvullende en of complexere taken
-14. API’s, databases en tools autonoom kunnen worden aangestuurd.
-15. Assistenten kunnen omgaan met onverwachte responses of systeemfouten.
-16. Assistenten begrip hebben van hun -veranderende- context
-17. Assistenten hun gedrag kunnen verbeteren op basis van resultaten.
-18. Er een feedbackmechanisme te bouwen is dat niet leidt tot ongewenste optimalisatie.
-19. Er duidelijke interventiepunten in te bouwen zijn (human-in-the-loop / human-on-the-loop).
-20. Assistenten hun beslissingen kunnen uitleggen.
-21. Er een mechanisme is te bouwen om assitenten te stoppen of te overrulen.
-22. Privacy en compliance kunnen worden gegarandeerd.
-23. Kosten (compute, energie) acceptabel zijn voor real-world gebruik.
-24. Latency laag genoeg is voor samenwerking in real time.
-25. …
-7. …
-
-**Aannames **Wenselijkheid 
-
-Wij geloven dat…
-
-1. Wij geloven dat onderwijsprofessionals…
-2. Het verschil herkennen tussen simpele tools (zoals spellingscontrole) en geavanceerde assistentie (zoals digitale assistenten dei zelfstandig een taak uitvoeren).
-3. Inzien dat de taken die de digitale assistent uitvoert aansluit bij hun dagelijkse werkzaamheden (en systemen).
-4. Ervaren dat assistenten helpen de werkdruk te verminderen.
-5. Ervaren dat assistenten tijdwinst opleveren en de kwaliteit van hun werk verhoogt.
-6. Vertrouwen dat de output van de assistenten accuraat en bruikbaar is
-7. Vertrouwen dat de assistent niet te veel fouten maakt
-8. Vertrouwen dat de assistenten consistent werken
-9. Zich comfortabel voelen met het delen van gegevens.
-10. Vertrouwen hebben in de ethische kaders van de assistenten
-11. Inzien dat het geen extra kost om te gebruiken.
-12. Ervaren dat het eenvoudig genoeg is om te gaan gebruiken
-13. Het gebruik van de assistenten eenvoudig vinden
-14. Open staan voor samenwerkende autonome digitale assistentie. 
-15. Inzien dat digitale assistentie een versterking van hun vakmanschap is.
-16. Vertrouwen hebben in de organisatie die de assistenten aanbiedt.
-17. …
-
-**Aannames **Organisatie 
-
-Wij geloven dat…
-
-1. Assistenten stabiel kunnen functioneren binnen de bestaande IT‑architectuur.
-2. Er API’s beschikbaar zijn en veilig te gebruiken.
-3. De assistenten kunnen omgaan met heterogene systemen.
-4. Netwerk, devices en cloud‑toegang stabiel genoeg zijn.
-5. Er voldoende rekenkracht en opslag beschikbaar is.
-6. Er een juridisch houdbare verwerkers-overeenkomst mogelijk is.
-7. Er bescherming tegen datalekken, manipulatie en ongeautoriseerde toegang mogelijk is.
-8. De assistenten binnen vooraf ingestelde grenzen kunnenopereren.
-9. De instelling beleid en governance kunnen inrichten rond autonoom gedrag.
-10. Er duidelijk kan zijn wie er verantwoordelijk is voor een digitale assistent die autonoom handelt.
-11. Een organisatie voldoende capaciteit voor monitoring en governance kan creëren.
-12. De instelling beleid voor ethiek, AI‑gebruik en datagebruik kan ontwikkelen.
-13. …
-    
 
 **De benodigde expertises**
 
-Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrevende blik, een multidisciplinair team gaat iteratief leren over de (deel)aannames. 
-
+Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrevende blik:
 * Visionaire uitvinders (voor de technologie)
 * Omdenkende creatievelingen (voor de wenselijkheid)
 * Ruimdenkende regelmakers (voor de organisatorische inrichting)
