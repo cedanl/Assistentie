@@ -1,38 +1,38 @@
 # 001 | Use case - ProActAssist
 
-_Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek doel te bereiken, inclusief de stappen, alternatieve scenario's en de voorwaarden. Het focusseert op de "wat" (het doel) in plaats van de "hoe" (de technische implementatie)._
+Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek doel te bereiken, inclusief de stappen, alternatieve scenario's en de voorwaarden. Het focust op het "wat" (het doel) in plaats van het "hoe" (de technische implementatie).
 
 
 **Doel**
-* Studieloopbaanbegeleider (SLB-er) in het mbo helpen om, op basis van een uitvalprognose van de lerenden die onder hun verantwoordelijkheid vallen, op het eerst mogelijke beschikbare moment een één-op-één voortgangsgesprek in te plannen. In dit gesprek wordt er om met begrip en aandacht samen gekeken naar de mogelijke oorzaken van de verwachte uitval en het bij behorende actieplan om zo uiteindelijke uitval -zoveel mogelijk- te voorkomen.
-
+* Studieloopbaanbegeleider (SLB-er), mentoren, docenten in het mbo helpen om, op basis van een uitvalprognose van de lerenden die onder hun verantwoordelijkheid vallen, zo vroeg mogelijk uitvalrisico te signaleren en daarop te acteren door op basis van beschikbaarheid automatisch een één-op-één voortgangsgesprek in te plannen. Tijdens dit gesprek wordt er
+samen gekeken naar de mogelijke oorzaken van het verwachte uitval, en wordt aan de hand van een, door de Assistent opgesteld, actieplan besproken op welke wijze uitval -indien mogelijk- kan worden voorkomen.
 
 
 **Actor(en)**
-* Primair: Studieloopbaanbegeleiders (SLB-ers) in het mbo  
-* Secundair: Lerenden (waar de SLB-er verantwoordelijk voor is) die dreigen uit te vallen
+* Primair: Studieloopbaanbegeleiders (SLB-ers), Mentoren en Docenten in het MBO  
+* Secundair: Studenten in het MBO die dreigen uit te vallen
 
 
 **Trigger**
-* Een (gegenereerde) afspraakverzoek naar zowel de SLB-er als de lerende die dreigt uit te vallen.
+* Een (gegenereerde) afspraakverzoek naar zowel de primaire als secundaire actoren. Toegevoegd: Concept Actieplan voor de SLB-er/Mentor/Docent (student?)
 
 
 **Preconditions** 
-* Lerende dreigt uit te vallen volgens de ‘Uitnodigingsregel’ ~https://github.com/cedanl/Uitnodigingsregel.
-* Lerende is gekoppeld aan een SLB-er.
-* Lerende en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware: Proton | Mail, Calender & Meet.
+* Student dreigt uit te vallen volgens de ‘Uitnodigingsregel’ ~https://github.com/cedanl/Uitnodigingsregel.
+* Student is gekoppeld aan een SLB-er. (@Edwin Elke student is gekoppeld aan een mentor, misschien daar op richten?)
+* Student en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware: Proton | Mail, Calender & Meet. @Edwin: in eerste instantie focussen op Outlook? Daarom pak je de grootste groep MBO instellingen, daar praktisch alle instellingen met O365 werken. 
 
 
 **Postconditions**
-* Lerende weet wat diens acties zijn om uitval te voorkomen.
-* Gespreksverslag met de actiepunten is gemaild naar de SLB-er en de Lerende.
+* Student weet wat diens acties zijn om uitval te voorkomen.
+* Gespreksverslag met de actiepunten is gemaild naar de SLB-er en de Student. Eventueel kunnen we, en zo de ontzorging benadrukken, dit gespreksverslag automatisch door een Agent laten maken. Door met Mobiel gesprek op te nemen (of we moeten een ProActAssist apparaatje ontwikkelen :-)), en naar de Assistent te sturen, waarna automatisch transcriptie en gesprekverslag, veilig, wordt gemaakt.    
 
 
 **Basisstroom**
-1. De ‘Uitnodigingsregel’ bepaalt welke Lerende dreigt uit te vallen.
+1. De ‘Uitnodigingsregel’ bepaalt welke Student dreigt uit te vallen.
 2. De ’ProActAssist’ genereert een afspraakverzoek op basis van de voorspelling van de ‘Uitnodigingsregel’.
-3. De ’ProActAssist’ kijkt via contacten wie de SLB-er is van deze lerende.
-4. De ‘ProActAssist’ verstuurd naar de desbetreffende SLB-er een e-mail met een gegenareert persoonlijk actieplan voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
+3. De ’ProActAssist’ kijkt via contacten wie de SLB-er (of Mentor) is van deze student.
+4. De ‘ProActAssist’ verstuurd naar de desbetreffende SLB-er (of Mentor) een e-mail met een, door de AI gegenereert, persoonlijk actieplan op maat voor de desbetreffende Student en gesprekstechnieken om dit gesprek aan te gaan.
 5. De ‘ProActAssist’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
 6. De ‘ProActAssist’ neemt bij goedkeuring van beide aanwezigen het gesprek op.
 7. De ‘ProActAssist’ genereert aan het einde van de afspraak een samenvatting van het gesprek.
