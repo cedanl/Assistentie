@@ -1,3 +1,5 @@
+Use case - ProActAssist
+
 Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek doel te bereiken, inclusief de stappen, alternatieve scenario's en de voorwaarden. Het focusseert op de "wat" (het doel) in plaats van de "hoe" (de technische implementatie). 
 
 
