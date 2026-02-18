@@ -4,7 +4,7 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 
 
 **Doel**
-* Studieloopbaanbegeleider (SLB-er) willen op het eerst mogelijke beschikbare moment een één-op-één gesprek met die lerenden die dreigen uit te vallen om met hen het concrete actieplan door te nemen en zo uitval te voorkomen.
+* Studieloopbaanbegeleider (SLB-er) willen op het eerst mogelijke beschikbare moment een één-op-één gesprek met die lerenden die dreigen uit te vallen om met hen een concrete actieplan door te nemen en zo uitval te voorkomen.
 
 
 
@@ -20,7 +20,7 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 **Preconditions** 
 * Lerende dreigt uit te vallen volgens de ‘Uitnodigingsregel’ ~https://github.com/cedanl/Uitnodigingsregel.
 * Lerende is gekoppeld aan een SLB-er.
-* Lerende en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware: Proton Mail & Calender.
+* Lerende en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware: Proton Mail, Calender & Meet.
 
 
 **Postconditions**
@@ -32,9 +32,10 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 1. De ‘Uitnodigingsregel’ bepaalt welke Lerende dreigt uit te vallen
 2. De ’ProActAssist’ genereert een afspraakverzoek op basis van de voorspelling van de ‘Uitnodigingsregel’.
 3. De ’ProActAssist’ kijkt via contacten wie de SLB-er is van deze lerende
-4. De ‘ProActAssist’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een fysieke/online afspraak.
+4. De ‘ProActAssist’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
 5. De ‘ProActAssist’ verstuurd naar de SLB-er nog een e-mail met een voorgesteld persoonlijk actieplan voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
-6. …
+6. De ‘ProActAssist’ neemt bij goedkeuring van beide aanwezigen het gesprek op
+7. De ‘ProActAssist’ genereert aan het einde van de afspraak een samenvatting van het gesprek
 
 
 
