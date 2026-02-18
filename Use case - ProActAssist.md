@@ -20,7 +20,7 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 **Preconditions** 
 * Lerende dreigt uit te vallen volgens de ‘Uitnodigingsregel’ ~https://github.com/cedanl/Uitnodigingsregel.
 * Lerende is gekoppeld aan een SLB-er.
-* Lerende en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware: Proton Mail, Calender & Meet.
+* Lerende en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware: Proton | Mail, Calender & Meet.
 
 
 **Postconditions**
@@ -28,15 +28,15 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 * Gespreksverslag met de actiepunten is gemaild naar de SLB-er en de Lerende.
 
 
-**Basisstroom (happy flow)**
-1. De ‘Uitnodigingsregel’ bepaalt welke Lerende dreigt uit te vallen
+**Basisstroom**
+1. De ‘Uitnodigingsregel’ bepaalt welke Lerende dreigt uit te vallen.
 2. De ’ProActAssist’ genereert een afspraakverzoek op basis van de voorspelling van de ‘Uitnodigingsregel’.
-3. De ’ProActAssist’ kijkt via contacten wie de SLB-er is van deze lerende
+3. De ’ProActAssist’ kijkt via contacten wie de SLB-er is van deze lerende.
 4. De ‘ProActAssist’ verstuurd naar de desbetreffende SLB-er een e-mail met een gegenareert persoonlijk actieplan voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
 5. De ‘ProActAssist’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
-6. De ‘ProActAssist’ neemt bij goedkeuring van beide aanwezigen het gesprek op
-7. De ‘ProActAssist’ genereert aan het einde van de afspraak een samenvatting van het gesprek
-8. De 'ProActAssistent' verstuurt naar de SLB-er en de Lerende een mail met daarin de samenvatting van het gesprek en het actieplan
+6. De ‘ProActAssist’ neemt bij goedkeuring van beide aanwezigen het gesprek op.
+7. De ‘ProActAssist’ genereert aan het einde van de afspraak een samenvatting van het gesprek.
+8. De 'ProActAssistent' verstuurt naar de SLB-er en de Lerende een mail met daarin de samenvatting van het gesprek en het actieplan.
 9. De ‘ProActAssist’ verstuurd met instemming van beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online vervolg (check-in) videoafspraak.
 10. Use case herhaalt zich vanaf stap 5 van de 'Basisstroom' tot beide tevreden zijn over de opvolging van het actieplan, of herhaalt zich vanaf stap 1 wanneer de Lerende -op een ander moment- nogmaals dreigt uit te vallen.
 
@@ -44,22 +44,28 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 
 
 **Alternatieve stromen**
-* varianten op de basisstroom die nog steeds succesvol eindigen  
-
-
-
-**Foutstromen / uitzonderingen**
-
-A1 – Lerende is (nog) niet gekoppeld aan een SLB-er
-De ‘ProActAssist’ kiest zelf uit de beschikbare SLB-ers een begeleider voor de Lerende
+A1 – Het (voortgangs)gesprek wordt NIET opgenomen
+1. De 'ProActAssistent' verstuurt naar de SLB-er en de Lerende een mail met daarin alleen het actieplan.
+2. Use case gaat verder bij stap 9 van de'Basisstroom'.
 
 A2 – …
 …
 
 
+**Foutstromen / uitzonderingen**
+F1 – Lerende is (nog) niet gekoppeld aan een SLB-er
+1. De ‘ProActAssist’ kiest zelf uit de beschikbare SLB-ers een begeleider voor de Lerende.
+2. Use case gaat verder bij stap 4 van de'Basisstroom'.
+
+F2 – …
+…
+
+
 
 **Business rules**
-* regels die het gedrag van de use case beïnvloeden
+* Lerende is aangemeld bij CAMBO (en DUO).
+* Lerende is ingeschreven bij de desbetreffende mbo instelling.
+* SLB-er hoeft GEEN docentbevoegdheid te hebben.
 
 
 
