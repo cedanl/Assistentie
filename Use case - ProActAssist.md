@@ -4,7 +4,7 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 
 
 **Doel**
-* Studieloopbaanbegeleider (SLB-er) willen op het eerst mogelijke beschikbare moment een één-op-één gesprek met die lerenden die dreigen uit te vallen om met hen een concrete actieplan door te nemen en zo uitval te voorkomen.
+* Studieloopbaanbegeleider (SLB-er) in het mbo helpen om, op basis van een uitvalprognose van de lerenden die onder hun verantwoordelijkheid vallen, op het eerst mogelijke beschikbare moment een één-op-één voortgangsgesprek in te plannen. In dit gesprek wordt er om met begrip en aandacht samen gekeken naar de mogelijke oorzaken van de verwachte uitval en het bij behorende actieplan om zo uiteindelijke uitval -zoveel mogelijk- te voorkomen.
 
 
 
