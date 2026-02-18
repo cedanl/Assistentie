@@ -1,4 +1,4 @@
-001 | Aannames - ProActAssist
+# 001 | Aannames - ProActAssist
 
 _De ‘ProActAssistent heeft pas impact als die wenselijk, uitvoerbaar en levensvatbaar is. Om te toetsen of onderwijsprofessionals en (leven-lang-)lerende in het mbo hier echt op zitten te wachten (de wenselijkheid) brengen we de ‘ProActAssist’ tot leven en testen deze door een prototype te maken waarmee we gericht bewijs verzamelen om alle onzekerheden zo snel mogelijk weg te nemen._
 
@@ -41,7 +41,7 @@ Aannames **technologie | Wij geloven dat…**
 
 
 
-Aannames wenselijkheid | Wij geloven dat onderwijsprofessionals in het mbo…
+Aannames **wenselijkheid | Wij geloven dat onderwijsprofessionals (en (leven-lang-)lerenden) in het mbo…**
 * Het verschil herkennen tussen simpele tools (zoals spellingscontrole) en geavanceerde assistentie (zoals digitale assistenten dei zelfstandig een taak uitvoeren).
 * Inzien dat de taken die de digitale assistent uitvoert aansluit bij hun dagelijkse werkzaamheden (en systemen).
 * Inzien dat digitale assistentie een versterking van hun vakmanschap is.
@@ -61,7 +61,7 @@ Aannames wenselijkheid | Wij geloven dat onderwijsprofessionals in het mbo…
 
 
 
-Aannames organisatie | Wij geloven dat…
+Aannames **organisatie | Wij geloven dat…**
 * Assistenten stabiel kunnen functioneren binnen de bestaande IT‑architectuur.
 * Er API’s beschikbaar zijn en veilig te gebruiken.
 * De assistenten kunnen omgaan met heterogene systemen.
