@@ -13,7 +13,7 @@ Actor(en)
 
 
 Trigger
-* Een (gegenereerde) mail met een afspraakverzoek naar zowel de mentor als de lerende die dreigt uit te vallen.
+* Een (gegenereerde) afspraakverzoek naar zowel de mentor als de lerende die dreigt uit te vallen.
 
 
 Preconditions (voorwaarden)
