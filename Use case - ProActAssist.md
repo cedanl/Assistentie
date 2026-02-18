@@ -14,7 +14,7 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 
 
 **Trigger**
-* Een (gegenereerde) afspraakverzoek naar zowel de mentor als de lerende die dreigt uit te vallen.
+* Een (gegenereerde) afspraakverzoek naar zowel de SLB-er als de lerende die dreigt uit te vallen.
 
 
 **Preconditions** 
