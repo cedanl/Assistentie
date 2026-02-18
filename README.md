@@ -46,7 +46,7 @@ Technisch gezien kan de assitent:
 
 
 
-De eerste samenwerkende autonome digitale assistenten:
+De eerste samenwerkende autonome digitale assistenten
 - 
 We willen beginnen met digitale assisitentie voor **onderwijsprofessionals in het mbo** die werken op strategisch, tactisch of operationeel niveau aan de (door)ontwikkelen van (leven-lang-)lerende. 
 
