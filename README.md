@@ -1,5 +1,5 @@
 <div align="center">
-  <h1>CEDAssistentie </h1>
+  <h1>CEDAssistentie</h1>
 
   <p>🚀 Een demo van samenwerkende autonome digitale assistenten in het mbo</p>
 
@@ -12,38 +12,26 @@
   </p>
 </div>
 
-## 📋 Overview
 > [!NOTE]
 > **Quick Start**: [![Use Template](https://img.shields.io/badge/Use-Template-green)](https://github.com/cedanl/streamlit-app-template/generate) → Clone Locally → [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/getting-started/installation/) → Run `uv run src/main.py`
 
 # **C**entrum **E**ducatieve **D**igitale **A**ssistentie 
-## Plan van aanpak
-
-| Doel |  Van     | Datum | Status |
-| :----		| :----		| :---- | :----|
-| PvA/ Sprint | Edwin Lieftink & Ed. de Feber | 16-02-2026 | Concept  |
+Hoe kunnen we (leven-lang-)lerende *-middels het aanbieden van altijd beschikbare, kwalitatieve en betrouwbare digitale assistentie-* helpen om in hun ontwikkeling (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
 
 
+### Digitale assistentie voor overmorgen
 
-## Hoe kunnen we...
+Om AI en data écht waarde(n)vol in te zetten, hebben we een ecosysteem nodig van meerdere digitale assistenten die elk een specifieke vaardigheid tot in de finesse beheersen. Denk aan het vinden van de juiste informatie, het uitvoeren van statistische toetsen, of het maken van voorspellende analyses.
 
-…alle (potentiële) eindgebruikers *-middels het aanbieden van altijd beschikbare, kwalitatieve en betrouwbare digitale ontwikkelassistentie-* helpen om in hun werk (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
+In zo’n ecosysteem leveren onafhankelijke assistenten autonoom nieuwe inzichten en resultaten op voor (leven-lang-)lerende. Door zoveel mogelijk open‑source en onafhankelijk te ontwikkelen, houden we als samenleving grip op onze toekomst -juist in een wereld die steeds sneller verandert.
 
+Met de focus op samenwerkende autonome digitale assistenten kiezen we voor een fundamenteel andere manier van ontwikkelen. Niet langer een mens die stap voor stap inzichten verzamelt en nieuwe instructies geeft, maar meerdere assistenten die parallel werken aan verschillende onderdelen van een complexe (ontwikkel)opdracht -van individueel niveau tot nationale schaal.
 
-### Het ecosysteem van samenwerkende autonome digitale assistenten
-
-Om AI & data echt waarde(n)vol in te zetten, moet het ecosysteem bestaan uit meerdere assistenten die bepaalde skills zeer goed beheersen: van het vinden van informatie, het uitvoeren van juiste statistische toetsen bij testen van hypothesen, tot aan het maken van descriptieve, diagnostische, en voorspellende analyses. In het ecosystemen produceren onafhankelijke assistenten autonoom iets (nieuws) voor de eindgebruikers. Door zoveel mogelijk onafhankelijk, lees open source, te ontwikkelen, kunnen we als samenleving, in een wereld die steeds sneller verandert, beter grip houden op onze toekomst.
-
-
-### Digitale Ontwikkelingsassistentie voor overmorgen
-
-Met de focus op samenwerkende autonome digitale assistenten zetten we in op een andere manier van ontwikkeling. In plaats van menselijke gebruikers die stap voor stap inzichten verzamelen en Met de focus op samenwerkende digitale assistenten zetten we in op een andere manier van ontwikkelen. In plaats van menselijke gebruikers die stap voor stap inzichten verzamelen en vervolg instructies geven, zetten we nu meerdere autonome digitale assistenten in die parallel van elkaar opereren aan verschillende onderdelen van een specifieke grote ontwikkelopdracht -van individu tot land. 
-
-Het systeem kan realtime, iteratief oplossingen verfijnen, soms autonoom soms met "the-human-in-the-loop" en zo in meerder rondes een (ontwikkel)taken goed voor je uitvoeren.
+Het systeem kan realtime en iteratief oplossingen verfijnen, soms volledig autonoom, soms met een “human‑in‑the‑loop”. Zo ontstaat een krachtige cyclus waarin meerdere rondes van samenwerking leiden tot hoogwaardige, uitvoerbare (ontwikkel)taken.
 
 
 
-### Direct met waarde(n) starten
+### Direct -met waarde(n)- starten
 
 Ontwerp en beproef direct de technische (on)mogelijkheden van het werken met assistentie als basis voor het nieuwe ‘**C**entrum **E**ducatieve **D**igitale **A**ssistentie’.  Ontwerp het zodat het niet (meer) aanvoelt als Dashboarding/Software, maar meer als een actieve, co-intelligentie, en meedenkende/werkende assistent die je begrijpt terwijl je ermee werkt.
 
@@ -172,14 +160,3 @@ Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrev
 * Ruimdenkende regelmakers (voor de organisatorische inrichting)
 * …
 
-
-
-
-## 🙏 Contributors
-Thank you to all the [people](https://github.com/cedanl/streamlit-app-template/graphs/contributors) who have contributed to this template.
-
-[![](https://github.com/asewnandan.png?size=50)](https://github.com/asewnandan)
-[![](https://github.com/tin900.png?size=50)](https://github.com/tin900)
-
-## 🚦 License
-![GitHub License](https://img.shields.io/github/license/cedanl/streamlit-app-template)
