@@ -32,13 +32,13 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 1. De ‘Uitnodigingsregel’ bepaalt welke Lerende dreigt uit te vallen
 2. De ’ProActAssist’ genereert een afspraakverzoek op basis van de voorspelling van de ‘Uitnodigingsregel’.
 3. De ’ProActAssist’ kijkt via contacten wie de SLB-er is van deze lerende
-4. De ‘ProActAssist’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
-5. De ‘ProActAssist’ verstuurd naar de SLB-er een e-mail met een gegenareert persoonlijk actieplan voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
+4. De ‘ProActAssist’ verstuurd naar de desbetreffende SLB-er een e-mail met een gegenareert persoonlijk actieplan voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
+5. De ‘ProActAssist’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
 6. De ‘ProActAssist’ neemt bij goedkeuring van beide aanwezigen het gesprek op
 7. De ‘ProActAssist’ genereert aan het einde van de afspraak een samenvatting van het gesprek
 8. De 'ProActAssistent' verstuurt naar de SLB-er en de Lerende een mail met daarin de samenvatting van het gesprek en het actieplan
 9. De ‘ProActAssist’ verstuurd met instemming van beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online vervolg (check-in) videoafspraak.
-10. Use case herhaalt zich vanaf stap 6 van de 'Basisstroom' tot beide tevreden zijn over de opvolging van het actieplan, of herhaalt zich vanaf stap 1 wanneer de Lerende nogmaals dreigt uit te vallen.
+10. Use case herhaalt zich vanaf stap 5 van de 'Basisstroom' tot beide tevreden zijn over de opvolging van het actieplan, of herhaalt zich vanaf stap 1 wanneer de Lerende -op een ander moment- nogmaals dreigt uit te vallen.
 
 
 
