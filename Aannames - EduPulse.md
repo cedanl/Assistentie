@@ -1,6 +1,6 @@
-# 001 | Aannames - ProActAssist
+# 001 | Aannames - EduPulse
 
-_De ‘ProActAssistent heeft pas impact als die wenselijk, uitvoerbaar en levensvatbaar is. Om te toetsen of onderwijsprofessionals en (leven-lang-)lerende in het mbo hier echt op zitten te wachten (de wenselijkheid) brengen we de ‘ProActAssist’ tot leven en testen deze door een prototype te maken waarmee we gericht bewijs verzamelen om alle onzekerheden zo snel mogelijk weg te nemen._
+_De ‘EduPulse' heeft pas impact als die wenselijk, uitvoerbaar en levensvatbaar is. Om te toetsen of onderwijsprofessionals en (leven-lang-)lerende in het mbo hier echt op zitten te wachten (de wenselijkheid) brengen we de ‘EduPulse' tot leven en testen deze door een prototype te maken waarmee we gericht bewijs verzamelen om alle onzekerheden zo snel mogelijk weg te nemen._
 
 **Experimenten plan -** We brengen de aannames in kaart op gebied van ‘Technologie, Wenselijkheid en Organisatie’. De meest risicovolle aanname(s) formuleren we als toetsbare hypothese(s) en hiervoor zetten we een experiment op. 
 
@@ -8,7 +8,7 @@ _De ‘ProActAssistent heeft pas impact als die wenselijk, uitvoerbaar en levens
 
 **Experiment uitvoeren -** We voeren het experiment uit om de geselecteerde hypothese(s) te toetsen en in het kielzog hiervan verzamelen we zo veel mogelijk informatie om duidelijkheid te krijgen over de overige aannames. 
 
-**Bewijs presenteren -** We (in)valideren de hypothese(s) en komen met een advies om met de ‘ProActAssist’ te stoppen, hem aan te passen of hem juist vanwege de goede testresultaten door te ontwikkelen. Alle leerpunten verwerken we direct in de aangescherpte ‘ProActAssist’.
+**Bewijs presenteren -** We (in)valideren de hypothese(s) en komen met een advies om met de ‘EduPulse’ te stoppen, hem aan te passen of hem juist vanwege de goede testresultaten door te ontwikkelen. Alle leerpunten verwerken we direct in de aangescherpte ‘EduPulse’.
 
 
 
