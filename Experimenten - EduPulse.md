@@ -24,5 +24,5 @@ _En meten we..._
 
 **Succes criteria**
 _We hebben gelijk als…_
-* Als er voor 70 van die leven-lang-lerenden een persoonlijk actieplan van minimaal 2 punten te genereren is.
+* Er voor 70 van die leven-lang-lerenden een persoonlijk actieplan van minimaal 2 punten te genereren is.
 
