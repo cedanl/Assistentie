@@ -1,4 +1,4 @@
-# 001 | Experimenten - ProActAssist
+# 001 | Experimenten - EduPulse
 
 ![Flow experiment 001](https://github.com/cedanl/Assistentie/blob/main/src/assets/20260219_edf_use_case.png)
 
