@@ -1,6 +1,6 @@
 # 001 | Experimenten - ProActAssist
 
-![Flow experiment 001](/src/assets/images/20260219_edf_use_case.png "Use Case experiment 001")
+![Flow experiment 001](https://github.com/cedanl/Assistentie/blob/main/src/assets/20260219_edf_use_case.png)
 
 **Riskante aanname**
 _We geloven dat…_
