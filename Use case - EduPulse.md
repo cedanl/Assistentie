@@ -1,6 +1,11 @@
 # 001 | Use case - EduPulse
 
-Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek doel te bereiken, inclusief de stappen, alternatieve scenario's en de voorwaarden. Het focust op het "wat" (het doel) in plaats van het "hoe" (de technische implementatie).
+_Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek doel te bereiken, inclusief de stappen, alternatieve scenario's en de voorwaarden. Het focust op het "wat" (het doel) in plaats van het "hoe" (de technische implementatie)._
+
+
+Bij CEDA, in samenwerking met het Mondriaan College, is met behulp van studiedata en machine learning-modellen de zogenaamde ‘uitnodigingsregel’ methode ontwikkeld. Deze methode biedt SLB’ers en mentoren een signaleringssysteem waarmee vroegtijdig studenten op basis van hun uitvalkans kunnen worden opgemerkt.
+
+Om uitvalpreventie en -interventies effectiever in te zetten willen wij op basis van de voorspelde uitvalkans van een individuele student, met onze Uitval Preventie Agent de SLB’ers en mentoren ondersteunen en ontzorgen door gebruik te maken van AI. Een eerste stap hierbij is het leveren van informatieve en actierijke rapportages.
 
 
 **Doel**
