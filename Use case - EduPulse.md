@@ -18,18 +18,17 @@ samen gekeken naar de mogelijke oorzaken van het verwachte uitval, en wordt aan 
 
 
 **Trigger**
-* Een (gegenereerde) afspraakverzoek naar zowel de primaire als secundaire actoren. Toegevoegd: Concept Actieplan voor de SLB-er/Mentor/Docent (student?)
+* Een (gegenereerde) afspraakverzoek -met actieplan- naar zowel de primaire als secundaire actoren.
 
 
 **Preconditions** 
 * Student dreigt uit te vallen volgens de ‘Uitnodigingsregel’ ~https://github.com/cedanl/Uitnodigingsregel.
-* Student is gekoppeld aan een SLB-er. (@Edwin Elke student is gekoppeld aan een mentor, misschien daar op richten?)
-* Student en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware: Proton | Mail, Calender & Meet. @Edwin: in eerste instantie focussen op Outlook? Daarom pak je de grootste groep MBO instellingen, daar praktisch alle instellingen met O365 werken. 
+* Student en SLB-er hebben beide toegang tot dezelfde communicatie- en kantoorsoftware, bijvoorbeeld Proton | Mail, Calender & Meet. 
 
 
 **Postconditions**
 * Student weet wat diens acties zijn om uitval te voorkomen.
-* Gespreksverslag met de actiepunten is gemaild naar de SLB-er en de Student. Eventueel kunnen we, en zo de ontzorging benadrukken, dit gespreksverslag automatisch door een Agent laten maken. Door met Mobiel gesprek op te nemen (of we moeten een ProActAssist apparaatje ontwikkelen :-)), en naar de Assistent te sturen, waarna automatisch transcriptie en gesprekverslag, veilig, wordt gemaakt.    
+* Gespreksverslag met de actiepunten is gemaild naar de SLB-er en de Student.   
 
 
 **Basisstroom**
