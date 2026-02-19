@@ -1,4 +1,4 @@
-# 001 | Use case - ProActAssist
+# 001 | Use case - EduPulse
 
 Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek doel te bereiken, inclusief de stappen, alternatieve scenario's en de voorwaarden. Het focust op het "wat" (het doel) in plaats van het "hoe" (de technische implementatie).
 
@@ -30,14 +30,14 @@ samen gekeken naar de mogelijke oorzaken van het verwachte uitval, en wordt aan 
 
 **Basisstroom**
 1. De ‘Uitnodigingsregel’ bepaalt welke Student dreigt uit te vallen.
-2. De ’ProActAssist’ genereert een afspraakverzoek op basis van de voorspelling van de ‘Uitnodigingsregel’.
-3. De ’ProActAssist’ kijkt via contacten wie de SLB-er (of Mentor) is van deze student.
-4. De ‘ProActAssist’ verstuurd naar de desbetreffende SLB-er (of Mentor) een e-mail met een, door de AI gegenereert, persoonlijk actieplan op maat voor de desbetreffende Student en gesprekstechnieken om dit gesprek aan te gaan.
-5. De ‘ProActAssist’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
-6. De ‘ProActAssist’ neemt bij goedkeuring van beide aanwezigen het gesprek op.
-7. De ‘ProActAssist’ genereert aan het einde van de afspraak een samenvatting van het gesprek.
-8. De 'ProActAssistent' verstuurt naar de SLB-er en de Lerende een mail met daarin de samenvatting van het gesprek en het actieplan.
-9. De ‘ProActAssist’ verstuurd met instemming van beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online vervolg (check-in) videoafspraak.
+2. De ’EduPulse’ genereert een afspraakverzoek op basis van de voorspelling van de ‘Uitnodigingsregel’.
+3. De ’EduPulse’ kijkt via contacten wie de SLB-er (of Mentor) is van deze student.
+4. De ‘EduPulse’ verstuurd naar de desbetreffende SLB-er (of Mentor) een e-mail met een, door de AI gegenereert, persoonlijk actieplan op maat voor de desbetreffende Student en gesprekstechnieken om dit gesprek aan te gaan.
+5. De ‘EduPulse’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
+6. De ‘EduPulse’ neemt bij goedkeuring van beide aanwezigen het gesprek op.
+7. De ‘EduPulse’ genereert aan het einde van de afspraak een samenvatting van het gesprek.
+8. De 'EduPulse' verstuurt naar de SLB-er en de Lerende een mail met daarin de samenvatting van het gesprek en het actieplan.
+9. De ‘EduPulse’ verstuurd met instemming van beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online vervolg (check-in) videoafspraak.
 10. Use case herhaalt zich vanaf stap 5 van de 'Basisstroom' tot beide tevreden zijn over de opvolging van het actieplan, of herhaalt zich vanaf stap 1 wanneer de Lerende -op een ander moment- nogmaals dreigt uit te vallen.
 
 
@@ -45,7 +45,7 @@ samen gekeken naar de mogelijke oorzaken van het verwachte uitval, en wordt aan 
 
 **Alternatieve stromen**
 A1 – Het (voortgangs)gesprek wordt NIET opgenomen
-1. De 'ProActAssistent' verstuurt naar de SLB-er en de Lerende een mail met daarin alleen het actieplan.
+1. De 'EduPulse' verstuurt naar de SLB-er en de Lerende een mail met daarin alleen het actieplan.
 2. Use case gaat verder bij stap 9 van de'Basisstroom'.
 
 A2 – …
@@ -54,7 +54,7 @@ A2 – …
 
 **Foutstromen / uitzonderingen**
 F1 – Lerende is (nog) niet gekoppeld aan een SLB-er
-1. De ‘ProActAssist’ kiest zelf uit de beschikbare SLB-ers een begeleider voor de Lerende.
+1. De ‘EduPulse’ kiest zelf uit de beschikbare SLB-ers een begeleider voor de Lerende.
 2. Use case gaat verder bij stap 4 van de'Basisstroom'.
 
 F2 – …
