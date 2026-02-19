@@ -8,8 +8,8 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 
 
 **Doel**
-* Studieloopbaanbegeleider (SLB-er), mentoren, docenten in het mbo helpen om, op basis van een uitvalprognose van de lerenden die onder hun verantwoordelijkheid vallen, zo vroeg mogelijk uitvalrisico te signaleren en daarop te acteren door op basis van beschikbaarheid automatisch een één-op-één voortgangsgesprek in te plannen. Tijdens dit gesprek wordt er
-samen gekeken naar de mogelijke oorzaken van het verwachte uitval, en wordt aan de hand van een, door de Assistent opgesteld, actieplan besproken op welke wijze uitval -indien mogelijk- kan worden voorkomen.
+* Studieloopbaanbegeleiders (SLB’ers), mentoren en mbo‑docenten worden ondersteund bij het zo vroeg mogelijk signaleren van uitvalrisico’s onder de lerenden waarvoor zij verantwoordelijk zijn. Op basis van een uitvalprognose plant het systeem automatisch, afhankelijk van beschikbaarheid, een één-op-één voortgangsgesprek in.
+Tijdens dit gesprek wordt samen gekeken naar de mogelijke oorzaken van de verwachte uitval. Aan de hand van een door de Assistent 'EduPulse' opgesteld actieplan wordt besproken op welke wijze uitval – indien mogelijk – kan worden voorkomen.
 
 
 **Actor(en)**
