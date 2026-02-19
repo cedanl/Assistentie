@@ -13,6 +13,8 @@ _De ‘EduPulse' heeft pas impact als die wenselijk, uitvoerbaar en levensvatbaa
 
 
 ### Aannames **technologie | Wij geloven dat…**
+* Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een persoonlijk actieplan te generen is voor de desbetreffende leven-lang-lerende.
+* 
 * De assistenten de benodigde taken kan interpreteren zonder -extra- menselijke input.
 * Er een een gedeeld protocol of taal te ontwikkelen is waarmee de assistenten informatie kunnen uitwisselen.
 
