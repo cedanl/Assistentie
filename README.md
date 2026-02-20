@@ -70,7 +70,7 @@ Hoofdaanname: “Wij geloven dat het technisch mogelijk is om (maatschappelijk a
 Hoofdaanname: “Wij geloven dat onderwijsprofessionals in het mbo de kracht van digitale assistentie inzien”
 
 - ORGANISATIE  
-Hoofdaanname: “Wij geloven dat het mogelijk is om het **C**entrum **E**ducatieve **D**igitale **A**ssistentie goed in te richten is binnen mbo instellingen”
+Hoofdaanname: “Wij geloven dat het mogelijk is om autonome digitale assistentie goed in te richten is binnen mbo instellingen”
 
 
 
