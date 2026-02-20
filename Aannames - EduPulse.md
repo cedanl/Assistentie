@@ -1,6 +1,6 @@
 # 001 | Aannames - EduPulse
 
-_De ‘EduPulse' heeft pas impact als die wenselijk, uitvoerbaar en levensvatbaar is. Om te toetsen of onderwijsprofessionals en (leven-lang-)lerende in het mbo hier echt op zitten te wachten (de wenselijkheid) brengen we de ‘EduPulse' tot leven en testen deze door een prototype te maken waarmee we gericht bewijs verzamelen om alle onzekerheden zo snel mogelijk weg te nemen._
+_De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en levensvatbaar is. Om dit te bepalen brengen we de ‘EduPulse’ tot leven in de vorm van een prototype. Met dit prototype verzamelen we op alle drie de onderdelen gericht bewijs om onzekerheden zo snel mogelijk weg te nemen._
 
 **Experimenten plan -** We brengen de aannames in kaart op gebied van ‘Technologie, Wenselijkheid en Organisatie’. De meest risicovolle aanname(s) formuleren we als toetsbare hypothese(s) en hiervoor zetten we een experiment op. 
 
@@ -14,7 +14,8 @@ _De ‘EduPulse' heeft pas impact als die wenselijk, uitvoerbaar en levensvatbaa
 
 ### Aannames **technologie | Wij geloven dat…**
 * Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een persoonlijk actieplan te generen is voor de desbetreffende leven-lang-lerende.
-* 
+* ...
+
 * De assistenten de benodigde taken kan interpreteren zonder -extra- menselijke input.
 * Er een een gedeeld protocol of taal te ontwikkelen is waarmee de assistenten informatie kunnen uitwisselen.
 
