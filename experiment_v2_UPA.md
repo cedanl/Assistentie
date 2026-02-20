@@ -14,3 +14,5 @@ Om uitvalpreventie en -interventies effectiever in te zetten willen wij op basis
 2. een wetenschappelijk onderbouwd actieplan
 3. 
 
+
+Opmerking Corneel: Zit hier ook een soort chat bij? (Of is dat juist een volgende stap na een rapportage & plan)
