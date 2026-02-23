@@ -16,19 +16,31 @@
 > **Quick Start**: [![Use Template](https://img.shields.io/badge/Use-Template-green)](https://github.com/cedanl/streamlit-app-template/generate) → Clone Locally → [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/getting-started/installation/) → Run `uv run src/main.py`
 
 # **C**entrum **E**ducatieve **D**igitale **A**ssistentie 
-Hoe kunnen we (leven-lang-)lerenden in hun ontwikkeling en onderwijsprofessionals bij hun taken *-middels het aanbieden van altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie-* helpen om (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
+Hoe kunnen we (leven‑lang‑)lerenden in hun ontwikkeling, en onderwijsprofessionals in hun dagelijkse taken, ondersteunen door *altijd beschikbare, maatschappelijk aanvaardbare, kwalitatieve en betrouwbare digitale assistentie* aan te bieden? Hoe helpen we hen om betere, evidence‑informed beslissingen te nemen, sneller te schakelen en hun productiviteit te verhogen, zonder dat zij worden overspoeld door handmatig werk?
+
+We richten ons daarbij op digitale, datagedreven, voorspellende, zelflerende en zelfgenererende technologie. We begrijpen dat (leven‑lang‑)lerenden en onderwijsprofessionals behoefte blijven houden aan zowel fysieke als digitale manieren om zich te ontwikkelen en te werken -los van elkaar en soms in combinatie. Toch kiezen we er nu bewust voor om ons volledig te concentreren op de digitale kant.
+
+Zo kunnen we nieuwe diensten en logistiek ontwerpen die optimaal gebruikmaken van de unieke eigenschappen van digitale technologie: efficiënt, schaalbaar, op maat, grenzeloos, immaterieel, laagdrempelig en verbindend.
+
+Tegelijkertijd weten we dat (digitale) technologie nooit neutraal is. Daarom hebben we (ontwerp)principes nodig die richting geven aan hoe we onze oplossingen écht waarde(n)vol inzetten. Alleen dan houden we als samenleving grip op onze toekomst -juist in een wereld die steeds sneller verandert.
 
 
 
 ### Digitale assistentie voor overmorgen
 
-Om AI en data écht waarde(n)vol in te zetten, hebben we een ecosysteem nodig van meerdere digitale assistenten die elk een specifieke vaardigheid tot in de finesse beheersen. Denk aan het vinden van de juiste informatie, het uitvoeren van statistische toetsen, of het maken van voorspellende analyses.
+Digitale assistentie ontwikkelt zich in hoog tempo van een reactieve naar een proactieve vorm. Ze wordt steeds autonomer, kan complexere taken uitvoeren en beschikt over een groeiend leervermogen. Deze nieuwe generatie digitale assistentie bestaat uit twee samenwerkende onderdelen:
 
-In zo’n ecosysteem leveren onafhankelijke assistenten autonoom nieuwe inzichten en resultaten op voor (leven-lang-)lerende. Door zoveel mogelijk open‑source en onafhankelijk te ontwikkelen, houden we als samenleving grip op onze toekomst -juist in een wereld die steeds sneller verandert.
+1. De digitale assistent fungeert als intermediair tussen mens en technologie. Vanuit een natuurlijke interactie -een dialoog- interpreteert de assistent een vraag of opdracht en genereert vervolgens een passend, op maat gemaakt antwoord.
 
-Met de focus op samenwerkende autonome digitale assistenten kiezen we voor een fundamenteel andere manier van ontwikkelen. Niet langer een mens die stap voor stap inzichten verzamelt en nieuwe instructies geeft, maar meerdere assistenten die parallel werken aan verschillende onderdelen van een complexe (ontwikkel)opdracht -van individueel niveau tot nationale schaal.
+2. De agent werkt op de achtergrond. Deze technologie krijgt een doel mee van de digitale assistent en voert daarna zelfstandig meerdere stappen uit. Een agent neemt beslissingen, zoekt informatie op en handelt zonder voortdurende begeleiding.
 
-Het systeem kan realtime en iteratief oplossingen verfijnen, soms volledig autonoom, soms met een “human‑in‑the‑loop”. Zo ontstaat een krachtige cyclus waarin meerdere rondes van samenwerking leiden tot hoogwaardige, uitvoerbare (ontwikkel)taken.
+In de digitale assistentie van overmorgen werken deze twee onderdelen naadloos samen. 
+
+(Leven‑lang‑)lerenden en onderwijsprofessionals beschikken dan over een persoonlijke digitale assistent die 24/7 beschikbaar is en waarmee zij in gewone taal kunnen communiceren. Deze assistent kan uiteenlopende rollen aannemen en is daardoor breed inzetbaar voor alles wat te maken heeft met een leven lang ontwikkelen en de taken die daarbij horen.
+
+Op de achtergrond draaien meerdere autonome digitale agenten, elk gespecialiseerd in een specifieke vaardigheid. Denk aan het vinden van relevante informatie, het uitvoeren van statistische analyses of het maken van voorspellende analyses.
+
+De digitale assistentie van de toekomst kan oplossingen orkestreren, realtime bijsturen en iteratief verfijnen, soms volledig autonoom, soms met een human‑in‑the‑loop. Zo ontstaat een krachtige samenwerkingscyclus waarin meerdere rondes van interactie leiden tot hoogwaardige en uitvoerbare (ontwikkel)taken.
 
 
 
@@ -49,10 +61,9 @@ Technisch gezien kan de assitent:
 
 De eerste samenwerkende autonome digitale assistenten
 - 
-We willen beginnen met digitale assisitentie voor **onderwijsprofessionals in het mbo** die werken op strategisch, tactisch of operationeel niveau aan de (door)ontwikkelen van (leven-lang-)lerende. 
+We willen beginnen met digitale assisitentie voor **onderwijsprofessionals in het mbo** die werken op strategisch, tactisch of operationeel niveau aan de (door)ontwikkelen van (leven-lang-)lerenden. 
 
 Waarbij ze continue hun eigen ontwikkeling, die van het vak, het curriculum, de opleiding, het beleid, de sector willen verbeteren ten diensten van de ontwikkeling van de (leven-lang-)lerenden.
-
 
 En daarbij vragen hebben op gebieden als beleidsimpact, toekomstscenario’s, sectorprestaties, instroom/uitstroom/doorstroom, capaciteitsplanning, cohortanalyses, effect interventies, risicosignalering, inspectievragen, groepsinzichten, handelingsadvies, enzovoorts. 
 
@@ -60,18 +71,18 @@ En daarbij vragen hebben op gebieden als beleidsimpact, toekomstscenario’s, se
 
 **Snel leren**
 
-We doen een integrale verkenning waarin we gericht bewijs verzamelen om onzekerheden over het (maatschappelijk aanvaardbare) ecosysteem van samenwerkende autonome digitale ontwikkelassistenten zo snel mogelijk weg te nemen. 
+We doen een integrale verkenning waarin we gericht bewijs verzamelen om onzekerheden over het (maatschappelijk aanvaardbare) ecosysteem van digitale assistentie van overmorgen zo snel mogelijk weg te nemen.
 
 Die onzekerheden zitten op drie aspecten die in samenhang nodig zijn. Per aspect hebben we een hoofdaanname die we in delen gaan onderzoeken:
 
 - TECHNOLOGIE  
-Hoofdaanname: “Wij geloven dat het technisch mogelijk is om (maatschappelijk aanvaardbare) samenwerkende autonome digitale assistentie te bouwen”
+Hoofdaanname: “Wij geloven dat het technisch mogelijk is om (maatschappelijk aanvaardbare) digitale assistentie te bouwen”
 
 - WENSELIJKHEID  
-Hoofdaanname: “Wij geloven dat onderwijsprofessionals in het mbo de kracht van digitale assistentie inzien”
+Hoofdaanname: “Wij geloven dat onderwijsprofessionals en (leven-lang-)lerenden in het mbo de kracht van digitale assistentie inzien”
 
 - ORGANISATIE  
-Hoofdaanname: “Wij geloven dat het mogelijk is om autonome digitale assistentie goed in te richten is binnen mbo instellingen”
+Hoofdaanname: “Wij geloven dat het mogelijk is om (maatschappelijk aanvaardbare) digitale assistentie goed in te richten is binnen mbo instellingen”
 
 
 
