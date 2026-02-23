@@ -20,7 +20,7 @@ _De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en leven
 * Er een digitaal lees‑ en printbaar overzicht van de gesprekstechnieken kan worden gegenereerd, met een persoonlijke uitstraling die aansluit bij de specifieke voorkeuren van de betreffende SLB’er of mentor.
 
 ### Aannames **wenselijkheid | Wij geloven dat…**
-* Onderwijsprofessionals in het mbo inzien dat de taken die de digitale assistent uitvoert (actieplan genereren en gesprekstechnieken aandragen) aansluit bij hun dagelijkse werkzaamheden.
+* **Onderwijsprofessionals in het mbo** inzien dat de taken die de digitale assistent uitvoert (actieplan genereren en gesprekstechnieken aandragen) aansluit bij hun dagelijkse werkzaamheden.
     * Inzien dat digitale assistentie een versterking van hun vakmanschap is.
 
     * Ervaren dat assistenten helpen de werkdruk te verminderen.
@@ -33,7 +33,7 @@ _De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en leven
     * Vertrouwen hebben in de organisatie die de assistenten aanbiedt.
  
     
-* Lerende in het mbo inzien dat de taken die de digitale assistent uitvoert (actieplan genereren) aansluit bij de voortgangsbewaking van hun ontwikkeling.
+* **Lerende in het mbo** inzien dat de taken die de digitale assistent uitvoert (actieplan genereren) aansluit bij de voortgangsbewaking van hun ontwikkeling.
     * Inzien dat digitale assistentie een versterking van hun vakmanschap is.
 
     * Ervaren dat het eenvoudig genoeg is om te gaan gebruiken
