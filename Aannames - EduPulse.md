@@ -13,75 +13,46 @@ _De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en leven
 
 
 ### Aannames **technologie | Wij geloven dat…**
-* Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een persoonlijk actieplan te generen is voor de desbetreffende leven-lang-lerende.
-* ...
+* Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een actieplan te generen is voor de desbetreffende (leven-lang-)lerende.
+* Er een digitaal lees- en printbaar actieplan met een persoonlijke uitstraling is te genereren die aansluit bij specifieke voorkeuren van de desbetreffende (leven-lang-)lerende.
 
-* De assistenten de benodigde taken kan interpreteren zonder -extra- menselijke input.
-* Er een een gedeeld protocol of taal te ontwikkelen is waarmee de assistenten informatie kunnen uitwisselen.
+* Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een omschrijving is te generen met technieken hoe dit gesprek aan te gaan met de desbetreffende (leven-lang-)lerende.
+* Er een digitaal lees‑ en printbaar overzicht van de gesprekstechnieken kan worden gegenereerd, met een persoonlijke uitstraling die aansluit bij de specifieke voorkeuren van de betreffende SLB’er of mentor.
 
-* Assistenten elkaars berichten consistent kunnen interpreteren.
-* Assisteten gedeelde doelen kunnen vormen of individuele doelen afstemmen.
-* Er een mechanisme voor taakverdeling te bouwen is.
-* Assistenten elkaars voortgang kunnen monitoren en daarop anticiperen.
-* De onderliggende data- en AI-modellen accuraat genoeg zijn voor complexe beslissingen.
+### Aannames **wenselijkheid | Wij geloven dat…**
+* Onderwijsprofessionals in het mbo inzien dat de taken die de digitale assistent uitvoert (actieplan genereren en gesprekstechnieken aandragen) aansluit bij hun dagelijkse werkzaamheden.
+    * Inzien dat digitale assistentie een versterking van hun vakmanschap is.
 
-* API’s, databases en tools autonoom kunnen worden aangestuurd.
-* Assistenten kunnen omgaan met onverwachte responses of systeemfouten.
-* Assistenten begrip hebben van hun -veranderende- context
-* Het systeem blijft performant bij groeiend aantal assistenten met aanvullende en of complexere taken
+    * Ervaren dat assistenten helpen de werkdruk te verminderen.
+    * Ervaren dat assistenten de kwaliteit van hun werk verhoogt.
+    * Ervaren dat het eenvoudig genoeg is om te gaan gebruiken
 
-* Assistenten hun gedrag kunnen verbeteren op basis van resultaten.
-* Assistenten conflicten kunnen detecteren en oplossen.
-* Er een feedbackmechanisme te bouwen is dat niet leidt tot ongewenste optimalisatie.
-* Er duidelijke interventiepunten in te bouwen zijn (human-in-the-loop).
-* Assistenten hun beslissingen kunnen uitleggen.
-* Er een mechanisme is te bouwen om assistenten te stoppen of te overrulen.
+    * Vertrouwen dat de output van de assistenten accuraat en bruikbaar is
+    * Vertrouwen dat de assistent niet te veel fouten maakt
+    * Vertrouwen hebben in de ethische kaders van de output
+    * Vertrouwen hebben in de organisatie die de assistenten aanbiedt.
+ 
+    
+* Lerende in het mbo inzien dat de taken die de digitale assistent uitvoert (actieplan genereren) aansluit bij de voortgangsbewaking van hun ontwikkeling.
+    * Inzien dat digitale assistentie een versterking van hun vakmanschap is.
 
-* Privacy en compliance kunnen worden gegarandeerd.
-* Kosten (compute, energie) acceptabel zijn voor real-world gebruik.
-* Latency laag genoeg is voor samenwerking in real time.
+    * Ervaren dat het eenvoudig genoeg is om te gaan gebruiken
 
-
-
-
-### Aannames **wenselijkheid | Wij geloven dat onderwijsprofessionals (en (leven-lang-)lerenden) in het mbo…**
-* Het verschil herkennen tussen simpele tools (zoals spellingscontrole) en geavanceerde assistentie (zoals digitale assistenten dei zelfstandig een taak uitvoeren).
-* Inzien dat de taken die de digitale assistent uitvoert aansluit bij hun dagelijkse werkzaamheden (en systemen).
-* Inzien dat digitale assistentie een versterking van hun vakmanschap is.
-
-* Ervaren dat assistenten helpen de werkdruk te verminderen.
-* Ervaren dat assistenten tijdwinst opleveren en de kwaliteit van hun werk verhoogt.
-* Ervaren dat het eenvoudig genoeg is om te gaan gebruiken
-
-* Vertrouwen dat de output van de assistenten accuraat en bruikbaar is
-* Vertrouwen dat de assistent niet te veel fouten maakt
-* Vertrouwen dat de assistenten consistent werken
-* Vertrouwen hebben in de ethische kaders van de assistenten
-* Vertrouwen hebben in de organisatie die de assistenten aanbiedt.
-
-* Open staan voor samenwerkende autonome digitale assistentie. 
-
+    * Vertrouwen dat de output van de assistenten accuraat en bruikbaar is
+    * Vertrouwen dat de output correct is
+    * Vertrouwen hebben in de ethische kaders van de output
+    * Vertrouwen hebben in de organisatie die de output aanbiedt.
 
 
 
 ### Aannames **organisatie | Wij geloven dat…**
-* Assistenten stabiel kunnen functioneren binnen de bestaande IT‑architectuur.
-* Er API’s beschikbaar zijn en veilig te gebruiken.
-* De assistenten kunnen omgaan met heterogene systemen.
-* Netwerk, devices en cloud‑toegang stabiel genoeg zijn.
-* Er voldoende rekenkracht en opslag beschikbaar is.
+* EduPulse stabiel kan functioneren binnen de bestaande IT‑architectuur.
 
-* Er een juridisch houdbare verwerkers-overeenkomst mogelijk is.
-* Er bescherming tegen datalekken, manipulatie en ongeautoriseerde toegang mogelijk is.
-* De assistenten binnen vooraf ingestelde grenzen kunnen opereren.
+* De instelling beleid voor het gebruik van EduPulse kan ontwikkelen.
+    * Er bescherming tegen datalekken, manipulatie en ongeautoriseerde toegang mogelijk is.
 
-* De instelling beleid en governance kunnen inrichten rond autonoom gedrag.
-* Er duidelijk kan zijn wie er verantwoordelijk is voor een digitale assistent die autonoom handelt.
-* Een organisatie voldoende capaciteit voor monitoring en governance kan creëren.
-* De instelling beleid voor ethiek, AI‑gebruik en datagebruik kan ontwikkelen.
-
-
-
+* De instelling governance voor het gebruik van EduPulse kan ontwikkelen.
+    * Er een juridisch houdbare verwerkers-overeenkomst mogelijk is.
 
 
 
