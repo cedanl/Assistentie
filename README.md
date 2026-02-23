@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CEDAssistentie</h1>
 
-  <p>🚀 Een demo van samenwerkende autonome digitale assistenten in het mbo</p>
+  <p>🚀 altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie</p>
 
   <p>
     <a href="#"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows"></a>
@@ -16,7 +16,8 @@
 > **Quick Start**: [![Use Template](https://img.shields.io/badge/Use-Template-green)](https://github.com/cedanl/streamlit-app-template/generate) → Clone Locally → [![uv Badge](https://img.shields.io/badge/uv-DE5FE9?logo=uv&logoColor=fff&style=flat)](https://docs.astral.sh/uv/getting-started/installation/) → Run `uv run src/main.py`
 
 # **C**entrum **E**ducatieve **D**igitale **A**ssistentie 
-Hoe kunnen we (leven-lang-)lerende *-middels het aanbieden van altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie-* helpen om in hun ontwikkeling (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
+Hoe kunnen we (leven-lang-)lerenden in hun ontwikkeling en onderwijsprofessionals bij hun taken *-middels het aanbieden van altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie-* helpen om (nog) betere, evidence-informed, beslissingen te nemen, sneller te schakelen en de productiviteit te verhogen -zonder dat ze worden overspoeld met handmatig werk?
+
 
 
 ### Digitale assistentie voor overmorgen
