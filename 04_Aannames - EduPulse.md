@@ -13,14 +13,16 @@ _De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en leven
 
 
 ### Aannames **technologie | Wij geloven dat…**
-* Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een actieplan te generen is voor de desbetreffende (leven-lang-)lerende.
-* Er een digitaal lees- en printbaar actieplan met een persoonlijke uitstraling is te genereren die aansluit bij specifieke voorkeuren van de desbetreffende (leven-lang-)lerende.
+* Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een interventieplan te generen is voor de desbetreffende (leven-lang-)lerende.
+* Er een digitaal lees- en printbaar intervantieplan met een persoonlijke uitstraling is te genereren die aansluit bij specifieke voorkeuren van de desbetreffende (leven-lang-)lerende.
 
 * Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een omschrijving is te generen met technieken hoe dit gesprek aan te gaan met de desbetreffende (leven-lang-)lerende.
 * Er een digitaal lees‑ en printbaar overzicht van de gesprekstechnieken kan worden gegenereerd, met een persoonlijke uitstraling die aansluit bij de specifieke voorkeuren van de betreffende SLB’er of mentor.
 
+* ...
+
 ### Aannames **wenselijkheid | Wij geloven dat…**
-* **Onderwijsprofessionals in het mbo** inzien dat de taken die de digitale assistent uitvoert (actieplan genereren en gesprekstechnieken aandragen) aansluit bij hun dagelijkse werkzaamheden.
+* **Onderwijsprofessionals in het mbo** inzien dat de taken die de digitale assistent uitvoert (intervanetieplan genereren en gesprekstechnieken aandragen) aansluit bij hun dagelijkse werkzaamheden.
     * Inzien dat digitale assistentie een versterking van hun vakmanschap is.
 
     * Ervaren dat assistenten helpen de werkdruk te verminderen.
@@ -31,28 +33,33 @@ _De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en leven
     * Vertrouwen dat de assistent niet te veel fouten maakt
     * Vertrouwen hebben in de ethische kaders van de output
     * Vertrouwen hebben in de organisatie die de assistenten aanbiedt.
+    * ...
  
     
-* **Lerende in het mbo** inzien dat de taken die de digitale assistent uitvoert (actieplan genereren) aansluit bij de voortgangsbewaking van hun ontwikkeling.
-    * Inzien dat digitale assistentie een versterking van hun vakmanschap is.
-
+* **Lerende in het mbo** inzien dat de taken die de digitale assistent uitvoert (interventieplan genereren) aansluit bij de voortgangsbewaking van hun ontwikkeling.
     * Ervaren dat het eenvoudig genoeg is om te gaan gebruiken
 
     * Vertrouwen dat de output van de assistenten accuraat en bruikbaar is
     * Vertrouwen dat de output correct is
     * Vertrouwen hebben in de ethische kaders van de output
     * Vertrouwen hebben in de organisatie die de output aanbiedt.
+    * ...
 
 
 
 ### Aannames **organisatie | Wij geloven dat…**
 * EduPulse stabiel kan functioneren binnen de bestaande IT‑architectuur.
+    * ...
 
 * De instelling beleid voor het gebruik van EduPulse kan ontwikkelen.
     * Er bescherming tegen datalekken, manipulatie en ongeautoriseerde toegang mogelijk is.
+    * ...
 
 * De instelling governance voor het gebruik van EduPulse kan ontwikkelen.
     * Er een juridisch houdbare verwerkers-overeenkomst mogelijk is.
+    * ...
+ 
+* ...
 
 
 
