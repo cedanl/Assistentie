@@ -9,7 +9,7 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 
 **Doel**
 * Studieloopbaanbegeleiders (SLB’ers), mentoren en mbo‑docenten worden ondersteund bij het zo vroeg mogelijk signaleren van uitvalrisico’s onder de lerenden waarvoor zij verantwoordelijk zijn. Op basis van een uitvalprognose plant het systeem automatisch, afhankelijk van beschikbaarheid, een één-op-één voortgangsgesprek in.
-Tijdens dit gesprek wordt samen gekeken naar de mogelijke oorzaken van de verwachte uitval. Aan de hand van een door de Assistent 'EduPulse' opgesteld actieplan wordt besproken op welke wijze uitval – indien mogelijk – kan worden voorkomen.
+Tijdens dit gesprek wordt samen gekeken naar de mogelijke oorzaken van de verwachte uitval. Aan de hand van een door de Assistent 'EduPulse' opgesteld interventieplan wordt besproken op welke wijze uitval – indien mogelijk – kan worden voorkomen.
 
 
 **Actor(en)**
@@ -18,7 +18,7 @@ Tijdens dit gesprek wordt samen gekeken naar de mogelijke oorzaken van de verwac
 
 
 **Trigger**
-* Een (gegenereerde) afspraakverzoek -met actieplan- naar zowel de primaire als secundaire actoren.
+* Een (gegenereerde) afspraakverzoek -met interventieplan- naar zowel de primaire als secundaire actoren.
 
 
 **Preconditions** 
@@ -28,27 +28,27 @@ Tijdens dit gesprek wordt samen gekeken naar de mogelijke oorzaken van de verwac
 
 **Postconditions**
 * Lerende weet wat diens acties zijn om uitval te voorkomen.
-* Gespreksverslag met de actiepunten is gemaild naar de SLB-er en de Lerende.   
+* Gespreksverslag met de intervantiepunten is gemaild naar de SLB-er en de Lerende.   
 
 
 **Basisstroom**
 1. De ‘Uitnodigingsregel’ bepaalt welke Lerende dreigt uit te vallen.
 2. De ’EduPulse’ genereert een afspraakverzoek op basis van de voorspelling van de ‘Uitnodigingsregel’.
 3. De ’EduPulse’ kijkt via contacten wie de SLB-er (of Mentor) is van deze Lerende.
-4. De ‘EduPulse’ verstuurd naar de desbetreffende SLB-er (of Mentor) een e-mail met een, door de AI gegenereert, persoonlijk actieplan op maat voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
+4. De ‘EduPulse’ verstuurd naar de desbetreffende SLB-er (of Mentor) een e-mail met een, door de AI gegenereert, persoonlijk interventieplan op maat voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
 5. De ‘EduPulse’ verstuurd naar beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online videoafspraak.
 6. De ‘EduPulse’ neemt bij goedkeuring van beide aanwezigen het gesprek op.
 7. De ‘EduPulse’ genereert aan het einde van de afspraak een samenvatting van het gesprek.
-8. De 'EduPulse' verstuurt naar de SLB-er en de Lerende een mail met daarin de samenvatting van het gesprek en het actieplan.
+8. De 'EduPulse' verstuurt naar de SLB-er en de Lerende een mail met daarin de samenvatting van het gesprek en het interventieplan.
 9. De ‘EduPulse’ verstuurd met instemming van beide op het eerst mogelijke beschikbare moment een uitnodiging voor een online vervolg (check-in) videoafspraak.
-10. Use case herhaalt zich vanaf stap 5 van de 'Basisstroom' tot beide tevreden zijn over de opvolging van het actieplan, of herhaalt zich vanaf stap 1 wanneer de Lerende -op een ander moment- nogmaals dreigt uit te vallen.
+10. Use case herhaalt zich vanaf stap 5 van de 'Basisstroom' tot beide tevreden zijn over de opvolging van het interventieplan, of herhaalt zich vanaf stap 1 wanneer de Lerende -op een ander moment- nogmaals dreigt uit te vallen.
 
 
 
 
 **Alternatieve stromen**
 A1 – Het (voortgangs)gesprek wordt NIET opgenomen
-1. De 'EduPulse' verstuurt naar de SLB-er en de Lerende een mail met daarin alleen het actieplan.
+1. De 'EduPulse' verstuurt naar de SLB-er en de Lerende een mail met daarin alleen het interventieplan.
 2. Use case gaat verder bij stap 9 van de'Basisstroom'.
 
 A2 – …
