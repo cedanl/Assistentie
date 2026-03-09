@@ -32,7 +32,15 @@ In eerste instantie echter beperken we ons op het voorspellen van uitval, het ve
 1. **Dataverzameling**
 
     - **Bronnen:**
-		- In eerste instantie maken we gebruik van bestaande databestanden uit het uitnodigingsregel project. Later kunnen we deze uitbreiden met data uit:
+		- In eerste instantie maken we gebruik van bestaande databestanden uit het uitnodigingsregel project. Uit de e-learning module https://rise.articulate.com/share/SXE9aSbYGhLy5FN0JdHRtSjFWPNNIAbc#/lessons/55wztXarU6mvLcXnc1nZQyfUpqsui_A6 blijkt dat de volgende variabelen nodig zijn:
+			- Leeftijd en geslacht
+			- Vooropleidingsdata
+			- Opleidingsdata
+			- Code, Niveau en Leerweg
+			- Intakedata
+			- Presentie/ verzuimmelding
+			- Behaalde resultaten
+      	Later kunnen we deze uitbreiden met data uit:
 			- Kernregistratiesysteem (Eduarte, Educator, Osiris) zoals summatieve resultaten, BSA, formatieve resultaten, mentor, opleiding, ... 
 			- Leeromgeving (LMS) zoals inloggegevens, interacties, en contentgebruik
 			- Toets resultaten en opdrachten
