@@ -158,9 +158,11 @@ Analytics Dashboard --> AI-aangedreven Chat -->  Persoonlijke Aanbevelingen
 
 ### **A. FastAPI backend (`backend/main.py`):**
 
-- `/summarize` (OpenAI API)
+
 - `/predict_dropout` (ML-model)
 - `/explain_risk` (geeft belangrijkste risicofactoren terug per student, evt. via SHAP/LIME of simpele feature importance)
+- `/summarize` (voor interventie en actieplan via Claude)
+-  `/ask` (Chat over de data)
 
 ### **B. Streamlit frontend (`frontend/ui.py`):**
 
