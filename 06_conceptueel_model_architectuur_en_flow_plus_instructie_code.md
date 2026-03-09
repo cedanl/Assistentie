@@ -40,6 +40,7 @@ In eerste instantie echter beperken we ons op het voorspellen van uitval, het ve
 			- Intakedata
 			- Presentie/ verzuimmelding
 			- Behaalde resultaten
+      
       	Later kunnen we deze uitbreiden met data uit:
 			- Kernregistratiesysteem (Eduarte, Educator, Osiris) zoals summatieve resultaten, BSA, formatieve resultaten, mentor, opleiding, ... 
 			- Leeromgeving (LMS) zoals inloggegevens, interacties, en contentgebruik
