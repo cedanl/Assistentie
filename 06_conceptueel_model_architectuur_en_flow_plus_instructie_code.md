@@ -2,10 +2,15 @@
 
 ## Architectuur en Workflow
 
+### Aanleiding
+Onderwijsinstellingen worstelen al jaren om meer grip op uitval te krijgen. Steeds vaker wordt hierbij gebruik gemaakt van data over de studieontwikkeling van studenten.
+
+In haar promotieonderzoek introduceerde Irene Eegdeman een methode om studenten met een verhoogd risico op uitval vroegtijdig te signaleren. Met behulp van studiedata en machine learning-modellen is de zogenaamde ‘uitnodigingsregel’ ontwikkeld. Deze methode biedt SLB’ers en mentoren een signaleringssysteem om uitvalpreventie en -interventies effectiever in te zetten.
+
 ### Doel
 Een intelligente Agent als webservice die zelfstandig taken kan uitvoeren, en vragen kan beantwoorden, op basis van MBO studentdata. In de eerste fase ligt ***de focus op enerzijds het voorspellen, en signaleren van potentieel studentuitval. Anderzijds op het ondersteunen van interventies om uitval te voorkomen.*** 
 
-We willen als uitgangspunt gebruik maken van het werk dat heeft geleid tot **"de Uitnodigingsregel"**. Bij het Uitnodigingsregel project wordt, op basis van voorspelmodellen, gesignaleerd welke studenten een hoge kans op uitval hebben, waarna deze studenten worden uitgenodigd voor een "interventie" gesprek met een SLB-er. De interventiemethodiek is ontworpen en onderzocht door #TODO Naam van de onderzoeker# in haar promotieonderzoek #TODO Naam van het proefschrift#
+We willen als uitgangspunt gebruik maken van het werk dat heeft geleid tot **"de Uitnodigingsregel"**. Bij het Uitnodigingsregel project wordt, op basis van voorspelmodellen, gesignaleerd welke studenten een hoge kans op uitval hebben, waarna deze studenten worden uitgenodigd voor een "interventie" gesprek met een SLB-er. De interventiemethodiek is ontworpen en onderzocht door Irene Eegdeman in haar promotieonderzoek uitnodigingsregel.
 
 ### Productschets 
      
