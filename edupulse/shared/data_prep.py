@@ -43,12 +43,12 @@ def generate_student_data(n=200):
     return pd.DataFrame(data)
 
 df = generate_student_data(200)
-df.to_csv("shared/data.csv", index=False)
+df.to_csv("../shared/data.csv", index=False)
 
 features = ["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]
 X = df[features]
 y = df["Uitgevallen"]
 clf = RandomForestClassifier(n_estimators=100, random_state=42)
 clf.fit(X, y)
-with open("backend/model.pkl", "wb") as f:
+with open("../backend/model.pkl", "wb") as f:
     pickle.dump(clf, f)
