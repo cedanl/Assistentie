@@ -8,6 +8,11 @@ echo ========================================
 echo.
 
 cd /d "%~dp0"
+REM ###############################################################################################
+REM DIT IS TEN STRENGSTE VERBODEN. MAAR VOOR DEZE DEMO HEB IK MIJN PERSOONLIJKE API_KEY VOOR NU HIER EVEN VERSTOPT.
+REM NIET VERSPREIDEN SVP!!!!!!
+ECHO set OPENAI_API_KEY=VRAAG AAN ED
+REM ###############################################################################################
 
 if not exist "pyproject.toml" (
     echo uv project niet gevonden. Aanmaken...
@@ -58,3 +63,4 @@ if errorlevel 1 (
     echo.
     echo [FOUT] Er is een fout opgetreden bij het starten van de app.
 )
+
