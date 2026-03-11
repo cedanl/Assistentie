@@ -94,3 +94,18 @@ Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrev
 * Ruimdenkende regelmakers (voor de organisatorische inrichting)
 * …
 
+
+
+### De concurrentie
+
+- **Aetherien AI**
+EU gehoste en met EU datasoevereiniteit ontwikkelde AI-oplossing. Versnel besluitvorming en productiviteit met AI: Naadloos geïntegreerd in jouw organisatie. ~https://www.aetherien.com/nl/product
+
+
+- **Microsoft Fabric (implementatie partners zoals Macaw)**
+Eén platform en één interface waarin al je analytics-behoeften samenkomen. Meer grip op data, stuurinformatie toegankelijk én AI-gedreven inzichten. ~https://www.macaw.nl/cases/microsoft-fabric-gemeente/, ~https://www.macaw.nl/cases/mbo-amersfoort-data-platform-voor-onderwijs/, ~https://www.macaw.nl/technologies/microsoft-fabric/
+
+* …
+
+
+
