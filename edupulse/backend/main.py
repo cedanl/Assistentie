@@ -1,3 +1,26 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "anthropic",
+#     "pydantic",
+#     "streamlit", 
+#     "pandas", 
+#     "scikit-learn", 
+#     "fastapi", 
+#     "uvicorn", 
+#     "openai",  
+#     "requests",  
+#     "plotly",  
+#     "shap"
+# ]
+# ///
+
+# -----------------------------------------------------------------------------
+# Organization: CEDA
+# Original Authors: Ed. de Feber, Edwin Lieftink
+# -----------------------------------------------------------------------------
+
+
 """backend/main.py
 
 FastAPI backend 
@@ -7,16 +30,20 @@ FastAPI backend
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
-import openai
+from openai import OpenAI
 import pickle
 import os
 import shap
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+api_key = os.getenv("OPENAI_API_KEY")
 app = FastAPI()
 
+client = OpenAI()
+
+MODEL = "gpt-4o-mini"
+
 # Laden van ML-model
-with open("model.pkl", "rb") as f:
+with open("backend/model.pkl", "rb") as f:
     clf = pickle.load(f)
 	
 	
@@ -37,11 +64,23 @@ class ExplainRequest(BaseModel):
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+    response = client.responses.create(
+        model=MODEL, 
+        store=False, 
+        tools=[
+            {
+                "type": "code_interpreter",
+                "container": {"type": "auto"},
+            }
+        ],
+        tool_choice="auto",  # Let the model use the code interpreter tool  
+        # input=history,  # type: ignore
+        input=[{"role": "user", "content": prompt}]
     )
-    summary = response.choices[0].message["content"]
+    
+    summary = response.output_text  # type: ignore
+    print(summary)  # type: ignore
+    
     return {"summary": summary}
 
 @app.post("/predict_dropout")
@@ -62,16 +101,42 @@ def explain_risk(request: ExplainRequest):
         f"Voorspelde kans op uitval: {probability:.2%}.\n"
         f"Licht in heldere managementtaal toe waarom deze student risico loopt op uitval, en geef gericht advies aan de mentor."
     )
-    response = openai.ChatCompletion.create(
-        model="gpt-4o",
-        messages=[{"role": "user", "content": prompt}]
+    
+    response = client.responses.create(
+        model=MODEL, 
+        store=False, 
+        tools=[
+            {
+                "type": "code_interpreter",
+                "container": {"type": "auto"},
+            }
+        ],
+        tool_choice="auto",  # Let the model use the code interpreter tool  
+        # input=history,  # type: ignore
+        input=[{"role": "user", "content": prompt}]
     )
-    uitleg = response.choices[0].message["content"]
+    
+    # response = openai.ChatCompletion.create(
+        # model="gpt-4o",
+        # messages=[{"role": "user", "content": prompt}]
+    # )
+    uitleg = response.output_text  # type: ignore
     return {"explanation": uitleg}
 
 @app.post("/feature_importance")
 def feature_importance(request: StudentData):
     X_pred = pd.DataFrame([request.student])[features]
-    shap_vals = explainer.shap_values(X_pred)[1]
+    try:
+        shap_vals = explainer.shap_values(X_pred)[1]
+        print(shap_vals)
+    except:
+        shap_vals = explainer.shap_values(X_pred)[0]
+        print(shap_vals)
+    
     fi = dict(zip(features, shap_vals[0].tolist()))
-    return {"feature_importance": fi}
+    if fi:
+        return {"feature_importance": fi}
+    else:
+        return {"feature_importance": "fi"}
+        
+    
