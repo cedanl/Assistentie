@@ -25,6 +25,8 @@ if [ ! -d ".venv" ]; then
 fi
 
 # Activate virtual environment
+echo "Activeren van de omgeving"
+source .venv/bin/activate
 
 # Install dependencies
 echo "Installeren van dependencies..."
