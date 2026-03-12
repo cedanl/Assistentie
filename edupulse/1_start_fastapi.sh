@@ -8,7 +8,7 @@ cd "$(dirname "$0")" # Ensure we're in the script's directory
 # #########################################################################################
 # THIS IS STRICTLY FORBIDDEN. TEMPORARILY STORED MY PERSONAL API KEY HERE FOR DEMO.
 # DO NOT DISTRIBUTE!!!!!!
-# export OPENAI_API_KEY=ASK ED
+# export set OPENAI_API_KEY=ASK ED
 # #########################################################################################
 
 # Initialize uv project if not present
