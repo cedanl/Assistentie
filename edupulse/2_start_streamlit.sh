@@ -1,24 +1,29 @@
 #!/usr/bin/env bash
 # Helper script to start the EduPulse Streamlit frontend using uv (Unix/Linux)
 
-set -e
+# set -e
 
-cd "$(dirname "$0")" # Ensure we're in the script's directory
+# cd "$(dirname "$0")" # Ensure we're in the script's directory
 
 # Initialize uv project if not present
 if [ ! -f "pyproject.toml" ]; then
   echo "uv project niet gevonden. Aanmaken..."
   uv init
+  echo "EduPulse project aangemaakt"
+  echo "Virtual environment niet gevonden. Aanmaken..."
   uv venv
+  echo "Virtual environment aangemaakt..."
 fi
 
 # Create virtual environment if not present
 if [ ! -d ".venv" ]; then
   echo "Virtual environment niet gevonden. Aanmaken..."
   uv venv
+  echo "Virtual environment aangemaakt..."
 fi
 
 # Activate virtual environment
+echo "Virtual environment activeren..."
 source .venv/bin/activate
 
 # Install dependencies
@@ -48,11 +53,12 @@ echo "Druk op Ctrl+C om de app te stoppen."
 echo
 
 # Try first port (8501)
-uv run streamlit run frontend/app.py --server.headless false
+uv run streamlit run --server.port 8502 frontend/app.py --server.headless false
+# uv run streamlit run frontend/app.py --server.headless false
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
   echo
   echo "[FOUT] Er is een fout opgetreden bij het starten van de app."
-  echo "Waarschijnlijk is port 8501 bezet. We proberen port 8502."
-  uv run streamlit run --server.port 8502 frontend/app.py --server.headless false
+  echo "Waarschijnlijk is port 8502 bezet. We proberen port 8503."
+  uv run streamlit run --server.port 8503 frontend/app.py --server.headless false
 fi

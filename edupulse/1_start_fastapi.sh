@@ -3,7 +3,7 @@
 
 set -e
 
-cd "$(dirname "$0")" # Ensure we're in the script's directory
+# cd "$(dirname "$0")" # Ensure we're in the script's directory
 
 # #########################################################################################
 # THIS IS STRICTLY FORBIDDEN. TEMPORARILY STORED MY PERSONAL API KEY HERE FOR DEMO.
@@ -15,18 +15,23 @@ cd "$(dirname "$0")" # Ensure we're in the script's directory
 if [ ! -f "pyproject.toml" ]; then
   echo "uv project niet gevonden. Aanmaken..."
   uv init
+  echo "project edupulse geinitialiseerd"
   uv venv
+  echo "virtual environment aangemaakt"
+
 fi
 
 # Create virtual environment if not present
 if [ ! -d ".venv" ]; then
   echo "Virtual environment niet gevonden. Aanmaken..."
   uv venv
+  echo "virtual environment aangemaakt"
 fi
 
 # Activate virtual environment
 echo "Activeren van de omgeving"
 source .venv/bin/activate
+echo "Omgeving geactiveerd"
 
 # Install dependencies
 echo "Installeren van dependencies..."
