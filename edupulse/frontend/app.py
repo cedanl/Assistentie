@@ -44,7 +44,9 @@ from PIL import Image
 # Constants                                         
 #-------------------------------------------------
 features = ["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]
-image = Image.open("assets/achtergrond.png")
+image = Image.open("assets/npuls_logo.png")
+logo_image = Image.open("assets/npuls_logo.png")
+
 
 # Load the dataset
 # Ensure the CSV file is in the correct path relative to this script
@@ -58,17 +60,22 @@ df = pd.read_csv("shared/data.csv")
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
-    menu_items=None,
+    menu_items={
+        'Get Help': 'https://github.com/cedanl/Assistentie/blob/main/edupulse/CLAUDE.md',
+        'Report a bug': "mailto:ed.defeber@surf.nl",
+        'About': "# EduPulse App by Ed, Edwin and Steven"
+    },
     page_icon="🧮",
-    page_title="Edupulse - Studentuitval Signalering en Interventie",
+    page_title="Edupulse",
 )
+
 
 col1, col2 = st.columns([1, 1])
 with col1:
     st.markdown(
         """
                 #### :blue[**Studentuitval Signalering en Interventie**]\n
-                ## 📊:blue[**Edupulse**]"""
+                # 📊:blue[**Edupulse**]"""
     )
 
 with col2:
@@ -84,9 +91,14 @@ with col2:
     else:
         st.warning("Afbeelding kon niet worden geladen.")
 
+st.logo(
+        image=logo_image,
+        size="small",
+        icon_image="assets/npuls_logo.png",
+)
 
 with st.sidebar:
-    st.markdown("##### 🎯**Kies een opleiding, klas en/of mentor**")
+    st.markdown("#### 🎯**Kies een opleiding, klas en/of mentor**")
     opleiding = st.selectbox("Opleiding", ["Alle"] + sorted(df["Opleiding"].unique().tolist()))
     klas = st.selectbox("Klas", ["Alle"] + sorted(df["Klas"].unique().tolist()))
     mentor = st.selectbox("Mentor", ["Alle"] + sorted(df["Mentor"].unique().tolist()))
@@ -103,7 +115,7 @@ st.subheader(
 )
 
 st.markdown(
-    f"""###### 🔶**Opleiding:** :blue[**{opleiding.strip() if opleiding.strip() != "Alle" else 'alle opleidingen'}**],   🔶**Klas:** :blue[**{klas.strip() if klas.strip() != "Alle" else 'alle klassen'}**],   🔶**Mentor:** :blue[**{mentor if mentor != "Alle" else 'alle mentoren'}**],   🔶**Aantal studenten:** :blue[**{len(dff)}**]"""
+    f"""##### 🔶**Opleiding:** :blue[**{opleiding.strip() if opleiding.strip() != "Alle" else 'alle opleidingen'}**],   🔶**Klas:** :blue[**{klas.strip() if klas.strip() != "Alle" else 'alle klassen'}**],   🔶**Mentor:** :blue[**{mentor if mentor != "Alle" else 'alle mentoren'}**],   🔶**Aantal studenten:** :blue[**{len(dff)}**]"""
 )
 
 col1, col2, col3 = st.columns(3)
