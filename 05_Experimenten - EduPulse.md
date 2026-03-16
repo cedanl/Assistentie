@@ -25,7 +25,7 @@ _En meten we..._
 
 **Succes criteria**
 _We hebben gelijk als…_
-* Er voor 70 van die (leven-lang-)lerenden een interventieplan met minimaal 1 interventie te genereren is.
+* Er voor 70 van die (leven-lang-)lerenden een interventieplan met minimaal 2 unieke relevante interventies te genereren is.
 
 
 
