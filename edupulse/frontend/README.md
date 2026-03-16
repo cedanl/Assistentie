@@ -11,7 +11,6 @@ Streamlit frontend voor de Edupulse applicatie.
 
 ## Belangrijke bestanden
 - `app.py` - Hoofdapplicatie met Streamlit UI
-- `ui.py` - UI componenten (momenteel niet gebruikt)
 
 ## Starten
 ```bash
