@@ -12,6 +12,7 @@ Een intelligente Agent als webservice die zelfstandig taken kan uitvoeren, en vr
 
 We willen als uitgangspunt gebruik maken van het werk dat heeft geleid tot **"de Uitnodigingsregel"**. Bij het Uitnodigingsregel project wordt, op basis van voorspelmodellen, gesignaleerd welke studenten een hoge kans op uitval hebben, waarna deze studenten worden uitgenodigd voor een "interventie" gesprek met een SLB-er. De interventiemethodiek is ontworpen en onderzocht door Irene Eegdeman in haar promotieonderzoek uitnodigingsregel.
 
+
 ### Productschets 
      
 Een agentic webservice/ app die zelfstandig taken kan uitvoeren, en vragen kan beantwoorden, op basis van MBO studentdata. Hierbij richten we ons in eerste instantie op het voorspellen van uitval, het verklaren van deze voorspelling, en het genereren van mogelijke interventies, gepresenteerd in een actieplan, om uitval van een student te voorkomen.
@@ -21,6 +22,11 @@ De agentic webservice/ app wordt gebouwd in python met als front-end/ interface 
 **Streamlit** gebruiken we om te prototypen omdat het snel en makkelijk te leren is, en gestandaardiseerd ontwerpen/ UI bevordert. Mogelijk nadeel kan schaalbaarheid zijn, dus wordt overwogen om voor de front-end in een later stadium bijvoorbeeld React.js te gebruiken.
 
 **FastAPI** is snel en zeer schaalbaar en willen we inzetten als API-endpoint zodat voorspellingen, transacties, en LLM calls, zoveel mogelijk daar plaatsvinden los van de Streamlit omgeving.
+
+![Architectuur EduPulse](https://github.com/cedanl/Assistentie/blob/main/edupulse/assets/edupulse_architectuur.png)
+
+
+
 
 
 ### Conceptueel Model voor uitvalsignalering en interventie agent
@@ -32,7 +38,7 @@ In eerste instantie echter beperken we ons op het voorspellen van uitval, het ve
 1. **Dataverzameling**
 
     - **Bronnen:**
-		- In eerste instantie maken we gebruik van bestaande databestanden uit het uitnodigingsregel project. Uit de e-learning module https://rise.articulate.com/share/SXE9aSbYGhLy5FN0JdHRtSjFWPNNIAbc#/lessons/55wztXarU6mvLcXnc1nZQyfUpqsui_A6 blijkt dat de volgende variabelen nodig zijn:
+		- In eerste instantie maken we gebruik van bestaande databestanden uit het uitnodigingsregel project. Uit de e-learning module https://rise.articulate.com/share/SXE9aSbYGhLy5FN0JdHRtSjFWPNNIAbc#/lessons/55wztXarU6mvLcXnc1nZQyfUpqsui_A6 blijkt dat in de data de volgende variabelen te vinden moeten zijn:
 			- Leeftijd en geslacht
 			- Vooropleidingsdata
 			- Opleidingsdata
@@ -40,8 +46,29 @@ In eerste instantie echter beperken we ons op het voorspellen van uitval, het ve
 			- Intakedata
 			- Presentie/ verzuimmelding
 			- Behaalde resultaten
-      
-      	Later kunnen we deze uitbreiden met data uit:
+
+		| Variabele 		| Uitleg 	|
+		| ------			| ------	|
+		| Studentnummer 	| 			|
+		| Naam				|			|
+		| Leeftijd 			| 			|
+		| Geslacht			| 			|
+		| Vooropleiding		|			|
+		| Sector		 	| 			|
+		| Opleiding			|			|
+		| Crebocode			|			|
+		| Cohort 			| 			|
+		| Niveau			|			|
+		| Leerweg			|			|
+		| Intakedata		|			|
+		| Aanwezigheid		| 			|
+		| Voortgang			|			|
+		| BSA studiepunten 	| 			|
+		| Mentor 			| 			|
+		
+
+			
+		Later kunnen we deze uitbreiden met data uit:
 			- Kernregistratiesysteem (Eduarte, Educator, Osiris) zoals summatieve resultaten, BSA, formatieve resultaten, mentor, opleiding, ... 
 			- Leeromgeving (LMS) zoals inloggegevens, interacties, en contentgebruik
 			- Toets resultaten en opdrachten
@@ -147,14 +174,8 @@ In eerste instantie echter beperken we ons op het voorspellen van uitval, het ve
 
 # **🖥️ Dataflow & Architectuurdiagram**
 
-[Data Bronnen] --> [Preprocessing & Normalisatie] 
-[Preprocessing & Normalisatie] --> Analytics Engine 
-Analytics Engine --> AI Predictie van Studentensucces 
-Analytics Engine --> AI Generatie van Leermateriaal 
-Analytics Engine --> Adaptieve Aanbevelingen 
-Analytics Engine --> Analytics Dashboard
-Analytics Dashboard --> Real-time Student Voortgang
-Analytics Dashboard --> AI-aangedreven Chat -->  Persoonlijke Aanbevelingen 
+![Architectuur](https://github.com/cedanl/Assistentie/blob/main/edupulse/assets/edupulse_architectuur.png "Architectuur EduPulse App")
+
   
 
 ### Belangrijkste features:
@@ -167,11 +188,9 @@ Analytics Dashboard --> AI-aangedreven Chat -->  Persoonlijke Aanbevelingen
 
 ### **A. FastAPI backend (`backend/main.py`):**
 
-
+- `/summarize` (OpenAI API)
 - `/predict_dropout` (ML-model)
 - `/explain_risk` (geeft belangrijkste risicofactoren terug per student, evt. via SHAP/LIME of simpele feature importance)
-- `/summarize` (voor interventie en actieplan via Claude)
--  `/ask` (Chat over de data)
 
 ### **B. Streamlit frontend (`frontend/ui.py`):**
 
@@ -189,6 +208,8 @@ Analytics Dashboard --> AI-aangedreven Chat -->  Persoonlijke Aanbevelingen
 - **Claude API:** Agentic, Skills en Prompt-based interactie met je data (signalering, actieplan, samenvatten, Q&A, etc.).
 - **Data:** Start met een Pandas DataFrame uit de uitnodigingsregel dataset; later kunnen we altijd extra variabelen en data inladen.
 - **Voorspelmodel Uitnodigingsregel:** Exporteren en importeren van bestaand voorspelmodel uit de uitnodigingsregel als .pkl. En dit model gebruiken bij voorspellen van uitval op individueel niveau
+
+![EduPulse Flow en werking](https://github.com/cedanl/Assistentie/blob/main/edupulse/assets/edupulse_flow_en_werking.png "Flow en Werking EduPulse app")
 
 * * *
 
@@ -230,6 +251,9 @@ edupulse/
 ├── frontend/
 │   └── ui.py     # Streamlit User Interface
 │
+├── agents/
+│   └── intervention_agent.py     # Agent kan op basis van voorspelling actieplan maken   
+│
 ├── shared/
 │   └── data.csv         # Data afkomstig uit de uitnodigingsregel (evt. automatisch gegenereerde extra variabelen)
 │
@@ -251,7 +275,7 @@ edupulse/
     - Bewaar de exacte lijst van dummy-kolommen (`dummy_columns.json`) en de geschaalde statistieken (`scaler.pkl`) zodat je in productie identiek dezelfde preprocessing kunt toepassen.
 3. **Service‐laag**
 
-    - Een micro-framework (FastAPI) om eenvoudig HTTP-endpoints zoals: `/predict_dropouts`, `/explain_risk`, `/summarize`, `ask` beschikbaar te stellen.
+    - Een micro-framework (FastAPI) om eenvoudig HTTP-endpoints zoals: `/predict_dropouts`, `/explain_risk`, `/summarize`, `/ask` beschikbaar te stellen.
     - In de request handler:
 
         - Valideer inkomende JSON via Pydantic (in FastAPI).
