@@ -63,7 +63,7 @@ st.set_page_config(
     menu_items={
         'Get Help': 'https://github.com/cedanl/Assistentie/blob/main/edupulse/CLAUDE.md',
         'Report a bug': "mailto:ed.defeber@surf.nl",
-        'About': "# EduPulse App by Ed, Edwin and Steven"
+        'About': "# EduPulse App 2026 by Ed, Edwin and Steven"
     },
     page_icon="🧮",
     page_title="Edupulse",
@@ -75,7 +75,7 @@ with col1:
     st.markdown(
         """
                 #### :blue[**Studentuitval Signalering en Interventie**]\n
-                # 📊:blue[**Edupulse**]"""
+                # 🧮 :blue[**Edupulse**]"""
     )
 
 with col2:
@@ -83,7 +83,7 @@ with col2:
         st.image(
             image,
             caption=None,
-            width=220,
+            width=320,
             clamp=True,
             channels="RGB",
             output_format="auto",
@@ -110,13 +110,12 @@ with st.sidebar:
     if mentor != "Alle":
         dff = dff[dff["Mentor"] == mentor]
 
+st.write("--------------------------")
+
 st.subheader(
         f"📊 :blue[**Studentenoverzicht**]"
 )
 
-st.markdown(
-    f"""##### 🔶**Opleiding:** :blue[**{opleiding.strip() if opleiding.strip() != "Alle" else 'alle opleidingen'}**],   🔶**Klas:** :blue[**{klas.strip() if klas.strip() != "Alle" else 'alle klassen'}**],   🔶**Mentor:** :blue[**{mentor if mentor != "Alle" else 'alle mentoren'}**],   🔶**Aantal studenten:** :blue[**{len(dff)}**]"""
-)
 
 col1, col2, col3 = st.columns(3)
 col1.metric("Gemiddeld Cijfer", f"{dff['Cijfer'].mean():.2f}")
@@ -204,6 +203,13 @@ st.dataframe(
     },
 )
 
+st.markdown(
+    f"""##### 🔶**Opleiding:** :blue[**{opleiding.strip() if opleiding.strip() != "Alle" else 'alle opleidingen'}**],   🔶**Klas:** :blue[**{klas.strip() if klas.strip() != "Alle" else 'alle klassen'}**],   🔶**Mentor:** :blue[**{mentor if mentor != "Alle" else 'alle mentoren'}**],   🔶**Aantal studenten:** :blue[**{len(dff)}**]"""
+)
+
+st.write("-------------------------------")
+
+
 # Pas styling toe
 # styled_df = display_df.style.format({
     # 'Cijfer': '{:.1f}',
@@ -237,27 +243,6 @@ st.download_button(
     mime="text/csv"
 )
 
-st.subheader(
-        f"📊 :blue[**AI Q&A: Stel een vraag over deze data**]"
-)
-
-q = st.text_input("Jouw vraag:")
-if st.button("Stel vraag") and q:
-    sample_csv = dff.head(50).to_csv(index=False)
-    prompt = f"Gegeven deze studentendata (in CSV-formaat):\n{sample_csv}\nAntwoord op de volgende vraag: {q}"
-    resp = requests.post(
-        "http://localhost:8000/summarize",
-        json={"data": prompt}
-    )
-    st.write(resp.json()["summary"])
-
-if st.button("Genereer managementsamenvatting"):
-    csv_str = dff.head(30).to_csv(index=False)
-    response = requests.post(
-        "http://localhost:8000/summarize",
-        json={"data": csv_str}
-    )
-    st.write(response.json()["summary"])
 
 st.subheader(
         f"📊 :blue[**Risico op uitval voorspellen**]"
@@ -269,6 +254,7 @@ if 'laatste_analyse' not in st.session_state:
     st.session_state.laatste_analyse = None
 
 if st.button("Voorspel uitval"):
+
     st.session_state.risicostudenten = []
     with st.spinner("Bezig met voorspellen..."):
         for idx, row in dff.iterrows():
@@ -465,3 +451,24 @@ else:
     if st.session_state.get('risicostudenten') is not None and len(st.session_state.risicostudenten) == 0:
         st.success("Geen risicostudenten in deze selectie!")
         
+st.subheader(
+        f"📊 :blue[**AI Q&A: Stel een vraag over deze data**]"
+)
+
+q = st.text_input("Jouw vraag:")
+if st.button("Stel vraag") and q:
+    sample_csv = dff.head(50).to_csv(index=False)
+    prompt = f"Gegeven deze studentendata (in CSV-formaat):\n{sample_csv}\nAntwoord op de volgende vraag: {q}"
+    resp = requests.post(
+        "http://localhost:8000/summarize",
+        json={"data": prompt}
+    )
+    st.write(resp.json()["summary"])
+
+if st.button("Genereer managementsamenvatting"):
+    csv_str = dff.head(30).to_csv(index=False)
+    response = requests.post(
+        "http://localhost:8000/summarize",
+        json={"data": csv_str}
+    )
+    st.write(response.json()["summary"])

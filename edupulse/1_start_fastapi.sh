@@ -11,25 +11,32 @@ set -e
 # export set OPENAI_API_KEY=ASK ED
 # #########################################################################################
 
+echo
+echo
+echo "##################################################################"
+echo "#                                                                #"
+echo "#             EduPulse FastAPI backend                           #"
+echo "#                                                                #"
+echo "##################################################################"
+echo
+
+
 # Initialize uv project if not present
 if [ ! -f "pyproject.toml" ]; then
-  echo "uv project niet gevonden. Aanmaken..."
+  echo "Project EduPulse niet gevonden. Aanmaken..."
   uv init
-  echo "project edupulse geinitialiseerd"
-  uv venv
-  echo "virtual environment aangemaakt"
-
+  echo "Project EduPulse geinitialiseerd"
 fi
 
 # Create virtual environment if not present
 if [ ! -d ".venv" ]; then
   echo "Virtual environment niet gevonden. Aanmaken..."
   uv venv
-  echo "virtual environment aangemaakt"
+  echo "Virtual environment aangemaakt"
 fi
 
 # Activate virtual environment
-echo "Activeren van de omgeving"
+echo "Activeren van de virtual environment"
 source .venv/bin/activate
 echo "Omgeving geactiveerd"
 

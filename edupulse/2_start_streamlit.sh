@@ -4,12 +4,21 @@
 # set -e
 
 # cd "$(dirname "$0")" # Ensure we're in the script's directory
+echo
+echo
+echo "##################################################################"
+echo "#                                                                #"
+echo "#             EduPulse Streamlit frontend                        #"
+echo "#                                                                #"
+echo "##################################################################"
+echo
+
 
 # Initialize uv project if not present
 if [ ! -f "pyproject.toml" ]; then
-  echo "uv project niet gevonden. Aanmaken..."
+  echo "Project EduPulse niet gevonden. Aanmaken..."
   uv init
-  echo "EduPulse project aangemaakt"
+  echo "Project EduPulse geinitialiseerd"
   echo "Virtual environment niet gevonden. Aanmaken..."
   uv venv
   echo "Virtual environment aangemaakt..."
@@ -23,8 +32,9 @@ if [ ! -d ".venv" ]; then
 fi
 
 # Activate virtual environment
-echo "Virtual environment activeren..."
+echo "Activeren van de virtual environment"
 source .venv/bin/activate
+echo "Omgeving geactiveerd"
 
 # Install dependencies
 echo "Installeren van dependencies..."
@@ -47,18 +57,17 @@ uv add -U -r requirements.txt
 
 echo
 echo "[START] Starting EduPulse Streamlit Server met uv..."
-echo "[INFO] De app opent automatisch in je browser op http://localhost:8501 of http://localhost:8502"
+echo "[INFO] De app opent automatisch in je browser op http://localhost:8502 of http://localhost:8503"
 echo
 echo "Druk op Ctrl+C om de app te stoppen."
 echo
 
-# Try first port (8501)
+# Try first port (8502)
 uv run streamlit run --server.port 8502 frontend/app.py --server.headless false
-# uv run streamlit run frontend/app.py --server.headless false
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
   echo
-  echo "[FOUT] Er is een fout opgetreden bij het starten van de app."
-  echo "Waarschijnlijk is port 8502 bezet. We proberen port 8503."
+  echo "[BUSY] De Streamlit server is niet gestart. Port 8502 wordt waarschijlijk al gebruikt."
+  echo "We proberen de Streamlit server te starten met port 8503."
   uv run streamlit run --server.port 8503 frontend/app.py --server.headless false
 fi
