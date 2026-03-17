@@ -9,7 +9,7 @@ Er is eerder bij CEDA, in samenwerking met het Mondriaan College, met behulp van
 
 **Doel**
 
-Studieloopbaanbegeleiders (SLB’ers), mentoren en mbo‑docenten worden binnen de eerste 10 weken van het opleidingsjaar ondersteund met het zo vroegst mogelijk signaleren van uitvalrisico’s onder de lerenden waarvoor zij verantwoordelijk zijn. Op basis van de uitvalprognose wordt er door de Assistent 'Uitnodigingsregel+' een gespreksplan opgesteld wat gebruikt kan worden tijdens het kennismakingsgesprek om te bespreken op welke wijze uitval – indien mogelijk – kan worden voorkomen.
+Studieloopbaanbegeleiders (SLB’ers), mentoren en mbo‑docenten worden binnen de eerste 10 weken van het opleidingsjaar ondersteund met het zo vroeg mogelijk signaleren van uitvalrisico’s onder de lerenden waarvoor zij verantwoordelijk zijn. Op basis van de uitvalprognose wordt er door de Assistent 'Uitnodigingsregel+' een gespreksplan opgesteld wat gebruikt kan worden tijdens het kennismakingsgesprek om te bespreken op welke wijze uitval – indien mogelijk – kan worden voorkomen.
 
 
 **Actor(en)**
