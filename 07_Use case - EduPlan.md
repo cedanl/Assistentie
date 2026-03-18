@@ -1,4 +1,4 @@
-001 | Use case - Uitnodigingsregel+
+001 | Use case - EduPlan
 
 Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek doel te bereiken, inclusief de stappen, alternatieve scenario's en de voorwaarden. Het focust op het "wat" (het doel) in plaats van het "hoe" (de technische implementatie).
 
@@ -9,7 +9,7 @@ Er is eerder bij CEDA, in samenwerking met het Mondriaan College, met behulp van
 
 **Doel**
 
-Binnen de eerste 10 weken van het opleidingsjaar worden studieloopbaanbegeleiders (SLB'ers), mentoren en mbo‑docenten ondersteund bij het vroegtijdig signaleren van mogelijke uitvalrisico’s onder hun lerenden. Op basis van de uitvalprognose stelt de Assistent Uitnodigingsregel+ een gespreksplan op dat gebruikt kan worden tijdens het kennismakingsgesprek, zodat tijdig besproken kan worden welke ondersteuning nodig is om uitval – waar mogelijk – te voorkomen.
+Binnen de eerste 10 weken van het opleidingsjaar worden studieloopbaanbegeleiders (SLB'ers), mentoren en mbo‑docenten ondersteund bij het vroegtijdig signaleren van mogelijke uitvalrisico’s onder hun eerstejaars (leven-lang-)lerende. Op basis van de uitvalprognose stelt de Assistent 'EduPlan' een gespreksplan op dat gebruikt kan worden tijdens het StratGesprek, zodat tijdig besproken kan worden welke ondersteuning nodig is om eventuele uitval – waar mogelijk – te voorkomen.
 
 
 **Actor(en)**
@@ -36,8 +36,8 @@ Lerende weet wat diens acties zijn om uitval te voorkomen.
 
 **Basisstroom**
 
-1. De ‘Uitnodigingsregel+’ bepaalt welke Lerende dreigt uit te vallen.
-2. De ‘Uitnodigingsregel+’ verstuurd naar de desbetreffende SLB-er (of Mentor) een e-mail met een, door de AI gegenereert, persoonlijk gespreksplan op maat voor de desbetreffende Lerende en gesprekstechnieken om dit gesprek aan te gaan.
+1. De ‘Uitnodigingsregel’ bepaalt welke Lerende dreigt uit te vallen.
+2. De assisitent 'EduPlan' verstuurd naar de desbetreffende SLB-er (of mentor) een e-mail met een, door de AI gegenereert, persoonlijk gespreksplan op maat voor de desbetreffende (leven-lang-)lerende en gesprekstechnieken om dit gesprek aan te gaan.
 
 
 
@@ -45,7 +45,7 @@ Lerende weet wat diens acties zijn om uitval te voorkomen.
 
 F1 – Lerende is (nog) niet gekoppeld aan een SLB-er
 
-De ‘Uitnodigingsregel+’ kiest zelf uit de beschikbare SLB-ers een begeleider voor de Lerende.
+De assisitent 'EduPlan' kiest zelf uit de beschikbare SLB-ers een begeleider voor de Lerende.
 Use case gaat verder bij stap 2 van de'Basisstroom'.
 
 F2 – … …
