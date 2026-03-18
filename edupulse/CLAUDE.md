@@ -4,9 +4,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**EduPulse** is a student dropout risk detection and intervention tool built for educational institutions. It uses a RandomForest ML model to predict dropout risk and generates AI-powered explanations in Dutch via OpenAI GPT-4o-mini.
+**EduPulse** is a student dropout risk detection and intervention tool built for educational institutions. It uses a **RandomForestRegressor** from [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) to predict dropout risk and generates AI-powered explanations in Dutch via OpenAI GPT-4o-mini.
 
 ## Running the Application
+
+**Step 0 — Download data and model (first time only):**
+```bash
+python shared/data_prep.py
+```
 
 The app requires two processes running simultaneously:
 
@@ -26,11 +31,6 @@ uv sync
 # or: pip install -r requirements.txt
 ```
 
-**Regenerate mock data and retrain model:**
-```bash
-python shared/data_prep.py
-```
-
 **Run the standalone Claude agent CLI:**
 ```bash
 python main.py  # requires ANTHROPIC_API_KEY
@@ -48,7 +48,7 @@ python main.py  # requires ANTHROPIC_API_KEY
 Streamlit frontend (frontend/app.py)
     → HTTP POST to localhost:8000
     → FastAPI backend (backend/main.py)
-        → RandomForest model (backend/model.pkl)
+        → RandomForestRegressor (backend/model.joblib)
         → SHAP TreeExplainer
         → OpenAI GPT-4o-mini
 ```
@@ -56,28 +56,36 @@ Streamlit frontend (frontend/app.py)
 ### Backend (`backend/main.py`) — 4 endpoints
 | Endpoint | Input | Purpose |
 |----------|-------|---------|
-| `POST /predict_dropout` | StudentData (Cijfer, Aanwezigheid, Waarschuwingen, EC) | Binary dropout prediction (threshold: 0.35) |
-| `POST /explain_risk` | Student data + prediction + probability | Dutch-language AI explanation |
-| `POST /feature_importance` | Student data | SHAP values per feature |
-| `POST /summarize` | CSV data string | Management summary via OpenAI |
+| `POST /predict_dropout` | All model features (dict) | Continuous dropout risk score (0–1), all students returned |
+| `POST /explain_risk` | Student data + probability | Dutch-language AI explanation via GPT-4o-mini |
+| `POST /feature_importance` | Student data | SHAP values per feature (TreeExplainer on regressor) |
+| `POST /summarize` | CSV data string or question | Management summary or Q&A via OpenAI |
 
 ### Frontend (`frontend/app.py`)
-- Sidebar filters: Opleiding (program), Klas (class), Mentor
-- Dashboard: student table, metrics, grade/attendance charts
-- Risk prediction: bulk prediction → high-risk student selector → SHAP analysis
+- Sidebar filters: Opleiding (derived from sector columns), Klas, Mentor
+- Dashboard: student table (Studentnummer, Naam, Opleiding, Klas, StudentAge, verzuim, Mentor)
+- Metrics: average age, unauthorized absence, authorized absence
+- Charts: age distribution histogram, absence per program boxplot
+- Risk prediction: all students ranked high→low by dropout score
 - Export: Markdown or Word (.docx) report per student
 
 ### Shared (`shared/`)
-- `data.csv` — 200 synthetic student records (features: Cijfer, Aanwezigheid, EC, Waarschuwingen, Uitgevallen, etc.)
-- `data_prep.py` — generates `data.csv` and trains/saves `backend/model.pkl`
+- `data.csv` — synthetic student records from Uitnodigingsregel + synthetic Naam/Klas/Mentor columns
+- `data_prep.py` — downloads `synth_data_pred.csv` from cedanl/Uitnodigingsregel and `model.joblib` from MondriaanBI/Uitnodigingsregel; saves to `shared/data.csv` and `backend/model.joblib`
+- `synth_data_pred.csv` — raw download, tab-separated
 
 ### `main.py` — Standalone Claude agent
 Independent CLI tool with file read/edit tools. Not part of the main app.
 
 ## Key Implementation Notes
 
-- The ML model threshold is **0.35** (not 0.5) — students above 35% predicted probability are flagged as at-risk
+- **No hard threshold** — all students are returned with their risk score; the frontend sorts high→low
+- **Features are determined dynamically** from `shared/data.csv` columns, excluding `Dropout`, `Naam`, `Opleiding`, `Klas`, `Mentor`
+- The model was trained with numpy arrays (no feature names); always pass `.values` to avoid sklearn warnings
+- SHAP for a regressor returns shape `(n_samples, n_features)` directly — no `[1]` class index needed
 - All user-facing text and AI responses are in **Dutch**
 - The frontend uses `st.session_state.risicostudenten` to persist risk prediction results across Streamlit reruns
 - `frontend/ui.py` exists but is currently unused
 - Package manager is **UV** (preferred over pip); cache stored in `./.uv_cache/`
+- Model source: [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) — `models/random_forest_regressor.joblib`
+- Data source: [cedanl/Uitnodigingsregel](https://github.com/cedanl/Uitnodigingsregel) — `data/raw/synth_data_pred.csv`
