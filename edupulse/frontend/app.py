@@ -3,8 +3,8 @@
 # dependencies = [
 #     "anthropic",
 #     "pydantic",
-#     "streamlit", 
-#     "pandas", 
+#     "streamlit",
+#     "pandas",
 #     "requests",
 #     "plotly",
 #     "python-docx",
@@ -18,20 +18,19 @@
 # -----------------------------------------------------------------------------
 
 
+"""frontend/app.py
+### STREAMLIT FRONTEND
 
-"""frontend/ui.py
-### STREAMLIT FRONTEND (`frontend/ui.py`)
-
+Gebruikt data en model van Uitnodigingsregel (cedanl/Uitnodigingsregel).
 """
 
 #-------------------------------------------------
-# Imports dependencies
+# Imports
 #-------------------------------------------------
 
 import streamlit as st
 import pandas as pd
 import requests
-import plotly
 import plotly.express as px
 from docx import Document
 from docx.shared import Pt, RGBColor
@@ -41,22 +40,23 @@ from PIL import Image
 
 
 #-------------------------------------------------
-# Constants                                         
+# Data & features laden
 #-------------------------------------------------
-features = ["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]
-image = Image.open("assets/npuls_logo.png")
+
+df = pd.read_csv("shared/data.csv")
+
+# Features zijn alle kolommen behalve weergave- en doelkolommen
+NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
+features = [col for col in df.columns if col not in NON_FEATURES]
+
+image      = Image.open("assets/npuls_logo.png")
 logo_image = Image.open("assets/npuls_logo.png")
 
 
-# Load the dataset
-# Ensure the CSV file is in the correct path relative to this script
-# @st.cache_data(ttl=3600, show_spinner=True)
-df = pd.read_csv("shared/data.csv")
-
-
 #-------------------------------------------------
-# Page configuration 
+# Paginaconfiguratie
 #-------------------------------------------------
+
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
@@ -77,31 +77,26 @@ with col1:
                 #### :blue[**Studentuitval Signalering en Interventie**]\n
                 # 🧮 :blue[**Edupulse**]"""
     )
-
 with col2:
     if image is not None:
-        st.image(
-            image,
-            caption=None,
-            width=320,
-            clamp=True,
-            channels="RGB",
-            output_format="auto",
-        )
+        st.image(image, caption=None, width=320, clamp=True,
+                 channels="RGB", output_format="auto")
     else:
         st.warning("Afbeelding kon niet worden geladen.")
 
-st.logo(
-        image=logo_image,
-        size="small",
-        icon_image="assets/npuls_logo.png",
-)
+st.logo(image=logo_image, size="small", icon_image="assets/npuls_logo.png")
+
+
+#-------------------------------------------------
+# Zijbalk: filters
+#-------------------------------------------------
 
 with st.sidebar:
     st.markdown("#### 🎯**Kies een opleiding, klas en/of mentor**")
     opleiding = st.selectbox("Opleiding", ["Alle"] + sorted(df["Opleiding"].unique().tolist()))
-    klas = st.selectbox("Klas", ["Alle"] + sorted(df["Klas"].unique().tolist()))
-    mentor = st.selectbox("Mentor", ["Alle"] + sorted(df["Mentor"].unique().tolist()))
+    klas      = st.selectbox("Klas",      ["Alle"] + sorted(df["Klas"].unique().tolist()))
+    mentor    = st.selectbox("Mentor",    ["Alle"] + sorted(df["Mentor"].unique().tolist()))
+
     dff = df.copy()
     if opleiding != "Alle":
         dff = dff[dff["Opleiding"] == opleiding]
@@ -110,130 +105,74 @@ with st.sidebar:
     if mentor != "Alle":
         dff = dff[dff["Mentor"] == mentor]
 
+
 st.write("--------------------------")
 
-st.subheader(
-        f"📊 :blue[**Studentenoverzicht**]"
-)
+st.subheader("📊 :blue[**Studentenoverzicht**]")
 
+
+#-------------------------------------------------
+# Kengetallen
+#-------------------------------------------------
 
 col1, col2, col3 = st.columns(3)
-col1.metric("Gemiddeld Cijfer", f"{dff['Cijfer'].mean():.2f}")
-col2.metric("Gem. Aanwezigheid", f"{dff['Aanwezigheid'].mean():.1f}%")
-col3.metric("Waarschuwingen (gem.)", f"{dff['Waarschuwingen'].mean():.2f}")
+col1.metric("Gem. Leeftijd",               f"{dff['StudentAge'].mean():.1f} jaar")
+col2.metric("Gem. Ongeoorloofd verzuim",   f"{dff['absence_unauthorized'].mean():.1f} dagen")
+if "absence_authorized" in dff.columns:
+    col3.metric("Gem. Geoorloofd verzuim", f"{dff['absence_authorized'].mean():.1f} dagen")
 
 
-# Maak een kopie voor weergave met styling
-display_df = dff.head(30).copy()
+#-------------------------------------------------
+# Studenttabel
+#-------------------------------------------------
 
-# Functie voor kleurcodering van cijfers
-def color_cijfer(val):
-    if val < 5.5:
-        return 'background-color: #ffcccc; color: #cc0000; font-weight: bold'
-    elif val < 6.5:
-        return 'background-color: #fff4cc; color: #996600'
-    else:
-        return 'background-color: #ccffcc; color: #006600'
-
-# Functie voor kleurcodering van aanwezigheid
-def color_aanwezigheid(val):
-    if val < 75:
-        return 'background-color: #ffcccc; color: #cc0000; font-weight: bold'
-    elif val < 85:
-        return 'background-color: #fff4cc; color: #996600'
-    else:
-        return 'background-color: #ccffcc; color: #006600'
-
-# Functie voor kleurcodering van waarschuwingen
-def color_waarschuwingen(val):
-    if val >= 3:
-        return 'background-color: #ffcccc; color: #cc0000; font-weight: bold'
-    elif val >= 1:
-        return 'background-color: #fff4cc; color: #996600'
-    else:
-        return 'background-color: #ccffcc; color: #006600'
-
-# Functie voor kleurcodering van EC
-def color_ec(val):
-    if val < 30:
-        return 'background-color: #ffcccc; color: #cc0000; font-weight: bold'
-    elif val < 45:
-        return 'background-color: #fff4cc; color: #996600'
-    else:
-        return 'background-color: #ccffcc; color: #006600'
-
-
+display_cols = ["Studentnummer", "Naam", "Opleiding", "Klas", "StudentAge",
+                "absence_unauthorized", "Mentor"]
+if "absence_authorized" in dff.columns:
+    display_cols.insert(6, "absence_authorized")
 
 st.dataframe(
-    dff,
+    dff[display_cols],
     key="studenten_overzicht",
-    # on_change=change_data,
     column_config={
-        "Student-ID": st.column_config.NumberColumn(
-            label="Student-ID", format="%d", help="Unieke ID van de student"
-        ),
-        "Naam": st.column_config.TextColumn(label="Naam", help="Naam van de student"),
-        "Opleiding": st.column_config.TextColumn(
-            label="Opleiding", help="Naam van de opleiding"
-        ),
-        "Klas": st.column_config.TextColumn(label="Klas", help="Klas van de student"),
-        "Mentor": st.column_config.TextColumn(
-            label="Mentor", help="Mentor van de student"
-        ),
-        "Cijfer": st.column_config.NumberColumn(
-            label="Cijfer", format="%.2f", help="Gemiddeld cijfer"
-        ),
-        "Aanwezigheid": st.column_config.ProgressColumn(
-            label="Aanwezigheid",
-            format="%.1f%%",
-            min_value=0,
-            max_value=100,
-            help="Aanwezigheid percentage",
-        ),
-        "Waarschuwingen": st.column_config.NumberColumn(
-            label="Waarschuwingen", format="%d", help="Aantal waarschuwingen"
-        ),
-        "EC": st.column_config.ProgressColumn(
-            label="EC",
-            format="%d",
-            min_value=0,
-            max_value=60,
-            help="Aantal behaalde EC's",
-        ),
+        "Studentnummer":        st.column_config.NumberColumn(label="Student-ID", format="%d"),
+        "Naam":                 st.column_config.TextColumn(label="Naam"),
+        "Opleiding":            st.column_config.TextColumn(label="Opleiding"),
+        "Klas":                 st.column_config.TextColumn(label="Klas"),
+        "StudentAge":           st.column_config.NumberColumn(label="Leeftijd", format="%d jaar"),
+        "absence_unauthorized": st.column_config.NumberColumn(
+            label="Ongeoorl. verzuim", format="%.1f dagen",
+            help="Aantal dagen ongeoorloofd verzuim"),
+        "absence_authorized":   st.column_config.NumberColumn(
+            label="Geoorl. verzuim", format="%.1f dagen",
+            help="Aantal dagen geoorloofd verzuim"),
+        "Mentor":               st.column_config.TextColumn(label="Mentor"),
     },
 )
 
 st.markdown(
-    f"""##### 🔶**Opleiding:** :blue[**{opleiding.strip() if opleiding.strip() != "Alle" else 'alle opleidingen'}**],   🔶**Klas:** :blue[**{klas.strip() if klas.strip() != "Alle" else 'alle klassen'}**],   🔶**Mentor:** :blue[**{mentor if mentor != "Alle" else 'alle mentoren'}**],   🔶**Aantal studenten:** :blue[**{len(dff)}**]"""
+    f"""##### 🔶**Opleiding:** :blue[**{opleiding if opleiding != 'Alle' else 'alle opleidingen'}**],  """
+    f"""🔶**Klas:** :blue[**{klas if klas != 'Alle' else 'alle klassen'}**],  """
+    f"""🔶**Mentor:** :blue[**{mentor if mentor != 'Alle' else 'alle mentoren'}**],  """
+    f"""🔶**Aantal studenten:** :blue[**{len(dff)}**]"""
 )
 
 st.write("-------------------------------")
 
 
-# Pas styling toe
-# styled_df = display_df.style.format({
-    # 'Cijfer': '{:.1f}',
-    # 'Aanwezigheid': '{:.1f}%',
-    # 'EC': '{:.0f}'
-# }).applymap(color_cijfer, subset=['Cijfer'])\
-  # .applymap(color_aanwezigheid, subset=['Aanwezigheid'])\
-  # .applymap(color_waarschuwingen, subset=['Waarschuwingen'])\
-  # .applymap(color_ec, subset=['EC'])\
-  # .bar(subset=['Aanwezigheid'], color='#5fba7d', vmin=0, vmax=100)\
-  # .bar(subset=['EC'], color='#4d9de0', vmin=0, vmax=60)
-# 
-# st.dataframe(styled_df, use_container_width=True, height=600)
+#-------------------------------------------------
+# Trendgrafieken
+#-------------------------------------------------
 
-st.subheader(
-        f"📊 :blue[**Trendgrafieken & spreiding**]"
-)
+st.subheader("📊 :blue[**Trendgrafieken & spreiding**]")
 
 col1, col2 = st.columns(2)
 with col1:
-    fig = px.histogram(dff, x="Cijfer", nbins=15, title="Cijferverdeling")
+    fig = px.histogram(dff, x="StudentAge", nbins=15, title="Leeftijdsverdeling")
     st.plotly_chart(fig, use_container_width=True)
 with col2:
-    fig2 = px.box(dff, x="Opleiding", y="Aanwezigheid", points="all", title="Aanwezigheid per Opleiding")
+    fig2 = px.box(dff, x="Opleiding", y="absence_unauthorized", points="all",
+                  title="Ongeoorloofd verzuim per Opleiding")
     st.plotly_chart(fig2, use_container_width=True)
 
 st.download_button(
@@ -243,63 +182,71 @@ st.download_button(
     mime="text/csv"
 )
 
+st.write("-------------------------------")
 
-st.subheader(
-        f"📊 :blue[**Risico op uitval voorspellen**]"
-)
-# Initialiseer session state voor risicostudenten
+
+#-------------------------------------------------
+# Risico op uitval voorspellen
+#-------------------------------------------------
+
+st.subheader("📊 :blue[**Risico op uitval voorspellen**]")
+
 if 'risicostudenten' not in st.session_state:
     st.session_state.risicostudenten = []
 if 'laatste_analyse' not in st.session_state:
     st.session_state.laatste_analyse = None
 
 if st.button("Voorspel uitval"):
-
     st.session_state.risicostudenten = []
     with st.spinner("Bezig met voorspellen..."):
         for idx, row in dff.iterrows():
             student_dict = row[features].to_dict()
-            pred_response = requests.post("http://localhost:8000/predict_dropout", json={"student": student_dict})
+            pred_response = requests.post(
+                "http://localhost:8000/predict_dropout",
+                json={"student": student_dict}
+            )
             result = pred_response.json()
-            if result["prediction"] == 1:
-                st.session_state.risicostudenten.append((row, result))
-    
+            st.session_state.risicostudenten.append((row, result))
+
+    st.session_state.risicostudenten.sort(key=lambda x: x[1]["probability"], reverse=True)
+
 if st.session_state.risicostudenten:
     st.markdown(f"### Studenten met verhoogd risico ({len(st.session_state.risicostudenten)})")
-    
-    # Toon lijst van risicostudenten
+
     for idx, (row, result) in enumerate(st.session_state.risicostudenten):
-        st.markdown(f":red[**{row['Naam']}**] ({row['Opleiding']} / {row['Klas']}): Hoge kans op uitval: {result['probability']:.1%}")
-    
+        st.markdown(
+            f":red[**{row['Naam']}**] ({row['Opleiding']} / {row['Klas']}): "
+            f"Hoge kans op uitval: {result['probability']:.1%}"
+        )
+
     st.write("---")
-    
-    # Selecteer student voor gedetailleerde analyse
-    student_namen = [f"{row['Naam']} - {row['Opleiding']} / {row['Klas']} ({result['probability']:.1%})" 
-                     for row, result in st.session_state.risicostudenten]
-    
+
+    student_namen = [
+        f"{row['Naam']} - {row['Opleiding']} / {row['Klas']} ({result['probability']:.1%})"
+        for row, result in st.session_state.risicostudenten
+    ]
+
     geselecteerde_student = st.selectbox(
         "Selecteer een student voor gedetailleerde risicoanalyse:",
         options=range(len(student_namen)),
         format_func=lambda x: student_namen[x]
     )
-    
+
     if st.button("Toon risicoanalyse"):
         row, result = st.session_state.risicostudenten[geselecteerde_student]
-        
+
         with st.spinner(f"Bezig met genereren van analyse voor {row['Naam']}..."):
-            # Uitleg ophalen
             exp_response = requests.post(
                 "http://localhost:8000/explain_risk",
                 json={
-                    "student": row[features].to_dict(),
-                    "prediction": result["prediction"],
-                    "probability": result["probability"]
-                })
-            
+                    "student":      row[features].to_dict(),
+                    "prediction":   result["prediction"],
+                    "probability":  result["probability"]
+                }
+            )
             explanation = exp_response.json()["explanation"]
-            
-            # Feature importance ophalen
-            fi_str = ""
+
+            fi_str  = ""
             fi_dict = {}
             try:
                 fi_resp = requests.post(
@@ -307,57 +254,58 @@ if st.session_state.risicostudenten:
                     json={"student": row[features].to_dict()}
                 )
                 fi_dict = fi_resp.json()["feature_importance"]
-                fi_str = ", ".join([f"{k}: {v:.2f}" for k,v in fi_dict.items()])
-            except:
+                fi_str  = ", ".join([f"{k}: {v:.2f}" for k, v in fi_dict.items()])
+            except Exception:
                 fi_str = "Feature importance kon niet worden berekend"
-            
-            # Bewaar analyse in session state
+
             st.session_state.laatste_analyse = {
-                "naam": row['Naam'],
-                "opleiding": row['Opleiding'],
-                "klas": row['Klas'],
-                "mentor": row['Mentor'],
-                "cijfer": row['Cijfer'],
-                "aanwezigheid": row['Aanwezigheid'],
-                "waarschuwingen": row['Waarschuwingen'],
-                "ec": row['EC'],
-                "probability": result['probability'],
-                "explanation": explanation,
-                "feature_importance": fi_str,
-                "feature_importance_dict": fi_dict
+                "naam":                 row["Naam"],
+                "opleiding":            row["Opleiding"],
+                "klas":                 row["Klas"],
+                "mentor":               row["Mentor"],
+                "studentnummer":        int(row["Studentnummer"]),
+                "leeftijd":             int(row["StudentAge"]),
+                "ongeoorloofd_verzuim": float(row["absence_unauthorized"]),
+                "geoorloofd_verzuim":   float(row.get("absence_authorized", 0)),
+                "probability":          result["probability"],
+                "explanation":          explanation,
+                "feature_importance":   fi_str,
+                "feature_importance_dict": fi_dict,
             }
-            
+
             st.info(f"### Uitleg uitvalrisico {row['Naam']} ({row['Opleiding']} / {row['Klas']})")
             st.info(explanation)
             st.caption(f"Belangrijkste risicofactoren (SHAP): {fi_str}")
-    
-    # Toon downloadknoppen als er een analyse is gegenereerd
+
+    #-------------------------------------------------
+    # Export
+    #-------------------------------------------------
+
     if st.session_state.laatste_analyse:
         st.write("---")
         st.subheader("Download risicoanalyse")
-        
+
         analyse = st.session_state.laatste_analyse
-        
+
         col1, col2 = st.columns(2)
-        
+
         with col1:
-            # Markdown export
             markdown_content = f"""# Risicoanalyse Studentuitval
 
-**Student:** {analyse['naam']}  
-**Opleiding:** {analyse['opleiding']}  
-**Klas:** {analyse['klas']}  
-**Mentor:** {analyse['mentor']}  
+**Student:** {analyse['naam']}
+**Student-ID:** {analyse['studentnummer']}
+**Opleiding:** {analyse['opleiding']}
+**Klas:** {analyse['klas']}
+**Mentor:** {analyse['mentor']}
 **Datum:** {datetime.now().strftime('%d-%m-%Y %H:%M')}
 
 ---
 
 ## Studentgegevens
 
-- **Cijfer:** {analyse['cijfer']}
-- **Aanwezigheid:** {analyse['aanwezigheid']}%
-- **Waarschuwingen:** {analyse['waarschuwingen']}
-- **EC (studiepunten):** {analyse['ec']}
+- **Leeftijd:** {analyse['leeftijd']} jaar
+- **Ongeoorloofd verzuim:** {analyse['ongeoorloofd_verzuim']:.1f} dagen
+- **Geoorloofd verzuim:** {analyse['geoorloofd_verzuim']:.1f} dagen
 - **Voorspelde uitvalkans:** {analyse['probability']:.1%}
 
 ---
@@ -376,99 +324,85 @@ if st.session_state.risicostudenten:
 
 *Gegenereerd door Edupulse - CEDA*
 """
-            
             st.download_button(
                 label="Download als Markdown (.md)",
                 data=markdown_content.encode('utf-8'),
                 file_name=f"risicoanalyse_{analyse['naam'].replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}.md",
                 mime="text/markdown"
             )
-        
+
         with col2:
-            # DOCX export
             doc = Document()
-            
-            # Titel
-            title = doc.add_heading('Risicoanalyse Studentuitval', 0)
-            
-            # Studentinfo
+            doc.add_heading('Risicoanalyse Studentuitval', 0)
+
             doc.add_heading('Studentgegevens', 1)
-            student_info = doc.add_paragraph()
-            student_info.add_run(f"Student: ").bold = True
-            student_info.add_run(f"{analyse['naam']}\n")
-            student_info.add_run(f"Opleiding: ").bold = True
-            student_info.add_run(f"{analyse['opleiding']}\n")
-            student_info.add_run(f"Klas: ").bold = True
-            student_info.add_run(f"{analyse['klas']}\n")
-            student_info.add_run(f"Mentor: ").bold = True
-            student_info.add_run(f"{analyse['mentor']}\n")
-            student_info.add_run(f"Datum: ").bold = True
-            student_info.add_run(f"{datetime.now().strftime('%d-%m-%Y %H:%M')}\n")
-            
-            # Kengetallen
+            info = doc.add_paragraph()
+            for label, value in [
+                ("Student", analyse['naam']),
+                ("Student-ID", str(analyse['studentnummer'])),
+                ("Opleiding", analyse['opleiding']),
+                ("Klas", analyse['klas']),
+                ("Mentor", analyse['mentor']),
+                ("Datum", datetime.now().strftime('%d-%m-%Y %H:%M')),
+            ]:
+                info.add_run(f"{label}: ").bold = True
+                info.add_run(f"{value}\n")
+
             doc.add_heading('Kengetallen', 2)
-            kengetallen = doc.add_paragraph()
-            kengetallen.add_run(f"Cijfer: ").bold = True
-            kengetallen.add_run(f"{analyse['cijfer']}\n")
-            kengetallen.add_run(f"Aanwezigheid: ").bold = True
-            kengetallen.add_run(f"{analyse['aanwezigheid']}%\n")
-            kengetallen.add_run(f"Waarschuwingen: ").bold = True
-            kengetallen.add_run(f"{analyse['waarschuwingen']}\n")
-            kengetallen.add_run(f"EC (studiepunten): ").bold = True
-            kengetallen.add_run(f"{analyse['ec']}\n")
-            kengetallen.add_run(f"Voorspelde uitvalkans: ").bold = True
-            kans_run = kengetallen.add_run(f"{analyse['probability']:.1%}\n")
+            kgn = doc.add_paragraph()
+            kgn.add_run("Leeftijd: ").bold = True
+            kgn.add_run(f"{analyse['leeftijd']} jaar\n")
+            kgn.add_run("Ongeoorloofd verzuim: ").bold = True
+            kgn.add_run(f"{analyse['ongeoorloofd_verzuim']:.1f} dagen\n")
+            kgn.add_run("Geoorloofd verzuim: ").bold = True
+            kgn.add_run(f"{analyse['geoorloofd_verzuim']:.1f} dagen\n")
+            kgn.add_run("Voorspelde uitvalkans: ").bold = True
+            kans_run = kgn.add_run(f"{analyse['probability']:.1%}\n")
             kans_run.font.color.rgb = RGBColor(255, 0, 0)
             kans_run.bold = True
-            
-            # Analyse
+
             doc.add_heading('Risicoanalyse', 1)
             doc.add_paragraph(analyse['explanation'])
-            
-            # Feature importance
+
             doc.add_heading('Belangrijkste risicofactoren (SHAP)', 1)
             doc.add_paragraph(analyse['feature_importance'])
-            
-            # Footer
+
             doc.add_paragraph()
             footer = doc.add_paragraph()
             footer_run = footer.add_run('Gegenereerd door Edupulse - CEDA')
             footer_run.italic = True
             footer_run.font.size = Pt(9)
-            
-            # Save to BytesIO
+
             bio = BytesIO()
             doc.save(bio)
             bio.seek(0)
-            
+
             st.download_button(
                 label="Download als Word (.docx)",
                 data=bio,
                 file_name=f"risicoanalyse_{analyse['naam'].replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}.docx",
                 mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
+
 else:
     if st.session_state.get('risicostudenten') is not None and len(st.session_state.risicostudenten) == 0:
         st.success("Geen risicostudenten in deze selectie!")
-        
-st.subheader(
-        f"📊 :blue[**AI Q&A: Stel een vraag over deze data**]"
-)
+
+
+#-------------------------------------------------
+# AI Q&A / managementsamenvatting
+#-------------------------------------------------
+
+st.subheader("📊 :blue[**AI Q&A: Stel een vraag over deze data**]")
 
 q = st.text_input("Jouw vraag:")
 if st.button("Stel vraag") and q:
-    sample_csv = dff.head(50).to_csv(index=False)
+    sample_csv = dff[display_cols].head(50).to_csv(index=False)
     prompt = f"Gegeven deze studentendata (in CSV-formaat):\n{sample_csv}\nAntwoord op de volgende vraag: {q}"
-    resp = requests.post(
-        "http://localhost:8000/summarize",
-        json={"data": prompt}
-    )
+    resp = requests.post("http://localhost:8000/summarize", json={"data": prompt})
     st.write(resp.json()["summary"])
 
 if st.button("Genereer managementsamenvatting"):
-    csv_str = dff.head(30).to_csv(index=False)
-    response = requests.post(
-        "http://localhost:8000/summarize",
-        json={"data": csv_str}
-    )
+    csv_str = dff[display_cols].head(30).to_csv(index=False)
+    response = requests.post("http://localhost:8000/summarize", json={"data": csv_str})
     st.write(response.json()["summary"])

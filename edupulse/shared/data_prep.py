@@ -1,54 +1,72 @@
 """data_prep.py
 
-Voorbeeld mockup data generatie script in python 
-Eventueel te gebruiken als we extra variabelen + data willen introduceren
+Download synthetische data en Random Forest model van Uitnodigingsregel
+(https://github.com/cedanl/Uitnodigingsregel).
 
+Uitvoeren vanuit de projectroot:
+    python shared/data_prep.py
 """
 
+import urllib.request
 import pandas as pd
 import numpy as np
 import random
-from sklearn.ensemble import RandomForestClassifier
-import pickle
 
-def generate_student_data(n=200):
-    opleidingen = ["ICT", "Zorg", "Techniek", "Economie", "Handel"]
-    klassen = ["A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2"]
-    mentoren = ["mev. Smit", "mev. Safon", "mev. Hulsema", "dhr. Hanna", "dhr. Benjamins", "dhr. Mulder", "mev. Kuiper", "dhr. De Groot"]
-    data = []
-    for i in range(1001, 1001+n):
-        cijfer = np.round(np.random.normal(6.5, 1.0), 1)
-        aanwezigheid = np.round(np.random.uniform(70, 100), 1)
-        waarschuwingen = np.random.poisson(1)
-        ec = np.random.randint(20, 61)
-        opleiding = random.choice(opleidingen)
-        klas = random.choice(klassen)
-        mentor = random.choice(mentoren)
-        naam = random.choice(["Julia", "Aisha", "Edith","Edwin", "Steven", "Sam", "Lisa", "Mohammed", "Ali", "Koen", "Eva", "Tessa", "Daan", "Ameen", "Lucas", "Fatima"]) + " " + random.choice(["de Vries", "Boussata", "Abu-Hanna", "Benjamins", "Mulder", "Sanchez", "Jansen", "Bakker", "Bousme", "Sterk", "Noordenbos", "Rijkaard", "van Someren", "Groen", "Smit", "Kuiper", "Mulder", "De Groot"])
-        risk_score = (7-cijfer)*0.4 + (85-aanwezigheid)*0.07 + waarschuwingen*0.6 + (30-ec)*0.05
-        uitgevallen = np.random.rand() < min(max(risk_score/5, 0), 1)
-        data.append({
-            "Student-ID": i,
-            "Naam": naam,
-            "Opleiding": opleiding,
-            "Klas": klas,
-            "Cijfer": cijfer,
-            "Aanwezigheid": aanwezigheid,
-            "EC": ec,
-            "Waarschuwingen": waarschuwingen,
-            "Mentor": mentor,
-            "Uitgevallen": int(uitgevallen),
-            "Schooljaar": "2025-2026"
-        })
-    return pd.DataFrame(data)
+random.seed(42)
+np.random.seed(42)
 
-df = generate_student_data(500)
-df.to_csv("../shared/data.csv", index=False)
+PRED_URL  = "https://raw.githubusercontent.com/cedanl/Uitnodigingsregel/main/data/raw/synth_data_pred.csv"
+MODEL_URL = "https://raw.githubusercontent.com/MondriaanBI/Uitnodigingsregel/main/models/random_forest_regressor.joblib"
 
-features = ["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]
-X = df[features]
-y = df["Uitgevallen"]
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
-clf.fit(X, y)
-with open("../backend/model.pkl", "wb") as f:
-    pickle.dump(clf, f)
+print("Bezig met downloaden van data en model...")
+urllib.request.urlretrieve(PRED_URL,  "shared/synth_data_pred.csv")
+urllib.request.urlretrieve(MODEL_URL, "backend/model.joblib")
+print("Download klaar.")
+
+df = pd.read_csv("shared/synth_data_pred.csv", sep="\t")
+print(f"Kolommen ({len(df.columns)}): {list(df.columns)}")
+print(f"Rijen: {len(df)}")
+
+# Leid Opleiding af uit de sector-kolommen (één-hete codering)
+sector_map = {
+    "Economie":    "Economie",
+    "Landbouw":    "Landbouw",
+    "Techniek":    "Techniek",
+    "DSV":         "DSV",
+    "Zorgenwelzijn": "Zorg & Welzijn",
+    "Anders":      "Anders",
+}
+
+def get_opleiding(row):
+    for col, label in sector_map.items():
+        if col in row.index and row[col] == 1:
+            return label
+    return "Overig"
+
+df["Opleiding"] = df.apply(get_opleiding, axis=1)
+
+# Voeg synthetische weergave-kolommen toe (Naam, Klas, Mentor)
+voornamen = [
+    "Julia", "Aisha", "Edith", "Edwin", "Steven", "Sam", "Lisa",
+    "Mohammed", "Ali", "Koen", "Eva", "Tessa", "Daan", "Ameen", "Lucas", "Fatima",
+    "Nour", "Mehmet", "Emma", "Lars",
+]
+achternamen = [
+    "de Vries", "Boussata", "Abu-Hanna", "Benjamins", "Mulder", "Sanchez",
+    "Jansen", "Bakker", "Sterk", "Noordenbos", "Groen", "Smit", "Kuiper", "De Groot",
+]
+klassen  = ["1A", "1B", "2A", "2B", "3A", "3B"]
+mentoren = [
+    "mev. Smit", "mev. Safon", "mev. Hulsema", "dhr. Hanna",
+    "dhr. Benjamins", "dhr. Mulder", "mev. Kuiper", "dhr. De Groot",
+]
+
+n = len(df)
+df["Naam"]   = [f"{random.choice(voornamen)} {random.choice(achternamen)}" for _ in range(n)]
+df["Klas"]   = [random.choice(klassen)  for _ in range(n)]
+df["Mentor"] = [random.choice(mentoren) for _ in range(n)]
+
+df.to_csv("shared/data.csv", index=False)
+print(f"\nshared/data.csv opgeslagen ({n} studenten).")
+print(f"backend/model.joblib gedownload.")
+print(f"\nKolommen in data.csv: {list(df.columns)}")
