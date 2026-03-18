@@ -106,6 +106,37 @@ with st.sidebar:
         dff = dff[dff["Mentor"] == mentor]
 
 
+#-------------------------------------------------
+# Session state & automatische voorspelling
+#-------------------------------------------------
+
+if 'risicostudenten' not in st.session_state:
+    st.session_state.risicostudenten = []
+if 'laatste_analyse' not in st.session_state:
+    st.session_state.laatste_analyse = None
+if 'filter_key' not in st.session_state:
+    st.session_state.filter_key = None
+
+filter_key = (opleiding, klas, mentor)
+
+if st.session_state.filter_key != filter_key and len(dff) > 0:
+    st.session_state.filter_key = filter_key
+    st.session_state.laatste_analyse = None
+    with st.spinner("Bezig met voorspellen..."):
+        risicostudenten = []
+        for _, row in dff.iterrows():
+            try:
+                pred_response = requests.post(
+                    "http://localhost:8000/predict_dropout",
+                    json={"student": row[features].to_dict()}
+                )
+                risicostudenten.append((row, pred_response.json()))
+            except Exception:
+                pass
+        risicostudenten.sort(key=lambda x: x[1]["probability"], reverse=True)
+        st.session_state.risicostudenten = risicostudenten
+
+
 st.write("--------------------------")
 
 st.subheader("📊 :blue[**Studentenoverzicht**]")
@@ -175,6 +206,31 @@ with col2:
                   title="Ongeoorloofd verzuim per Opleiding")
     st.plotly_chart(fig2, use_container_width=True)
 
+if st.session_state.risicostudenten:
+    top10 = st.session_state.risicostudenten[:10]
+    namen  = [f"{row['Naam']} ({row['Klas']})" for row, _ in reversed(top10)]
+    kansen = [result["probability"] for _, result in reversed(top10)]
+    fig3 = px.bar(
+        x=kansen,
+        y=namen,
+        orientation="h",
+        title="Top 10 studenten met hoogste uitvalrisico",
+        labels={"x": "Uitvalrisico", "y": "Student"},
+        color=kansen,
+        color_continuous_scale="Reds",
+    )
+    fig3.update_traces(
+        text=[f"{k:.0%}" for k in kansen],
+        textposition="outside",
+    )
+    fig3.update_layout(
+        xaxis_tickformat=".0%",
+        xaxis_range=[0, 1.1],
+        coloraxis_showscale=False,
+        yaxis_title=None,
+    )
+    st.plotly_chart(fig3, use_container_width=True)
+
 st.download_button(
     "Download selectie als CSV",
     data=dff.to_csv(index=False).encode(),
@@ -189,38 +245,9 @@ st.write("-------------------------------")
 # Risico op uitval voorspellen
 #-------------------------------------------------
 
-st.subheader("📊 :blue[**Risico op uitval voorspellen**]")
-
-if 'risicostudenten' not in st.session_state:
-    st.session_state.risicostudenten = []
-if 'laatste_analyse' not in st.session_state:
-    st.session_state.laatste_analyse = None
-
-if st.button("Voorspel uitval"):
-    st.session_state.risicostudenten = []
-    with st.spinner("Bezig met voorspellen..."):
-        for idx, row in dff.iterrows():
-            student_dict = row[features].to_dict()
-            pred_response = requests.post(
-                "http://localhost:8000/predict_dropout",
-                json={"student": student_dict}
-            )
-            result = pred_response.json()
-            st.session_state.risicostudenten.append((row, result))
-
-    st.session_state.risicostudenten.sort(key=lambda x: x[1]["probability"], reverse=True)
+st.subheader("📊 :blue[**Risico op uitval — gedetailleerde analyse**]")
 
 if st.session_state.risicostudenten:
-    st.markdown(f"### Studenten met verhoogd risico ({len(st.session_state.risicostudenten)})")
-
-    for idx, (row, result) in enumerate(st.session_state.risicostudenten):
-        st.markdown(
-            f":red[**{row['Naam']}**] ({row['Opleiding']} / {row['Klas']}): "
-            f"Hoge kans op uitval: {result['probability']:.1%}"
-        )
-
-    st.write("---")
-
     student_namen = [
         f"{row['Naam']} - {row['Opleiding']} / {row['Klas']} ({result['probability']:.1%})"
         for row, result in st.session_state.risicostudenten
@@ -385,8 +412,7 @@ if st.session_state.risicostudenten:
             )
 
 else:
-    if st.session_state.get('risicostudenten') is not None and len(st.session_state.risicostudenten) == 0:
-        st.success("Geen risicostudenten in deze selectie!")
+    st.info("Pas de filters aan om studenten te analyseren.")
 
 
 #-------------------------------------------------

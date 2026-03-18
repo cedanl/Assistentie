@@ -47,12 +47,12 @@ df["Opleiding"] = df.apply(get_opleiding, axis=1)
 
 # Voeg synthetische weergave-kolommen toe (Naam, Klas, Mentor)
 voornamen = [
-    "Julia", "Aisha", "Edith", "Edwin", "Steven", "Sam", "Lisa",
+    "Julia", "Arantxa", "Maddox", "Nova", "Shane", "Richard", "Paolo", "Aisha", "Edith", "Edwin", "Steven", "Sam", "Lisa",
     "Mohammed", "Ali", "Koen", "Eva", "Tessa", "Daan", "Ameen", "Lucas", "Fatima",
     "Nour", "Mehmet", "Emma", "Lars",
 ]
 achternamen = [
-    "de Vries", "Boussata", "Abu-Hanna", "Benjamins", "Mulder", "Sanchez",
+    "de Vries", "Boussata", "Abu-Hanna", "Benjamins", "Bos", "Jansen", "Pietersen", "Massaro", "Luyendijk", "van Vleuten", "de Vries", "Hol", "Mulder", "Sanchez",
     "Jansen", "Bakker", "Sterk", "Noordenbos", "Groen", "Smit", "Kuiper", "De Groot",
 ]
 klassen  = ["1A", "1B", "2A", "2B", "3A", "3B"]
