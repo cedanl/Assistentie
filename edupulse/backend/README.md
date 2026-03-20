@@ -7,9 +7,9 @@ FastAPI backend voor de EduPulse applicatie.
 | Endpoint | Input | Functie |
 |----------|-------|---------|
 | `POST /predict_dropout` | Studentkenmerken (dict) | Uitvalkans als continue score (0–1); alle studenten worden teruggegeven, gesorteerd van hoog naar laag risico |
-| `POST /explain_risk` | Studentdata + kans | Nederlandstalige AI-uitleg via GPT-4o-mini |
+| `POST /explain_risk` | Studentdata + uitvalskans | Nederlandstalige AI-uitleg + mentoradvies via GPT-4o-mini |
 | `POST /feature_importance` | Studentdata | SHAP-waarden per feature (TreeExplainer) |
-| `POST /summarize` | CSV-string of vraag | Managementsamenvatting of Q&A via GPT-4o-mini |
+| `POST /summarize` | CSV-string of vrije vraag | Managementsamenvatting of Q&A via GPT-4o-mini (OpenAI Responses API met code interpreter) |
 
 ## Belangrijke bestanden
 

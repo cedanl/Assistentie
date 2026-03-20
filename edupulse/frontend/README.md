@@ -6,11 +6,12 @@ Streamlit frontend voor de EduPulse applicatie.
 
 - **Dashboard** — Studentenoverzicht met filters op Opleiding, Klas en Mentor
 - **Kengetallen** — Gemiddelde leeftijd, ongeoorloofd verzuim, geoorloofd verzuim
-- **Visualisaties** — Leeftijdsverdeling (histogram), verzuim per opleiding (boxplot)
-- **Risico-voorspelling** — Alle studenten gesorteerd van hoogste naar laagste uitvalkans
-- **Risicoanalyse** — SHAP feature importance + Nederlandstalige AI-uitleg per student
-- **Export** — Risicorapport als Markdown (`.md`) of Word (`.docx`)
-- **AI Q&A** — Vrije vragen over de studentendata
+- **Visualisaties** — Leeftijdsverdeling (histogram), verzuim per opleiding (boxplot), top 10 studenten met hoogste uitvalrisico (horizontale staafgrafiek)
+- **CSV-download** — Huidige filterselectie exporteren als `.csv`
+- **Risico-voorspelling** — Alle studenten gesorteerd van hoogste naar laagste uitvalkans; automatisch herberekend bij filterwijziging
+- **Risicoanalyse** — SHAP feature importance + Nederlandstalige AI-uitleg per student (via `/explain_risk` en `/feature_importance`)
+- **Export** — Risicorapport per student als Markdown (`.md`) of Word (`.docx`)
+- **AI Q&A** — Vrije vragen over de studentendata via `/summarize`
 - **Managementsamenvatting** — Automatisch gegenereerd via OpenAI
 
 ## Features
