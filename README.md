@@ -20,7 +20,7 @@ Hoe kunnen we (leven‑lang‑)lerenden in hun ontwikkeling, en onderwijsprofess
 
 We richten ons daarbij op digitale, datagedreven, voorspellende, zelflerende en zelfgenererende technologie. We begrijpen dat (leven‑lang‑)lerenden en onderwijsprofessionals behoefte blijven houden aan zowel fysieke als digitale manieren om zich te ontwikkelen en te werken -los van elkaar en soms in combinatie. Toch kiezen we er nu bewust voor om ons volledig te concentreren op de digitale kant.
 
-Zo kunnen we nieuwe diensten en logistiek ontwerpen die optimaal gebruikmaken van de unieke eigenschappen van digitale technologie: efficiënt, schaalbaar, op maat, grenzeloos, immaterieel, laagdrempelig en verbindend.
+Zo kunnen we nieuwe diensten en logistiek ontwerpen die optimaal gebruikmaken van de unieke eigenschappen van digitale technologie: efficiënt, schaalbaar, massamaatwerk, grenzeloos, immaterieel, laagdrempelig en verbindend.
 
 Tegelijkertijd weten we dat (digitale) technologie nooit neutraal is. Daarom hebben we (ontwerp)principes nodig die richting geven aan hoe we onze oplossingen écht waarde(n)vol inzetten. Alleen dan houden we als samenleving grip op onze toekomst -juist in een wereld die steeds sneller verandert.
 
