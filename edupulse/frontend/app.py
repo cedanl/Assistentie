@@ -17,7 +17,11 @@
 # Original Authors: Ed. de Feber, Edwin Lieftink, Steven Ramondt
 # -----------------------------------------------------------------------------
 
-"""frontend/app.py — Streamlit frontend voor de Uitnodigingsregel."""
+"""frontend/app.py — Streamlit frontend voor de Uitnodigingsregel app EduPlan."""
+
+# -----------------------------------------------------------------------------
+# Imports
+# -----------------------------------------------------------------------------
 
 import streamlit as st
 import pandas as pd
@@ -30,20 +34,21 @@ from datetime import datetime
 from PIL import Image
 
 
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 # Paginaconfiguratie  (moet als eerste Streamlit-aanroep staan)
-# ─────────────────────────────────────────────
+# -----------------------------------------------------------------------------
 
 st.set_page_config(
     layout="wide",
     initial_sidebar_state="collapsed",
-    menu_items={
-        "Get Help": "https://github.com/cedanl/Assistentie",
-        "Report a bug": "mailto:ed.defeber@surf.nl",
-        "About": "# Uitnodigingsregel — CEDA 2026",
-    },
+    menu_items=None,
+    # menu_items={
+        # "Get Help": "https://github.com/cedanl/Assistentie",
+        # "Report a bug": "mailto:ed.defeber@surf.nl",
+        # "About": "EduPlan — CEDA 2026",
+    # },
     page_icon="🧮",
-    page_title="Uitnodigingsregel",
+    page_title="EduPlan",
 )
 
 
@@ -74,13 +79,14 @@ _defaults = {
     "selected_klas":           "Alle",
     "actieve_tab":             "uitnodigingsregel",
     "toon_zoekbalk":           False,
-    "top_n":                   4,
+    "top_n":                   10,
     "risicostudenten":         [],
     "filter_key":              None,
     "laatste_analyse":         None,
     "eduplan_genereren":       False,
     "geselecteerde_student":   0,
     "onthoud_opleiding":       False,
+    "toon_alle_opleidingen":   False,
 }
 for k, v in _defaults.items():
     if k not in st.session_state:
@@ -90,6 +96,8 @@ for k, v in _defaults.items():
 # ─────────────────────────────────────────────
 # CSS
 # ─────────────────────────────────────────────
+
+# border: 2.5px solid #1a1a1a !important; border-radius: 50px !important;
 
 START_CSS = """
 <style>
@@ -101,7 +109,6 @@ START_CSS = """
 .block-container { padding-top: 2rem; padding-bottom: 2rem; }
 
 div[data-testid="stTextInput"] input {
-    border: 2.5px solid #1a1a1a !important; border-radius: 50px !important;
     padding: 14px 24px !important; font-size: 17px !important;
     background-color: white !important; height: 56px;
 }
@@ -162,6 +169,9 @@ div.nav-actief button[kind="secondary"] {
     padding: 6px 18px !important;
     color: #1a1a1a !important;
     box-shadow: none !important;
+    white-space: nowrap !important;
+    width: auto !important;
+    min-width: max-content !important;
 }
 div.nav-inactief [data-testid="stBaseButton-secondary"],
 div.nav-inactief button[kind="secondary"] {
@@ -173,6 +183,20 @@ div.nav-inactief button[kind="secondary"] {
     padding: 6px 18px !important;
     color: #555 !important;
     box-shadow: none !important;
+    white-space: nowrap !important;
+    width: auto !important;
+    min-width: max-content !important;
+}
+div.nav-actief [data-testid="stBaseButton-secondary"] p,
+div.nav-actief [data-testid="stBaseButton-secondary"] span,
+div.nav-actief button[kind="secondary"] p,
+div.nav-actief button[kind="secondary"] span,
+div.nav-inactief [data-testid="stBaseButton-secondary"] p,
+div.nav-inactief [data-testid="stBaseButton-secondary"] span,
+div.nav-inactief button[kind="secondary"] p,
+div.nav-inactief button[kind="secondary"] span {
+    white-space: nowrap !important;
+    overflow: visible !important;
 }
 
 /* ── Klas selectbox als pill ── */
@@ -350,7 +374,7 @@ def _run_voorspelling(dff: pd.DataFrame):
         resultaten.sort(key=lambda x: x[1]["probability"], reverse=True)
         st.session_state.risicostudenten = resultaten
         # Standaard top_n: aantal studenten of max 10
-        st.session_state.top_n = min(len(resultaten), 4)
+        st.session_state.top_n = min(len(resultaten), 10)
 
 
 def _genereer_eduplan():
@@ -415,10 +439,10 @@ def show_start_screen():
     st.markdown(
         """
         <div style="text-align:center; margin-bottom:8px; font-family:'General Sans',sans-serif;">
-            <h1 style="font-size:3.2rem; font-weight:400; line-height:1.15; margin-bottom:4px;">
+            <h1 style="font-size:3.2rem; font-weight:600; line-height:1.15; margin-bottom:4px;padding:0px;">
                 Welkom bij de<br>Uitnodigingsregel
             </h1>
-            <p style="font-size:1.3rem; color:#333; margin-top:0;">
+            <p style="vertical-align:top;font-size:1.3rem; color:#333; margin-top:0px;padding:0px;">
                 op tijd de juiste lerenden uitnodigen
             </p>
         </div>
@@ -442,7 +466,7 @@ def show_start_screen():
         with col_zoek:
             zoekterm = st.text_input(
                 "Zoek opleiding",
-                placeholder="Bijv. Zorg & Welzijn, Economie, Techniek",
+                placeholder="🔍 Bijv. Zorg & Welzijn, Economie, Techniek",
                 label_visibility="collapsed",
                 value=(
                     st.session_state.selected_opleiding
@@ -475,19 +499,47 @@ def show_start_screen():
 
     _, col_m2, _ = st.columns([0.5, 6, 0.5])
     with col_m2:
+        def _pill_klik(opl):
+            st.session_state.selected_opleiding = opl
+            st.session_state.selected_klas      = "Alle"
+            st.session_state.page               = "main"
+            st.session_state.filter_key         = None
+
+        ZICHTBAAR = 4
+        eerste_rij = QUICK_OPLEIDINGEN[:ZICHTBAAR]
+        rest       = QUICK_OPLEIDINGEN[ZICHTBAAR:]
+
         st.markdown("<div class='pill-row'>", unsafe_allow_html=True)
-        pill_cols = st.columns(len(QUICK_OPLEIDINGEN))
-        for i, opl in enumerate(QUICK_OPLEIDINGEN):
+        # Eerste rij: 4 opleidingen + "Meer"-knop
+        pill_cols = st.columns(ZICHTBAAR + 1)
+        for i, opl in enumerate(eerste_rij):
             with pill_cols[i]:
                 if st.button(opl, key=f"pill_{opl}", use_container_width=True):
-                    st.session_state.selected_opleiding = opl
-                    st.session_state.selected_klas      = "Alle"
-                    st.session_state.page               = "main"
-                    st.session_state.filter_key         = None
+                    _pill_klik(opl)
                     st.rerun()
+        with pill_cols[ZICHTBAAR]:
+            if not st.session_state.toon_alle_opleidingen:
+                if st.button("Meer ↓", key="pill_meer", use_container_width=True):
+                    st.session_state.toon_alle_opleidingen = True
+                    st.rerun()
+            else:
+                if st.button("Minder ↑", key="pill_minder", use_container_width=True):
+                    st.session_state.toon_alle_opleidingen = False
+                    st.rerun()
+
+        # Extra rij als "Meer" is geklikt
+        if st.session_state.toon_alle_opleidingen and rest:
+            extra_cols = st.columns(len(rest))
+            for i, opl in enumerate(rest):
+                with extra_cols[i]:
+                    if st.button(opl, key=f"pill_{opl}", use_container_width=True):
+                        _pill_klik(opl)
+                        st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
+    
+    st.write("-------------------------")
     st.markdown(
         """<hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
         <p style="text-align:center; font-size:0.75rem; color:#555;">
@@ -506,19 +558,17 @@ def show_start_screen():
 
 def _render_header():
     tab = st.session_state.actieve_tab
-    st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
-
-    col_logo, col_gap, col_nav = st.columns([2, 4, 3])
+    col_logo, col_gap, col_nav = st.columns([2, 2, 5])
 
     with col_logo:
         st.markdown(
-            "<h2 style='font-weight:700; margin:0; padding:12px 0; "
+            "<h2 style='font-weight:500; margin:0; padding:4px 0; "
             "font-family:\"General Sans\",sans-serif;'>CEDA</h2>",
             unsafe_allow_html=True,
         )
 
     with col_nav:
-        c1, c2 = st.columns(2)
+        c1, c2 = st.columns([5, 3])
         with c1:
             cls = "nav-actief" if tab == "uitnodigingsregel" else "nav-inactief"
             st.markdown(f"<div class='{cls}'>", unsafe_allow_html=True)
@@ -536,14 +586,15 @@ def _render_header():
             st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown(
-        "<hr style='margin:0 0 20px 0; border:none; border-top:1px solid rgba(0,0,0,0.15);'>",
+        "<div style='margin:4px 0 8px; height:1px; background:rgba(0,0,0,0.08);"
+        "box-shadow:0 4px 16px rgba(0,0,0,0.12);'></div>",
         unsafe_allow_html=True,
     )
 
 
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────---------------------
 # Hoofdscherm — kaart-header (opleiding + klas + potlood)
-# ─────────────────────────────────────────────
+# ─────────────────────────────────────────────---------------------
 
 def _render_card_header():
     opl = st.session_state.selected_opleiding
@@ -587,7 +638,7 @@ def _render_card_header():
 
         with col_t:
             st.markdown(
-                f"<h3 style='font-weight:700; margin:0; padding:6px 0;"
+                f"<h3 style='font-weight:500; margin:0; padding:6px 0;"
                 f"font-family:\"General Sans\",sans-serif;'>{opl}</h3>",
                 unsafe_allow_html=True,
             )
@@ -625,7 +676,7 @@ def _render_banner(n_geladen: int):
     risico = st.session_state.risicostudenten
 
     if not risico:
-        label = "…"
+        label = "👈🏽"
     else:
         label = f"<u><b>{st.session_state.top_n}</b></u>"
 
@@ -700,8 +751,9 @@ def _render_barchart():
         textposition="outside",
         textfont=dict(size=14, color="#aaa"),
     ))
+    x_max = max(kansen) * 1.35 if kansen else 1.0
     fig.update_layout(
-        xaxis=dict(range=[0, 1.2], showgrid=False, showticklabels=False, zeroline=False),
+        xaxis=dict(range=[0, x_max], showgrid=False, showticklabels=False, zeroline=False),
         yaxis=dict(showgrid=False, tickfont=dict(size=14, color="#1a1a1a")),
         plot_bgcolor="white",
         paper_bgcolor="white",
@@ -727,9 +779,9 @@ def _render_eduplan_sectie():
     top = risico[:top_n]
 
     st.markdown(
-        "<p style='font-size:14px; color:#444; margin:8px 0 4px 0;"
+        "<p style='font-size:14px; color:#000; margin:8px 0 4px 0;"
         "font-family:\"General Sans\",sans-serif;'>"
-        "Selecteer een lerenden voor de uitleg van diens uitvalrisico</p>",
+        "<b>Selecteer een lerende voor de uitleg van diens uitvalrisico</b></p>",
         unsafe_allow_html=True,
     )
 
@@ -761,15 +813,15 @@ def _render_eduplan_sectie():
     # Laadstatus of resultaat
     if st.session_state.eduplan_genereren:
         naam = top[st.session_state.geselecteerde_student][0]["Naam"]
-        st.markdown(
-            f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
-                            padding:28px; text-align:center; margin-top:16px;
-                            font-family:'General Sans',sans-serif; color:#555;">
-                <span style="font-size:1.4rem;">↻</span>&nbsp;&nbsp;
-                Bezig met genereren van het EduPlan voor <b>{naam}</b>
-            </div>""",
-            unsafe_allow_html=True,
-        )
+        # st.markdown(
+            # f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
+                            # padding:28px; text-align:center; margin-top:16px;
+                            # font-family:'General Sans',sans-serif; color:#555;">
+                # <span style="font-size:1.4rem;">↻</span>&nbsp;&nbsp;
+                # Bezig met genereren van het EduPlan voor <b>{naam}</b>
+            # </div>""",
+            # unsafe_allow_html=True,
+        # )
         _genereer_eduplan()
         st.rerun()
 
@@ -789,7 +841,7 @@ def _render_eduplan_content():
                 <div style="background:#1a1a1a; color:white; border-radius:8px;
                             width:36px; height:36px; display:flex; align-items:center;
                             justify-content:center; font-size:16px; font-weight:700;
-                            flex-shrink:0;">ℹ</div>
+                            flex-shrink:0;"> ℹ🚦 </div>
                 <span style="font-size:1.25rem; font-weight:600;">EduPlan | {naam}</span>
             </div>""",
             unsafe_allow_html=True,
@@ -800,9 +852,9 @@ def _render_eduplan_content():
     # EduPlan content-card
     with st.container(border=True):
         st.markdown(
-            f"<div style='font-family:\"General Sans\",sans-serif; "
-            f"font-size:15px; line-height:1.75; color:#1a1a1a;'>"
-            f"{analyse['explanation'].replace(chr(10), '<br>')}"
+            f"<div style='font-family:\"General Sans\",sans-serif; font-weight:500; "
+            f"font-size:15px; line-height:1.75;'> \n"
+            f"{analyse['explanation']}"
             f"</div>",
             unsafe_allow_html=True,
         )

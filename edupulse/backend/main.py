@@ -41,7 +41,7 @@ app = FastAPI()
 
 client = OpenAI()
 
-MODEL = "gpt-4o-mini"
+MODEL = "gpt-4o"
 
 # Laden van ML-model (RandomForestRegressor van Uitnodigingsregel)
 clf = joblib.load("backend/model.joblib")

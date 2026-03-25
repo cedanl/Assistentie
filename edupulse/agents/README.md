@@ -20,5 +20,5 @@ python main.py --api-key sk-ant-...
 ```
 
 Vereist `ANTHROPIC_API_KEY` als omgevingsvariabele of via `--api-key`.
-Gebruikt het model `claude-sonnet-4-5-20250929` via de Anthropic API.
+Gebruikt een Claude Sonnet-model via de Anthropic API.
 Logs worden weggeschreven naar `agent.log`.

@@ -16,7 +16,7 @@ graph TB
     end
 
     subgraph Shared["Shared"]
-        DATA["shared/data.csv\nStudentendata (Uitnodigingsregel)"]
+        DATA["shared/data.csv\n1.000 studenten, 11 opleidingen"]
         PREP["shared/data_prep.py\nDownload data + model"]
     end
 
@@ -60,21 +60,23 @@ sequenceDiagram
     participant SHAP as SHAP Explainer
     participant GPT as OpenAI GPT-4o-mini
 
-    Gebruiker->>FE: Selecteer filters (Opleiding, Klas, Mentor)
-    FE->>FE: Laad data.csv & filter studenten
+    Gebruiker->>FE: Startscherm — kies opleiding (zoekbalk of pill)
+    FE->>FE: Navigeer naar hoofdscherm
 
-    Gebruiker->>FE: Klik "Voorspel uitval"
-    loop Per student
+    FE->>FE: Laad data.csv & filter op opleiding/klas
+    note over FE: Automatisch bij filter-wijziging
+
+    loop Per student in selectie
         FE->>BE: POST /predict_dropout (alle features)
         BE->>RF: predict() → continue risicoscore
         RF-->>BE: Score (0.0 – 1.0)
         BE-->>FE: Score als kans %
     end
 
-    FE->>FE: Sorteer alle studenten hoog→laag op risico
-    FE->>Gebruiker: Toon gerangschikte lijst
+    FE->>FE: Sorteer studenten hoog→laag op risico
+    FE->>Gebruiker: Toon staafgrafiek top-N (default 10)
 
-    Gebruiker->>FE: Selecteer student voor analyse
+    Gebruiker->>FE: Ga naar EDUPLAN-tab, selecteer lerende
     FE->>BE: POST /feature_importance (studentdata)
     BE->>SHAP: shap_values() op RF Regressor
     SHAP-->>BE: Feature-bijdragen per kolom
@@ -82,10 +84,31 @@ sequenceDiagram
 
     FE->>BE: POST /explain_risk (data + kans)
     BE->>GPT: Genereer Nederlandstalige uitleg + advies
-    GPT-->>BE: Uitleg tekst
+    GPT-->>BE: EduPlan tekst
     BE-->>FE: AI-uitleg
-    FE->>Gebruiker: Toon analyse + SHAP
+    FE->>Gebruiker: Toon EduPlan
 
     Gebruiker->>FE: Download rapport
-    FE->>Gebruiker: Markdown (.md) of Word (.docx)
+    FE->>Gebruiker: Word (.docx)
+```
+
+---
+
+## 3. Schermstructuur
+
+```
+Startscherm
+├── Zoekbalk + START-knop
+├── Snelkeuze-pills (4 zichtbaar + "Meer ↓")
+└── Footer (CC-licentie)
+
+Hoofdscherm
+├── Header: CEDA | UITNODIGINGSREGEL  EDUPLAN  (roze achtergrond, schaduw)
+├── Witte kaart
+│   ├── Kaart-header: [Opleiding]  [KLAS: ...]  [✏]
+│   ├── Terracotta banner: "Toon mij X lerenden…" + slider
+│   ├── Tab UITNODIGINGSREGEL → horizontale staafgrafiek
+│   └── Tab EDUPLAN → student-selector + TOON EDUPLAN + EduPlan-kaart
+│       └── PRINT  DOWNLOAD (.docx)
+└── Footer (CC-licentie)
 ```
