@@ -82,7 +82,7 @@ In eerste instantie beperken we ons op het voorspellen van uitval, het verklaren
 
 ---
 
-# Architectuur EduPulse
+# Architectuur EduPlan
 
 ## 1. Dataverzameling & Preprocessing
 
