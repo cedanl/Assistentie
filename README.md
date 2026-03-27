@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CEDAssistentie</h1>
 
-  <p>🚀 altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie</p>
+  <p>altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie</p>
 
   <p>
     <a href="#"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows"></a>
