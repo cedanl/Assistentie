@@ -1,4 +1,4 @@
-# Conceptueel model EduPulse
+# Conceptueel model EduPlan
 
 ## Architectuur en Workflow
 
