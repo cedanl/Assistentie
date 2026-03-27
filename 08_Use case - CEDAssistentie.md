@@ -7,7 +7,7 @@ _Een use case beschrijft hoe een persoon een systeem gebruikt om een specifiek d
 
 
 **Doel**
-* Het ondersteunen van institutional research (IR) afdelingen in het vervolgonderwijs met een altijd beschikbaar, maatschappelijk aanvaardbaar ecosysteem dat kwalitatieve en betrouwbare digitale assistentie kan creëren. Dit ecosysteem (~~EduClaw~~) maakt het voor IR‑medewerkers mogelijk om digitale assistenten (/AI‑agents) te ontwikkelen, die de onderwijsprocessen om te komen tot adviezen over de instelling en sector autonoom kunnen uitvoeren, waarvoor voorheen menselijke tussenkomst nodig was.
+* Het ondersteunen van institutional research (IR) afdelingen in het vervolgonderwijs met een altijd beschikbaar, maatschappelijk aanvaardbaar ecosysteem dat kwalitatieve en betrouwbare digitale assistentie kan creëren. Dit ecosysteem (~~EduClaw~~) maakt het voor IR‑medewerkers mogelijk om digitale assistenten (/AI‑agents) te bouwen, draaien en beheren, die de onderwijsprocessen om te komen tot adviezen over de instelling en sector autonoom kunnen uitvoeren, waarvoor voorheen menselijke tussenkomst nodig was.
 
 Het ecosysteem van CEDA (~~EduClaw~~) …
 * …stelt AI-modellen (zoals OpenEuroLLM, GPT-NL of andere LLM’s) in staat stelt om via een dialoog gestuurde interface veilig en gecontroleerd toegang te krijgen tot de studiedata van de onderwijsinstelling.
