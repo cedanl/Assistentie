@@ -3,28 +3,27 @@
 
 **Riskante aanname**
 _We geloven dat…_
-* Uit de (huidige) ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- binnen de eerste 10 weken van het opleidingsjaar, een interventieplan te generen is voor de desbetreffende (leven-lang-)lerende.
-
+* ...Uit de (huidige) ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- binnen de eerste 10 weken van het opleidingsjaar, een interventieplan te generen is voor de desbetreffende (leven-lang-)lerende.
 
 
 **Weerlegbare hypothese**
 _We verwachten dat…_
-* We voor de desbetreffende (leven-lang-)lerende binnen de eerste 10 weken van het opleidingsjaar, een interventieplan kunnen generen uit de (huidige) ‘Uitnodigingsregel’ -en de eventuele (bron)data.
+* ...We voor de desbetreffende (leven-lang-)lerende binnen de eerste 10 weken van het opleidingsjaar, een interventieplan kunnen generen uit de (huidige) ‘Uitnodigingsregel’ -en de eventuele (bron)data.
 
 
 **Experiment**
 _Om dit te verifiëren zullen we…_
-* Een prototype bouwen dat -in Markdown- een interventieplan genereert voor de (leven-lang-)lerende die driegen uit te vallen.
+* ...Een prototype bouwen dat -in Markdown- een interventieplan genereert voor de (leven-lang-)lerende die driegen uit te vallen.
 
 
 **Metric**
 _En meten we..._
-* Dat zo’n gespreksplan binnen de eerste 10 weken van het opleidingsjaar voor iedere (leven-lang-)lerenden te genereren is. 
+* ...Dat zo’n gespreksplan binnen de eerste 10 weken van het opleidingsjaar voor iedere (leven-lang-)lerenden te genereren is. 
 
 
 **Succes criteria**
 _We hebben gelijk als…_
-* Er voor iedere (leven-lang-)lerenden binnen de eerste 10 weken van het opleidingsjaar, een gesprekplan met minimaal 2 unieke relevante aanknopingspunten te genereren is.
+* ...Er voor iedere (leven-lang-)lerenden binnen de eerste 10 weken van het opleidingsjaar, een gesprekplan met minimaal 2 unieke relevante aanknopingspunten te genereren is.
 
 
 
