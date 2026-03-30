@@ -27,12 +27,12 @@ import streamlit as st
 import pandas as pd
 import requests
 import plotly.graph_objects as go
+from concurrent.futures import ThreadPoolExecutor
 from docx import Document
 from docx.shared import Pt, RGBColor
 from io import BytesIO
 from datetime import datetime
-from PIL import Image
-from styles import START_CSS, MAIN_CSS, TERRACOTTA, ROZE_BG, ROZE_LICHT
+from styles import START_CSS, MAIN_CSS, TERRACOTTA, ROZE_LICHT
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -56,12 +56,14 @@ st.set_page_config(
 # Data & features
 # ─────────────────────────────────────────────
 
-df = pd.read_csv("shared/data.csv")
+@st.cache_data
+def _load_data() -> pd.DataFrame:
+    return pd.read_csv("shared/data.csv")
+
+df = _load_data()
 
 NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
 features = [col for col in df.columns if col not in NON_FEATURES]
-
-logo_image = Image.open("assets/npuls_logo.png")
 QUICK_OPLEIDINGEN = sorted(df["Opleiding"].unique().tolist())
 
 
@@ -89,11 +91,23 @@ for k, v in _defaults.items():
         st.session_state[k] = v
 
 
-
-
 # ─────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────
+
+def _zoek_opleiding(zoekterm: str) -> str:
+    return next(
+        (o for o in QUICK_OPLEIDINGEN if zoekterm.lower() in o.lower()),
+        zoekterm,
+    )
+
+
+def _pill_klik(opl: str):
+    st.session_state.selected_opleiding = opl
+    st.session_state.selected_klas      = "Alle"
+    st.session_state.page               = "main"
+    st.session_state.filter_key         = None
+
 
 def _klassen_voor(opleiding: str) -> list[str]:
     if opleiding == "Alle":
@@ -104,7 +118,7 @@ def _klassen_voor(opleiding: str) -> list[str]:
 def _gefilterde_df():
     opl  = st.session_state.selected_opleiding
     klas = st.session_state.selected_klas
-    d = df.copy()
+    d = df
     if opl  != "Alle": d = d[d["Opleiding"] == opl]
     if klas != "Alle": d = d[d["Klas"]      == klas]
     return d
@@ -166,30 +180,32 @@ def _run_voorspelling(dff: pd.DataFrame):
     if st.session_state.filter_key == key:
         return  # niets veranderd
 
-    st.session_state.filter_key     = key
-    st.session_state.laatste_analyse = None
+    st.session_state.filter_key      = key
+    st.session_state.laatste_analyse  = None
     st.session_state.eduplan_genereren = False
 
+    def _call(row):
+        try:
+            resp = requests.post(
+                "http://localhost:8000/predict_dropout",
+                json={"student": row[features].to_dict()},
+                timeout=10,
+            )
+            return (row, resp.json())
+        except Exception:
+            return None
+
     with st.spinner("Risico berekenen…"):
-        resultaten = []
-        for _, row in dff.iterrows():
-            try:
-                resp = requests.post(
-                    "http://localhost:8000/predict_dropout",
-                    json={"student": row[features].to_dict()},
-                    timeout=10,
-                )
-                resultaten.append((row, resp.json()))
-            except Exception:
-                pass
+        rows = [row for _, row in dff.iterrows()]
+        with ThreadPoolExecutor(max_workers=20) as pool:
+            resultaten = [r for r in pool.map(_call, rows) if r is not None]
         resultaten.sort(key=lambda x: x[1]["probability"], reverse=True)
         st.session_state.risicostudenten = resultaten
-        # Standaard top_n: aantal studenten of max 10
         st.session_state.top_n = min(len(resultaten), 10)
 
 
 def _genereer_eduplan():
-    idx  = st.session_state.geselecteerde_student
+    idx    = st.session_state.geselecteerde_student
     risico = st.session_state.risicostudenten
     if not risico or idx >= len(risico):
         return
@@ -197,45 +213,54 @@ def _genereer_eduplan():
     naam = row["Naam"]
 
     with st.spinner(f"🕑 Bezig met genereren van het EduPlan voor {naam}…"):
-        try:
-            exp = requests.post(
-                "http://localhost:8000/explain_risk",
-                json={
-                    "student":     row[features].to_dict(),
-                    "prediction":  result["prediction"],
-                    "probability": result["probability"],
-                },
-                timeout=60,
-            ).json()["explanation"]
-        except Exception:
-            exp = "Uitleg kon niet worden gegenereerd."
+        def _fetch_explain():
+            try:
+                return requests.post(
+                    "http://localhost:8000/explain_risk",
+                    json={
+                        "student":     row[features].to_dict(),
+                        "prediction":  result["prediction"],
+                        "probability": result["probability"],
+                    },
+                    timeout=60,
+                ).json()["explanation"]
+            except Exception:
+                return "Uitleg kon niet worden gegenereerd."
 
-        fi_dict, fi_str = {}, ""
-        try:
-            fi_resp = requests.post(
-                "http://localhost:8000/feature_importance",
-                json={"student": row[features].to_dict()},
-                timeout=10,
-            )
-            fi_dict = fi_resp.json()["feature_importance"]
-            fi_str  = ", ".join(f"{k}: {v:.2f}" for k, v in fi_dict.items())
-        except Exception:
-            fi_str = "Niet beschikbaar."
+        def _fetch_fi():
+            try:
+                return requests.post(
+                    "http://localhost:8000/feature_importance",
+                    json={"student": row[features].to_dict()},
+                    timeout=10,
+                ).json()["feature_importance"]
+            except Exception:
+                return {}
 
-        st.session_state.laatste_analyse = {
-            "naam":                  naam,
-            "opleiding":             row["Opleiding"],
-            "klas":                  row["Klas"],
-            "mentor":                row["Mentor"],
-            "studentnummer":         int(row["Studentnummer"]),
-            "leeftijd":              int(row["StudentAge"]),
-            "ongeoorloofd_verzuim":  float(row["absence_unauthorized"]),
-            "geoorloofd_verzuim":    float(row.get("absence_authorized", 0)),
-            "probability":           result["probability"],
-            "explanation":           exp,
-            "feature_importance":    fi_str,
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            f_exp = pool.submit(_fetch_explain)
+            f_fi  = pool.submit(_fetch_fi)
+            exp     = f_exp.result()
+            fi_dict = f_fi.result()
+
+        fi_str = ", ".join(f"{k}: {v:.2f}" for k, v in fi_dict.items()) if fi_dict else "Niet beschikbaar."
+
+        analyse = {
+            "naam":                    naam,
+            "opleiding":               row["Opleiding"],
+            "klas":                    row["Klas"],
+            "mentor":                  row["Mentor"],
+            "studentnummer":           int(row["Studentnummer"]),
+            "leeftijd":                int(row["StudentAge"]),
+            "ongeoorloofd_verzuim":    float(row["absence_unauthorized"]),
+            "geoorloofd_verzuim":      float(row.get("absence_authorized", 0)),
+            "probability":             result["probability"],
+            "explanation":             exp,
+            "feature_importance":      fi_str,
             "feature_importance_dict": fi_dict,
         }
+        analyse["docx"] = _build_word_doc(analyse)
+        st.session_state.laatste_analyse   = analyse
         st.session_state.eduplan_genereren = False
 
 
@@ -296,32 +321,18 @@ def show_start_screen():
 
         if start:
             gekozen = zoekterm.strip() if zoekterm.strip() else "Alle"
-            match = next(
-                (o for o in QUICK_OPLEIDINGEN if gekozen.lower() in o.lower()),
-                gekozen,
-            )
-            st.session_state.selected_opleiding = match
-            st.session_state.selected_klas      = "Alle"
-            st.session_state.page               = "main"
-            st.session_state.filter_key         = None
+            _pill_klik(_zoek_opleiding(gekozen))
             st.rerun()
 
     st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
     _, col_m2, _ = st.columns([0.5, 6, 0.5])
     with col_m2:
-        def _pill_klik(opl):
-            st.session_state.selected_opleiding = opl
-            st.session_state.selected_klas      = "Alle"
-            st.session_state.page               = "main"
-            st.session_state.filter_key         = None
-
         ZICHTBAAR = 4
         eerste_rij = QUICK_OPLEIDINGEN[:ZICHTBAAR]
         rest       = QUICK_OPLEIDINGEN[ZICHTBAAR:]
 
         st.markdown("<div class='pill-row'>", unsafe_allow_html=True)
-        # Eerste rij: 4 opleidingen + "Meer"-knop
         pill_cols = st.columns(ZICHTBAAR + 1)
         for i, opl in enumerate(eerste_rij):
             with pill_cols[i]:
@@ -338,7 +349,6 @@ def show_start_screen():
                     st.session_state.toon_alle_opleidingen = False
                     st.rerun()
 
-        # Extra rij als "Meer" is geklikt
         if st.session_state.toon_alle_opleidingen and rest:
             extra_cols = st.columns(len(rest))
             for i, opl in enumerate(rest):
@@ -349,8 +359,7 @@ def show_start_screen():
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
-    
-    st.write("-------------------------")
+
     st.markdown(
         """<hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
         <p style="text-align:center; font-size:0.75rem; font-weight:500; color:#444;">
@@ -393,7 +402,6 @@ def _render_header():
             f'{label}</div>'
         )
 
-    # ── Vaste HTML-balk: CEDA links, pills rechts ──
     st.markdown(
         f"""
         <div style="position:fixed;top:0;left:0;right:0;height:60px;
@@ -411,7 +419,7 @@ def _render_header():
         unsafe_allow_html=True,
     )
 
-    # ── Verborgen Streamlit-knoppen (CSS verbergt ze, JS triggert ze) ──
+    # Verborgen Streamlit-knoppen (CSS verbergt ze, JS triggert ze)
     if st.button("UITNODIGINGSREGEL", key="nav_ur"):
         st.session_state.actieve_tab = "uitnodigingsregel"
         st.rerun()
@@ -420,15 +428,14 @@ def _render_header():
         st.rerun()
 
 
-# ─────────────────────────────────────────────---------------------
+# ─────────────────────────────────────────────
 # Hoofdscherm — kaart-header (opleiding + klas + potlood)
-# ─────────────────────────────────────────────---------------------
+# ─────────────────────────────────────────────
 
 def _render_card_header():
     opl = st.session_state.selected_opleiding
 
     if st.session_state.toon_zoekbalk:
-        # Zoekbalk-modus (pencil geklikt)
         st.markdown("<div class='card-zoek'>", unsafe_allow_html=True)
         col_s, col_b = st.columns([5, 1])
         with col_s:
@@ -441,11 +448,7 @@ def _render_card_header():
         with col_b:
             if st.button("ZOEK", type="primary", use_container_width=True, key="card_zoek_btn"):
                 if zoek.strip():
-                    match = next(
-                        (o for o in QUICK_OPLEIDINGEN if zoek.lower() in o.lower()),
-                        zoek.strip(),
-                    )
-                    st.session_state.selected_opleiding  = match
+                    st.session_state.selected_opleiding = _zoek_opleiding(zoek.strip())
                 st.session_state.selected_klas       = "Alle"
                 st.session_state.toon_zoekbalk        = False
                 st.session_state.filter_key           = None
@@ -455,10 +458,8 @@ def _render_card_header():
         st.markdown("</div>", unsafe_allow_html=True)
 
     else:
-        # Normale modus
         klassen = _klassen_voor(opl)
 
-        # Herstel klas naar "Alle" als de huidige klas niet meer bestaat
         if st.session_state.selected_klas not in klassen:
             st.session_state.selected_klas = "Alle"
 
@@ -500,13 +501,10 @@ def _render_card_header():
 # Hoofdscherm — banner  "Toon mij X lerenden…"
 # ─────────────────────────────────────────────
 
-def _render_banner(n_geladen: int):
+def _render_banner():
     risico = st.session_state.risicostudenten
 
-    if not risico:
-        label = "···"
-    else:
-        label = f"<u><b>{st.session_state.top_n}</b></u>"
+    label = f"<u><b>{st.session_state.top_n}</b></u>" if risico else "···"
 
     st.markdown(
         f"""<div style="background:{TERRACOTTA}; border-radius:12px; padding:14px 24px;
@@ -519,7 +517,6 @@ def _render_banner(n_geladen: int):
     )
 
     if risico:
-        # Slider voor top_n
         max_n = len(risico)
         nieuw_n = st.slider(
             "Aantal te tonen",
@@ -560,7 +557,6 @@ def _render_barchart():
     namen  = [row["Naam"]             for row, _      in reversed(top)]
     kansen = [result["probability"]   for _,   result in reversed(top)]
 
-    # Terracotta-gradient: donkerste voor de hoogste risico-student (bovenste balk)
     def terracotta(i, total):
         t = i / max(total - 1, 1)
         r = int(0xa0 + (0xdf - 0xa0) * t)
@@ -638,7 +634,6 @@ def _render_eduplan_sectie():
             st.session_state.actieve_tab           = "eduplan"
             st.rerun()
 
-    # Laadstatus of resultaat
     if st.session_state.eduplan_genereren:
         naam = top[st.session_state.geselecteerde_student][0]["Naam"]
         st.markdown(
@@ -661,7 +656,6 @@ def _render_eduplan_content():
     analyse = st.session_state.laatste_analyse
     naam    = analyse["naam"]
 
-    # EduPlan header-card
     with st.container(border=True):
         st.markdown(
             f"""<div style="display:flex; align-items:center; gap:14px;
@@ -677,7 +671,6 @@ def _render_eduplan_content():
 
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-    # EduPlan content-card
     with st.container(border=True):
         st.markdown(
             f"<div style='font-family:\"General Sans\",sans-serif; font-weight:600; "
@@ -689,7 +682,6 @@ def _render_eduplan_content():
 
     st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
-    # PRINT + DOWNLOAD knoppen (rechts uitgelijnd)
     _, col_p, col_d = st.columns([6, 1, 1])
 
     with col_p:
@@ -706,10 +698,9 @@ def _render_eduplan_content():
 
     with col_d:
         st.markdown("<div class='actie-knoppen'>", unsafe_allow_html=True)
-        bio = _build_word_doc(analyse)
         st.download_button(
             label="DOWNLOAD",
-            data=bio,
+            data=analyse["docx"],
             file_name=f"EduPlan_{naam.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             use_container_width=True,
@@ -747,17 +738,15 @@ def show_main_screen():
 
     dff = _gefilterde_df()
 
-    # Voorspelling uitvoeren als filter gewijzigd
     if len(dff) > 0:
         _run_voorspelling(dff)
 
-    # Hoofdkaart
     with st.container(border=True):
         _render_card_header()
 
         tab = st.session_state.actieve_tab
 
-        _render_banner(len(st.session_state.risicostudenten))
+        _render_banner()
 
         if tab == "uitnodigingsregel":
             _render_barchart()

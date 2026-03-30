@@ -66,14 +66,16 @@ class ExplainRequest(BaseModel):
     probability: float
 
 
+def _student_to_df(student: dict) -> pd.DataFrame:
+    return pd.DataFrame([student])[features]
+
+
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
     response = client.responses.create(
         model=MODEL,
         store=False,
-        tools=[{"type": "code_interpreter", "container": {"type": "auto"}}],
-        tool_choice="auto",
         input=[{"role": "user", "content": prompt}]
     )
     summary = response.output_text  # type: ignore
@@ -82,51 +84,44 @@ def summarize(request: SummaryRequest):
 
 @app.post("/predict_dropout")
 def predict_dropout(request: StudentData):
-    X_pred = pd.DataFrame([request.student])[features]
-    # RF Regressor geeft een continue score (0–1); drempel 0.35 markeert risicostudenten
+    X_pred = _student_to_df(request.student)
     score = float(clf.predict(X_pred.values)[0])
-    return {"probability": score, "prediction": 1}
+    # Drempel 0.35 markeert risicostudenten
+    prediction = 1 if score >= 0.35 else 0
+    return {"probability": score, "prediction": prediction}
 
 
 @app.post("/explain_risk")
 def explain_risk(request: ExplainRequest):
     student = request.student
     probability = request.probability
-    feature_str = ", ".join([f"{k}: {v}" for k, v in student.items()])
+    feature_str = ", ".join(f"{k}: {v}" for k, v in student.items())
     prompt = (
         f"Studentgegevens: {feature_str}.\n"
         f"Voorspelde kans op uitval: {probability:.2%}.\n"
-        f"Licht uitgebreid, in heldere managementtaal, toe waarom deze student risico loopt op uitval, waarbij je je richt op deze drie elementen: 'Afwezigheid', 'Opleidingsachtergrond', en  'Aanmeldingsgeschiedenis'. Geef daarnaast gericht advies aan de mentor. Gebruik de onderstaande opmaak van het voorbeeld"
-        f"<VOORBEELD>"
-        f"👩🏽‍💻ANALYSE VAN RISICO OP UITVAL \n\n"
-        f""" 
-        
-        
-        **✅ 1. Afwezigheid** De student heeft een aanzienlijke afwezigheid met 8 niet-gemelde en 12 gemelde afwezigheden. Dit kan leiden tot een verminderd leerresultaat en een afname van betrokkenheid bij de opleiding. Regelmatige afwezigheid kan studenten isoleren van hun klasgenoten en van het leerproces, wat de motivatie kan aantasten.
-        
-        **🎯Advies:** De mentor moet proactief het contact met de student zoeken om te achterhalen wat de oorzaken van de afwezigheid zijn. Dit kan door het organiseren van een gesprek om de student te ondersteunen en eventuele verplichtingen buiten school in kaart te brengen.
-        
-        **✅ 2. Opleidingsachtergrond** De student komt uit een VMBO GL- en VMBO TL-achtergrond, wat betekent dat de student mogelijk minder voorbereiding heeft gehad op de uitdagingen van het voortgezet onderwijs. Dit kan leiden tot stagnatie in de academische ontwikkeling en kan de student demotiveren, vooral als ze het gevoel hebben dat ze de stof niet begrijpen.
-        
-        **🎯 Advies:** Het is belangrijk dat de mentor samen met docente goed kijkt naar de studiemethoden van de student en deze indien nodig aanpast. Aanvullende ondersteuning in de vorm van bijles of tutoring kan de student helpen om zich zekerder te voelen in de lesstof en zo hun kansen op succes te vergroten.
-        
-        **✅ 3. Aanmeldingsgeschiedenis** De student heeft een aanmeldingsgeschiedenis van slechts 1, wat kan wijzen op een beperkte betrokkenheid bij het onderwijs. Dit kan duiden op een onzekere of ondoorzichtige richting in hun studies, wat een belangrijke factor kan zijn in hun motivatie en toewijding.
-        
-        **🎯 Advies:** De mentor kan een gesprek aangaan om de interesses en lange-termijndoelen van de student in kaart te brengen. Door de student te betrekken bij het maken van studiekeuzes en hen te wijzen op de mogelijkheden binnen de onderwijsinstelling, kan de mentor helpen om de betrokkenheid en motivatie te verhogen.
-        
-        ### Conclusie
-        
-        Gezien deze drie elementen loopt deze student risico op uitval. Bij een combinatie van aanzienlijke afwezigheid, een potentieel gebrek aan voorbereiding door de opleidingsachtergrond en een geringe aanmeldingsgeschiedenis, is het cruciaal dat de mentor snel en doelgericht actie onderneemt. Door een ondersteunende aanpak en open communicatie kan de mentor helpen om de student op koers te houden en te voorkomen dat ze uitvallen.
-        
-        """
+        f"Licht uitgebreid, in heldere managementtaal, toe waarom deze student risico loopt op uitval, "
+        f"waarbij je je richt op deze drie elementen: 'Afwezigheid', 'Opleidingsachtergrond', en 'Aanmeldingsgeschiedenis'. "
+        f"Geef daarnaast gericht advies aan de mentor. Gebruik de onderstaande opmaak van het voorbeeld. "
+        f"Gebruik uitsluitend de bovenstaande studentgegevens; de getallen in het voorbeeld zijn fictief.\n\n"
+        f"<VOORBEELD>\n"
+        f"👩🏽‍💻ANALYSE VAN RISICO OP UITVAL\n\n"
+        f"**✅ 1. Afwezigheid** De student heeft een aanzienlijke afwezigheid met [X] niet-gemelde en [Y] gemelde afwezigheden. "
+        f"Dit kan leiden tot een verminderd leerresultaat en een afname van betrokkenheid bij de opleiding.\n\n"
+        f"**🎯Advies:** De mentor moet proactief het contact met de student zoeken om te achterhalen wat de oorzaken van de afwezigheid zijn.\n\n"
+        f"**✅ 2. Opleidingsachtergrond** De student komt uit een [vooropleiding]-achtergrond, wat betekent dat de student "
+        f"mogelijk minder voorbereiding heeft gehad op de uitdagingen van het voortgezet onderwijs.\n\n"
+        f"**🎯 Advies:** Het is belangrijk dat de mentor samen met docenten goed kijkt naar de studiemethoden van de student.\n\n"
+        f"**✅ 3. Aanmeldingsgeschiedenis** De student heeft een aanmeldingsgeschiedenis van [Z], wat kan wijzen op "
+        f"een beperkte betrokkenheid bij het onderwijs.\n\n"
+        f"**🎯 Advies:** De mentor kan een gesprek aangaan om de interesses en lange-termijndoelen van de student in kaart te brengen.\n\n"
+        f"### Conclusie\n\n"
+        f"Gezien deze drie elementen loopt deze student risico op uitval. "
+        f"Door een ondersteunende aanpak en open communicatie kan de mentor helpen om de student op koers te houden.\n"
         f"</VOORBEELD>"
-        
     )
     response = client.responses.create(
         model=MODEL,
         store=False,
-        tools=[{"type": "code_interpreter", "container": {"type": "auto"}}],
-        tool_choice="auto",
         input=[{"role": "user", "content": prompt}]
     )
     uitleg = response.output_text  # type: ignore
@@ -135,7 +130,7 @@ def explain_risk(request: ExplainRequest):
 
 @app.post("/feature_importance")
 def feature_importance(request: StudentData):
-    X_pred = pd.DataFrame([request.student])[features]
+    X_pred = _student_to_df(request.student)
     # RF Regressor: shap_values() geeft shape (n_samples, n_features), geen lijst per klasse
     shap_vals = explainer.shap_values(X_pred.values)
     fi = dict(zip(features, shap_vals[0].tolist()))
