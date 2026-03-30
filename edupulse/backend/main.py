@@ -41,7 +41,7 @@ app = FastAPI()
 
 client = OpenAI()
 
-MODEL = "gpt-4o"
+MODEL = "gpt-4.1"
 
 # Laden van ML-model (RandomForestRegressor van Uitnodigingsregel)
 clf = joblib.load("backend/model.joblib")
@@ -96,8 +96,31 @@ def explain_risk(request: ExplainRequest):
     prompt = (
         f"Studentgegevens: {feature_str}.\n"
         f"Voorspelde kans op uitval: {probability:.2%}.\n"
-        f"Licht in heldere managementtaal toe waarom deze student risico loopt op uitval, "
-        f"en geef gericht advies aan de mentor."
+        f"Licht uitgebreid, in heldere managementtaal, toe waarom deze student risico loopt op uitval, waarbij je je richt op deze drie elementen: 'Afwezigheid', 'Opleidingsachtergrond', en  'Aanmeldingsgeschiedenis'. Geef daarnaast gericht advies aan de mentor. Gebruik de onderstaande opmaak van het voorbeeld"
+        f"<VOORBEELD>"
+        f"👩🏽‍💻ANALYSE VAN RISICO OP UITVAL \n\n"
+        f""" 
+        
+        
+        **✅ 1. Afwezigheid** De student heeft een aanzienlijke afwezigheid met 8 niet-gemelde en 12 gemelde afwezigheden. Dit kan leiden tot een verminderd leerresultaat en een afname van betrokkenheid bij de opleiding. Regelmatige afwezigheid kan studenten isoleren van hun klasgenoten en van het leerproces, wat de motivatie kan aantasten.
+        
+        **🎯Advies:** De mentor moet proactief het contact met de student zoeken om te achterhalen wat de oorzaken van de afwezigheid zijn. Dit kan door het organiseren van een gesprek om de student te ondersteunen en eventuele verplichtingen buiten school in kaart te brengen.
+        
+        **✅ 2. Opleidingsachtergrond** De student komt uit een VMBO GL- en VMBO TL-achtergrond, wat betekent dat de student mogelijk minder voorbereiding heeft gehad op de uitdagingen van het voortgezet onderwijs. Dit kan leiden tot stagnatie in de academische ontwikkeling en kan de student demotiveren, vooral als ze het gevoel hebben dat ze de stof niet begrijpen.
+        
+        **🎯 Advies:** Het is belangrijk dat de mentor samen met docente goed kijkt naar de studiemethoden van de student en deze indien nodig aanpast. Aanvullende ondersteuning in de vorm van bijles of tutoring kan de student helpen om zich zekerder te voelen in de lesstof en zo hun kansen op succes te vergroten.
+        
+        **✅ 3. Aanmeldingsgeschiedenis** De student heeft een aanmeldingsgeschiedenis van slechts 1, wat kan wijzen op een beperkte betrokkenheid bij het onderwijs. Dit kan duiden op een onzekere of ondoorzichtige richting in hun studies, wat een belangrijke factor kan zijn in hun motivatie en toewijding.
+        
+        **🎯 Advies:** De mentor kan een gesprek aangaan om de interesses en lange-termijndoelen van de student in kaart te brengen. Door de student te betrekken bij het maken van studiekeuzes en hen te wijzen op de mogelijkheden binnen de onderwijsinstelling, kan de mentor helpen om de betrokkenheid en motivatie te verhogen.
+        
+        ### Conclusie
+        
+        Gezien deze drie elementen loopt deze student risico op uitval. Bij een combinatie van aanzienlijke afwezigheid, een potentieel gebrek aan voorbereiding door de opleidingsachtergrond en een geringe aanmeldingsgeschiedenis, is het cruciaal dat de mentor snel en doelgericht actie onderneemt. Door een ondersteunende aanpak en open communicatie kan de mentor helpen om de student op koers te houden en te voorkomen dat ze uitvallen.
+        
+        """
+        f"</VOORBEELD>"
+        
     )
     response = client.responses.create(
         model=MODEL,

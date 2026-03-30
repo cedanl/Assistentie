@@ -12,16 +12,16 @@
 # ]
 # ///
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Organization: CEDA
 # Original Authors: Ed. de Feber, Edwin Lieftink, Steven Ramondt
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 
 """frontend/app.py — Streamlit frontend voor de Uitnodigingsregel app EduPlan."""
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────
 # Imports
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────
 
 import streamlit as st
 import pandas as pd
@@ -32,21 +32,21 @@ from docx.shared import Pt, RGBColor
 from io import BytesIO
 from datetime import datetime
 from PIL import Image
+from styles import START_CSS, MAIN_CSS, TERRACOTTA, ROZE_BG, ROZE_LICHT
 
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Paginaconfiguratie  (moet als eerste Streamlit-aanroep staan)
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 
 st.set_page_config(
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed",
-    menu_items=None,
-    # menu_items={
-        # "Get Help": "https://github.com/cedanl/Assistentie",
-        # "Report a bug": "mailto:ed.defeber@surf.nl",
-        # "About": "EduPlan — CEDA 2026",
-    # },
+    menu_items={
+        "Get Help": "https://github.com/cedanl/Assistentie",
+        "Report a bug": "mailto:ed.defeber@surf.nl",
+        "About": "EduPlan — CEDA 2026",
+    },
     page_icon="🧮",
     page_title="EduPlan",
 )
@@ -63,10 +63,6 @@ features = [col for col in df.columns if col not in NON_FEATURES]
 
 logo_image = Image.open("assets/npuls_logo.png")
 QUICK_OPLEIDINGEN = sorted(df["Opleiding"].unique().tolist())
-
-TERRACOTTA = "#c8785a"
-ROZE_BG    = "#e8c8c8"
-ROZE_LICHT = "#f2e4e4"
 
 
 # ─────────────────────────────────────────────
@@ -93,191 +89,6 @@ for k, v in _defaults.items():
         st.session_state[k] = v
 
 
-# ─────────────────────────────────────────────
-# CSS
-# ─────────────────────────────────────────────
-
-# border: 2.5px solid #1a1a1a !important; border-radius: 50px !important;
-
-START_CSS = """
-<style>
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
-
-[data-testid="stApp"] { background-color: #e8c8c8; font-family: 'General Sans', sans-serif; }
-[data-testid="stSidebarCollapsedControl"] { display: none; }
-[data-testid="stHeader"] { background-color: transparent; }
-.block-container { padding-top: 2rem; padding-bottom: 2rem; }
-
-div[data-testid="stTextInput"] input {
-    padding: 14px 24px !important; font-size: 17px !important;
-    background-color: white !important; height: 56px;
-}
-div[data-testid="stTextInput"] input::placeholder { color: #aaa; }
-div[data-testid="stTextInput"] > label { display: none; }
-
-div[data-testid="column"]:has(button[kind="primary"]) button {
-    background-color: #1a1a1a !important; color: white !important;
-    border-radius: 50px !important; font-weight: 700 !important;
-    font-size: 17px !important; height: 56px !important; width: 100% !important;
-    border: none !important;
-}
-
-[data-testid="stButton"] button[kind="secondary"] {
-    background-color: white !important; border-radius: 50px !important;
-    border: none !important; font-size: 15px !important;
-    padding: 10px 20px !important; width: 100%;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
-}
-[data-testid="stButton"] button[kind="secondary"]:hover {
-    background-color: #f5f5f5 !important;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.25) !important;
-}
-[data-testid="stBaseButton-secondary"] {
-    background-color: white !important; border-radius: 50px !important;
-    border: none !important; box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
-}
-</style>
-"""
-
-MAIN_CSS = """
-<style>
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
-
-[data-testid="stApp"]      { background-color: #e8c8c8; font-family: 'General Sans', sans-serif; }
-[data-testid="stHeader"]   { background-color: transparent; }
-[data-testid="stSidebarCollapsedControl"] { display: none; }
-.block-container           { padding-top: 0 !important; max-width: 900px; margin: 0 auto; }
-
-/* ── Witte card ── */
-[data-testid="stVerticalBlockBorderWrapper"] {
-    background: white !important;
-    border-radius: 20px !important;
-    border: none !important;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-    padding: 4px 8px !important;
-}
-
-/* ── Nav pills ── */
-div.nav-actief [data-testid="stBaseButton-secondary"],
-div.nav-actief button[kind="secondary"] {
-    background: white !important;
-    border: 2px solid #1a1a1a !important;
-    border-radius: 50px !important;
-    font-weight: 700 !important;
-    font-size: 12px !important;
-    letter-spacing: 0.07em !important;
-    padding: 6px 18px !important;
-    color: #1a1a1a !important;
-    box-shadow: none !important;
-    white-space: nowrap !important;
-    width: auto !important;
-    min-width: max-content !important;
-}
-div.nav-inactief [data-testid="stBaseButton-secondary"],
-div.nav-inactief button[kind="secondary"] {
-    background: transparent !important;
-    border: 2px solid transparent !important;
-    border-radius: 50px !important;
-    font-size: 12px !important;
-    letter-spacing: 0.07em !important;
-    padding: 6px 18px !important;
-    color: #555 !important;
-    box-shadow: none !important;
-    white-space: nowrap !important;
-    width: auto !important;
-    min-width: max-content !important;
-}
-div.nav-actief [data-testid="stBaseButton-secondary"] p,
-div.nav-actief [data-testid="stBaseButton-secondary"] span,
-div.nav-actief button[kind="secondary"] p,
-div.nav-actief button[kind="secondary"] span,
-div.nav-inactief [data-testid="stBaseButton-secondary"] p,
-div.nav-inactief [data-testid="stBaseButton-secondary"] span,
-div.nav-inactief button[kind="secondary"] p,
-div.nav-inactief button[kind="secondary"] span {
-    white-space: nowrap !important;
-    overflow: visible !important;
-}
-
-/* ── Klas selectbox als pill ── */
-div[data-testid="stSelectbox"] > div > div[data-baseweb="select"] > div {
-    border-radius: 50px !important;
-    border: 2px solid #1a1a1a !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.05em !important;
-    background: white !important;
-    padding-left: 16px !important;
-}
-
-/* ── Potlood-knop ── */
-div.potlood-btn button {
-    background: transparent !important;
-    border: none !important;
-    font-size: 1.2rem !important;
-    padding: 4px 8px !important;
-    color: #1a1a1a !important;
-    box-shadow: none !important;
-}
-
-/* ── Zoek-input in card ── */
-div.card-zoek div[data-testid="stTextInput"] input {
-    border: 2px solid #1a1a1a !important;
-    border-radius: 50px !important;
-    font-size: 15px !important;
-    height: 48px !important;
-    background: white !important;
-}
-div.card-zoek div[data-testid="stTextInput"] > label { display: none; }
-
-/* ── Primaire knoppen (zwart) ── */
-button[kind="primary"],
-[data-testid="stBaseButton-primary"] {
-    background-color: #1a1a1a !important;
-    color: white !important;
-    border-radius: 50px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.07em !important;
-    border: none !important;
-    font-size: 13px !important;
-}
-
-/* ── Student-selectbox ── */
-div.student-sel div[data-testid="stSelectbox"] > div > div[data-baseweb="select"] > div {
-    border-radius: 50px !important;
-    border: 2px solid #1a1a1a !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.03em !important;
-    text-transform: uppercase !important;
-    background: white !important;
-}
-
-/* ── Terug-link ── */
-div.terug-link button {
-    background: transparent !important;
-    border: none !important;
-    color: #777 !important;
-    font-size: 13px !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-}
-
-/* ── Actie-knoppen (PRINT / DOWNLOAD) ── */
-div.actie-knoppen [data-testid="stBaseButton-secondary"],
-div.actie-knoppen button[kind="secondary"] {
-    background-color: #1a1a1a !important;
-    color: white !important;
-    border-radius: 50px !important;
-    border: none !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.07em !important;
-    padding: 8px 24px !important;
-    box-shadow: none !important;
-}
-</style>
-"""
 
 
 # ─────────────────────────────────────────────
@@ -385,7 +196,7 @@ def _genereer_eduplan():
     row, result = risico[idx]
     naam = row["Naam"]
 
-    with st.spinner(f"Bezig met genereren van het EduPlan voor {naam}…"):
+    with st.spinner(f"🕑 Bezig met genereren van het EduPlan voor {naam}…"):
         try:
             exp = requests.post(
                 "http://localhost:8000/explain_risk",
@@ -442,7 +253,7 @@ def show_start_screen():
             <h1 style="font-size:3.2rem; font-weight:600; line-height:1.15; margin-bottom:4px;padding:0px;">
                 Welkom bij de<br>Uitnodigingsregel
             </h1>
-            <p style="vertical-align:top;font-size:1.3rem; color:#333; margin-top:0px;padding:0px;">
+            <p style="vertical-align:top;font-size:1.3rem; font-weight:500;color:#333; margin-top:0px;padding:0px;">
                 op tijd de juiste lerenden uitnodigen
             </p>
         </div>
@@ -454,7 +265,7 @@ def show_start_screen():
     _, col_m, _ = st.columns([1, 4, 1])
     with col_m:
         st.markdown(
-            """<p style="text-align:center; font-size:1.1rem; color:#222; margin-bottom:24px;
+            """<p style="text-align:center; font-size:0.9rem; font-weight:500; color:#555; margin-bottom:24px;
                          font-family:'General Sans',sans-serif;">
                 Voer de opleidingsrichting in om te zien of er nú lerenden zijn die
                 mogelijk risico lopen om uit te vallen. We brengen ze voor jou in beeld.
@@ -466,7 +277,7 @@ def show_start_screen():
         with col_zoek:
             zoekterm = st.text_input(
                 "Zoek opleiding",
-                placeholder="🔍 Bijv. Zorg & Welzijn, Economie, Techniek",
+                placeholder="Bijv. Kapper (bbl), Kok (bol), Metselaar (bbl)",
                 label_visibility="collapsed",
                 value=(
                     st.session_state.selected_opleiding
@@ -542,7 +353,7 @@ def show_start_screen():
     st.write("-------------------------")
     st.markdown(
         """<hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
-        <p style="text-align:center; font-size:0.75rem; color:#555;">
+        <p style="text-align:center; font-size:0.75rem; font-weight:500; color:#444;">
             &#169; &#9432; Op deze analytics tool is de Creative Commons ShareAlike
             Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
             vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
@@ -558,38 +369,55 @@ def show_start_screen():
 
 def _render_header():
     tab = st.session_state.actieve_tab
-    col_logo, col_gap, col_nav = st.columns([2, 2, 5])
+    ur_active = tab == "uitnodigingsregel"
 
-    with col_logo:
-        st.markdown(
-            "<h2 style='font-weight:500; margin:0; padding:4px 0; "
-            "font-family:\"General Sans\",sans-serif;'>CEDA</h2>",
-            unsafe_allow_html=True,
+    def _pill_html(label: str, active: bool) -> str:
+        border = "2px solid #1a1a1a" if active else "2px solid transparent"
+        bg     = "white"             if active else "transparent"
+        fw     = "700"               if active else "400"
+        color  = "#1a1a1a"           if active else "#555"
+        js = (
+            "(function(){"
+            f"var d=(window.parent||window).document;"
+            f"var bs=d.querySelectorAll('button');"
+            f"for(var i=0;i<bs.length;i++){{"
+            f"if(bs[i].textContent.trim()==='{label}'){{bs[i].click();break;}}"
+            f"}}"
+            "})();"
+        )
+        return (
+            f'<div onclick="{js}" style="cursor:pointer;padding:6px 18px;'
+            f'border-radius:50px;font-size:12px;letter-spacing:0.07em;'
+            f'border:{border};background:{bg};font-weight:{fw};color:{color};'
+            f'font-family:\'General Sans\',sans-serif;white-space:nowrap;">'
+            f'{label}</div>'
         )
 
-    with col_nav:
-        c1, c2 = st.columns([5, 3])
-        with c1:
-            cls = "nav-actief" if tab == "uitnodigingsregel" else "nav-inactief"
-            st.markdown(f"<div class='{cls}'>", unsafe_allow_html=True)
-            if st.button("UITNODIGINGSREGEL", key="nav_ur"):
-                st.session_state.actieve_tab = "uitnodigingsregel"
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-
-        with c2:
-            cls = "nav-actief" if tab == "eduplan" else "nav-inactief"
-            st.markdown(f"<div class='{cls}'>", unsafe_allow_html=True)
-            if st.button("EDUPLAN", key="nav_ep"):
-                st.session_state.actieve_tab = "eduplan"
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-
+    # ── Vaste HTML-balk: CEDA links, pills rechts ──
     st.markdown(
-        "<div style='margin:4px 0 8px; height:1px; background:rgba(0,0,0,0.08);"
-        "box-shadow:0 4px 16px rgba(0,0,0,0.12);'></div>",
+        f"""
+        <div style="position:fixed;top:0;left:0;right:0;height:60px;
+                    background:#f2e4e4;z-index:9999;display:flex;align-items:center;
+                    padding:0 max(24px,calc((100vw - 900px)/2));
+                    box-shadow:0 2px 12px rgba(0,0,0,0.08);box-sizing:border-box;">
+            <span style="font-weight:700;font-size:1.5rem;
+                         font-family:'General Sans',sans-serif;flex:1;">CEDA</span>
+            <div style="display:flex;gap:8px;align-items:center;">
+                {_pill_html('UITNODIGINGSREGEL', ur_active)}
+                {_pill_html('EDUPLAN', not ur_active)}
+            </div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
+
+    # ── Verborgen Streamlit-knoppen (CSS verbergt ze, JS triggert ze) ──
+    if st.button("UITNODIGINGSREGEL", key="nav_ur"):
+        st.session_state.actieve_tab = "uitnodigingsregel"
+        st.rerun()
+    if st.button("EDUPLAN", key="nav_ep"):
+        st.session_state.actieve_tab = "eduplan"
+        st.rerun()
 
 
 # ─────────────────────────────────────────────---------------------
@@ -662,7 +490,7 @@ def _render_card_header():
 
         with col_p:
             st.markdown("<div class='potlood-btn'>", unsafe_allow_html=True)
-            if st.button("✏", key="potlood"):
+            if st.button("🖊️ ", key="potlood"):
                 st.session_state.toon_zoekbalk = True
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
@@ -676,7 +504,7 @@ def _render_banner(n_geladen: int):
     risico = st.session_state.risicostudenten
 
     if not risico:
-        label = "👈🏽"
+        label = "···"
     else:
         label = f"<u><b>{st.session_state.top_n}</b></u>"
 
@@ -813,15 +641,15 @@ def _render_eduplan_sectie():
     # Laadstatus of resultaat
     if st.session_state.eduplan_genereren:
         naam = top[st.session_state.geselecteerde_student][0]["Naam"]
-        # st.markdown(
-            # f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
-                            # padding:28px; text-align:center; margin-top:16px;
-                            # font-family:'General Sans',sans-serif; color:#555;">
-                # <span style="font-size:1.4rem;">↻</span>&nbsp;&nbsp;
-                # Bezig met genereren van het EduPlan voor <b>{naam}</b>
-            # </div>""",
-            # unsafe_allow_html=True,
-        # )
+        st.markdown(
+            f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
+                            padding:28px; text-align:center; margin-top:16px;
+                            font-family:'General Sans',sans-serif; color:#555;">
+                <span style="font-size:1.4rem;">↻</span>&nbsp;&nbsp;
+                Het EduPlan voor <b>{naam}</b> wordt gemaakt
+            </div>""",
+            unsafe_allow_html=True,
+        )
         _genereer_eduplan()
         st.rerun()
 
@@ -838,10 +666,10 @@ def _render_eduplan_content():
         st.markdown(
             f"""<div style="display:flex; align-items:center; gap:14px;
                             font-family:'General Sans',sans-serif;">
-                <div style="background:#1a1a1a; color:white; border-radius:8px;
+                <div style="background: {ROZE_LICHT}; color:black; border-radius:8px;
                             width:36px; height:36px; display:flex; align-items:center;
                             justify-content:center; font-size:16px; font-weight:700;
-                            flex-shrink:0;"> ℹ🚦 </div>
+                            flex-shrink:0;"> 🚦 </div>
                 <span style="font-size:1.25rem; font-weight:600;">EduPlan | {naam}</span>
             </div>""",
             unsafe_allow_html=True,
@@ -852,8 +680,8 @@ def _render_eduplan_content():
     # EduPlan content-card
     with st.container(border=True):
         st.markdown(
-            f"<div style='font-family:\"General Sans\",sans-serif; font-weight:500; "
-            f"font-size:15px; line-height:1.75;'> \n"
+            f"<div style='font-family:\"General Sans\",sans-serif; font-weight:600; "
+            f"font-size:15px; line-height:1.75; background: #fceaea;'> \n"
             f"{analyse['explanation']}"
             f"</div>",
             unsafe_allow_html=True,
@@ -865,10 +693,16 @@ def _render_eduplan_content():
     _, col_p, col_d = st.columns([6, 1, 1])
 
     with col_p:
-        st.markdown("<div class='actie-knoppen'>", unsafe_allow_html=True)
-        if st.button("PRINT", key="print_btn", use_container_width=True):
-            st.markdown("<script>window.print();</script>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown(
+            """<button onclick="(window.parent||window).print()"
+                style="background-color:#1a1a1a;color:white;border-radius:50px;
+                       border:none;font-size:12px;font-weight:700;letter-spacing:0.07em;
+                       padding:8px 24px;box-shadow:none;cursor:pointer;width:100%;
+                       white-space:nowrap;font-family:'General Sans',sans-serif;">
+                PRINT
+            </button>""",
+            unsafe_allow_html=True,
+        )
 
     with col_d:
         st.markdown("<div class='actie-knoppen'>", unsafe_allow_html=True)
@@ -891,10 +725,9 @@ def _render_eduplan_content():
 def _render_footer():
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
     st.markdown(
-        """<hr style="border:none; border-top:1px solid rgba(0,0,0,0.12); margin:0 0 10px 0;">
-        <p style="text-align:center; font-size:0.72rem; color:#666;
-                  font-family:'General Sans',sans-serif;">
-            &#169; &#9432; Op deze analytics tool is de Creative Commons ShareAlike
+        """<hr style="border:none; border-top:2px solid rgba(0,0,0,0.32); margin:0 0 20px 0;">
+        <p style="text-align:center; font-size:0.75rem; font-weight:500; color:gray; font-family:'General Sans',sans-serif;">
+            &#169; &#9432; 2026 Op deze analytics tool is de Creative Commons ShareAlike
             Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
             vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
             Uitnodigingsregel – EduPlan. Utrecht: Npuls
