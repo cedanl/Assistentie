@@ -1,6 +1,6 @@
-# 001 | Aannames - EduPulse
+# 001 | Aannames - EduPlan
 
-_De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en levensvatbaar is. Om dit te bepalen brengen we de ‘EduPulse’ tot leven in de vorm van een prototype. Met dit prototype verzamelen we op alle drie de onderdelen gericht bewijs om onzekerheden zo snel mogelijk weg te nemen._
+_De ‘EduPlan’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en levensvatbaar is. Om dit te bepalen brengen we de ‘EduPlan’ tot leven in de vorm van een prototype. Met dit prototype verzamelen we op alle drie de onderdelen gericht bewijs om onzekerheden zo snel mogelijk weg te nemen._
 
 **Experimenten plan -** We brengen de aannames in kaart op gebied van ‘Technologie, Wenselijkheid en Organisatie’. De meest risicovolle aanname(s) formuleren we als toetsbare hypothese(s) en hiervoor zetten we een experiment op. 
 
@@ -14,7 +14,7 @@ _De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en leven
 
 ### Aannames **technologie | Wij geloven dat…**
 * Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een interventieplan te generen is voor de desbetreffende (leven-lang-)lerende.
-* Er een digitaal lees- en printbaar intervantieplan met een persoonlijke uitstraling is te genereren die aansluit bij specifieke voorkeuren van de desbetreffende (leven-lang-)lerende.
+* Er een digitaal lees- en printbaar intervantieplan met een persoonlijke uitstraling is te genereren die aansluit bij specifieke voorkeuren van de desbetreffende onderwijsinstelling.
 
 * Uit de ‘Uitnodigingsregel’ -en de eventuele (bron)data voor de voorspelling- een omschrijving is te generen met technieken hoe dit gesprek aan te gaan met de desbetreffende (leven-lang-)lerende.
 * Er een digitaal lees‑ en printbaar overzicht van de gesprekstechnieken kan worden gegenereerd, met een persoonlijke uitstraling die aansluit bij de specifieke voorkeuren van de betreffende SLB’er of mentor.
@@ -48,14 +48,14 @@ _De ‘EduPulse’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en leven
 
 
 ### Aannames **organisatie | Wij geloven dat…**
-* EduPulse stabiel kan functioneren binnen de bestaande IT‑architectuur.
+* EduPlan stabiel kan functioneren binnen de bestaande IT‑architectuur.
     * ...
 
-* De instelling beleid voor het gebruik van EduPulse kan ontwikkelen.
+* De instelling beleid voor het gebruik van EduPlan kan ontwikkelen.
     * Er bescherming tegen datalekken, manipulatie en ongeautoriseerde toegang mogelijk is.
     * ...
 
-* De instelling governance voor het gebruik van EduPulse kan ontwikkelen.
+* De instelling governance voor het gebruik van EduPlan kan ontwikkelen.
     * Er een juridisch houdbare verwerkers-overeenkomst mogelijk is.
     * ...
  

@@ -12,41 +12,41 @@
 # ]
 # ///
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Organization: CEDA
 # Original Authors: Ed. de Feber, Edwin Lieftink, Steven Ramondt
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 
 """frontend/app.py — Streamlit frontend voor de Uitnodigingsregel app EduPlan."""
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────
 # Imports
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────
 
 import streamlit as st
 import pandas as pd
 import requests
 import plotly.graph_objects as go
+from concurrent.futures import ThreadPoolExecutor
 from docx import Document
 from docx.shared import Pt, RGBColor
 from io import BytesIO
 from datetime import datetime
-from PIL import Image
+from styles import START_CSS, MAIN_CSS, TERRACOTTA, ROZE_LICHT
 
 
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 # Paginaconfiguratie  (moet als eerste Streamlit-aanroep staan)
-# -----------------------------------------------------------------------------
+# ─────────────────────────────────────────────────────────────────────────────
 
 st.set_page_config(
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="collapsed",
-    menu_items=None,
-    # menu_items={
-        # "Get Help": "https://github.com/cedanl/Assistentie",
-        # "Report a bug": "mailto:ed.defeber@surf.nl",
-        # "About": "EduPlan — CEDA 2026",
-    # },
+    menu_items={
+        "Get Help": "https://github.com/cedanl/Assistentie",
+        "Report a bug": "mailto:ed.defeber@surf.nl",
+        "About": "EduPlan — CEDA 2026",
+    },
     page_icon="🧮",
     page_title="EduPlan",
 )
@@ -56,17 +56,15 @@ st.set_page_config(
 # Data & features
 # ─────────────────────────────────────────────
 
-df = pd.read_csv("shared/data.csv")
+@st.cache_data
+def _load_data() -> pd.DataFrame:
+    return pd.read_csv("shared/data.csv")
+
+df = _load_data()
 
 NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
 features = [col for col in df.columns if col not in NON_FEATURES]
-
-logo_image = Image.open("assets/npuls_logo.png")
 QUICK_OPLEIDINGEN = sorted(df["Opleiding"].unique().tolist())
-
-TERRACOTTA = "#c8785a"
-ROZE_BG    = "#e8c8c8"
-ROZE_LICHT = "#f2e4e4"
 
 
 # ─────────────────────────────────────────────
@@ -94,195 +92,22 @@ for k, v in _defaults.items():
 
 
 # ─────────────────────────────────────────────
-# CSS
-# ─────────────────────────────────────────────
-
-# border: 2.5px solid #1a1a1a !important; border-radius: 50px !important;
-
-START_CSS = """
-<style>
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
-
-[data-testid="stApp"] { background-color: #e8c8c8; font-family: 'General Sans', sans-serif; }
-[data-testid="stSidebarCollapsedControl"] { display: none; }
-[data-testid="stHeader"] { background-color: transparent; }
-.block-container { padding-top: 2rem; padding-bottom: 2rem; }
-
-div[data-testid="stTextInput"] input {
-    padding: 14px 24px !important; font-size: 17px !important;
-    background-color: white !important; height: 56px;
-}
-div[data-testid="stTextInput"] input::placeholder { color: #aaa; }
-div[data-testid="stTextInput"] > label { display: none; }
-
-div[data-testid="column"]:has(button[kind="primary"]) button {
-    background-color: #1a1a1a !important; color: white !important;
-    border-radius: 50px !important; font-weight: 700 !important;
-    font-size: 17px !important; height: 56px !important; width: 100% !important;
-    border: none !important;
-}
-
-[data-testid="stButton"] button[kind="secondary"] {
-    background-color: white !important; border-radius: 50px !important;
-    border: none !important; font-size: 15px !important;
-    padding: 10px 20px !important; width: 100%;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
-}
-[data-testid="stButton"] button[kind="secondary"]:hover {
-    background-color: #f5f5f5 !important;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.25) !important;
-}
-[data-testid="stBaseButton-secondary"] {
-    background-color: white !important; border-radius: 50px !important;
-    border: none !important; box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
-}
-</style>
-"""
-
-MAIN_CSS = """
-<style>
-@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
-
-[data-testid="stApp"]      { background-color: #e8c8c8; font-family: 'General Sans', sans-serif; }
-[data-testid="stHeader"]   { background-color: transparent; }
-[data-testid="stSidebarCollapsedControl"] { display: none; }
-.block-container           { padding-top: 0 !important; max-width: 900px; margin: 0 auto; }
-
-/* ── Witte card ── */
-[data-testid="stVerticalBlockBorderWrapper"] {
-    background: white !important;
-    border-radius: 20px !important;
-    border: none !important;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
-    padding: 4px 8px !important;
-}
-
-/* ── Nav pills ── */
-div.nav-actief [data-testid="stBaseButton-secondary"],
-div.nav-actief button[kind="secondary"] {
-    background: white !important;
-    border: 2px solid #1a1a1a !important;
-    border-radius: 50px !important;
-    font-weight: 700 !important;
-    font-size: 12px !important;
-    letter-spacing: 0.07em !important;
-    padding: 6px 18px !important;
-    color: #1a1a1a !important;
-    box-shadow: none !important;
-    white-space: nowrap !important;
-    width: auto !important;
-    min-width: max-content !important;
-}
-div.nav-inactief [data-testid="stBaseButton-secondary"],
-div.nav-inactief button[kind="secondary"] {
-    background: transparent !important;
-    border: 2px solid transparent !important;
-    border-radius: 50px !important;
-    font-size: 12px !important;
-    letter-spacing: 0.07em !important;
-    padding: 6px 18px !important;
-    color: #555 !important;
-    box-shadow: none !important;
-    white-space: nowrap !important;
-    width: auto !important;
-    min-width: max-content !important;
-}
-div.nav-actief [data-testid="stBaseButton-secondary"] p,
-div.nav-actief [data-testid="stBaseButton-secondary"] span,
-div.nav-actief button[kind="secondary"] p,
-div.nav-actief button[kind="secondary"] span,
-div.nav-inactief [data-testid="stBaseButton-secondary"] p,
-div.nav-inactief [data-testid="stBaseButton-secondary"] span,
-div.nav-inactief button[kind="secondary"] p,
-div.nav-inactief button[kind="secondary"] span {
-    white-space: nowrap !important;
-    overflow: visible !important;
-}
-
-/* ── Klas selectbox als pill ── */
-div[data-testid="stSelectbox"] > div > div[data-baseweb="select"] > div {
-    border-radius: 50px !important;
-    border: 2px solid #1a1a1a !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.05em !important;
-    background: white !important;
-    padding-left: 16px !important;
-}
-
-/* ── Potlood-knop ── */
-div.potlood-btn button {
-    background: transparent !important;
-    border: none !important;
-    font-size: 1.2rem !important;
-    padding: 4px 8px !important;
-    color: #1a1a1a !important;
-    box-shadow: none !important;
-}
-
-/* ── Zoek-input in card ── */
-div.card-zoek div[data-testid="stTextInput"] input {
-    border: 2px solid #1a1a1a !important;
-    border-radius: 50px !important;
-    font-size: 15px !important;
-    height: 48px !important;
-    background: white !important;
-}
-div.card-zoek div[data-testid="stTextInput"] > label { display: none; }
-
-/* ── Primaire knoppen (zwart) ── */
-button[kind="primary"],
-[data-testid="stBaseButton-primary"] {
-    background-color: #1a1a1a !important;
-    color: white !important;
-    border-radius: 50px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.07em !important;
-    border: none !important;
-    font-size: 13px !important;
-}
-
-/* ── Student-selectbox ── */
-div.student-sel div[data-testid="stSelectbox"] > div > div[data-baseweb="select"] > div {
-    border-radius: 50px !important;
-    border: 2px solid #1a1a1a !important;
-    font-size: 13px !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.03em !important;
-    text-transform: uppercase !important;
-    background: white !important;
-}
-
-/* ── Terug-link ── */
-div.terug-link button {
-    background: transparent !important;
-    border: none !important;
-    color: #777 !important;
-    font-size: 13px !important;
-    padding: 0 !important;
-    box-shadow: none !important;
-}
-
-/* ── Actie-knoppen (PRINT / DOWNLOAD) ── */
-div.actie-knoppen [data-testid="stBaseButton-secondary"],
-div.actie-knoppen button[kind="secondary"] {
-    background-color: #1a1a1a !important;
-    color: white !important;
-    border-radius: 50px !important;
-    border: none !important;
-    font-size: 12px !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.07em !important;
-    padding: 8px 24px !important;
-    box-shadow: none !important;
-}
-</style>
-"""
-
-
-# ─────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────
+
+def _zoek_opleiding(zoekterm: str) -> str:
+    return next(
+        (o for o in QUICK_OPLEIDINGEN if zoekterm.lower() in o.lower()),
+        zoekterm,
+    )
+
+
+def _pill_klik(opl: str):
+    st.session_state.selected_opleiding = opl
+    st.session_state.selected_klas      = "Alle"
+    st.session_state.page               = "main"
+    st.session_state.filter_key         = None
+
 
 def _klassen_voor(opleiding: str) -> list[str]:
     if opleiding == "Alle":
@@ -293,7 +118,7 @@ def _klassen_voor(opleiding: str) -> list[str]:
 def _gefilterde_df():
     opl  = st.session_state.selected_opleiding
     klas = st.session_state.selected_klas
-    d = df.copy()
+    d = df
     if opl  != "Alle": d = d[d["Opleiding"] == opl]
     if klas != "Alle": d = d[d["Klas"]      == klas]
     return d
@@ -355,76 +180,87 @@ def _run_voorspelling(dff: pd.DataFrame):
     if st.session_state.filter_key == key:
         return  # niets veranderd
 
-    st.session_state.filter_key     = key
-    st.session_state.laatste_analyse = None
+    st.session_state.filter_key      = key
+    st.session_state.laatste_analyse  = None
     st.session_state.eduplan_genereren = False
 
+    def _call(row):
+        try:
+            resp = requests.post(
+                "http://localhost:8000/predict_dropout",
+                json={"student": row[features].to_dict()},
+                timeout=10,
+            )
+            return (row, resp.json())
+        except Exception:
+            return None
+
     with st.spinner("Risico berekenen…"):
-        resultaten = []
-        for _, row in dff.iterrows():
-            try:
-                resp = requests.post(
-                    "http://localhost:8000/predict_dropout",
-                    json={"student": row[features].to_dict()},
-                    timeout=10,
-                )
-                resultaten.append((row, resp.json()))
-            except Exception:
-                pass
+        rows = [row for _, row in dff.iterrows()]
+        with ThreadPoolExecutor(max_workers=20) as pool:
+            resultaten = [r for r in pool.map(_call, rows) if r is not None]
         resultaten.sort(key=lambda x: x[1]["probability"], reverse=True)
         st.session_state.risicostudenten = resultaten
-        # Standaard top_n: aantal studenten of max 10
         st.session_state.top_n = min(len(resultaten), 10)
 
 
 def _genereer_eduplan():
-    idx  = st.session_state.geselecteerde_student
+    idx    = st.session_state.geselecteerde_student
     risico = st.session_state.risicostudenten
     if not risico or idx >= len(risico):
         return
     row, result = risico[idx]
     naam = row["Naam"]
 
-    with st.spinner(f"Bezig met genereren van het EduPlan voor {naam}…"):
-        try:
-            exp = requests.post(
-                "http://localhost:8000/explain_risk",
-                json={
-                    "student":     row[features].to_dict(),
-                    "prediction":  result["prediction"],
-                    "probability": result["probability"],
-                },
-                timeout=60,
-            ).json()["explanation"]
-        except Exception:
-            exp = "Uitleg kon niet worden gegenereerd."
+    with st.spinner(f"🕑 Bezig met genereren van het EduPlan voor {naam}…"):
+        def _fetch_explain():
+            try:
+                return requests.post(
+                    "http://localhost:8000/explain_risk",
+                    json={
+                        "student":     row[features].to_dict(),
+                        "prediction":  result["prediction"],
+                        "probability": result["probability"],
+                    },
+                    timeout=60,
+                ).json()["explanation"]
+            except Exception:
+                return "Uitleg kon niet worden gegenereerd."
 
-        fi_dict, fi_str = {}, ""
-        try:
-            fi_resp = requests.post(
-                "http://localhost:8000/feature_importance",
-                json={"student": row[features].to_dict()},
-                timeout=10,
-            )
-            fi_dict = fi_resp.json()["feature_importance"]
-            fi_str  = ", ".join(f"{k}: {v:.2f}" for k, v in fi_dict.items())
-        except Exception:
-            fi_str = "Niet beschikbaar."
+        def _fetch_fi():
+            try:
+                return requests.post(
+                    "http://localhost:8000/feature_importance",
+                    json={"student": row[features].to_dict()},
+                    timeout=10,
+                ).json()["feature_importance"]
+            except Exception:
+                return {}
 
-        st.session_state.laatste_analyse = {
-            "naam":                  naam,
-            "opleiding":             row["Opleiding"],
-            "klas":                  row["Klas"],
-            "mentor":                row["Mentor"],
-            "studentnummer":         int(row["Studentnummer"]),
-            "leeftijd":              int(row["StudentAge"]),
-            "ongeoorloofd_verzuim":  float(row["absence_unauthorized"]),
-            "geoorloofd_verzuim":    float(row.get("absence_authorized", 0)),
-            "probability":           result["probability"],
-            "explanation":           exp,
-            "feature_importance":    fi_str,
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            f_exp = pool.submit(_fetch_explain)
+            f_fi  = pool.submit(_fetch_fi)
+            exp     = f_exp.result()
+            fi_dict = f_fi.result()
+
+        fi_str = ", ".join(f"{k}: {v:.2f}" for k, v in fi_dict.items()) if fi_dict else "Niet beschikbaar."
+
+        analyse = {
+            "naam":                    naam,
+            "opleiding":               row["Opleiding"],
+            "klas":                    row["Klas"],
+            "mentor":                  row["Mentor"],
+            "studentnummer":           int(row["Studentnummer"]),
+            "leeftijd":                int(row["StudentAge"]),
+            "ongeoorloofd_verzuim":    float(row["absence_unauthorized"]),
+            "geoorloofd_verzuim":      float(row.get("absence_authorized", 0)),
+            "probability":             result["probability"],
+            "explanation":             exp,
+            "feature_importance":      fi_str,
             "feature_importance_dict": fi_dict,
         }
+        analyse["docx"] = _build_word_doc(analyse)
+        st.session_state.laatste_analyse   = analyse
         st.session_state.eduplan_genereren = False
 
 
@@ -442,7 +278,7 @@ def show_start_screen():
             <h1 style="font-size:3.2rem; font-weight:600; line-height:1.15; margin-bottom:4px;padding:0px;">
                 Welkom bij de<br>Uitnodigingsregel
             </h1>
-            <p style="vertical-align:top;font-size:1.3rem; color:#333; margin-top:0px;padding:0px;">
+            <p style="vertical-align:top;font-size:1.3rem; font-weight:500;color:#333; margin-top:0px;padding:0px;">
                 op tijd de juiste lerenden uitnodigen
             </p>
         </div>
@@ -454,7 +290,7 @@ def show_start_screen():
     _, col_m, _ = st.columns([1, 4, 1])
     with col_m:
         st.markdown(
-            """<p style="text-align:center; font-size:1.1rem; color:#222; margin-bottom:24px;
+            """<p style="text-align:center; font-size:0.9rem; font-weight:500; color:#555; margin-bottom:24px;
                          font-family:'General Sans',sans-serif;">
                 Voer de opleidingsrichting in om te zien of er nú lerenden zijn die
                 mogelijk risico lopen om uit te vallen. We brengen ze voor jou in beeld.
@@ -466,7 +302,7 @@ def show_start_screen():
         with col_zoek:
             zoekterm = st.text_input(
                 "Zoek opleiding",
-                placeholder="🔍 Bijv. Zorg & Welzijn, Economie, Techniek",
+                placeholder="Bijv. Kapper (bbl), Kok (bol), Metselaar (bbl)",
                 label_visibility="collapsed",
                 value=(
                     st.session_state.selected_opleiding
@@ -485,32 +321,18 @@ def show_start_screen():
 
         if start:
             gekozen = zoekterm.strip() if zoekterm.strip() else "Alle"
-            match = next(
-                (o for o in QUICK_OPLEIDINGEN if gekozen.lower() in o.lower()),
-                gekozen,
-            )
-            st.session_state.selected_opleiding = match
-            st.session_state.selected_klas      = "Alle"
-            st.session_state.page               = "main"
-            st.session_state.filter_key         = None
+            _pill_klik(_zoek_opleiding(gekozen))
             st.rerun()
 
     st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
     _, col_m2, _ = st.columns([0.5, 6, 0.5])
     with col_m2:
-        def _pill_klik(opl):
-            st.session_state.selected_opleiding = opl
-            st.session_state.selected_klas      = "Alle"
-            st.session_state.page               = "main"
-            st.session_state.filter_key         = None
-
         ZICHTBAAR = 4
         eerste_rij = QUICK_OPLEIDINGEN[:ZICHTBAAR]
         rest       = QUICK_OPLEIDINGEN[ZICHTBAAR:]
 
         st.markdown("<div class='pill-row'>", unsafe_allow_html=True)
-        # Eerste rij: 4 opleidingen + "Meer"-knop
         pill_cols = st.columns(ZICHTBAAR + 1)
         for i, opl in enumerate(eerste_rij):
             with pill_cols[i]:
@@ -527,7 +349,6 @@ def show_start_screen():
                     st.session_state.toon_alle_opleidingen = False
                     st.rerun()
 
-        # Extra rij als "Meer" is geklikt
         if st.session_state.toon_alle_opleidingen and rest:
             extra_cols = st.columns(len(rest))
             for i, opl in enumerate(rest):
@@ -538,11 +359,10 @@ def show_start_screen():
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
-    
-    st.write("-------------------------")
+
     st.markdown(
         """<hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
-        <p style="text-align:center; font-size:0.75rem; color:#555;">
+        <p style="text-align:center; font-size:0.75rem; font-weight:500; color:#444;">
             &#169; &#9432; Op deze analytics tool is de Creative Commons ShareAlike
             Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
             vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
@@ -558,49 +378,64 @@ def show_start_screen():
 
 def _render_header():
     tab = st.session_state.actieve_tab
-    col_logo, col_gap, col_nav = st.columns([2, 2, 5])
+    ur_active = tab == "uitnodigingsregel"
 
-    with col_logo:
-        st.markdown(
-            "<h2 style='font-weight:500; margin:0; padding:4px 0; "
-            "font-family:\"General Sans\",sans-serif;'>CEDA</h2>",
-            unsafe_allow_html=True,
+    def _pill_html(label: str, active: bool) -> str:
+        border = "2px solid #1a1a1a" if active else "2px solid transparent"
+        bg     = "white"             if active else "transparent"
+        fw     = "700"               if active else "400"
+        color  = "#1a1a1a"           if active else "#555"
+        js = (
+            "(function(){"
+            f"var d=(window.parent||window).document;"
+            f"var bs=d.querySelectorAll('button');"
+            f"for(var i=0;i<bs.length;i++){{"
+            f"if(bs[i].textContent.trim()==='{label}'){{bs[i].click();break;}}"
+            f"}}"
+            "})();"
+        )
+        return (
+            f'<div onclick="{js}" style="cursor:pointer;padding:6px 18px;'
+            f'border-radius:50px;font-size:12px;letter-spacing:0.07em;'
+            f'border:{border};background:{bg};font-weight:{fw};color:{color};'
+            f'font-family:\'General Sans\',sans-serif;white-space:nowrap;">'
+            f'{label}</div>'
         )
 
-    with col_nav:
-        c1, c2 = st.columns([5, 3])
-        with c1:
-            cls = "nav-actief" if tab == "uitnodigingsregel" else "nav-inactief"
-            st.markdown(f"<div class='{cls}'>", unsafe_allow_html=True)
-            if st.button("UITNODIGINGSREGEL", key="nav_ur"):
-                st.session_state.actieve_tab = "uitnodigingsregel"
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-
-        with c2:
-            cls = "nav-actief" if tab == "eduplan" else "nav-inactief"
-            st.markdown(f"<div class='{cls}'>", unsafe_allow_html=True)
-            if st.button("EDUPLAN", key="nav_ep"):
-                st.session_state.actieve_tab = "eduplan"
-                st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
-
     st.markdown(
-        "<div style='margin:4px 0 8px; height:1px; background:rgba(0,0,0,0.08);"
-        "box-shadow:0 4px 16px rgba(0,0,0,0.12);'></div>",
+        f"""
+        <div style="position:fixed;top:0;left:0;right:0;height:60px;
+                    background:#f2e4e4;z-index:9999;display:flex;align-items:center;
+                    padding:0 max(24px,calc((100vw - 900px)/2));
+                    box-shadow:0 2px 12px rgba(0,0,0,0.08);box-sizing:border-box;">
+            <span style="font-weight:700;font-size:1.5rem;
+                         font-family:'General Sans',sans-serif;flex:1;">CEDA</span>
+            <div style="display:flex;gap:8px;align-items:center;">
+                {_pill_html('UITNODIGINGSREGEL', ur_active)}
+                {_pill_html('EDUPLAN', not ur_active)}
+            </div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
+    # Verborgen Streamlit-knoppen (CSS verbergt ze, JS triggert ze)
+    if st.button("UITNODIGINGSREGEL", key="nav_ur"):
+        st.session_state.actieve_tab = "uitnodigingsregel"
+        st.rerun()
+    if st.button("EDUPLAN", key="nav_ep"):
+        st.session_state.actieve_tab = "eduplan"
+        st.rerun()
 
-# ─────────────────────────────────────────────---------------------
+
+# ─────────────────────────────────────────────
 # Hoofdscherm — kaart-header (opleiding + klas + potlood)
-# ─────────────────────────────────────────────---------------------
+# ─────────────────────────────────────────────
 
 def _render_card_header():
     opl = st.session_state.selected_opleiding
 
     if st.session_state.toon_zoekbalk:
-        # Zoekbalk-modus (pencil geklikt)
         st.markdown("<div class='card-zoek'>", unsafe_allow_html=True)
         col_s, col_b = st.columns([5, 1])
         with col_s:
@@ -613,11 +448,7 @@ def _render_card_header():
         with col_b:
             if st.button("ZOEK", type="primary", use_container_width=True, key="card_zoek_btn"):
                 if zoek.strip():
-                    match = next(
-                        (o for o in QUICK_OPLEIDINGEN if zoek.lower() in o.lower()),
-                        zoek.strip(),
-                    )
-                    st.session_state.selected_opleiding  = match
+                    st.session_state.selected_opleiding = _zoek_opleiding(zoek.strip())
                 st.session_state.selected_klas       = "Alle"
                 st.session_state.toon_zoekbalk        = False
                 st.session_state.filter_key           = None
@@ -627,10 +458,8 @@ def _render_card_header():
         st.markdown("</div>", unsafe_allow_html=True)
 
     else:
-        # Normale modus
         klassen = _klassen_voor(opl)
 
-        # Herstel klas naar "Alle" als de huidige klas niet meer bestaat
         if st.session_state.selected_klas not in klassen:
             st.session_state.selected_klas = "Alle"
 
@@ -662,7 +491,7 @@ def _render_card_header():
 
         with col_p:
             st.markdown("<div class='potlood-btn'>", unsafe_allow_html=True)
-            if st.button("✏", key="potlood"):
+            if st.button("🖊️ ", key="potlood"):
                 st.session_state.toon_zoekbalk = True
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
@@ -672,13 +501,10 @@ def _render_card_header():
 # Hoofdscherm — banner  "Toon mij X lerenden…"
 # ─────────────────────────────────────────────
 
-def _render_banner(n_geladen: int):
+def _render_banner():
     risico = st.session_state.risicostudenten
 
-    if not risico:
-        label = "👈🏽"
-    else:
-        label = f"<u><b>{st.session_state.top_n}</b></u>"
+    label = f"<u><b>{st.session_state.top_n}</b></u>" if risico else "···"
 
     st.markdown(
         f"""<div style="background:{TERRACOTTA}; border-radius:12px; padding:14px 24px;
@@ -691,7 +517,6 @@ def _render_banner(n_geladen: int):
     )
 
     if risico:
-        # Slider voor top_n
         max_n = len(risico)
         nieuw_n = st.slider(
             "Aantal te tonen",
@@ -732,7 +557,6 @@ def _render_barchart():
     namen  = [row["Naam"]             for row, _      in reversed(top)]
     kansen = [result["probability"]   for _,   result in reversed(top)]
 
-    # Terracotta-gradient: donkerste voor de hoogste risico-student (bovenste balk)
     def terracotta(i, total):
         t = i / max(total - 1, 1)
         r = int(0xa0 + (0xdf - 0xa0) * t)
@@ -810,18 +634,17 @@ def _render_eduplan_sectie():
             st.session_state.actieve_tab           = "eduplan"
             st.rerun()
 
-    # Laadstatus of resultaat
     if st.session_state.eduplan_genereren:
         naam = top[st.session_state.geselecteerde_student][0]["Naam"]
-        # st.markdown(
-            # f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
-                            # padding:28px; text-align:center; margin-top:16px;
-                            # font-family:'General Sans',sans-serif; color:#555;">
-                # <span style="font-size:1.4rem;">↻</span>&nbsp;&nbsp;
-                # Bezig met genereren van het EduPlan voor <b>{naam}</b>
-            # </div>""",
-            # unsafe_allow_html=True,
-        # )
+        st.markdown(
+            f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
+                            padding:28px; text-align:center; margin-top:16px;
+                            font-family:'General Sans',sans-serif; color:#555;">
+                <span style="font-size:1.4rem;">↻</span>&nbsp;&nbsp;
+                Het EduPlan voor <b>{naam}</b> wordt gemaakt
+            </div>""",
+            unsafe_allow_html=True,
+        )
         _genereer_eduplan()
         st.rerun()
 
@@ -833,15 +656,14 @@ def _render_eduplan_content():
     analyse = st.session_state.laatste_analyse
     naam    = analyse["naam"]
 
-    # EduPlan header-card
     with st.container(border=True):
         st.markdown(
             f"""<div style="display:flex; align-items:center; gap:14px;
                             font-family:'General Sans',sans-serif;">
-                <div style="background:#1a1a1a; color:white; border-radius:8px;
+                <div style="background: {ROZE_LICHT}; color:black; border-radius:8px;
                             width:36px; height:36px; display:flex; align-items:center;
                             justify-content:center; font-size:16px; font-weight:700;
-                            flex-shrink:0;"> ℹ🚦 </div>
+                            flex-shrink:0;"> 🚦 </div>
                 <span style="font-size:1.25rem; font-weight:600;">EduPlan | {naam}</span>
             </div>""",
             unsafe_allow_html=True,
@@ -849,11 +671,10 @@ def _render_eduplan_content():
 
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-    # EduPlan content-card
     with st.container(border=True):
         st.markdown(
-            f"<div style='font-family:\"General Sans\",sans-serif; font-weight:500; "
-            f"font-size:15px; line-height:1.75;'> \n"
+            f"<div style='font-family:\"General Sans\",sans-serif; font-weight:600; "
+            f"font-size:15px; line-height:1.75; background: #fceaea;'> \n"
             f"{analyse['explanation']}"
             f"</div>",
             unsafe_allow_html=True,
@@ -861,21 +682,25 @@ def _render_eduplan_content():
 
     st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
-    # PRINT + DOWNLOAD knoppen (rechts uitgelijnd)
     _, col_p, col_d = st.columns([6, 1, 1])
 
     with col_p:
-        st.markdown("<div class='actie-knoppen'>", unsafe_allow_html=True)
-        if st.button("PRINT", key="print_btn", use_container_width=True):
-            st.markdown("<script>window.print();</script>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown(
+            """<button onclick="(window.parent||window).print()"
+                style="background-color:#1a1a1a;color:white;border-radius:50px;
+                       border:none;font-size:12px;font-weight:700;letter-spacing:0.07em;
+                       padding:8px 24px;box-shadow:none;cursor:pointer;width:100%;
+                       white-space:nowrap;font-family:'General Sans',sans-serif;">
+                PRINT
+            </button>""",
+            unsafe_allow_html=True,
+        )
 
     with col_d:
         st.markdown("<div class='actie-knoppen'>", unsafe_allow_html=True)
-        bio = _build_word_doc(analyse)
         st.download_button(
             label="DOWNLOAD",
-            data=bio,
+            data=analyse["docx"],
             file_name=f"EduPlan_{naam.replace(' ', '_')}_{datetime.now().strftime('%Y%m%d')}.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             use_container_width=True,
@@ -891,10 +716,9 @@ def _render_eduplan_content():
 def _render_footer():
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
     st.markdown(
-        """<hr style="border:none; border-top:1px solid rgba(0,0,0,0.12); margin:0 0 10px 0;">
-        <p style="text-align:center; font-size:0.72rem; color:#666;
-                  font-family:'General Sans',sans-serif;">
-            &#169; &#9432; Op deze analytics tool is de Creative Commons ShareAlike
+        """<hr style="border:none; border-top:2px solid rgba(0,0,0,0.32); margin:0 0 20px 0;">
+        <p style="text-align:center; font-size:0.75rem; font-weight:500; color:gray; font-family:'General Sans',sans-serif;">
+            &#169; &#9432; 2026 Op deze analytics tool is de Creative Commons ShareAlike
             Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
             vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
             Uitnodigingsregel – EduPlan. Utrecht: Npuls
@@ -914,17 +738,15 @@ def show_main_screen():
 
     dff = _gefilterde_df()
 
-    # Voorspelling uitvoeren als filter gewijzigd
     if len(dff) > 0:
         _run_voorspelling(dff)
 
-    # Hoofdkaart
     with st.container(border=True):
         _render_card_header()
 
         tab = st.session_state.actieve_tab
 
-        _render_banner(len(st.session_state.risicostudenten))
+        _render_banner()
 
         if tab == "uitnodigingsregel":
             _render_barchart()

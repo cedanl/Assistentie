@@ -1,7 +1,7 @@
 <div align="center">
   <h1>CEDAssistentie</h1>
 
-  <p>🚀 altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie</p>
+  <p>altijd beschikbare, maatschappelijke aanvaardbare, kwalitatieve en betrouwbare digitale assistentie</p>
 
   <p>
     <a href="#"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows"></a>
@@ -59,34 +59,25 @@ Technisch gezien kan de assitent:
 
 
 
-De eerste samenwerkende autonome digitale assistenten
-- 
-We willen beginnen met digitale assisitentie voor **onderwijsprofessionals in het mbo** die werken op strategisch, tactisch of operationeel niveau aan de (door)ontwikkelen van (leven-lang-)lerenden. 
-
-Waarbij ze continue hun eigen ontwikkeling, die van het vak, het curriculum, de opleiding, het beleid, de sector willen verbeteren ten diensten van de ontwikkeling van de (leven-lang-)lerenden.
-
-En daarbij vragen hebben op gebieden als beleidsimpact, toekomstscenario’s, sectorprestaties, instroom/uitstroom/doorstroom, capaciteitsplanning, cohortanalyses, effect interventies, risicosignalering, inspectievragen, groepsinzichten, handelingsadvies, enzovoorts. 
-
-
-
-**Snel leren**
+### Snel leren
 
 We doen een integrale verkenning waarin we gericht bewijs verzamelen om onzekerheden over het (maatschappelijk aanvaardbare) ecosysteem van digitale assistentie van overmorgen zo snel mogelijk weg te nemen.
 
 Die onzekerheden zitten op drie aspecten die in samenhang nodig zijn. Per aspect hebben we een hoofdaanname die we in delen gaan onderzoeken:
 
-- TECHNOLOGIE  
+**- TECHNOLOGIE**  
 Hoofdaanname: “Wij geloven dat het technisch mogelijk is om (maatschappelijk aanvaardbare) digitale assistentie te bouwen”
 
-- WENSELIJKHEID  
+**- WENSELIJKHEID**  
 Hoofdaanname: “Wij geloven dat onderwijsprofessionals en (leven-lang-)lerenden in het mbo de kracht van digitale assistentie inzien”
 
-- ORGANISATIE  
+**- ORGANISATIE**  
 Hoofdaanname: “Wij geloven dat het mogelijk is om (maatschappelijk aanvaardbare) digitale assistentie goed in te richten is binnen mbo instellingen”
 
 
 
-**De benodigde expertises**
+
+### De benodigde expertises
 
 Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrevende blik:
 * Visionaire uitvinders (voor de technologie)
@@ -94,18 +85,6 @@ Per aanname hebben we specifieke expertise nodig van mensen met een vooruitstrev
 * Ruimdenkende regelmakers (voor de organisatorische inrichting)
 * …
 
-
-
-### De concurrentie
-
-- **Aetherien AI**
-EU gehoste en met EU datasoevereiniteit ontwikkelde AI-oplossing. Versnel besluitvorming en productiviteit met AI: Naadloos geïntegreerd in jouw organisatie. ~https://www.aetherien.com/nl/product
-
-
-- **Microsoft Fabric (implementatie partners zoals Macaw)**
-Eén platform en één interface waarin al je analytics-behoeften samenkomen. Meer grip op data, stuurinformatie toegankelijk én AI-gedreven inzichten. ~https://www.macaw.nl/cases/microsoft-fabric-gemeente/, ~https://www.macaw.nl/cases/mbo-amersfoort-data-platform-voor-onderwijs/, ~https://www.macaw.nl/technologies/microsoft-fabric/
-
-* …
 
 
 
