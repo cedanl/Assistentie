@@ -4,6 +4,7 @@
 #     "anthropic",
 #     "pydantic",
 #     "streamlit",
+#     "streamlit_extras"
 #     "pandas",
 #     "requests",
 #     "plotly",
@@ -24,6 +25,7 @@
 # ─────────────────────────────────────────────
 
 import streamlit as st
+from streamlit_extras.bottom_container import bottom
 import pandas as pd
 import requests
 import plotly.graph_objects as go
@@ -40,13 +42,14 @@ from styles import START_CSS, MAIN_CSS, TERRACOTTA, ROZE_LICHT
 # ─────────────────────────────────────────────────────────────────────────────
 
 st.set_page_config(
-    layout="centered",
+    layout="wide",
     initial_sidebar_state="collapsed",
-    menu_items={
-        "Get Help": "https://github.com/cedanl/Assistentie",
-        "Report a bug": "mailto:ed.defeber@surf.nl",
-        "About": "EduPlan — CEDA 2026",
-    },
+    menu_items=None,
+    # menu_items={
+        # "Get Help": "https://github.com/cedanl/Assistentie",
+        # "Report a bug": "mailto:ed.defeber@surf.nl",
+        # "About": "EduPlan — CEDA 2026",
+    # },
     page_icon="🧮",
     page_title="EduPlan",
 )
@@ -60,11 +63,8 @@ st.set_page_config(
 def _load_data() -> pd.DataFrame:
     return pd.read_csv("shared/data.csv")
 
-df = _load_data()
 
 NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
-features = [col for col in df.columns if col not in NON_FEATURES]
-QUICK_OPLEIDINGEN = sorted(df["Opleiding"].unique().tolist())
 
 
 # ─────────────────────────────────────────────
@@ -85,10 +85,20 @@ _defaults = {
     "geselecteerde_student":   0,
     "onthoud_opleiding":       False,
     "toon_alle_opleidingen":   False,
+    "uploaded_df":             None,
 }
 for k, v in _defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
+
+# Gebruik geüpload bestand indien aanwezig, anders standaard data
+if st.session_state.uploaded_df is not None:
+    df = st.session_state.uploaded_df
+else:
+    df = _load_data()
+
+features = [col for col in df.columns if col not in NON_FEATURES]
+QUICK_OPLEIDINGEN = sorted(df["Opleiding"].unique().tolist())
 
 
 # ─────────────────────────────────────────────
@@ -247,12 +257,12 @@ def _genereer_eduplan():
 
         analyse = {
             "naam":                    naam,
-            "opleiding":               row["Opleiding"],
-            "klas":                    row["Klas"],
-            "mentor":                  row["Mentor"],
-            "studentnummer":           int(row["Studentnummer"]),
-            "leeftijd":                int(row["StudentAge"]),
-            "ongeoorloofd_verzuim":    float(row["absence_unauthorized"]),
+            "opleiding":               row.get("Opleiding", "—"),
+            "klas":                    row.get("Klas", "—"),
+            "mentor":                  row.get("Mentor", "—"),
+            "studentnummer":           int(row["Studentnummer"]) if "Studentnummer" in row.index else "—",
+            "leeftijd":                int(row["StudentAge"]) if "StudentAge" in row.index else "—",
+            "ongeoorloofd_verzuim":    float(row["absence_unauthorized"]) if "absence_unauthorized" in row.index else 0.0,
             "geoorloofd_verzuim":      float(row.get("absence_authorized", 0)),
             "probability":             result["probability"],
             "explanation":             exp,
@@ -285,6 +295,41 @@ def show_start_screen():
         """,
         unsafe_allow_html=True,
     )
+    
+    uploaded_file = st.file_uploader(
+        " 🎯 **UPLOAD HIER JE DATABESTAND** ",
+        type=["csv", "xlsx"],
+        help="Op dit moment is het mogelijk om .csv of .xlsx bestanden te uploaden!",
+    )
+    
+    if uploaded_file is not None:
+        try:
+            if uploaded_file.name.endswith(".xlsx"):
+                new_df = pd.read_excel(uploaded_file)
+            else:
+                new_df = pd.read_csv(uploaded_file)
+
+            # Vul ontbrekende structuurkolommen aan
+            if "Opleiding" not in new_df.columns:
+                new_df["Opleiding"] = "Geüploade data"
+            if "Klas" not in new_df.columns:
+                new_df["Klas"] = "Alle"
+            if "Naam" not in new_df.columns:
+                if "Studentnummer" in new_df.columns:
+                    new_df["Naam"] = new_df["Studentnummer"].astype(str)
+                else:
+                    new_df["Naam"] = [f"Student {i + 1}" for i in range(len(new_df))]
+
+            st.session_state.uploaded_df     = new_df
+            st.session_state.filter_key      = None
+            st.session_state.risicostudenten = []
+            st.session_state.laatste_analyse = None
+            st.success(f"Bestand '{uploaded_file.name}' succesvol geladen ({len(new_df)} rijen).")
+            st.rerun()
+        except Exception as e:
+            st.error(f"Fout bij inladen bestand: {e}")
+    
+
     st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
     _, col_m, _ = st.columns([1, 4, 1])
@@ -358,18 +403,18 @@ def show_start_screen():
                         st.rerun()
         st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
+    # st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
 
-    st.markdown(
-        """<hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
-        <p style="text-align:center; font-size:0.75rem; font-weight:500; color:#444;">
-            &#169; &#9432; Op deze analytics tool is de Creative Commons ShareAlike
-            Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
-            vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
-            Uitnodigingsregel – EduPlan. Utrecht: Npuls
-        </p>""",
-        unsafe_allow_html=True,
-    )
+    # st.markdown(
+        # """<hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
+        # <p style="text-align:center; font-size:0.75rem; font-weight:500; color:#444;">
+            # &#169; &#9432; Op deze analytics tool is de Creative Commons ShareAlike
+            # Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
+            # vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
+            # Uitnodigingsregel – EduPlan. Utrecht: Npuls
+        # </p>""",
+        # unsafe_allow_html=True,
+    # )
 
 
 # ─────────────────────────────────────────────
@@ -725,8 +770,19 @@ def _render_footer():
         </p>""",
         unsafe_allow_html=True,
     )
-
-
+with bottom():
+    # st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
+    st.markdown(
+        """<hr style="border:none; border-top:2px solid rgba(0,0,0,0.32); margin:0 0 20px 0;">
+        <p style="text-align:center; font-size:0.75rem; font-weight:500; color:gray; font-family:'General Sans',sans-serif;">
+            &#169; &#9432; 2026 Op deze analytics tool is de Creative Commons ShareAlike
+            Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
+            vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
+            Uitnodigingsregel – EduPlan. Utrecht: Npuls
+        </p>""",
+        unsafe_allow_html=True,
+    )
+    
 # ─────────────────────────────────────────────
 # Hoofdscherm — samenstellen
 # ─────────────────────────────────────────────
@@ -753,7 +809,7 @@ def show_main_screen():
         else:
             _render_eduplan_sectie()
 
-    _render_footer()
+    # _render_footer()
 
 
 # ─────────────────────────────────────────────

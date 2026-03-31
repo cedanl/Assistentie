@@ -980,7 +980,7 @@ wheels = [
 
 [[package]]
 name = "requests"
-version = "2.33.0"
+version = "2.33.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "certifi" },
@@ -988,9 +988,9 @@ dependencies = [
     { name = "idna" },
     { name = "urllib3" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/34/64/8860370b167a9721e8956ae116825caff829224fbca0ca6e7bf8ddef8430/requests-2.33.0.tar.gz", hash = "sha256:c7ebc5e8b0f21837386ad0e1c8fe8b829fa5f544d8df3b2253bff14ef29d7652", size = 134232, upload-time = "2026-03-25T15:10:41.586Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5f/a4/98b9c7c6428a668bf7e42ebb7c79d576a1c3c1e3ae2d47e674b468388871/requests-2.33.1.tar.gz", hash = "sha256:18817f8c57c6263968bc123d237e3b8b08ac046f5456bd1e307ee8f4250d3517", size = 134120, upload-time = "2026-03-30T16:09:15.531Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/5d/c814546c2333ceea4ba42262d8c4d55763003e767fa169adc693bd524478/requests-2.33.0-py3-none-any.whl", hash = "sha256:3324635456fa185245e24865e810cecec7b4caf933d7eb133dcde67d48cee69b", size = 65017, upload-time = "2026-03-25T15:10:40.382Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/8e/7540e8a2036f79a125c1d2ebadf69ed7901608859186c856fa0388ef4197/requests-2.33.1-py3-none-any.whl", hash = "sha256:4e6d1ef462f3626a1f0a0a9c42dd93c63bad33f9f1c1937509b8c5c8718ab56a", size = 64947, upload-time = "2026-03-30T16:09:13.83Z" },
 ]
 
 [[package]]
@@ -1284,6 +1284,7 @@ dependencies = [
     { name = "scikit-learn" },
     { name = "shap" },
     { name = "streamlit" },
+    { name = "streamlit-extras" },
     { name = "uvicorn" },
 ]
 
@@ -1299,7 +1300,21 @@ requires-dist = [
     { name = "scikit-learn", specifier = ">=1.8.0" },
     { name = "shap", specifier = ">=0.51.0" },
     { name = "streamlit", specifier = ">=1.46.0" },
+    { name = "streamlit-extras", specifier = ">=1.2.0" },
     { name = "uvicorn", specifier = ">=0.41.0" },
+]
+
+[[package]]
+name = "streamlit-extras"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "plotly" },
+    { name = "streamlit" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/cc/30/d9f50055f51e1752b5720c1248103788c2d4872e12c0f72302f8f5a9c0d0/streamlit_extras-1.2.0.tar.gz", hash = "sha256:9c12304b38cd73028a9ce11adb966f625fc81f35a553895ad885aa86a931eca5", size = 376337, upload-time = "2026-03-26T15:27:56.153Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/59/4a/6ba84b7b8ebebe13db8744e45dfd21c33b544f65c0c898fe1eff80f019db/streamlit_extras-1.2.0-py3-none-any.whl", hash = "sha256:ebf993edad381f256724ae7ac4b82cba0f59e2e0bd121923f3df87f43a15cd5d", size = 527538, upload-time = "2026-03-26T15:27:54.955Z" },
 ]
 
 [[package]]
