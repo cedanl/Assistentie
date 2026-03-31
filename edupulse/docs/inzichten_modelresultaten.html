@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="author" content="MarkdownViewer++" />
+        <title>inzichten_modelresultaten.md</title>
+        <style type="text/css">
+            
+/* Avoid page breaks inside the most common attributes, especially for exports (i.e. PDF) */
+td, h1, h2, h3, h4, h5, p, ul, ol, li {
+    page-break-inside: avoid; 
+}
+
+        </style>
+      </head>
+    <body>
+        <h1 id="inzichten-modelresultaten">Inzichten Modelresultaten</h1>
+<h2 id="model-evaluatie-en-bruikbaarheidsanalyse">Model Evaluatie en Bruikbaarheidsanalyse</h2>
+<blockquote>
+<p><strong>Opmerking:</strong> Deze analyse is uitgevoerd op instelling data.</p>
+</blockquote>
+<h3 id="model-aanbeveling-en-evaluatie">1.1 Model Aanbeveling en Evaluatie</h3>
+<p>🟢 🟢 🟢 Het model kan worden gebruikt 🟢 🟢 🟢</p>
+<p>Op basis van de evaluatie kan het model worden gebruikt. Het best presterende
+model is Random Forest, dat de beste balans laat zien tussen precisie en recall bij een selectie van 20% van de studenten voor
+uitnodiging. Dit impliceert dat dit model het meest effectief is in het identificeren van studenten met een verhoogd risico op uitval.</p>
+<blockquote>
+<p><strong>Belangrijke opmerking:</strong><br>
+Deze evaluatie is automatisch gegenereerd en dient als richtlijn.
+De uiteindelijke beslissing over het gebruik van het model ligt bij de gebruiker. Het is belangrijk om:</p>
+<ul>
+<li>De resultaten
+kritisch te evalueren in de context van uw specifieke situatie</li>
+<li>De beperkingen van het model te begrijpen</li>
+<li>De ethische
+implicaties van het gebruik te overwegen<br></li>
+</ul>
+</blockquote>
+<blockquote>
+<p>De gebruiker is zelf
+verantwoordelijk voor de interpretatie en het gebruik van de modelresultaten.</p>
+</blockquote>
+<p>Voor meer informatie over de gebruikte
+modellen wordt verwezen naar Hoofdstuk 2. Verdere details over de precisie, recall en model-specifieke analyses zijn te vinden in de
+latere hoofdstukken van dit rapport.</p>
+<p><strong>Prestaties van het aanbevolen model:</strong> - Precisie: 50.0% -
+Recall: 51.0% - Status: Betrouwbaar</p>
+<p><strong>Samenvatting:</strong>
+Bij 20% uitgenodigde studenten (170 uit 854
+studenten): - 51.0% van alle uitvallers wordt geïdentificeerd (86 van 170 uitvallers) - 50.0% van de uitgenodigde studenten valt
+daadwerkelijk uit (85 van 170 uitgenodigde studenten)</p>
+<hr />
+<p><strong>Toelichting:</strong> - <strong>Precisie (%):</strong> Percentage van de uitgenodigde studenten dat daadwerkelijk uitvalt - <strong>Recall (%):</strong> Percentage van alle uitvallers dat wordt geïdentificeerd - <strong>% Uitgenodigd:</strong> Percentage van alle studenten dat wordt uitgenodigd</p>
+<h3 id="wat-te-controleren-bij-een-slechte-aanbeveling">1.2 Wat te controleren bij een slechte aanbeveling</h3>
+<p>Wanneer een model een slechte aanbeveling doet, zijn er verschillende
+onderdelen in dit rapport die u kunt raadplegen om mogelijke oorzaken te achterhalen. Begin bij 3.3 Model Metrics om te controleren op
+tekenen van overfitting of underfitting, zoals grote verschillen tussen training en testresultaten of een negatieve R².</p>
+<p>Bekijk
+vervolgens hoofdstuk 4 (Data Kwaliteit) om te zien of er sprake is van ontbrekende of onbetrouwbare data die het model kan hebben
+beïnvloed.</p>
+<p>Tot slot bieden hoofdstukken 5, 6 en 7 inzicht in de prestaties en relevantie van individuele features. Een lage bijdrage of onverwacht gedrag van belangrijke variabelen kan verklaren waarom het model geen goede voorspelling doet.</p>
+<h2 id="gedetailleerde-modellen">2 Gedetailleerde Modellen</h2>
+<h3 id="random-forest">2.1 Random Forest</h3>
+<p>🟢 🟢 🟢 Het model kan worden gebruikt 🟢 🟢 🟢</p>
+<p><strong>Precisie:</strong> 50.0% <strong>Recall:</strong> 51.0% <strong>Status:</strong> Betrouwbaar <strong>Evaluatie:</strong> Model presteert goed voor gerichte interventies</p>
+<p><strong>Samenvatting:</strong> Bij
+20% uitgenodigde studenten (170 uit 854 studenten): - 51.0% van alle uitvallers wordt geïdentificeerd (86 van 170 uitvallers) - 50.0%
+van de uitgenodigde studenten valt daadwerkelijk uit (85 van 170 uitgenodigde studenten)</p>
+<p><strong>Prestaties bij Verschillende Uitnodigingspercentages</strong></p>
+<p><strong>Prestaties bij Verschillende Uitnodigingspercentages</strong></p>
+<table>
+<thead>
+<tr>
+<th>% Uitgenodigd</th>
+<th>Precisie (%)</th>
+<th>Recall (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.5</td>
+<td>100.0</td>
+<td>12.4</td>
+</tr>
+<tr>
+<td>5.0</td>
+<td>97.6</td>
+<td>24.1</td>
+</tr>
+<tr>
+<td>10.0</td>
+<td>75.3</td>
+<td>37.6</td>
+</tr>
+<tr>
+<td>15.0</td>
+<td>59.4</td>
+<td>44.7</td>
+</tr>
+<tr>
+<td>20.0</td>
+<td>50.6</td>
+<td>50.6</td>
+</tr>
+<tr>
+<td>25.0</td>
+<td>44.1</td>
+<td>55.3</td>
+</tr>
+<tr>
+<td>30.0</td>
+<td>40.2</td>
+<td>60.6</td>
+</tr>
+<tr>
+<td>40.0</td>
+<td>33.4</td>
+<td>67.1</td>
+</tr>
+<tr>
+<td>50.0</td>
+<td>29.5</td>
+<td>74.1</td>
+</tr>
+<tr>
+<td>75.0</td>
+<td>23.6</td>
+<td>88.8</td>
+</tr>
+<tr>
+<td>100.0</td>
+<td>19.9</td>
+<td>100.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lasso">2.2 Lasso</h3>
+<p>🟡 🟡 🟡 Gebruik met voorzichtigheid 🟡 🟡 🟡</p>
+<p><strong>Precisie:</strong> 33.0% <strong>Recall:</strong> 33.0% <strong>Status:</strong> Gebruik met voorzichtigheid <strong>Evaluatie:</strong> Model geeft matig signaal</p>
+<p><strong>Samenvatting:</strong> Bij 20% uitgenodigde studenten (170 uit 854 studenten): - 33.0% van alle uitvallers wordt geïdentificeerd (56 van 170 uitvallers) - 33.0% van de uitgenodigde studenten valt daadwerkelijk uit (56 van 170 uitgenodigde studenten)</p>
+<p><strong>Prestaties bij Verschillende Uitnodigingspercentages</strong></p>
+<table>
+<thead>
+<tr>
+<th>% Uitgenodigd</th>
+<th>Precisie (%)</th>
+<th>Recall (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.5</td>
+<td>57.1</td>
+<td>7.1</td>
+</tr>
+<tr>
+<td>5.0</td>
+<td>45.2</td>
+<td>11.2</td>
+</tr>
+<tr>
+<td>10.0</td>
+<td>32.9</td>
+<td>16.5</td>
+</tr>
+<tr>
+<td>15.0</td>
+<td>34.4</td>
+<td>25.9</td>
+</tr>
+<tr>
+<td>20.0</td>
+<td>31.8</td>
+<td>31.8</td>
+</tr>
+<tr>
+<td>25.0</td>
+<td>30.0</td>
+<td>37.6</td>
+</tr>
+<tr>
+<td>30.0</td>
+<td>28.5</td>
+<td>42.9</td>
+</tr>
+<tr>
+<td>40.0</td>
+<td>25.5</td>
+<td>51.2</td>
+</tr>
+<tr>
+<td>50.0</td>
+<td>24.4</td>
+<td>61.2</td>
+</tr>
+<tr>
+<td>75.0</td>
+<td>22.0</td>
+<td>82.9</td>
+</tr>
+<tr>
+<td>100.0</td>
+<td>19.9</td>
+<td>100.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="svm">2.3 SVM</h3>
+<p>🔴 🔴 🔴 Niet bruikbaar 🔴 🔴 🔴</p>
+<p><strong>Precisie:</strong> 16.0% <strong>Recall:</strong> 16.0% <strong>Status:</strong> Niet bruikbaar <strong>Evaluatie:</strong> Model heeft verbetering nodig</p>
+<p><strong>Samenvatting:</strong> Bij 20% uitgenodigde studenten (170 uit 854 studenten): - 16.0% van alle uitvallers wordt geïdentificeerd (27 van 170 uitvallers) - 16.0% van de uitgenodigde studenten valt daadwerkelijk uit (27 van 170 uitgenodigde studenten)</p>
+<p><strong>Prestaties bij Verschillende Uitnodigingspercentages</strong></p>
+<table>
+<thead>
+<tr>
+<th>% Uitgenodigd</th>
+<th>Precisie (%)</th>
+<th>Recall (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2.5</td>
+<td>95.2</td>
+<td>11.8</td>
+</tr>
+<tr>
+<td>5.0</td>
+<td>78.6</td>
+<td>19.4</td>
+</tr>
+<tr>
+<td>10.0</td>
+<td>67.1</td>
+<td>33.5</td>
+</tr>
+<tr>
+<td>15.0</td>
+<td>57.0</td>
+<td>42.9</td>
+</tr>
+<tr>
+<td>20.0</td>
+<td>49.4</td>
+<td>49.4</td>
+</tr>
+<tr>
+<td>25.0</td>
+<td>45.1</td>
+<td>56.5</td>
+</tr>
+<tr>
+<td>30.0</td>
+<td>38.7</td>
+<td>58.2</td>
+</tr>
+<tr>
+<td>40.0</td>
+<td>31.1</td>
+<td>62.4</td>
+</tr>
+<tr>
+<td>50.0</td>
+<td>28.1</td>
+<td>70.6</td>
+</tr>
+<tr>
+<td>75.0</td>
+<td>23.3</td>
+<td>87.6</td>
+</tr>
+<tr>
+<td>100.0</td>
+<td>19.9</td>
+<td>100.0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="model-evaluatie">3 Model Evaluatie</h2>
+<h3 id="precisie-plot">3.1 Precisie Plot</h3>
+<p><img src="precisie.png" alt="Precisie per uitnodigingspercentage voor alle modellen" /><em>Precisie per uitnodigingspercentage voor alle modellen</em></p>
+<h3 id="recall-plot">3.2 Recall Plot</h3>
+<p><img src="recall.png" alt="Recall per uitnodigingspercentage voor alle modellen" /><em>Recall per uitnodigingspercentage voor alle modellen</em></p>
+<h3 id="model-metrics">3.3 Model Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>R² (train)</th>
+<th>MSE (train)</th>
+<th>R² (test)</th>
+<th>MSE (test)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lasso</td>
+<td>0.020</td>
+<td>0.156</td>
+<td>0.035</td>
+<td>0.143</td>
+</tr>
+<tr>
+<td>Random Forest</td>
+<td>0.167</td>
+<td>0.133</td>
+<td>0.154</td>
+<td>0.126</td>
+</tr>
+<tr>
+<td>Support Vector</td>
+<td>-4.024</td>
+<td>0.801</td>
+<td>-4.516</td>
+<td>0.819</td>
+</tr>
+</tbody>
+</table>
+<h4 id="interpretatie-van-de-metrics">3.3.1 Interpretatie van de Metrics</h4>
+<ol>
+<li><strong>Overfitting:</strong> Wanneer een model aanzienlijk beter presteert op de trainingsdata dan op de testdata, kan dit wijzen op overfitting. Het model heeft dan niet alleen de onderliggende patronen geleerd, maar ook de ruis of uitzonderingen in de trainingsset, waardoor het minder goed generaliseert naar nieuwe data.</li>
+<li><strong>Underfitting:</strong> Als een model zowel op de trainings- als testdata slecht presteert, kan er sprake zijn van underfitting. Dit houdt in dat het model te simpel is om de relevante patronen in de data te herkennen, of dat de gebruikte features onvoldoende informatief zijn.</li>
+<li><strong>Negatieve R²-waarde:</strong> Een negatieve R²-waarde betekent dat het model slechter presteert dan simpelweg het gemiddelde van de doelvariabele voorspellen. Dit kan wijzen op een verkeerd gekozen model, slecht afgestemde hyperparameters of structurele problemen in de data.</li>
+</ol>
+<h2 id="data-kwaliteit">4 Data Kwaliteit</h2>
+<h3 id="algemene-statistieken">4.1 Algemene Statistieken</h3>
+<ul>
+<li>Totaal aantal rijen: 870</li>
+<li>Totaal aantal kolommen: 45</li>
+<li>Kolommen met missing values: 0 (0.0%)</li>
+<li>Totaal aantal missing values: 0 (0.0% van alle cellen)</li>
+</ul>
+<h3 id="missing-values-per-kolom">4.2 Missing Values per Kolom</h3>
+<p>Geen missing values gevonden in de dataset.</p>
+<h3 id="missing-value-patronen">4.3 Missing Value Patronen</h3>
+<p>Geen missing value patronen gevonden in de dataset.</p>
+<h3 id="heatmap">4.4 Heatmap</h3>
+<p><img src="heatmap.png" alt="Heatmap van missing values in de dataset" /> <em>Heatmap van missing values in de dataset</em></p>
+<h2 id="lasso-features">5 Lasso Features</h2>
+<h3 id="top-5-features-met-grootste-impact">5.1 Top 5 Features met Grootste Impact</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Richting_nan</td>
+<td>0.0000</td>
+</tr>
+<tr>
+<td>max1studie</td>
+<td>-0.0538</td>
+</tr>
+<tr>
+<td>DSV</td>
+<td>0.0000</td>
+</tr>
+<tr>
+<td>Zorgenwelzijn</td>
+<td>-0.0077</td>
+</tr>
+<tr>
+<td>Techniek</td>
+<td>-0.0000</td>
+</tr>
+</tbody>
+</table>
+<h2 id="random-forest-features">6 Random Forest Features</h2>
+<h3 id="top-5-features-met-grootste-impact-1">6.1 Top 5 Features met Grootste Impact</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Belang</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total_verzuimW4_unap</td>
+<td>0.1223</td>
+</tr>
+<tr>
+<td>Total_verzuimW10_unap</td>
+<td>0.1109</td>
+</tr>
+<tr>
+<td>Total_verzuimW6_unap</td>
+<td>0.0671</td>
+</tr>
+<tr>
+<td>Total_verzuimW7_ap</td>
+<td>0.0640</td>
+</tr>
+<tr>
+<td>Studentnummer</td>
+<td>0.0613</td>
+</tr>
+</tbody>
+</table>
+<h3 id="voorbeeld-van-een-beslissingsboom">6.2 Voorbeeld van een beslissingsboom</h3>
+<p><img src="beslisboom.png" alt="Voorbeeld van een beslissingsboom uit het Random Forest model" /><em>Voorbeeld van een beslissingsboom uit het Random Forest model</em></p>
+<h2 id="svm-features">7 SVM Features</h2>
+<h3 id="top-5-features-met-grootste-impact-2">7.1 Top 5 Features met Grootste Impact</h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Belang</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total_verzuimW10_unap</td>
+<td>0.0687</td>
+</tr>
+<tr>
+<td>Total_verzuimW4_unap</td>
+<td>0.0577</td>
+</tr>
+<tr>
+<td>max1studie</td>
+<td>0.0362</td>
+</tr>
+<tr>
+<td>Total_verzuimW2_ap</td>
+<td>0.0343</td>
+</tr>
+<tr>
+<td>Total_verzuimW2_unap</td>
+<td>0.0216</td>
+</tr>
+</tbody>
+</table>
+<h3 id="svm-feature-importance">7.2 SVM Feature Importance</h3>
+<p><img src="feature.png" alt="Feature importance voor het SVM model" /><em>Feature importance voor het SVM model</em></p>
+<h2 id="uitleg">8 Uitleg</h2>
+<h3 id="model-uitleg">8.0.1 Model Uitleg</h3>
+<h4 id="random-forest-model">8.0.1.1 Random Forest Model</h4>
+<p>Het Random Forest model
+gebruikt een ensemble van beslissingsbomen om voorspellingen te maken. Dit model is bijzonder goed in het vangen van complexe,
+niet-lineaire relaties in de data. Door het gebruik van meerdere beslissingsbomen kan het model zowel lineaire als niet-lineaire
+relaties identificeren. Dit model kan ook complexe interacties tussen features modelleren, zoals de combinatie van studievoortgang en
+aanwezigheid.</p>
+<h4 id="lasso-model">8.0.1.1 Lasso Model</h4>
+<p>Het Lasso model is een lineair model met L1 regularisatie,
+wat helpt bij feature selectie. Dit model is transparanter in zijn besluitvorming en kan helpen bij het identificeren van de
+belangrijkste voorspellende factoren. Door de L1 regularisatie worden minder belangrijke features naar nul gedreven, waardoor we een
+duidelijk beeld krijgen van welke factoren het meest bijdragen aan de voorspellingen.</p>
+<h4 id="support-vector-machine-svm-model">8.0.1.3 Support Vector Machine (SVM) Model</h4>
+<p>Het SVM model zoekt de optimale scheidingslijn tussen klassen met maximale marge. Dit model is vooral effectief in situaties met
+duidelijke scheiding tussen klassen. Het is bijzonder gevoelig voor de schaal van de features en kan goed omgaan met niet-lineaire
+relaties tussen features. De feature importance plot toont welke factoren het meest bijdragen aan deze scheiding.</p>
+<h3 id="stoplight-evaluatie-systeem-uitleg">8.0.2 Stoplight Evaluatie Systeem Uitleg</h3>
+<p>Het stoplichtsysteem evalueert de bruikbaarheid van voorspellende modellen voor het identificeren van studenten met een verhoogd
+risico op uitval. Deze evaluatie is gebaseerd op de balans tussen precisie en recall bij verschillende selectiepercentages.In dit
+rapport richten we ons specifiek op een scenario waarbij 20% van alle studenten wordt uitgenodigd voor een gesprek. De keuze voor dit
+percentage is gebaseerd op de praktijk: bij beperkte middelen moeten vooral die studenten worden geïdentificeerd die het hoogste risico
+op uitval lopen. Het model moet dus effectief zijn in het correct selecteren van deze top 20%.</p>
+<p>Hoewel we op basis van dit
+criterium modellen beoordelen, benadrukken we dat het aanbevolen wordt om uiteindelijk alle studenten te spreken. De modelanalyse dient
+daarbij als hulpmiddel om prioriteiten te stellen, niet om studenten uit te sluiten.</p>
+<p>Het systeem gebruikt drie kleuren om de
+bruikbaarheid aan te duiden:</p>
+<ul>
+<li><p>🟢 Groen: Model presteert goed voor gerichte interventies</p>
+<ul>
+<li>Precisie ≥ 40% EN Recall ≥ 40%</li>
+<li>Betrouwbaar voor het identificeren van risicostudenten</li>
+</ul>
+</li>
+<li><p>🟡 Geel: Model geeft matig signaal</p>
+<ul>
+<li>Precisie ≥ 30% EN Recall ≥ 30%</li>
+<li>Gebruik met voorzichtigheid, aanvullende informatie aanbevolen</li>
+</ul>
+</li>
+<li><p>🔴 Rood: Model heeft verbetering nodig</p>
+<ul>
+<li>Precisie &lt; 30% OF Recall &lt; 30%</li>
+<li>Niet betrouwbaar voor directe interventies</li>
+</ul>
+</li>
+</ul>
+<h4 id="precisie-en-recall-uitleg">8.0.2.1 Precisie en Recall Uitleg</h4>
+<ul>
+<li><strong>Precisie:</strong> Het percentage van de
+uitgenodigde studenten dat daadwerkelijk uitvalt. Een hoge precisie betekent dat we efficiënt zijn in het identificeren van studenten
+die echt risico lopen.</li>
+<li><strong>Recall:</strong> Het percentage van alle uitvallers dat we kunnen identificeren. Een
+hoge recall betekent dat we de meeste uitvallers kunnen opsporen.</li>
+<li><strong>Trade-off:</strong> Er is altijd een
+afweging tussen precisie en recall. Een hoger uitnodigingspercentage leidt tot een hogere recall maar lagere precisie, en vice versa.</li>
+</ul>
+
+    </body>
+</html>
+            
