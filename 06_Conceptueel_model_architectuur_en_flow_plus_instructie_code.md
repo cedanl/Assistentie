@@ -10,70 +10,66 @@ In haar promotieonderzoek introduceerde Irene Eegdeman een methode om studenten 
 ### Doel
 Een intelligente webservice die zelfstandig taken kan uitvoeren en vragen kan beantwoorden op basis van MBO-studentdata. In de eerste fase ligt ***de focus op enerzijds het voorspellen en signaleren van potentieel studentuitval, anderzijds op het ondersteunen van interventies om uitval te voorkomen.***
 
-We willen als uitgangspunt gebruik maken van het werk dat heeft geleid tot **"de Uitnodigingsregel"**. Bij het Uitnodigingsregel-project wordt, op basis van voorspelmodellen, gesignaleerd welke studenten een hoge kans op uitval hebben, waarna deze studenten worden uitgenodigd voor een "interventie"-gesprek met een SLB-er.
+We maken gebruik van het werk dat heeft geleid tot **"de Uitnodigingsregel"** (MondriaanBI / Irene Eegdeman). Op basis van voorspelmodellen wordt gesignaleerd welke studenten een hoge kans op uitval hebben, waarna deze studenten worden uitgenodigd voor een "interventie"-gesprek met een SLB-er.
 
 ### Productschets
 
-Een agentic webservice/app die zelfstandig taken kan uitvoeren en vragen kan beantwoorden op basis van MBO-studentdata. We richten ons in eerste instantie op het voorspellen van uitval, het verklaren van deze voorspelling, en het genereren van mogelijke interventies, gepresenteerd in een downloadbaar rapport, om uitval van een student te voorkomen.
+Een agentic webservice/app die zelfstandig taken kan uitvoeren en vragen kan beantwoorden op basis van MBO-studentdata. We richten ons op het voorspellen van uitval, het verklaren van deze voorspelling, en het genereren van mogelijke interventies, gepresenteerd in een downloadbaar Word-rapport (EduPlan).
 
 De app bestaat uit twee processen:
-- **Streamlit** (`frontend/app.py`, port 8502): interactieve gebruikersinterface. Snel en eenvoudig in gebruik; gestandaardiseerd ontwerp. Mogelijk nadeel: schaalbaarheid — in een later stadium is React.js een alternatief voor de frontend.
-- **FastAPI** (`backend/main.py`, port 8000): backend API-endpoints voor ML-voorspellingen, SHAP-analyse en LLM-calls. Snel en schaalbaar.
+- **Streamlit** (`frontend/app.py`, port 8502): interactieve gebruikersinterface met startscherm en hoofdscherm.
+- **FastAPI** (`backend/main.py`, port 8000): backend API-endpoints voor ML-voorspellingen, SHAP-analyse en LLM-calls.
 
-Daarnaast bevat het project een losstaande CLI-agent (`main.py`) op basis van de Anthropic Claude API, die onafhankelijk van de webapplicatie draait.
+Daarnaast bevat het project een losstaande CLI-agent (`main.py`) op basis van de Anthropic Claude API.
 
 ---
 
 ## Conceptueel Model voor uitvalsignalering en interventie
 
-Hieronder een compleet conceptueel model van wat de app doet en kan doen.
-
-In eerste instantie beperken we ons op het voorspellen van uitval, het verklaren van deze voorspelling, en het genereren van mogelijke interventies, gepresenteerd in een te downloaden rapport (Markdown of Word).
-
 1. **Dataverzameling**
 
     - **Bronnen:**
-        - In eerste instantie maken we gebruik van synthetisch gegenereerde data (`shared/data.csv`) die de structuur van de uitnodigingsregel-data nabootst. De volgende variabelen zijn aanwezig:
+        - Synthetische studentdata (`shared/data.csv`) gebaseerd op de Uitnodigingsregel-structuur: **1.000 studenten** verdeeld over **11 opleidingen**.
+        - Optioneel: eigen databestand uploaden via de app (.csv of .xlsx).
 
-        | Variabele       | Uitleg                                         |
-        | --------------- | ---------------------------------------------- |
-        | Student-ID      | Uniek studentnummer (begint bij 1001)          |
-        | Naam            | Naam van de student                            |
-        | Opleiding       | ICT, Zorg, Techniek, Economie of Handel        |
-        | Klas            | A1–D2 (8 klassen)                              |
-        | Cijfer          | Gemiddeld cijfer (normaal verdeeld ~6.5)       |
-        | Aanwezigheid    | Aanwezigheidspercentage (70–100%)              |
-        | EC              | Behaalde studiepunten (20–60)                  |
-        | Waarschuwingen  | Aantal ontvangen waarschuwingen (Poisson ~1)   |
-        | Mentor          | Naam van de mentor (8 mentoren)                |
-        | Uitgevallen     | 0/1 label (afgeleid van risicoscore)           |
-        | Schooljaar      | 2025-2026                                      |
+        | Variabele | Uitleg |
+        |-----------|--------|
+        | `Studentnummer` | Uniek studentnummer |
+        | `Naam` | Naam van de student (synthetisch) |
+        | `Opleiding` | Naam van de opleiding (bijv. Kapper, Kok, Verzorgende) |
+        | `Klas` | Klasaanduiding (bijv. 1A, 2B) |
+        | `Mentor` | Naam van de mentor (synthetisch) |
+        | `StudentAge` | Leeftijd student |
+        | `StudentGender` | Geslacht (binair) |
+        | `Aanmel_aantal` | Aantal aanmeldingen |
+        | `max1studie` | Maximaal één studie tegelijk (binair) |
+        | `absence_unauthorized` | Ongeoorloofd verzuim |
+        | `absence_authorized` | Geoorloofd verzuim |
+        | `VooroplNiveau_*` | Vooropleidingsniveau (binaire kolommen) |
+        | `Economie`, `Techniek`, `DSV`, `Zorgenwelzijn`, … | Sector (binaire kolommen) |
+        | `ROCMondriaan` | Instelling (binair) |
+        | `Dropout` | Uitvallabel 0/1 |
 
-        Later kunnen we uitbreiden met data uit:
-        - Kernregistratiesysteem (Eduarte, Educator, Osiris): summatieve resultaten, BSA, formatieve resultaten
-        - Leeromgeving (LMS): inloggegevens, interacties, contentgebruik
-        - Toetsresultaten en opdrachten
-        - Demografische en achtergrondinformatie
-        - Feedback en enquêtes
+        Later kunnen we uitbreiden met data uit kernregistratiesystemen (Eduarte, Osiris), LMS-systemen en toetsresultaten.
 
 2. **Data-integratie en Preprocessing**
-    - Zolang we ons beperken tot de synthetische dataset laten we zware preprocessing rusten. De data wordt gegenereerd en het model getraind via `shared/data_prep.py`.
-    - Het getrainde model wordt opgeslagen als `backend/model.pkl`.
+    - Data wordt gedownload en voorbereid via `shared/data_prep.py`.
+    - Het voorgetrainde model (`backend/model.joblib`) is een **RandomForestRegressor** van MondriaanBI.
+    - Features worden dynamisch bepaald vanuit `data.csv` (alle kolommen behalve `Dropout`, `Naam`, `Opleiding`, `Klas`, `Mentor`).
 
 3. **Analytics Engine**
 
-    - **Predictieve Analyse:** Risico op uitval voorspellen per student via een RandomForest-model (drempelwaarde: **0.35**).
+    - **Predictieve Analyse:** Continue risicoscore (0–1) per student via de RandomForestRegressor. Geen vaste drempelwaarde — studenten worden gerangschikt van hoogste naar laagste risico.
     - **Diagnostische Analyse:** SHAP TreeExplainer geeft inzicht in de bijdrage van elke variabele aan de voorspelling.
-    - **Prescriptieve Analyse:** OpenAI GPT-4o-mini genereert een Nederlandstalige uitleg en advies voor de mentor.
+    - **Prescriptieve Analyse:** OpenAI GPT-4o-mini genereert een Nederlandstalige uitleg en mentoradvies (EduPlan).
 
 4. **Visualisatie en Interactie**
 
-    - **Metrics:** Gemiddeld cijfer, aanwezigheid en waarschuwingen per gefilterde groep.
-    - **Grafieken:** Histogram (cijferverdeling), boxplot (aanwezigheid per opleiding).
-    - **Tabel:** Studentenoverzicht met progress bars voor aanwezigheid en EC.
-    - **Filters:** Opleiding, Klas, Mentor in de sidebar.
-    - **Risicostudenten:** Overzicht van studenten met verhoogde uitvalkans, plus selectie voor gedetailleerde individuele analyse.
-    - **Export:** Download risicoanalyse als Markdown (.md) of Word (.docx).
+    - **Startscherm:** Upload-veld, zoekbalk, snelkeuze-opleidingen.
+    - **Hoofdscherm:** Lichtroze header met navigatieknoppen (← TERUG / UITNODIGINGSREGEL / EDUPLAN).
+    - **UITNODIGINGSREGEL-tab:** Horizontale staafgrafiek — top-N studenten gesorteerd hoog→laag op risico.
+    - **EDUPLAN-tab:** Selecteer een student → genereer Nederlandstalig AI-advies → download als Word (.docx).
+    - **Export:** EduPlan als Word-rapport (.docx).
 
 5. **Stakeholders en Feedback Loop**
 
@@ -87,21 +83,23 @@ In eerste instantie beperken we ons op het voorspellen van uitval, het verklaren
 ## 1. Dataverzameling & Preprocessing
 
 **Bronnen:**
-- Synthetische data gegenereerd via `shared/data_prep.py` (500 studenten).
+- Synthetische data van [cedanl/Uitnodigingsregel](https://github.com/cedanl/Uitnodigingsregel) (`synth_data_pred.csv`).
+- Voorgetraind model van [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) (`random_forest_regressor.joblib`).
 
 **Preprocessing stappen (in `data_prep.py`):**
-- Genereer 500 studenten met willekeurige kenmerken en een risk_score-gebaseerd uitvallabel.
-- Train een `RandomForestClassifier` (100 estimators) op features: Cijfer, Aanwezigheid, Waarschuwingen, EC.
-- Sla op als `shared/data.csv` en `backend/model.pkl`.
+1. Download `synth_data_pred.csv` van cedanl/Uitnodigingsregel.
+2. Download `random_forest_regressor.joblib` van MondriaanBI/Uitnodigingsregel → sla op als `backend/model.joblib`.
+3. Voeg synthetische kolommen `Naam`, `Klas`, `Mentor` en `Opleiding` toe.
+4. Sla op als `shared/data.csv` (1.000 studenten).
 
 ---
 
 ## 2. Opslag en Data-Integratie
 
-| Component               | Technologie                                      |
-| ----------------------- | ------------------------------------------------ |
-| **Studentdata**         | `shared/data.csv` (500 rijen, CSV)               |
-| **ML-model**            | `backend/model.pkl` (RandomForest, pickle)       |
+| Component | Technologie |
+|-----------|-------------|
+| **Studentdata** | `shared/data.csv` (1.000 rijen, CSV, 11 opleidingen) |
+| **ML-model** | `backend/model.joblib` (RandomForestRegressor, joblib) |
 
 ---
 
@@ -110,21 +108,21 @@ In eerste instantie beperken we ons op het voorspellen van uitval, het verklaren
 **Analytics functionaliteiten:**
 
 1. **Uitval voorspellen**
-   - Welke studenten lopen risico? (drempelwaarde 0.35)
-   - Per student meten op basis van Cijfer, Aanwezigheid, Waarschuwingen en EC.
+   - Continue risicoscore (0.0–1.0) per student via `model.predict()`.
+   - Alle studenten worden gerangschikt van hoogste naar laagste risico — geen vaste drempelwaarde.
 
 2. **Feature importance via SHAP**
-   - SHAP TreeExplainer geeft per feature de bijdrage aan de uitvalkans.
+   - SHAP TreeExplainer op de RandomForestRegressor geeft per feature de bijdrage aan de risicoscore.
+   - Output heeft shape `(n_samples, n_features)` — geen `[1]` class-index nodig.
 
 3. **Generatieve AI (OpenAI GPT-4o-mini)**
-   - **Risicouitleg:** Nederlandstalige uitleg waarom een student risico loopt, met advies voor de mentor.
+   - **EduPlan:** Nederlandstalige uitleg waarom een student risico loopt, met advies voor de mentor.
    - **Managementsamenvatting:** Samenvatting van studentdata voor het management.
-   - **AI Q&A:** Vrij tekstantwoord op vragen over de gefilterde dataset.
 
 **Gebruikte technieken:**
-- **Predictive Modeling** (scikit-learn RandomForest) → uitvalrisico voorspellen.
+- **Predictive Modeling** (scikit-learn RandomForestRegressor) → continue risicoscore.
 - **SHAP** → feature importance verklaren.
-- **Generatieve AI (OpenAI GPT-4o-mini, Responses API met code_interpreter)** → uitleg, advies en samenvatting.
+- **Generatieve AI (OpenAI GPT-4o-mini)** → uitleg, advies en samenvatting.
 
 ---
 
@@ -133,15 +131,15 @@ In eerste instantie beperken we ons op het voorspellen van uitval, het verklaren
 **Gebruikers:** Docenten/SLB-ers (signalering, monitoring, interventies).
 
 **Functionaliteiten:**
-- ✅ Studentenoverzicht (filters, metrics, tabel, grafieken)
-- ✅ CSV-download van gefilterde selectie
-- ✅ Uitval voorspellen per student (bulk)
-- ✅ Risicoanalyse per student (SHAP + AI-uitleg)
-- ✅ Download risicoanalyse als Markdown of Word (.docx)
-- ✅ AI Q&A over studentdata in natuurlijke taal
-- ✅ Managementsamenvatting genereren
+- ✅ Eigen databestand uploaden (.csv / .xlsx)
+- ✅ Opleiding selecteren via zoekbalk of snelkeuze-pills
+- ✅ Uitval voorspellen per student (bulk, automatisch bij filter-wijziging)
+- ✅ UITNODIGINGSREGEL-tab: staafgrafiek top-N risicostudenten
+- ✅ EDUPLAN-tab: Nederlandstalig AI-advies per student
+- ✅ Download EduPlan als Word (.docx)
+- ✅ Terugkeren naar startscherm via ← TERUG knop
 
-**Tech Stack:** Streamlit (frontend), FastAPI (backend), OpenAI GPT-4o-mini (AI), scikit-learn + SHAP (ML).
+**Tech Stack:** Streamlit (frontend), FastAPI (backend), OpenAI GPT-4o-mini (AI), scikit-learn + SHAP (ML), streamlit-extras (bottom container).
 
 ---
 
@@ -150,35 +148,51 @@ In eerste instantie beperken we ons op het voorspellen van uitval, het verklaren
 ```mermaid
 graph TB
     subgraph Frontend["Frontend (port 8502)"]
-        APP["frontend/app.py<br/>Streamlit UI"]
-        UI["frontend/ui.py<br/>(ongebruikt)"]
+        APP["frontend/app.py\nStreamlit UI"]
+        STYLES["frontend/styles.py\nCSS & kleurconstanten"]
     end
 
     subgraph Backend["Backend (port 8000)"]
-        API["backend/main.py<br/>FastAPI"]
-        MODEL["backend/model.pkl<br/>RandomForest"]
+        API["backend/main.py\nFastAPI"]
+        MODEL["backend/model.joblib\nRandomForestRegressor"]
         SHAP["SHAP TreeExplainer"]
         OPENAI["OpenAI GPT-4o-mini"]
     end
 
     subgraph Shared["Shared"]
-        DATA["shared/data.csv<br/>500 studenten"]
-        PREP["shared/data_prep.py<br/>Data generatie + training"]
+        DATA["shared/data.csv\n1.000 studenten, 11 opleidingen"]
+        PREP["shared/data_prep.py\nDownload data + model"]
+    end
+
+    subgraph Bron["Externe bronnen"]
+        UITNODIG["MondriaanBI/Uitnodigingsregel\n(GitHub)"]
+        CEDANL["cedanl/Uitnodigingsregel\n(GitHub)"]
     end
 
     subgraph Standalone["Standalone CLI"]
-        MAIN["main.py<br/>Claude Agent (CLI)"]
-        ANTHROPIC["Anthropic API<br/>(claude-sonnet-4-5)"]
+        MAIN["main.py\nClaude Agent"]
+        ANTHROPIC["Anthropic API"]
     end
 
     APP -->|"HTTP POST"| API
+    STYLES -->|importeert| APP
     API --> MODEL
     API --> SHAP
     API --> OPENAI
-    PREP -->|genereert| DATA
-    PREP -->|traint & slaat op| MODEL
-    DATA -->|laadt| APP
+    PREP -->|"downloadt model"| UITNODIG
+    PREP -->|"downloadt data"| CEDANL
+    UITNODIG -->|"model.joblib"| PREP
+    CEDANL -->|"synth_data_pred.csv"| PREP
+    PREP -->|"genereert"| DATA
+    PREP -->|"slaat op"| MODEL
+    DATA -->|"laadt"| APP
     MAIN --> ANTHROPIC
+
+    style Frontend fill:#dbeafe
+    style Backend fill:#dcfce7
+    style Shared fill:#fef9c3
+    style Bron fill:#ede9fe
+    style Standalone fill:#fce7f3
 ```
 
 ### Sequentiediagram (gebruikersflow)
@@ -188,45 +202,43 @@ sequenceDiagram
     actor Gebruiker
     participant FE as Streamlit Frontend
     participant BE as FastAPI Backend
-    participant RF as RandomForest Model
+    participant RF as RandomForestRegressor
     participant SHAP as SHAP Explainer
     participant GPT as OpenAI GPT-4o-mini
 
-    Gebruiker->>FE: Selecteer filters (Opleiding, Klas, Mentor)
-    FE->>FE: Laad data.csv & filter studenten
+    Gebruiker->>FE: Startscherm — upload bestand of kies opleiding
+    FE->>FE: Navigeer naar hoofdscherm
 
-    Gebruiker->>FE: Klik "Voorspel uitval"
-    loop Per student
-        FE->>BE: POST /predict_dropout (Cijfer, Aanwezigheid, EC, Waarschuwingen)
-        BE->>RF: Voorspel dropout kans
-        RF-->>BE: Kans (0.0 – 1.0)
-        BE-->>FE: Risico (drempel: 0.35) + kans %
+    FE->>FE: Laad data.csv & filter op opleiding/klas
+    note over FE: Automatisch bij filter-wijziging
+
+    loop Per student in selectie
+        FE->>BE: POST /predict_dropout (alle 26 features)
+        BE->>RF: predict() → continue risicoscore
+        RF-->>BE: Score (0.0 – 1.0)
+        BE-->>FE: Score als kans %
     end
 
-    FE->>FE: Sla op in session_state.risicostudenten
-    FE->>Gebruiker: Toon dashboard (tabel, metrics, grafieken)
+    FE->>FE: Sorteer studenten hoog→laag op risico
+    FE->>Gebruiker: Toon staafgrafiek top-N (UITNODIGINGSREGEL-tab)
 
-    Gebruiker->>FE: Selecteer hoog-risico student & klik "Toon risicoanalyse"
-    FE->>BE: POST /feature_importance (student data)
-    BE->>SHAP: Bereken SHAP waarden
-    SHAP-->>BE: Feature bijdragen
-    BE-->>FE: SHAP waarden per feature
+    Gebruiker->>FE: Ga naar EDUPLAN-tab, selecteer lerende
+    FE->>BE: POST /feature_importance (studentdata)
+    BE->>SHAP: shap_values() op RF Regressor
+    SHAP-->>BE: Feature-bijdragen per kolom
+    BE-->>FE: SHAP-waarden
 
-    FE->>BE: POST /explain_risk (data + voorspelling + kans)
-    BE->>GPT: Genereer uitleg in het Nederlands
-    GPT-->>BE: Nederlandstalige uitleg
-    BE-->>FE: AI-uitleg tekst
-    FE->>Gebruiker: Toon risicoanalyse + SHAP
+    FE->>BE: POST /explain_risk (data + kans)
+    BE->>GPT: Genereer Nederlandstalige uitleg + advies
+    GPT-->>BE: EduPlan tekst
+    BE-->>FE: AI-uitleg
+    FE->>Gebruiker: Toon EduPlan
 
     Gebruiker->>FE: Download rapport
-    FE->>Gebruiker: Markdown (.md) of Word (.docx)
+    FE->>Gebruiker: Word (.docx)
 
-    Gebruiker->>FE: Stel vraag / genereer samenvatting
-    FE->>BE: POST /summarize (CSV data string)
-    BE->>GPT: Genereer samenvatting of antwoord
-    GPT-->>BE: Samenvatting / antwoord
-    BE-->>FE: Tekst
-    FE->>Gebruiker: Toon resultaat
+    Gebruiker->>FE: Klik ← TERUG
+    FE->>Gebruiker: Terug naar startscherm
 ```
 
 ---
@@ -240,68 +252,92 @@ edupulse/
 │
 ├── backend/
 │   ├── __init__.py
-│   └── main.py          # FastAPI backend: ML- & AI-endpoints
+│   ├── main.py          # FastAPI backend: ML- & AI-endpoints
+│   ├── model.joblib     # RandomForestRegressor (Uitnodigingsregel, MondriaanBI)
+│   └── README.md
 │
 ├── frontend/
-│   ├── app.py           # Streamlit UI (actief)
+│   ├── app.py           # Streamlit UI — startscherm + hoofdscherm
+│   ├── styles.py        # CSS-constanten en kleurconstanten
 │   └── ui.py            # (ongebruikt)
 │
 ├── shared/
-│   ├── data.csv         # 500 synthetische studenten (schooljaar 2025-2026)
-│   └── data_prep.py     # Data generatie + model training
+│   ├── data.csv         # 1.000 synthetische studenten, 11 opleidingen
+│   ├── data_prep.py     # Download data + model van GitHub
+│   ├── synth_data_pred.csv  # Ruwe download (tussenstap)
+│   └── README.md
 │
 ├── agents/              # (gereserveerd voor toekomstige agents)
+│   └── README.md
 │
 ├── assets/
 │   ├── npuls_logo.png
-│   └── achtergrond.png
+│   ├── achtergrond.png
+│   └── README.md
 │
 ├── docs/
-│   └── architectuur.md  # Mermaid diagrammen
+│   └── architectuur.md  # Mermaid diagrammen (schermstructuur + flow)
 │
 ├── main.py              # Standalone Claude CLI-agent (Anthropic API)
 │
 ├── CLAUDE.md            # Instructies voor Claude Code
 ├── README.md
-├── 1_start_fastapi.bat / 1_start_fastapi.sh
-├── 2_start_streamlit.bat / 2_start_streamlit.sh
-└── pyproject.toml
+├── pyproject.toml
+├── uv.lock
+├── 1_start_fastapi.sh / 1_start_fastapi.bat
+└── 2_start_streamlit.sh / 2_start_streamlit.bat
 ```
 
 ---
 
 ## Backend endpoints (`backend/main.py`)
 
-| Endpoint              | Input                                        | Doel                                                          |
-| --------------------- | -------------------------------------------- | ------------------------------------------------------------- |
-| `POST /predict_dropout` | `StudentData` (Cijfer, Aanwezigheid, Waarschuwingen, EC) | Binaire uitvalvoorspelling (drempel: 0.35) |
-| `POST /explain_risk`  | Student data + prediction + probability      | Nederlandstalige AI-uitleg via GPT-4o-mini                   |
-| `POST /feature_importance` | Student data                           | SHAP waarden per feature                                      |
-| `POST /summarize`     | CSV data string                              | Managementsamenvatting of Q&A-antwoord via GPT-4o-mini       |
+| Endpoint | Input | Doel |
+|----------|-------|------|
+| `POST /predict_dropout` | Alle modelfeatures (dict, 26 kolommen) | Continue risicoscore (0–1) via RandomForestRegressor |
+| `POST /explain_risk` | Studentdata + uitvalskans | Nederlandstalige AI-uitleg + mentoradvies via GPT-4o-mini |
+| `POST /feature_importance` | Studentdata | SHAP-waarden per feature (TreeExplainer op regressor) |
+| `POST /summarize` | CSV-string of vrije vraag | Managementsamenvatting of Q&A via GPT-4o-mini |
 
-- **ML-model:** `RandomForestClassifier` geladen uit `backend/model.pkl`
-- **Features:** `["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]`
-- **SHAP:** `TreeExplainer` voor feature importance
-- **OpenAI:** `gpt-4o-mini` via de Responses API (met `code_interpreter` tool)
-- **Drempelwaarde:** 0.35 (studenten met kans > 35% worden als risicostudent gemarkeerd)
+- **ML-model:** `RandomForestRegressor` geladen uit `backend/model.joblib` via `joblib.load()`
+- **Features:** Dynamisch bepaald vanuit `shared/data.csv` (alle kolommen behalve `Dropout`, `Naam`, `Opleiding`, `Klas`, `Mentor`)
+- **Invoer:** Altijd `.values` doorgeven (model getraind zonder feature-namen)
+- **SHAP:** `TreeExplainer` op regressor → shape `(n_samples, n_features)`, geen `[1]` index
+- **Geen drempelwaarde:** Alle studenten worden teruggegeven; frontend sorteert hoog→laag
 
-## Frontend (`frontend/app.py`)
+## Frontend (`frontend/app.py` + `frontend/styles.py`)
 
-- **Sidebar:** Filters op Opleiding, Klas en Mentor
-- **KPI metrics:** Gemiddeld cijfer, aanwezigheid en waarschuwingen
-- **Studententabel:** `st.dataframe` met `column_config` (progress bars voor aanwezigheid en EC, getal-format voor cijfers en waarschuwingen)
-- **Grafieken:** Histogram (cijferverdeling) en boxplot (aanwezigheid per opleiding) via Plotly
-- **CSV-download:** Gefilterde selectie exporteren
-- **Risicosignalering:** Bulk-voorspelling → opslag in `session_state.risicostudenten` → selectbox voor individuele analyse
-- **Risicoanalyse:** AI-uitleg (GPT-4o-mini) + SHAP feature importance per student
-- **Rapport-export:** Markdown (.md) en Word (.docx) via `python-docx`
-- **AI Q&A & samenvatting:** Via `/summarize`-endpoint
+**Startscherm (`page = "start"`):**
+- Upload-veld (.csv / .xlsx) — gecentreerd, smaller
+- Zoekbalk + START-knop
+- Snelkeuze-pills (4 zichtbaar + "Meer ↓")
+- Checkbox om opleiding te onthouden
+- Roze achtergrond (`#e8c8c8`), compacte sticky footer
+
+**Hoofdscherm (`page = "main"`):**
+- Lichtroze sticky header (`#f2e4e4`) via CSS `:has(> [data-testid="stHorizontalBlock"])`
+  - CEDA logo links
+  - Drie knoppen rechts: **← TERUG**, **UITNODIGINGSREGEL** (actief = zwart/wit), **EDUPLAN**
+- Witte kaart (`border=True`) met:
+  - Kaart-header: opleiding + KLAS selectbox + potlood-knop
+  - Terracotta banner: slider voor top-N (default 10)
+  - UITNODIGINGSREGEL-tab: horizontale Plotly staafgrafiek
+  - EDUPLAN-tab: student-selector → AI-uitleg → DOWNLOAD (.docx)
+- Compacte lichtroze sticky footer (CC BY-SA 4.0 licentieregel)
+
+**CSS-kleuren (`frontend/styles.py`):**
+
+| Constante | Hex | Gebruik |
+|-----------|-----|---------|
+| `TERRACOTTA` | `#c8785a` | Bannerkleuren |
+| `ROZE_BG` | `#e8c8c8` | Pagina-achtergrond, bottom startscherm |
+| `ROZE_LICHT` | `#f2e4e4` | Header hoofdscherm, bottom hoofdscherm |
 
 ## Standalone Claude Agent (`main.py`)
 
 Een losstaande CLI-tool die **niet** deel uitmaakt van de webapplicatie.
 
-- **API:** Anthropic Claude (`claude-sonnet-4-5-20250929`)
+- **API:** Anthropic Claude (`claude-sonnet-4-6`)
 - **Tools:** `read_file`, `list_files`, `edit_file`
 - **Doel:** Interactieve coding-assistent die bestanden kan lezen en bewerken
 - **Vereist:** `ANTHROPIC_API_KEY` environment variabele
@@ -325,13 +361,13 @@ uv sync
 # of: pip install -r requirements.txt
 ```
 
-## Data en model genereren (éénmalig)
+## Data en model downloaden (éénmalig)
 
 ```bash
 python shared/data_prep.py
 ```
 
-Dit genereert `shared/data.csv` (500 studenten) en traint en slaat `backend/model.pkl` op.
+Dit downloadt `shared/data.csv` (1.000 studenten) en `backend/model.joblib` van GitHub.
 
 ## Starten
 
@@ -351,62 +387,11 @@ Dit genereert `shared/data.csv` (500 studenten) en traint en slaat `backend/mode
 
 ```bash
 python main.py
-# of: python main.py --api-key <jouw-key>
 ```
 
 ---
 
-# Voorbeeld scripts in Python
-
-## Data generatie en model training (`shared/data_prep.py`)
-
-```python
-import pandas as pd
-import numpy as np
-import random
-from sklearn.ensemble import RandomForestClassifier
-import pickle
-
-def generate_student_data(n=500):
-    opleidingen = ["ICT", "Zorg", "Techniek", "Economie", "Handel"]
-    klassen = ["A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2"]
-    mentoren = ["mev. Smit", "mev. Safon", "mev. Hulsema", "dhr. Hanna",
-                "dhr. Benjamins", "dhr. Mulder", "mev. Kuiper", "dhr. De Groot"]
-    data = []
-    for i in range(1001, 1001 + n):
-        cijfer = np.round(np.random.normal(6.5, 1.0), 1)
-        aanwezigheid = np.round(np.random.uniform(70, 100), 1)
-        waarschuwingen = np.random.poisson(1)
-        ec = np.random.randint(20, 61)
-        opleiding = random.choice(opleidingen)
-        klas = random.choice(klassen)
-        mentor = random.choice(mentoren)
-        naam = random.choice(["Julia", "Aisha", "Edwin", "Sam", "Lisa",
-                               "Mohammed", "Eva", "Tessa", "Daan", "Lucas", "Fatima"]) + \
-               " " + random.choice(["de Vries", "Jansen", "Bakker", "Smit",
-                                    "Kuiper", "Mulder", "De Groot", "Groen"])
-        risk_score = (7 - cijfer) * 0.4 + (85 - aanwezigheid) * 0.07 + \
-                     waarschuwingen * 0.6 + (30 - ec) * 0.05
-        uitgevallen = np.random.rand() < min(max(risk_score / 5, 0), 1)
-        data.append({
-            "Student-ID": i, "Naam": naam, "Opleiding": opleiding,
-            "Klas": klas, "Cijfer": cijfer, "Aanwezigheid": aanwezigheid,
-            "EC": ec, "Waarschuwingen": waarschuwingen, "Mentor": mentor,
-            "Uitgevallen": int(uitgevallen), "Schooljaar": "2025-2026"
-        })
-    return pd.DataFrame(data)
-
-df = generate_student_data(500)
-df.to_csv("shared/data.csv", index=False)
-
-features = ["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]
-clf = RandomForestClassifier(n_estimators=100, random_state=42)
-clf.fit(df[features], df["Uitgevallen"])
-with open("backend/model.pkl", "wb") as f:
-    pickle.dump(clf, f)
-```
-
----
+# Voorbeeld: kerncode
 
 ## FastAPI backend (`backend/main.py`)
 
@@ -414,38 +399,36 @@ with open("backend/model.pkl", "wb") as f:
 from fastapi import FastAPI
 from pydantic import BaseModel
 import pandas as pd
-from openai import OpenAI
-import pickle
-import os
+import joblib
 import shap
+from openai import OpenAI
+import os
 
 app = FastAPI()
 client = OpenAI()
 MODEL = "gpt-4o-mini"
 
-with open("backend/model.pkl", "rb") as f:
-    clf = pickle.load(f)
+clf = joblib.load("backend/model.joblib")
 
-features = ["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]
+# Features dynamisch bepaald vanuit data.csv
+NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
+df = pd.read_csv("shared/data.csv")
+features = [c for c in df.columns if c not in NON_FEATURES]
+
 explainer = shap.TreeExplainer(clf)
 
 class StudentData(BaseModel):
     student: dict
 
-class SummaryRequest(BaseModel):
-    data: str
-
 class ExplainRequest(BaseModel):
     student: dict
-    prediction: int
     probability: float
 
 @app.post("/predict_dropout")
 def predict_dropout(request: StudentData):
-    X_pred = pd.DataFrame([request.student])[features]
-    prob = float(clf.predict_proba(X_pred)[0][1])
-    label = int(prob > 0.35)   # drempelwaarde 0.35
-    return {"probability": prob, "prediction": label}
+    X = pd.DataFrame([request.student])[features].values
+    score = float(clf.predict(X)[0])
+    return {"probability": score}
 
 @app.post("/explain_risk")
 def explain_risk(request: ExplainRequest):
@@ -453,139 +436,121 @@ def explain_risk(request: ExplainRequest):
     prompt = (
         f"Studentgegevens: {feature_str}.\n"
         f"Voorspelde kans op uitval: {request.probability:.2%}.\n"
-        f"Licht in heldere managementtaal toe waarom deze student risico loopt op uitval, "
+        f"Licht in heldere taal toe waarom deze student risico loopt, "
         f"en geef gericht advies aan de mentor."
     )
-    response = client.responses.create(
+    response = client.chat.completions.create(
         model=MODEL,
-        store=False,
-        tools=[{"type": "code_interpreter", "container": {"type": "auto"}}],
-        tool_choice="auto",
-        input=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}]
     )
-    return {"explanation": response.output_text}
+    return {"explanation": response.choices[0].message.content}
 
 @app.post("/feature_importance")
 def feature_importance(request: StudentData):
-    X_pred = pd.DataFrame([request.student])[features]
-    try:
-        shap_vals = explainer.shap_values(X_pred)[1]
-    except:
-        shap_vals = explainer.shap_values(X_pred)[0]
+    X = pd.DataFrame([request.student])[features].values
+    shap_vals = explainer.shap_values(X)   # shape: (n_samples, n_features)
     fi = dict(zip(features, shap_vals[0].tolist()))
     return {"feature_importance": fi}
-
-@app.post("/summarize")
-def summarize(request: SummaryRequest):
-    prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = client.responses.create(
-        model=MODEL,
-        store=False,
-        tools=[{"type": "code_interpreter", "container": {"type": "auto"}}],
-        tool_choice="auto",
-        input=[{"role": "user", "content": prompt}]
-    )
-    return {"summary": response.output_text}
 ```
 
-Start de backend:
-```bash
-uvicorn backend.main:app --reload --port 8000
-```
-
----
-
-## Streamlit frontend (`frontend/app.py`)
-
-Kernonderdelen:
+## Streamlit frontend — schermrouter (`frontend/app.py`)
 
 ```python
 import streamlit as st
-import pandas as pd
-import requests
-import plotly.express as px
-from docx import Document
-from io import BytesIO
-from datetime import datetime
+from streamlit_extras.bottom_container import bottom
+from styles import START_CSS, MAIN_CSS, TERRACOTTA, ROZE_LICHT
 
-features = ["Cijfer", "Aanwezigheid", "Waarschuwingen", "EC"]
-df = pd.read_csv("shared/data.csv")
+# Session state defaults
+_defaults = {
+    "page": "start",
+    "selected_opleiding": "Alle",
+    "actieve_tab": "uitnodigingsregel",
+    "top_n": 10,
+    "uploaded_df": None,
+}
+for k, v in _defaults.items():
+    st.session_state.setdefault(k, v)
 
-# --- Sidebar filters ---
-with st.sidebar:
-    opleiding = st.selectbox("Opleiding", ["Alle"] + sorted(df["Opleiding"].unique().tolist()))
-    klas = st.selectbox("Klas", ["Alle"] + sorted(df["Klas"].unique().tolist()))
-    mentor = st.selectbox("Mentor", ["Alle"] + sorted(df["Mentor"].unique().tolist()))
-    dff = df.copy()
-    if opleiding != "Alle": dff = dff[dff["Opleiding"] == opleiding]
-    if klas != "Alle": dff = dff[dff["Klas"] == klas]
-    if mentor != "Alle": dff = dff[dff["Mentor"] == mentor]
+# Router
+if st.session_state.page == "start":
+    show_start_screen()
+else:
+    show_main_screen()
 
-# --- KPI metrics ---
-col1, col2, col3 = st.columns(3)
-col1.metric("Gemiddeld Cijfer", f"{dff['Cijfer'].mean():.2f}")
-col2.metric("Gem. Aanwezigheid", f"{dff['Aanwezigheid'].mean():.1f}%")
-col3.metric("Waarschuwingen (gem.)", f"{dff['Waarschuwingen'].mean():.2f}")
+# Sticky footer (altijd zichtbaar)
+with bottom():
+    st.markdown(
+        """<p style="text-align:center; font-size:0.7rem; font-weight:500; color:gray;
+                    font-family:'General Sans',sans-serif; margin:4px 0;">
+            &#169; 2026 CEDA — CC BY-SA 4.0 · AI en data waarde(n)vol inzetten: CEDA.
+            Uitnodigingsregel – EduPlan. Utrecht: Npuls
+        </p>""",
+        unsafe_allow_html=True,
+    )
+```
 
-# --- Tabel met column_config ---
-st.dataframe(dff, column_config={
-    "Aanwezigheid": st.column_config.ProgressColumn(format="%.1f%%", min_value=0, max_value=100),
-    "EC": st.column_config.ProgressColumn(format="%d", min_value=0, max_value=60),
-})
+## Header hoofdscherm met navigatieknoppen
 
-# --- Grafieken ---
-col1, col2 = st.columns(2)
-with col1:
-    st.plotly_chart(px.histogram(dff, x="Cijfer", nbins=15, title="Cijferverdeling"))
-with col2:
-    st.plotly_chart(px.box(dff, x="Opleiding", y="Aanwezigheid", title="Aanwezigheid per Opleiding"))
+```python
+def _render_header():
+    tab = st.session_state.actieve_tab
 
-# --- Uitval voorspellen (bulk, opgeslagen in session_state) ---
-if 'risicostudenten' not in st.session_state:
-    st.session_state.risicostudenten = []
+    col_ceda, col_terug, col_ur, col_ep = st.columns([3, 1.2, 2.2, 1.2])
 
-if st.button("Voorspel uitval"):
-    st.session_state.risicostudenten = []
-    with st.spinner("Bezig met voorspellen..."):
-        for idx, row in dff.iterrows():
-            result = requests.post("http://localhost:8000/predict_dropout",
-                                   json={"student": row[features].to_dict()}).json()
-            if result["prediction"] == 1:
-                st.session_state.risicostudenten.append((row, result))
+    with col_ceda:
+        st.markdown("<p style='font-weight:700;font-size:1.5rem;...'>CEDA</p>",
+                    unsafe_allow_html=True)
+    with col_terug:
+        if st.button("← TERUG", key="nav_terug", use_container_width=True):
+            st.session_state.page = "start"
+            st.rerun()
+    with col_ur:
+        if st.button("UITNODIGINGSREGEL", key="nav_ur",
+                     type="primary" if tab == "uitnodigingsregel" else "secondary",
+                     use_container_width=True):
+            st.session_state.actieve_tab = "uitnodigingsregel"
+            st.rerun()
+    with col_ep:
+        if st.button("EDUPLAN", key="nav_ep",
+                     type="primary" if tab == "eduplan" else "secondary",
+                     use_container_width=True):
+            st.session_state.actieve_tab = "eduplan"
+            st.rerun()
+```
 
-# --- Individuele risicoanalyse + export ---
-if st.session_state.risicostudenten:
-    geselecteerde = st.selectbox("Selecteer student voor analyse", ...)
-    if st.button("Toon risicoanalyse"):
-        row, result = st.session_state.risicostudenten[geselecteerde]
-        explanation = requests.post("http://localhost:8000/explain_risk", ...).json()["explanation"]
-        fi = requests.post("http://localhost:8000/feature_importance", ...).json()["feature_importance"]
-        # Opslaan in session_state.laatste_analyse
-        # Download als Markdown of Word (.docx)
+CSS (in `styles.py`) zorgt voor de lichtroze achtergrond via:
+```css
+div.block-container > div > [data-testid="stVerticalBlock"]
+    > div:has(> [data-testid="stHorizontalBlock"]) {
+    background-color: #f2e4e4 !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+}
 ```
 
 ---
 
 # Aanpak productiesetup
 
-1. **Serialiseren (exporteren)**
-   - Gebruik `joblib.dump(...)` of `pickle.dump(...)` voor het getrainde model en eventuele preprocessing-artefacten.
-   - Bewaar de exacte lijst van features en eventuele scaler-statistieken zodat je in productie identiek dezelfde preprocessing kunt toepassen.
+1. **Model serialisatie**
+   - Model opgeslagen als `backend/model.joblib` via `joblib.dump()`.
+   - Features dynamisch bepaald vanuit `data.csv` — geen hardcoded lijst nodig.
 
 2. **Service-laag**
-   - FastAPI als micro-framework voor HTTP-endpoints: `/predict_dropout`, `/explain_risk`, `/feature_importance`, `/summarize`.
-   - Valideer inkomende JSON via Pydantic (ingebouwd in FastAPI).
+   - FastAPI met vier endpoints: `/predict_dropout`, `/explain_risk`, `/feature_importance`, `/summarize`.
+   - Pydantic validatie van inkomende JSON (ingebouwd in FastAPI).
 
 3. **Deployment**
-   - Draai de service in een Docker-container voor een consistente omgeving.
-   - Zet een reverse proxy (bijv. Nginx) voor SSL-terminatie en load balancing.
+   - Docker-container voor een consistente omgeving.
+   - Reverse proxy (bijv. Nginx) voor SSL-terminatie en load balancing.
    - Monitor CPU/RAM, logs en API-latency.
 
 4. **Client-gebruik**
-   - De Streamlit-frontend communiceert via `requests.post(...)` met de FastAPI-backend.
+   - Streamlit-frontend communiceert via `requests.post(...)` met de FastAPI-backend.
    - Externe clients kunnen eveneens via HTTP JSON versturen en de voorspelling ontvangen.
 
 Met deze aanpak heb je een duurzame productiesetup:
-- Een duidelijk geserialiseerd model.
+- Een duidelijk geserialiseerd model (joblib).
 - Een eenvoudige, schaalbare API.
-- De mogelijkheid om later te upgraden (andere voorspelmodellen, batch-voorspellingen, authenticatie, RAG voor interventieadvies, etc.).
+- De mogelijkheid om later te upgraden (andere voorspelmodellen, batch-voorspellingen, authenticatie, RAG voor interventieadvies).
