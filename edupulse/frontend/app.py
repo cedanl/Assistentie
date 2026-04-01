@@ -296,11 +296,13 @@ def show_start_screen():
         unsafe_allow_html=True,
     )
     
-    uploaded_file = st.file_uploader(
-        " 🎯 **UPLOAD HIER JE DATABESTAND** ",
-        type=["csv", "xlsx"],
-        help="Op dit moment is het mogelijk om .csv of .xlsx bestanden te uploaden!",
-    )
+    _, col_upload, _ = st.columns([1, 4, 1])
+    with col_upload:
+        uploaded_file = st.file_uploader(
+            " 🎯 **UPLOAD HIER JE DATABESTAND** ",
+            type=["csv", "xlsx"],
+            help="Op dit moment is het mogelijk om .csv of .xlsx bestanden te uploaden!",
+        )
     
     if uploaded_file is not None:
         try:
@@ -423,54 +425,37 @@ def show_start_screen():
 
 def _render_header():
     tab = st.session_state.actieve_tab
-    ur_active = tab == "uitnodigingsregel"
 
-    def _pill_html(label: str, active: bool) -> str:
-        border = "2px solid #1a1a1a" if active else "2px solid transparent"
-        bg     = "white"             if active else "transparent"
-        fw     = "700"               if active else "400"
-        color  = "#1a1a1a"           if active else "#555"
-        js = (
-            "(function(){"
-            f"var d=(window.parent||window).document;"
-            f"var bs=d.querySelectorAll('button');"
-            f"for(var i=0;i<bs.length;i++){{"
-            f"if(bs[i].textContent.trim()==='{label}'){{bs[i].click();break;}}"
-            f"}}"
-            "})();"
+    col_ceda, col_terug, col_ur, col_ep = st.columns([3, 1.2, 2.2, 1.2])
+
+    with col_ceda:
+        st.markdown(
+            "<p style='font-weight:700;font-size:1.5rem;font-family:\"General Sans\",sans-serif;"
+            "margin:0;padding:6px 0;'>CEDA</p>",
+            unsafe_allow_html=True,
         )
-        return (
-            f'<div onclick="{js}" style="cursor:pointer;padding:6px 18px;'
-            f'border-radius:50px;font-size:12px;letter-spacing:0.07em;'
-            f'border:{border};background:{bg};font-weight:{fw};color:{color};'
-            f'font-family:\'General Sans\',sans-serif;white-space:nowrap;">'
-            f'{label}</div>'
-        )
-
-    st.markdown(
-        f"""
-        <div style="position:fixed;top:0;left:0;right:0;height:60px;
-                    background:#f2e4e4;z-index:9999;display:flex;align-items:center;
-                    padding:0 max(24px,calc((100vw - 900px)/2));
-                    box-shadow:0 2px 12px rgba(0,0,0,0.08);box-sizing:border-box;">
-            <span style="font-weight:700;font-size:1.5rem;
-                         font-family:'General Sans',sans-serif;flex:1;">CEDA</span>
-            <div style="display:flex;gap:8px;align-items:center;">
-                {_pill_html('UITNODIGINGSREGEL', ur_active)}
-                {_pill_html('EDUPLAN', not ur_active)}
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    # Verborgen Streamlit-knoppen (CSS verbergt ze, JS triggert ze)
-    if st.button("UITNODIGINGSREGEL", key="nav_ur"):
-        st.session_state.actieve_tab = "uitnodigingsregel"
-        st.rerun()
-    if st.button("EDUPLAN", key="nav_ep"):
-        st.session_state.actieve_tab = "eduplan"
-        st.rerun()
+    with col_terug:
+        if st.button("← TERUG", key="nav_terug", use_container_width=True):
+            st.session_state.page = "start"
+            st.rerun()
+    with col_ur:
+        if st.button(
+            "UITNODIGINGSREGEL",
+            key="nav_ur",
+            type="primary" if tab == "uitnodigingsregel" else "secondary",
+            use_container_width=True,
+        ):
+            st.session_state.actieve_tab = "uitnodigingsregel"
+            st.rerun()
+    with col_ep:
+        if st.button(
+            "EDUPLAN",
+            key="nav_ep",
+            type="primary" if tab == "eduplan" else "secondary",
+            use_container_width=True,
+        ):
+            st.session_state.actieve_tab = "eduplan"
+            st.rerun()
 
 
 # ─────────────────────────────────────────────
@@ -771,13 +756,10 @@ def _render_footer():
         unsafe_allow_html=True,
     )
 with bottom():
-    # st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
     st.markdown(
-        """<hr style="border:none; border-top:2px solid rgba(0,0,0,0.32); margin:0 0 20px 0;">
-        <p style="text-align:center; font-size:0.75rem; font-weight:500; color:gray; font-family:'General Sans',sans-serif;">
-            &#169; &#9432; 2026 Op deze analytics tool is de Creative Commons ShareAlike
-            Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
-            vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
+        """<p style="text-align:center; font-size:0.7rem; font-weight:500; color:gray;
+                    font-family:'General Sans',sans-serif; margin:4px 0;">
+            &#169; 2026 CEDA — CC BY-SA 4.0 · AI en data waarde(n)vol inzetten: CEDA.
             Uitnodigingsregel – EduPlan. Utrecht: Npuls
         </p>""",
         unsafe_allow_html=True,

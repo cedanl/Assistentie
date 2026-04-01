@@ -50,6 +50,14 @@ div[data-testid="column"]:has(button[kind="primary"]) button {
     background-color: white !important; border-radius: 50px !important;
     border: none !important; box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
 }
+
+/* ── Bottom bar startscherm (roze) ── */
+[data-testid="stBottom"] {
+    background-color: #e8c8c8 !important;
+}
+[data-testid="stBottomBlockContainer"] {
+    background-color: #e8c8c8 !important;
+}
 </style>
 """
 
@@ -64,15 +72,16 @@ MAIN_CSS = """
 [data-testid="stApp"]      { background-color: #e8c8c8; font-family: 'General Sans', sans-serif; }
 [data-testid="stHeader"]   { display: none !important; }
 [data-testid="stSidebarCollapsedControl"] { display: none; }
-.block-container           { padding-top: 4rem !important; max-width: 900px; margin: 0 auto; }
+.block-container           { padding-top: 0 !important; max-width: 900px; margin: 0 auto; }
 
-/* ── Verborgen nav-knoppen: buiten kaart, in DOM voor JS ── */
-div.block-container > div > [data-testid="stVerticalBlock"] > div:has(> [data-testid="stButton"]) {
-    position: absolute !important;
-    left: -9999px !important;
+/* ── Header-rij: lichtroze, sticky bovenaan ── */
+div.block-container > div > [data-testid="stVerticalBlock"] > div:has(> [data-testid="stHorizontalBlock"]) {
+    background-color: #f2e4e4 !important;
+    position: sticky !important;
     top: 0 !important;
-    height: 0 !important;
-    overflow: hidden !important;
+    z-index: 9999 !important;
+    padding: 4px 0 !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
 }
 
 /* ── Witte card ── */
@@ -82,48 +91,6 @@ div.block-container > div > [data-testid="stVerticalBlock"] > div:has(> [data-te
     border: none !important;
     box-shadow: 0 4px 24px rgba(0,0,0,0.37);
     padding: 4px 8px !important;
-}
-
-/* ── Nav pills ── */
-div.nav-actief [data-testid="stBaseButton-secondary"],
-div.nav-actief button[kind="secondary"] {
-    background: white !important;
-    border: 2px solid #1a1a1a !important;
-    border-radius: 50px !important;
-    font-weight: 700 !important;
-    font-size: 12px !important;
-    letter-spacing: 0.07em !important;
-    padding: 6px 18px !important;
-    color: #1a1a1a !important;
-    box-shadow: none !important;
-    white-space: nowrap !important;
-    width: auto !important;
-    min-width: max-content !important;
-}
-div.nav-inactief [data-testid="stBaseButton-secondary"],
-div.nav-inactief button[kind="secondary"] {
-    background: transparent !important;
-    border: 2px solid transparent !important;
-    border-radius: 50px !important;
-    font-size: 12px !important;
-    letter-spacing: 0.07em !important;
-    padding: 6px 18px !important;
-    color: #555 !important;
-    box-shadow: none !important;
-    white-space: nowrap !important;
-    width: auto !important;
-    min-width: max-content !important;
-}
-div.nav-actief [data-testid="stBaseButton-secondary"] p,
-div.nav-actief [data-testid="stBaseButton-secondary"] span,
-div.nav-actief button[kind="secondary"] p,
-div.nav-actief button[kind="secondary"] span,
-div.nav-inactief [data-testid="stBaseButton-secondary"] p,
-div.nav-inactief [data-testid="stBaseButton-secondary"] span,
-div.nav-inactief button[kind="secondary"] p,
-div.nav-inactief button[kind="secondary"] span {
-    white-space: nowrap !important;
-    overflow: visible !important;
 }
 
 /* ── Klas selectbox als pill ── */
@@ -188,6 +155,14 @@ div.terug-link button {
     font-size: 13px !important;
     padding: 0 !important;
     box-shadow: 0 4px 24px rgba(0,0,0,0.37);
+}
+
+/* ── Bottom bar (licht roze, net als header) ── */
+[data-testid="stBottom"] {
+    background-color: #f2e4e4 !important;
+}
+[data-testid="stBottomBlockContainer"] {
+    background-color: #f2e4e4 !important;
 }
 
 /* ── Actie-knoppen (DOWNLOAD) ── */
