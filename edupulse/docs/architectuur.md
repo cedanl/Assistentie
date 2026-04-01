@@ -97,18 +97,23 @@ sequenceDiagram
 ## 3. Schermstructuur
 
 ```
-Startscherm
+Startscherm  (roze achtergrond #e8c8c8)
+├── Upload-veld (.csv / .xlsx) — smaller gecentreerd
 ├── Zoekbalk + START-knop
 ├── Snelkeuze-pills (4 zichtbaar + "Meer ↓")
-└── Footer (CC-licentie)
+└── Footer — compact, roze, sticky onderaan
 
-Hoofdscherm
-├── Header: CEDA | UITNODIGINGSREGEL  EDUPLAN  (roze achtergrond, schaduw)
+Hoofdscherm  (roze achtergrond #e8c8c8)
+├── Header (lichtroze #f2e4e4, sticky, schaduw)
+│   ├── CEDA  (logo links)
+│   └── [← TERUG]  [UITNODIGINGSREGEL*]  [EDUPLAN]  (knoppen rechts)
+│       * actieve tab heeft witte achtergrond + zwarte rand
 ├── Witte kaart
 │   ├── Kaart-header: [Opleiding]  [KLAS: ...]  [✏]
 │   ├── Terracotta banner: "Toon mij X lerenden…" + slider
-│   ├── Tab UITNODIGINGSREGEL → horizontale staafgrafiek
+│   ├── Tab UITNODIGINGSREGEL → horizontale staafgrafiek (hoog→laag)
 │   └── Tab EDUPLAN → student-selector + TOON EDUPLAN + EduPlan-kaart
 │       └── PRINT  DOWNLOAD (.docx)
-└── Footer (CC-licentie)
+└── Footer — compact, lichtroze, sticky onderaan
+    © 2026 CEDA — CC BY-SA 4.0
 ```

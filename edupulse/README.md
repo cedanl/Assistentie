@@ -45,16 +45,21 @@ Dit downloadt de synthetische studentdata en het voorgetrainde model van GitHub 
 De app bestaat uit een **startscherm** en een **hoofdscherm**:
 
 **Startscherm**
+- Upload-veld voor eigen databestand (.csv of .xlsx)
 - Zoekbalk om een opleiding te selecteren
 - Snelkeuze-pills: 4 opleidingen direct zichtbaar, overige via knop "Meer ↓"
 - Optie om de gekozen opleiding te onthouden
+- Roze achtergrond met compacte CC-licentietekst onderaan
 
 **Hoofdscherm**
-- Header met CEDA-logo en navigatietabs (UITNODIGINGSREGEL / EDUPLAN)
-- Kaart met opleiding + klas-filter + potlood-icoon (opleiding wijzigen)
+- Lichtroze header (sticky) met CEDA-logo en drie knoppen: **← TERUG**, **UITNODIGINGSREGEL**, **EDUPLAN**
+  - TERUG keert terug naar het startscherm
+  - Actieve tab is visueel gemarkeerd (zwarte rand, wit)
+- Witte kaart met opleiding + klas-filter + potlood-icoon (opleiding wijzigen)
 - Terracotta banner: "Toon mij X lerenden met het hoogste risico om uit te vallen" (default: 10)
 - **UITNODIGINGSREGEL-tab**: horizontale staafgrafiek — studenten gesorteerd hoog→laag op uitvalkans
 - **EDUPLAN-tab**: selecteer een lerende → genereer Nederlandstalig AI-advies → download als Word (.docx)
+- Compacte lichtroze footer onderaan met CC-licentiereferentie
 
 ## Model & data
 
