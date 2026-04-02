@@ -34,6 +34,8 @@ import pandas as pd
 from openai import OpenAI
 import joblib
 import os
+import json
+import re
 import shap
 
 api_key = os.getenv("OPENAI_API_KEY")
@@ -64,6 +66,10 @@ class ExplainRequest(BaseModel):
     student: dict
     prediction: int
     probability: float
+
+class MapColumnsRequest(BaseModel):
+    uploaded_columns: list[str]
+    required_columns: list[str]
 
 
 def _student_to_df(student: dict) -> pd.DataFrame:
@@ -135,3 +141,31 @@ def feature_importance(request: StudentData):
     shap_vals = explainer.shap_values(X_pred.values)
     fi = dict(zip(features, shap_vals[0].tolist()))
     return {"feature_importance": fi}
+
+
+@app.post("/map_columns")
+def map_columns(request: MapColumnsRequest):
+    """Gebruik LLM om geüploade kolomnamen te koppelen aan vereiste kolomnamen."""
+    prompt = (
+        "Je krijgt twee lijsten met kolomnamen van datasets.\n\n"
+        f"Geüploade kolommen: {request.uploaded_columns}\n"
+        f"Vereiste kolommen: {request.required_columns}\n\n"
+        "Geef een JSON-object terug waarbij de sleutels de VEREISTE kolomnamen zijn "
+        "en de waarden de overeenkomende GEÜPLOADE kolomnamen. "
+        "Neem alleen kolommen op waarbij je zeker bent van de overeenkomst op basis van "
+        "betekenis of naamgelijkenis (bijv. 'leeftijd' → 'StudentAge', 'verzuim' → 'absence_unauthorized'). "
+        "Geef uitsluitend het JSON-object terug, zonder uitleg of markdown.\n\n"
+        "Voorbeeld: {\"StudentAge\": \"leeftijd\", \"absence_unauthorized\": \"ongeoorloofd_verzuim\"}"
+    )
+    response = client.responses.create(
+        model=MODEL,
+        store=False,
+        input=[{"role": "user", "content": prompt}]
+    )
+    raw = response.output_text.strip()
+    json_match = re.search(r"\{.*\}", raw, re.DOTALL)
+    try:
+        mapping = json.loads(json_match.group()) if json_match else {}
+    except Exception:
+        mapping = {}
+    return {"mapping": mapping}

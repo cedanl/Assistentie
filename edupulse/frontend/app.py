@@ -83,9 +83,10 @@ _defaults = {
     "laatste_analyse":         None,
     "eduplan_genereren":       False,
     "geselecteerde_student":   0,
-    "onthoud_opleiding":       False,
-    "toon_alle_opleidingen":   False,
     "uploaded_df":             None,
+    "gebruik_demo_data":       True,
+    "upload_filename":         "",
+    "toon_alle_opleidingen":   False,
 }
 for k, v in _defaults.items():
     if k not in st.session_state:
@@ -105,6 +106,10 @@ QUICK_OPLEIDINGEN = sorted(df["Opleiding"].unique().tolist())
 # Helpers
 # ─────────────────────────────────────────────
 
+def _norm_col(s: str) -> str:
+    return s.lower().replace("_", "").replace(" ", "").replace("-", "")
+
+
 def _zoek_opleiding(zoekterm: str) -> str:
     return next(
         (o for o in QUICK_OPLEIDINGEN if zoekterm.lower() in o.lower()),
@@ -117,6 +122,118 @@ def _pill_klik(opl: str):
     st.session_state.selected_klas      = "Alle"
     st.session_state.page               = "main"
     st.session_state.filter_key         = None
+
+
+def _verwerk_upload(uploaded_file) -> None:
+    """Laad het geüploade bestand, koppel kolommen via fuzzy-matching + LLM en vul ontbrekende aan."""
+    try:
+        with st.spinner("Bestand laden en kolommen koppelen…"):
+            # 1. Lees bestand
+            if uploaded_file.name.endswith(".xlsx"):
+                new_df = pd.read_excel(uploaded_file)
+            else:
+                new_df = pd.read_csv(uploaded_file)
+
+            # 2. Vereiste modelkolommen bepalen
+            demo_df = _load_data()
+            vereist = [c for c in demo_df.columns if c not in NON_FEATURES]
+
+            hernoem_log: dict[str, str] = {}   # geüpload → vereist
+            vul_log:    list[str]       = []
+
+            ontbrekend = [c for c in vereist if c not in new_df.columns]
+
+            if ontbrekend:
+                # 3a. Lokale fuzzy-match (case/underscore/spatie insensitief)
+                norm_upload = {_norm_col(c): c for c in new_df.columns}
+                nog_ontbrekend = []
+                rename_now: dict[str, str] = {}  # uploaded → required
+
+                for req in ontbrekend:
+                    kandidaat = norm_upload.get(_norm_col(req))
+                    if kandidaat and kandidaat not in rename_now:
+                        rename_now[kandidaat] = req
+                        hernoem_log[kandidaat] = req
+                    else:
+                        nog_ontbrekend.append(req)
+
+                # 3b. LLM-koppeling voor resterende ontbrekende kolommen
+                if nog_ontbrekend:
+                    try:
+                        # Stuur alleen kolommen mee die nog niet zijn gekoppeld
+                        vrije_kolommen = [c for c in new_df.columns if c not in rename_now]
+                        resp = requests.post(
+                            "http://localhost:8000/map_columns",
+                            json={
+                                "uploaded_columns": vrije_kolommen,
+                                "required_columns": nog_ontbrekend,
+                            },
+                            timeout=30,
+                        )
+                        llm_mapping = resp.json().get("mapping", {})
+                        for req, upl in llm_mapping.items():
+                            if (
+                                req in nog_ontbrekend
+                                and upl in new_df.columns
+                                and upl not in rename_now
+                            ):
+                                rename_now[upl] = req
+                                hernoem_log[upl] = req
+                    except Exception:
+                        pass
+
+                # 4. Kolommen hernoemen
+                if rename_now:
+                    new_df = new_df.rename(columns=rename_now)
+
+                # 5. Nog steeds ontbrekend → aanvullen met mediaanwaarden uit demo-data
+                nog_missen = [c for c in vereist if c not in new_df.columns]
+                if nog_missen:
+                    medians = demo_df[nog_missen].median()
+                    for col in nog_missen:
+                        new_df[col] = medians[col]
+                        vul_log.append(col)
+
+            # 6. Metadata-kolommen aanvullen indien afwezig
+            if "Opleiding" not in new_df.columns:
+                new_df["Opleiding"] = "Geüploade opleiding"
+            if "Klas" not in new_df.columns:
+                new_df["Klas"] = "Klas A"
+            if "Naam" not in new_df.columns:
+                if "Studentnummer" in new_df.columns:
+                    new_df["Naam"] = new_df["Studentnummer"].astype(str)
+                else:
+                    new_df["Naam"] = [f"Lerende {i + 1}" for i in range(len(new_df))]
+            if "Mentor" not in new_df.columns:
+                new_df["Mentor"] = "Mentor"
+
+            # 7. Opslaan in session state
+            st.session_state.uploaded_df       = new_df
+            st.session_state.upload_filename   = uploaded_file.name
+            st.session_state.gebruik_demo_data = False
+            st.session_state.filter_key        = None
+            st.session_state.risicostudenten   = []
+            st.session_state.laatste_analyse   = None
+
+        # 8. Feedback aan gebruiker
+        regels = [f"**'{uploaded_file.name}'** geladen — {len(new_df)} lerenden."]
+        if hernoem_log:
+            koppelingen = ", ".join(f"`{u}` → `{r}`" for u, r in hernoem_log.items())
+            regels.append(f"**Kolommen automatisch gekoppeld:** {koppelingen}")
+        if vul_log:
+            regels.append(
+                f"**Kolommen niet gevonden, aangevuld met standaardwaarden:** "
+                + ", ".join(f"`{c}`" for c in vul_log)
+            )
+        if hernoem_log or vul_log:
+            st.info("\n\n".join(regels))
+        else:
+            st.success(regels[0])
+
+        st.rerun()
+
+    except Exception as e:
+        st.error(f"Fout bij het inladen van het bestand: {e}")
 
 
 def _klassen_voor(opleiding: str) -> list[str]:
@@ -280,106 +397,87 @@ def _genereer_eduplan():
 
 def show_start_screen():
     st.markdown(START_CSS, unsafe_allow_html=True)
-    st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:60px'></div>", unsafe_allow_html=True)
 
+    # ── Titel ──
     st.markdown(
         """
-        <div style="text-align:center; margin-bottom:8px; font-family:'General Sans',sans-serif;">
-            <h1 style="font-size:3.2rem; font-weight:600; line-height:1.15; margin-bottom:4px;padding:0px;">
+        <div style="text-align:center; margin-bottom:32px; font-family:'General Sans',sans-serif;">
+            <h1 style="font-size:3.2rem; font-weight:600; line-height:1.15; margin-bottom:4px; padding:0;">
                 Welkom bij de<br>Uitnodigingsregel
             </h1>
-            <p style="vertical-align:top;font-size:1.3rem; font-weight:500;color:#333; margin-top:0px;padding:0px;">
+            <p style="font-size:1.3rem; font-weight:500; color:#333; margin-top:0; padding:0;">
                 op tijd de juiste lerenden uitnodigen
             </p>
         </div>
         """,
         unsafe_allow_html=True,
     )
-    
-    _, col_upload, _ = st.columns([1, 4, 1])
-    with col_upload:
-        uploaded_file = st.file_uploader(
-            " 🎯 **UPLOAD HIER JE DATABESTAND** ",
-            type=["csv", "xlsx"],
-            help="Op dit moment is het mogelijk om .csv of .xlsx bestanden te uploaden!",
-        )
-    
-    if uploaded_file is not None:
-        try:
-            if uploaded_file.name.endswith(".xlsx"):
-                new_df = pd.read_excel(uploaded_file)
-            else:
-                new_df = pd.read_csv(uploaded_file)
-
-            # Vul ontbrekende structuurkolommen aan
-            if "Opleiding" not in new_df.columns:
-                new_df["Opleiding"] = "Geüploade data"
-            if "Klas" not in new_df.columns:
-                new_df["Klas"] = "Alle"
-            if "Naam" not in new_df.columns:
-                if "Studentnummer" in new_df.columns:
-                    new_df["Naam"] = new_df["Studentnummer"].astype(str)
-                else:
-                    new_df["Naam"] = [f"Student {i + 1}" for i in range(len(new_df))]
-
-            st.session_state.uploaded_df     = new_df
-            st.session_state.filter_key      = None
-            st.session_state.risicostudenten = []
-            st.session_state.laatste_analyse = None
-            st.success(f"Bestand '{uploaded_file.name}' succesvol geladen ({len(new_df)} rijen).")
-            st.rerun()
-        except Exception as e:
-            st.error(f"Fout bij inladen bestand: {e}")
-    
-
-    st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
     _, col_m, _ = st.columns([1, 4, 1])
     with col_m:
+        # ── Beschrijvingstekst ──
         st.markdown(
-            """<p style="text-align:center; font-size:0.9rem; font-weight:500; color:#555; margin-bottom:24px;
-                         font-family:'General Sans',sans-serif;">
-                Voer de opleidingsrichting in om te zien of er nú lerenden zijn die
-                mogelijk risico lopen om uit te vallen. We brengen ze voor jou in beeld.
+            """<p style="text-align:center; font-size:1rem; color:#333; margin-bottom:20px;
+                         font-family:'General Sans',sans-serif; line-height:1.6;">
+                Voeg je eigen dataset met lerenden toe, om te zien of er nú lerenden zijn
+                die mogelijk risico lopen om uit te vallen. We brengen ze voor jou in beeld.
             </p>""",
             unsafe_allow_html=True,
         )
 
-        col_zoek, col_start = st.columns([6, 1.5])
-        with col_zoek:
-            zoekterm = st.text_input(
-                "Zoek opleiding",
-                placeholder="Bijv. Kapper (bbl), Kok (bol), Metselaar (bbl)",
-                label_visibility="collapsed",
-                value=(
-                    st.session_state.selected_opleiding
-                    if st.session_state.onthoud_opleiding
-                       and st.session_state.selected_opleiding != "Alle"
-                    else ""
-                ),
-            )
-        with col_start:
-            start = st.button("START", type="primary", use_container_width=True)
-
-        onthoud = st.checkbox(
-            "Onthoud mijn opleiding", value=st.session_state.onthoud_opleiding
+        # ── Bestand uploaden ──
+        uploaded_file = st.file_uploader(
+            "Voeg je databestand toe",
+            type=["csv", "xlsx"],
+            label_visibility="collapsed",
         )
-        st.session_state.onthoud_opleiding = onthoud
 
-        if start:
-            gekozen = zoekterm.strip() if zoekterm.strip() else "Alle"
-            _pill_klik(_zoek_opleiding(gekozen))
+        # Verwerk alleen nieuw geüpload bestand (voorkomt herhaald verwerken na rerun)
+        if uploaded_file is not None and uploaded_file.name != st.session_state.upload_filename:
+            _verwerk_upload(uploaded_file)
+
+        # ── Demo-data checkbox ──
+        demo_nieuw = st.checkbox(
+            "Of gebruik de synthetische demo-data",
+            value=st.session_state.gebruik_demo_data,
+        )
+        if demo_nieuw != st.session_state.gebruik_demo_data:
+            st.session_state.gebruik_demo_data = demo_nieuw
+            if demo_nieuw:
+                st.session_state.uploaded_df     = None
+                st.session_state.upload_filename = ""
+                st.session_state.filter_key      = None
+                st.session_state.risicostudenten = []
+                st.session_state.laatste_analyse = None
+
+        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+
+        # ── START-knop ──
+        data_beschikbaar = st.session_state.gebruik_demo_data or st.session_state.uploaded_df is not None
+        if st.button(
+            "START DE UITNODIGINGSREGEL",
+            type="primary",
+            use_container_width=True,
+            disabled=not data_beschikbaar,
+        ):
+            st.session_state.page               = "main"
+            st.session_state.selected_opleiding = "Alle"
+            st.session_state.selected_klas      = "Alle"
             st.rerun()
+
+        if not data_beschikbaar:
+            st.caption("Upload een databestand of selecteer de synthetische demo-data om te starten.")
 
     st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
-    _, col_m2, _ = st.columns([0.5, 6, 0.5])
-    with col_m2:
-        ZICHTBAAR = 4
+    # ── Opleidingen-pills ──
+    _, col_pills, _ = st.columns([0.5, 6, 0.5])
+    with col_pills:
+        ZICHTBAAR  = 4
         eerste_rij = QUICK_OPLEIDINGEN[:ZICHTBAAR]
         rest       = QUICK_OPLEIDINGEN[ZICHTBAAR:]
 
-        st.markdown("<div class='pill-row'>", unsafe_allow_html=True)
         pill_cols = st.columns(ZICHTBAAR + 1)
         for i, opl in enumerate(eerste_rij):
             with pill_cols[i]:
@@ -397,26 +495,12 @@ def show_start_screen():
                     st.rerun()
 
         if st.session_state.toon_alle_opleidingen and rest:
-            extra_cols = st.columns(len(rest))
+            extra_cols = st.columns(min(len(rest), 5))
             for i, opl in enumerate(rest):
-                with extra_cols[i]:
-                    if st.button(opl, key=f"pill_{opl}", use_container_width=True):
+                with extra_cols[i % len(extra_cols)]:
+                    if st.button(opl, key=f"pill_extra_{opl}", use_container_width=True):
                         _pill_klik(opl)
                         st.rerun()
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    # st.markdown("<div style='height:40px'></div>", unsafe_allow_html=True)
-
-    # st.markdown(
-        # """<hr style="border:none; border-top:1px solid #ccc; margin:0 0 12px 0;">
-        # <p style="text-align:center; font-size:0.75rem; font-weight:500; color:#444;">
-            # &#169; &#9432; Op deze analytics tool is de Creative Commons ShareAlike
-            # Naamsvermelding 4.0-licentie van toepassing. Maak bij gebruik van dit werk
-            # vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
-            # Uitnodigingsregel – EduPlan. Utrecht: Npuls
-        # </p>""",
-        # unsafe_allow_html=True,
-    # )
 
 
 # ─────────────────────────────────────────────
@@ -712,7 +796,7 @@ def _render_eduplan_content():
 
     st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 
-    _, col_p, col_d = st.columns([6, 1, 1])
+    _, col_p, col_d = st.columns([4, 1.5, 1.5])
 
     with col_p:
         st.markdown(
@@ -727,7 +811,6 @@ def _render_eduplan_content():
         )
 
     with col_d:
-        st.markdown("<div class='actie-knoppen'>", unsafe_allow_html=True)
         st.download_button(
             label="DOWNLOAD",
             data=analyse["docx"],
@@ -736,7 +819,6 @@ def _render_eduplan_content():
             use_container_width=True,
             key="download_btn",
         )
-        st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ─────────────────────────────────────────────

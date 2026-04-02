@@ -18,46 +18,68 @@ START_CSS = """
 
 [data-testid="stApp"] { background-color: #e8c8c8; font-family: 'General Sans', sans-serif; font-weight: 500; }
 [data-testid="stSidebarCollapsedControl"] { display: none; }
-[data-testid="stHeader"] { background-color: #e8c8c8 !important;  }
+[data-testid="stHeader"] { background-color: #e8c8c8 !important; }
 .block-container { padding-top: 0rem; padding-bottom: 2rem; }
 
-div[data-testid="stTextInput"] input {
-    padding: 14px 24px !important; font-size: 17px !important;
-    background-color: white !important; height: 56px;
-    border: 2.5px solid #1a1a1a !important; border-radius: 5px !important;
+/* ── Bestand uploaden ── */
+[data-testid="stFileUploader"] {
+    background: #f2e4e4 !important;
+    border-radius: 12px !important;
+    padding: 4px 12px !important;
 }
-div[data-testid="stTextInput"] input::placeholder { color: #aaa; }
-div[data-testid="stTextInput"] > label { display: none; }
+[data-testid="stFileUploaderDropzone"] {
+    border: none !important;
+    background: transparent !important;
+}
+[data-testid="stFileUploaderDropzone"] button {
+    background-color: #1a1a1a !important;
+    color: white !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    border: none !important;
+    letter-spacing: 0.06em !important;
+}
 
-div[data-testid="column"]:has(button[kind="primary"]) button {
-    background-color: black !important; color: white !important;
-    border-radius: 50px !important; font-weight: 700 !important;
-    font-size: 17px !important; height: 56px !important; width: 100% !important;
-    border: 2.5px solid #1a1a1a !important; border-radius: 5px !important;
+/* ── START DE UITNODIGINGSREGEL knop ── */
+[data-testid="stBaseButton-primary"] {
+    background-color: #1a1a1a !important;
+    color: white !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+    font-size: 17px !important;
+    height: 60px !important;
+    width: 100% !important;
+    border: none !important;
+    letter-spacing: 0.05em !important;
+}
+[data-testid="stBaseButton-primary"]:hover { background-color: #333 !important; }
+[data-testid="stBaseButton-primary"]:disabled { background-color: #aaa !important; cursor: not-allowed !important; }
+
+/* ── Demo-data checkbox ── */
+[data-testid="stCheckbox"] label p {
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    color: #1a1a1a !important;
 }
 
-[data-testid="stButton"] button[kind="secondary"] {
-    background-color: white !important; border-radius: 50px !important;
-    border: none !important; font-size: 15px !important;
-    padding: 10px 20px !important; width: 100%;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
-}
-[data-testid="stButton"] button[kind="secondary"]:hover {
-    background-color: #fff2f1 !important;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.25) !important;
-}
+/* ── Opleidingen-pills ── */
 [data-testid="stBaseButton-secondary"] {
-    background-color: white !important; border-radius: 50px !important;
-    border: none !important; box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
+    background-color: white !important;
+    border-radius: 50px !important;
+    border: none !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.20) !important;
+    font-size: 15px !important;
+}
+[data-testid="stBaseButton-secondary"]:hover {
+    background-color: #e8c8c8 !important;
+    font-color: #1a1a1a;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.25) !important;
 }
 
 /* ── Bottom bar startscherm (roze) ── */
-[data-testid="stBottom"] {
-    background-color: #e8c8c8 !important;
-}
-[data-testid="stBottomBlockContainer"] {
-    background-color: #e8c8c8 !important;
-}
+[data-testid="stBottom"] { background-color: #e8c8c8 !important; }
+[data-testid="stBottomBlockContainer"] { background-color: #e8c8c8 !important; }
 </style>
 """
 
@@ -70,18 +92,20 @@ MAIN_CSS = """
 @import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
 
 [data-testid="stApp"]      { background-color: #e8c8c8; font-family: 'General Sans', sans-serif; }
-[data-testid="stHeader"]   { display: none !important; }
+[data-testid="stHeader"]   { background-color: #f2e4e4 !important; z-index: 998 !important; }
+[data-testid="stToolbar"]  { display: none !important; }
+[data-testid="stDecoration"] { display: none !important; }
 [data-testid="stSidebarCollapsedControl"] { display: none; }
 .block-container           { padding-top: 0 !important; max-width: 900px; margin: 0 auto; }
 
-/* ── Header-rij: lichtroze, sticky bovenaan ── */
-div.block-container > div > [data-testid="stVerticalBlock"] > div:has(> [data-testid="stHorizontalBlock"]) {
+/* ── Header-rij: lichtroze, sticky ── */
+div.block-container > [data-testid="stVerticalBlock"] > div:has(> [data-testid="stHorizontalBlock"]) {
     background-color: #f2e4e4 !important;
     position: sticky !important;
     top: 0 !important;
     z-index: 9999 !important;
-    padding: 4px 0 !important;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.08) !important;
+    padding: 0px 0 !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08) !important;
 }
 
 /* ── Witte card ── */
@@ -165,11 +189,8 @@ div.terug-link button {
     background-color: #f2e4e4 !important;
 }
 
-/* ── Actie-knoppen (DOWNLOAD) ── */
-div.actie-knoppen button,
-div.actie-knoppen a,
-div.actie-knoppen [data-testid="stBaseButton-secondary"],
-div.actie-knoppen [data-testid="stDownloadButton"] > a {
+/* ── Download-knop ── */
+[data-testid="stDownloadButton"] button {
     background-color: #1a1a1a !important;
     color: white !important;
     border-radius: 50px !important;
@@ -177,13 +198,7 @@ div.actie-knoppen [data-testid="stDownloadButton"] > a {
     font-size: 12px !important;
     font-weight: 700 !important;
     letter-spacing: 0.07em !important;
-    padding: 8px 24px !important;
-    box-shadow: none !important;
     white-space: nowrap !important;
-    text-decoration: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
     width: 100% !important;
 }
 </style>
