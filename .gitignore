@@ -177,3 +177,8 @@ cython_debug/
 .pypirc
 
 *.bak
+*.swp
+*.swo
+
+# Claude Code skills cache
+.agents/

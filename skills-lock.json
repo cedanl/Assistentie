@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "skills": {
+    "check-style": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "10cd25cabf41f47967585d6aba1d58aeab731081b3c4a4cf23747098f832eb45"
+    },
+    "clidev": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "78a5a9aad50fa6c335ca77a4fd14c6ae6d89a0ef732f5cbd96fc1e58685fd719"
+    },
+    "generate_slides_retro": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "13ff45fbe851517cde7c4c827edcf477821b0e385fe10faab5c3eb1521596dcc"
+    },
+    "init-repo": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "48f9e7e6415ce8b08b30778d294a2c5f1586a09040df5ef1598acf36d8712115"
+    },
+    "release-notes": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "1ca96caf497bcb17479df7c3e55f6320eb01f412d7b1c8b827168d7307cbe018"
+    },
+    "simplify-ceda": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "a3293b1165f30b1d8663deb374ee9a0d4bc69db25aa6c79bb26f10f32e5fd0d9"
+    },
+    "write-issue": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "d4c991e65fea02d770d4e529b3e060a7e4e5ff6d5e4767e422a1c96433463fc9"
+    },
+    "write-issue-cowork": {
+      "source": "cedanl/.github",
+      "sourceType": "github",
+      "computedHash": "fa6ed6914ceff8e936f677220dac72e78110da2beb232b1fc0046f8aac3160f0"
+    }
+  }
+}
