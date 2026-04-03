@@ -61,7 +61,7 @@ Daarnaast bevat het project een losstaande CLI-agent (`main.py`) op basis van de
 
     - **Predictieve Analyse:** Continue risicoscore (0–1) per student via de RandomForestRegressor. Geen vaste drempelwaarde — studenten worden gerangschikt van hoogste naar laagste risico.
     - **Diagnostische Analyse:** SHAP TreeExplainer geeft inzicht in de bijdrage van elke variabele aan de voorspelling.
-    - **Prescriptieve Analyse:** OpenAI GPT-4o-mini genereert een Nederlandstalige uitleg en mentoradvies (EduPlan).
+    - **Prescriptieve Analyse:** OpenAI GPT-4.1 genereert een Nederlandstalige uitleg en mentoradvies (EduPlan).
 
 4. **Visualisatie en Interactie**
 
@@ -115,14 +115,14 @@ Daarnaast bevat het project een losstaande CLI-agent (`main.py`) op basis van de
    - SHAP TreeExplainer op de RandomForestRegressor geeft per feature de bijdrage aan de risicoscore.
    - Output heeft shape `(n_samples, n_features)` — geen `[1]` class-index nodig.
 
-3. **Generatieve AI (OpenAI GPT-4o-mini)**
+3. **Generatieve AI (OpenAI GPT-4.1)**
    - **EduPlan:** Nederlandstalige uitleg waarom een student risico loopt, met advies voor de mentor.
    - **Managementsamenvatting:** Samenvatting van studentdata voor het management.
 
 **Gebruikte technieken:**
 - **Predictive Modeling** (scikit-learn RandomForestRegressor) → continue risicoscore.
 - **SHAP** → feature importance verklaren.
-- **Generatieve AI (OpenAI GPT-4o-mini)** → uitleg, advies en samenvatting.
+- **Generatieve AI (OpenAI GPT-4.1)** → uitleg, advies en samenvatting.
 
 ---
 
@@ -139,7 +139,7 @@ Daarnaast bevat het project een losstaande CLI-agent (`main.py`) op basis van de
 - ✅ Download EduPlan als Word (.docx)
 - ✅ Terugkeren naar startscherm via ← TERUG knop
 
-**Tech Stack:** Streamlit (frontend), FastAPI (backend), OpenAI GPT-4o-mini (AI), scikit-learn + SHAP (ML), streamlit-extras (bottom container).
+**Tech Stack:** Streamlit (frontend), FastAPI (backend), OpenAI GPT-4.1 (AI), scikit-learn + SHAP (ML), streamlit-extras (bottom container).
 
 ---
 
@@ -156,7 +156,7 @@ graph TB
         API["backend/main.py\nFastAPI"]
         MODEL["backend/model.joblib\nRandomForestRegressor"]
         SHAP["SHAP TreeExplainer"]
-        OPENAI["OpenAI GPT-4o-mini"]
+        OPENAI["OpenAI GPT-4.1"]
     end
 
     subgraph Shared["Shared"]
@@ -204,7 +204,7 @@ sequenceDiagram
     participant BE as FastAPI Backend
     participant RF as RandomForestRegressor
     participant SHAP as SHAP Explainer
-    participant GPT as OpenAI GPT-4o-mini
+    participant GPT as OpenAI GPT-4.1
 
     Gebruiker->>FE: Startscherm — upload bestand of kies opleiding
     FE->>FE: Navigeer naar hoofdscherm
@@ -267,7 +267,7 @@ edupulse/
 │   ├── synth_data_pred.csv  # Ruwe download (tussenstap)
 │   └── README.md
 │
-├── agents/              # (gereserveerd voor toekomstige agents)
+├── agents/              # map voor toekomstige agents
 │   └── README.md
 │
 ├── assets/
@@ -295,9 +295,9 @@ edupulse/
 | Endpoint | Input | Doel |
 |----------|-------|------|
 | `POST /predict_dropout` | Alle modelfeatures (dict, 26 kolommen) | Continue risicoscore (0–1) via RandomForestRegressor |
-| `POST /explain_risk` | Studentdata + uitvalskans | Nederlandstalige AI-uitleg + mentoradvies via GPT-4o-mini |
+| `POST /explain_risk` | Studentdata + uitvalskans | Nederlandstalige AI-uitleg + mentoradvies via GPT-4.1 |
 | `POST /feature_importance` | Studentdata | SHAP-waarden per feature (TreeExplainer op regressor) |
-| `POST /summarize` | CSV-string of vrije vraag | Managementsamenvatting of Q&A via GPT-4o-mini |
+| `POST /summarize` | CSV-string of vrije vraag | Managementsamenvatting of Q&A via GPT-4.1 |
 
 - **ML-model:** `RandomForestRegressor` geladen uit `backend/model.joblib` via `joblib.load()`
 - **Features:** Dynamisch bepaald vanuit `shared/data.csv` (alle kolommen behalve `Dropout`, `Naam`, `Opleiding`, `Klas`, `Mentor`)
@@ -348,7 +348,7 @@ Een losstaande CLI-tool die **niet** deel uitmaakt van de webapplicatie.
 
 ## Vereisten
 
-- Python 3.12+
+- Python 3.13+
 - [UV package manager](https://docs.astral.sh/uv/) (aanbevolen) of pip
 - `OPENAI_API_KEY` environment variabele (voor de webapplicatie)
 - `ANTHROPIC_API_KEY` environment variabele (alleen voor `main.py`)
@@ -406,7 +406,7 @@ import os
 
 app = FastAPI()
 client = OpenAI()
-MODEL = "gpt-4o-mini"
+MODEL = "gpt-4.1"
 
 clf = joblib.load("backend/model.joblib")
 
