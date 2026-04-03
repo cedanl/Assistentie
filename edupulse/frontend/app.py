@@ -837,16 +837,6 @@ def _render_footer():
         </p>""",
         unsafe_allow_html=True,
     )
-with bottom():
-    st.markdown(
-        """<p style="text-align:center; font-size:0.7rem; font-weight:500; color:gray;
-                    font-family:'General Sans',sans-serif; margin:4px 0;">
-            &#169; 2026 CEDA — CC BY-SA 4.0 · AI en data waarde(n)vol inzetten: CEDA.
-            Uitnodigingsregel – EduPlan. Utrecht: Npuls
-        </p>""",
-        unsafe_allow_html=True,
-    )
-
 # ─────────────────────────────────────────────
 # Hoofdscherm — samenstellen
 # ─────────────────────────────────────────────
@@ -884,3 +874,28 @@ if st.session_state.page == "start":
     show_start_screen()
 else:
     show_main_screen()
+
+with bottom():
+    _col_txt, _col_btn = st.columns([5, 1])
+    with _col_txt:
+        st.markdown(
+            """<p style="text-align:center; font-size:0.7rem; font-weight:500; color:gray;
+                        font-family:'General Sans',sans-serif; margin:4px 0;">
+                &#169; 2026 CEDA — CC BY-SA 4.0 · AI en data waarde(n)vol inzetten: CEDA.
+                Uitnodigingsregel – EduPlan. Utrecht: Npuls
+            </p>""",
+            unsafe_allow_html=True,
+        )
+    with _col_btn:
+        if st.session_state.page != "start":
+            try:
+                with open("docs/model_analysis.html", "rb") as _f:
+                    st.download_button(
+                        label="📊 Download model evaluatie",
+                        data=_f.read(),
+                        file_name="model_analysis.html",
+                        mime="text/html",
+                        use_container_width=True,
+                    )
+            except FileNotFoundError:
+                pass
