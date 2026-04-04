@@ -17,22 +17,27 @@ uv sync
 # or: pip install -r requirements.txt
 ```
 
-**Run the Streamlit app:**
+**Run a Streamlit page directly (no configured entry point yet):**
 ```bash
-uv run src/main.py
+uv run streamlit run src/frontend/Overview/Home.py
 ```
 
-The root `pyproject.toml` manages this template's single dependency (`streamlit>=1.46.0`). Python >= 3.13 required.
+**Run the standalone Claude agent CLI:**
+```bash
+uv run src/main.py  # requires ANTHROPIC_API_KEY
+```
+
+The root `pyproject.toml` manages the template's dependencies (`streamlit>=1.46.0`). Python >= 3.13 required.
 
 ## Template Architecture (`src/`)
 
 ### Page Configuration Pattern
-Pages are registered in `src/main.py` using Streamlit's `st.navigation` / `st.Page`. Each page file exposes `title` and `icon` variables at module level.
+New Streamlit apps register pages in an entry `main.py` using `st.navigation` / `st.Page`. Each page file exposes `title` and `icon` variables at module level. The current `src/main.py` is not a Streamlit entry point — it is the standalone Claude agent CLI (see below).
 
 ### Directory Conventions
 ```
 src/
-├── main.py               # Entry point: navigation config, app-level state
+├── main.py               # Standalone Claude agent CLI (Anthropic SDK)
 ├── frontend/
 │   ├── Overview/         # Landing/home pages
 │   ├── Modules/          # Feature pages (business logic UI)
@@ -44,8 +49,8 @@ src/
 
 Frontend pages import from `backend/` for data processing. Keep UI code in `frontend/` and computation in `backend/`. Use `@st.cache_data` for data loading, `@st.cache_resource` for models/connections, and `st.session_state` for cross-page state.
 
-### Standalone Claude Agent (`src/main.py` also serves as)
-The file doubles as a standalone Claude agent CLI (Anthropic SDK, tools: `read_file`, `list_files`, `edit_file`). Requires `ANTHROPIC_API_KEY`. Logs to `agent.log`.
+### Standalone Claude Agent (`src/main.py`)
+Interactive CLI with file tools: `read_file`, `list_files`, `edit_file`. Requires `ANTHROPIC_API_KEY`. Logs to `agent.log`.
 
 ## EduPulse Sub-Project
 

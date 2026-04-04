@@ -72,8 +72,96 @@ class MapColumnsRequest(BaseModel):
     required_columns: list[str]
 
 
+# Nederlandse labels voor modelfeatures (voor leesbare SHAP-toelichting)
+FEATURE_LABELS: dict[str, str] = {
+    "StudentAge":             "Leeftijd (jaar)",
+    "StudentGender":          "Geslacht",
+    "Aanmel_aantal":          "Aantal aanmeldingen",
+    "max1studie":             "Slechts één studie ooit",
+    "ROCMondriaan":           "Eerder bij ROC Mondriaan",
+    "Richting_nan":           "Opleidingsrichting onbekend",
+    "absence_unauthorized":   "Ongeoorloofd verzuim (dagen)",
+    "absence_authorized":     "Geoorloofd verzuim (dagen)",
+    "Economie":               "Sector: Economie",
+    "Landbouw":               "Sector: Landbouw",
+    "Techniek":               "Sector: Techniek",
+    "DSV":                    "Sector: DSV",
+    "Zorgenwelzijn":          "Sector: Zorg & Welzijn",
+    "Anders":                 "Sector: Anders",
+    "VooroplNiveau_HAVO":     "Vooropleiding: HAVO",
+    "VooroplNiveau_MBO":      "Vooropleiding: MBO",
+    "VooroplNiveau_basis":    "Vooropleiding: Basisonderwijs",
+    "VooroplNiveau_educatie": "Vooropleiding: Educatie",
+    "VooroplNiveau_prak":     "Vooropleiding: Praktijkonderwijs",
+    "VooroplNiveau_VMBO_BB":  "Vooropleiding: VMBO-BB",
+    "VooroplNiveau_VMBO_GL":  "Vooropleiding: VMBO-GL",
+    "VooroplNiveau_VMBO_KB":  "Vooropleiding: VMBO-KB",
+    "VooroplNiveau_VMBO_TL":  "Vooropleiding: VMBO-TL",
+    "VooroplNiveau_nan":      "Vooropleiding: onbekend",
+    "VooroplNiveau_VWOplus":  "Vooropleiding: VWO of hoger",
+    "VooroplNiveau_other":    "Vooropleiding: anders",
+}
+
+# Features die geen inhoudelijke risicofactor zijn (niet opnemen in SHAP-toelichting)
+SHAP_EXCLUDE = {"Studentnummer"}
+
+
 def _student_to_df(student: dict) -> pd.DataFrame:
     return pd.DataFrame([student])[features]
+
+
+def _decode_student_profile(student: dict) -> str:
+    """Vertaal ruwe modelfeatures naar leesbaar Nederlands profiel voor de prompt."""
+    lines = []
+
+    age = student.get("StudentAge", "?")
+    gender_raw = student.get("StudentGender")
+    gender = "Man" if gender_raw == 1 else ("Vrouw" if gender_raw == 0 else "Onbekend")
+
+    lines.append(f"Leeftijd: {age} jaar")
+    lines.append(f"Geslacht: {gender}")
+    lines.append(f"Ongeoorloofd verzuim: {student.get('absence_unauthorized', 0):.1f} dagen")
+    lines.append(f"Geoorloofd verzuim: {student.get('absence_authorized', 0):.1f} dagen")
+    lines.append(f"Aantal aanmeldingen (voor deze opleiding): {int(student.get('Aanmel_aantal', 1))}")
+
+    max1 = student.get("max1studie")
+    if max1 == 1:
+        lines.append("Studie-ervaring: dit is de enige inschrijving ooit (geen eerdere studies)")
+    elif max1 == 0:
+        lines.append("Studie-ervaring: eerder ingeschreven geweest (studieswitch of herhaling)")
+
+    if student.get("ROCMondriaan") == 1:
+        lines.append("Eerder ingeschreven bij ROC Mondriaan: ja")
+
+    sector_cols = {
+        "Economie": "Economie", "Landbouw": "Landbouw", "Techniek": "Techniek",
+        "DSV": "DSV", "Zorgenwelzijn": "Zorg & Welzijn", "Anders": "Anders",
+    }
+    sector = next((label for col, label in sector_cols.items() if student.get(col) == 1), None)
+    if sector:
+        lines.append(f"Sector opleiding: {sector}")
+
+    vooropl_map = {
+        "VooroplNiveau_HAVO":     "HAVO",
+        "VooroplNiveau_MBO":      "MBO",
+        "VooroplNiveau_basis":    "Basisonderwijs",
+        "VooroplNiveau_educatie": "Educatie",
+        "VooroplNiveau_prak":     "Praktijkonderwijs",
+        "VooroplNiveau_VMBO_BB":  "VMBO-BB (basisberoepsgericht)",
+        "VooroplNiveau_VMBO_GL":  "VMBO-GL (gemengde leerweg)",
+        "VooroplNiveau_VMBO_KB":  "VMBO-KB (kaderberoepsgericht)",
+        "VooroplNiveau_VMBO_TL":  "VMBO-TL (theoretische leerweg)",
+        "VooroplNiveau_nan":      "Onbekend",
+        "VooroplNiveau_VWOplus":  "VWO of hoger",
+        "VooroplNiveau_other":    "Anders",
+    }
+    vooropl = next((label for col, label in vooropl_map.items() if student.get(col) == 1), "Onbekend")
+    lines.append(f"Vooropleiding: {vooropl}")
+
+    if student.get("Richting_nan") == 1:
+        lines.append("Opleidingsrichting: niet ingevuld / onbekend")
+
+    return "\n".join(lines)
 
 
 @app.post("/summarize")
@@ -101,30 +189,93 @@ def predict_dropout(request: StudentData):
 def explain_risk(request: ExplainRequest):
     student = request.student
     probability = request.probability
-    feature_str = ", ".join(f"{k}: {v}" for k, v in student.items())
-    prompt = (
-        f"Studentgegevens: {feature_str}.\n"
-        f"Voorspelde kans op uitval: {probability:.2%}.\n"
-        f"Licht uitgebreid, in heldere managementtaal, toe waarom deze student risico loopt op uitval, "
-        f"waarbij je je richt op deze drie elementen: 'Afwezigheid', 'Opleidingsachtergrond', en 'Aanmeldingsgeschiedenis'. "
-        f"Geef daarnaast gericht advies aan de mentor. Gebruik de onderstaande opmaak van het voorbeeld. "
-        f"Gebruik uitsluitend de bovenstaande studentgegevens; de getallen in het voorbeeld zijn fictief.\n\n"
-        f"<VOORBEELD>\n"
-        f"👩🏽‍💻ANALYSE VAN RISICO OP UITVAL\n\n"
-        f"**✅ 1. Afwezigheid** De student heeft een aanzienlijke afwezigheid met [X] niet-gemelde en [Y] gemelde afwezigheden. "
-        f"Dit kan leiden tot een verminderd leerresultaat en een afname van betrokkenheid bij de opleiding.\n\n"
-        f"**🎯Advies:** De mentor moet proactief het contact met de student zoeken om te achterhalen wat de oorzaken van de afwezigheid zijn.\n\n"
-        f"**✅ 2. Opleidingsachtergrond** De student komt uit een [vooropleiding]-achtergrond, wat betekent dat de student "
-        f"mogelijk minder voorbereiding heeft gehad op de uitdagingen van het voortgezet onderwijs.\n\n"
-        f"**🎯 Advies:** Het is belangrijk dat de mentor samen met docenten goed kijkt naar de studiemethoden van de student.\n\n"
-        f"**✅ 3. Aanmeldingsgeschiedenis** De student heeft een aanmeldingsgeschiedenis van [Z], wat kan wijzen op "
-        f"een beperkte betrokkenheid bij het onderwijs.\n\n"
-        f"**🎯 Advies:** De mentor kan een gesprek aangaan om de interesses en lange-termijndoelen van de student in kaart te brengen.\n\n"
-        f"### Conclusie\n\n"
-        f"Gezien deze drie elementen loopt deze student risico op uitval. "
-        f"Door een ondersteunende aanpak en open communicatie kan de mentor helpen om de student op koers te houden.\n"
-        f"</VOORBEELD>"
+
+    # ── Risiconiveau ──────────────────────────────────────────────────────────
+    if probability >= 0.65:
+        risico_niveau = "HOOG"
+        urgentie = "directe actie vereist (deze week)"
+    elif probability >= 0.35:
+        risico_niveau = "MATIG"
+        urgentie = "actie aanbevolen binnen twee weken"
+    else:
+        risico_niveau = "LAAG"
+        urgentie = "reguliere monitoring volstaat voorlopig"
+
+    # ── Top risicofactoren via SHAP (intern berekend) ─────────────────────────
+    X_pred = _student_to_df(student)
+    shap_vals = explainer.shap_values(X_pred.values)
+    fi = {
+        k: v for k, v in zip(features, shap_vals[0].tolist())
+        if k not in SHAP_EXCLUDE
+    }
+    top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
+    top_factors_str = "\n".join(
+        f"  {i + 1}. {FEATURE_LABELS.get(k, k)}"
+        f" — waarde: {student.get(k, '?')}"
+        f" — bijdrage aan risico: {'↑ verhogend' if v > 0 else '↓ verlagend'} ({abs(v):.3f})"
+        for i, (k, v) in enumerate(top_factors)
     )
+
+    # ── Leesbaar studentprofiel ───────────────────────────────────────────────
+    profiel = _decode_student_profile(student)
+
+    prompt = f"""Je bent een expert in studieloopbaanbegeleiding in het Nederlandse MBO-onderwijs.
+Schrijf een EduPlan voor de mentor van de onderstaande student.
+Het EduPlan is een professioneel begeleidingsdocument dat de mentor direct helpt bij een gericht gesprek en het inzetten van passende ondersteuning.
+
+═══════════════════════════════════════
+STUDENTPROFIEL
+═══════════════════════════════════════
+{profiel}
+
+Voorspelde uitvalkans: {probability:.1%}
+Risiconiveau: {risico_niveau} — {urgentie}
+
+═══════════════════════════════════════
+TOP 5 BEPALENDE FACTOREN (modelanalyse)
+═══════════════════════════════════════
+De onderstaande factoren dragen het meest bij aan het uitvalrisico voor déze student.
+Gebruik deze als kern van je analyse — niet alle factoren hoeven negatief te zijn.
+
+{top_factors_str}
+
+═══════════════════════════════════════
+INSTRUCTIES
+═══════════════════════════════════════
+Schrijf het EduPlan volledig in het Nederlands, in heldere professionele taal voor een MBO-mentor of SLB'er.
+Gebruik uitsluitend de werkelijke waarden uit het studentprofiel en de modelanalyse hierboven — geen fictieve getallen.
+Baseer adviezen op bewezen effectieve aanpakken uit de literatuur over MBO-uitval.
+
+Structuur het EduPlan exact als volgt:
+
+**🔍 RISICOPROFIEL**
+Beschrijf in 4–6 zinnen welke factoren bij déze student samenhangen met het uitvalrisico.
+Noem de concrete waarden (dagen verzuim, vooropleiding, aantal aanmeldingen etc.).
+Leg uit waarom juist de combinatie van deze factoren zorgelijk is.
+Benoem ook het risiconiveau ({risico_niveau}) en wat dat in de praktijk betekent voor urgentie.
+
+**⚠️ SIGNALEN EN GESPREKSTHEMA'S**
+Geef 4 concrete gespreksonderwerpen of vragen die de mentor in het eerste contact moet verkennen, afgestemd op dit specifieke profiel.
+Denk aan: verzuimgeschiedenis vóór inschrijving, financiële of thuissituatieproblemen, motivatie en toekomstperspectief, eerdere studie-uitval of -switch.
+Formuleer ze als directe gespreksstarters die een mentor kan gebruiken.
+
+**🎯 INTERVENTIES OP MAAT**
+Geef 3–5 concrete, gefaseerde interventies specifiek voor déze student.
+Noem per interventie: wat, wie, wanneer en waarom (onderbouwing).
+Stem de keuze af op het profiel: bij hoog verzuim prioriteit aan verzuimaanpak; bij meerdere aanmeldingen aandacht voor motivatie en studiekeuze; bij onbekende vooropleiding of praktijkachtergrond extra oriëntatie.
+
+Gebruik bij voorkeur bewezen effectieve aanpakken:
+- Vroeg persoonlijk motivatiegesprek (45 min): toekomstdoelen verkennen, autonomie en verbondenheid versterken — bewezen effectief bij vroege uitvalpreventie
+- Verzuimaanpak: bij ongeoorloofd verzuim boven drempel direct contact (telefoon/mail), dan gesprek over oorzaak; bij herhaling of escalatie: leerplicht of LEC inschakelen
+- Buddy-/rolmodelkoppeling: student koppelen aan een succesvolle medestudent uit dezelfde sector als sociaal anker
+- Kortdurende motivatie-interventie: 2 sessies van 45 minuten gericht op tussendoelen stellen en studiegedrag verbinden aan toekomstperspectief (onderzoek: –31% uitvalkans)
+- Domeinoverstijgende doorverwijzing: bij multiproblematiek (schulden, gezondheid, thuissituatie) doorverwijzen naar LEC, financieel spreekuur of jongerenwerk; aanpak moet holistisch zijn maar schoolse obstakels wegnemen staat voorop
+
+**📋 ACTIEPUNTEN VOOR DE MENTOR**
+Sluit af met een genummerde lijst van maximaal 5 actiepunten, gesorteerd op urgentie.
+Maak expliciet onderscheid: wat doe je déze week, wat doe je déze maand.
+"""
+
     response = client.responses.create(
         model=MODEL,
         store=False,
