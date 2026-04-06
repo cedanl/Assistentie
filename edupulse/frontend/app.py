@@ -24,6 +24,7 @@
 # Imports
 # ─────────────────────────────────────────────
 
+import html
 import streamlit as st
 from streamlit_extras.bottom_container import bottom
 import pandas as pd
@@ -749,7 +750,7 @@ def _render_eduplan_sectie():
             st.rerun()
 
     if st.session_state.eduplan_genereren:
-        naam = top[st.session_state.geselecteerde_student][0]["Naam"]
+        naam = html.escape(top[st.session_state.geselecteerde_student][0]["Naam"])
         st.markdown(
             f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
                             padding:28px; text-align:center; margin-top:16px;
@@ -768,7 +769,7 @@ def _render_eduplan_sectie():
 
 def _render_eduplan_content():
     analyse = st.session_state.laatste_analyse
-    naam    = analyse["naam"]
+    naam    = html.escape(analyse["naam"])
 
     with st.container(border=True):
         st.markdown(
@@ -879,11 +880,13 @@ with bottom():
     _col_txt, _col_btn = st.columns([5, 1])
     with _col_txt:
         st.markdown(
-            """<p style="text-align:center; font-size:0.7rem; font-weight:500; color:gray;
-                        font-family:'General Sans',sans-serif; margin:4px 0;">
-                &#169; 2026 CEDA — CC BY-SA 4.0 · AI en data waarde(n)vol inzetten: CEDA.
-                Uitnodigingsregel – EduPlan. Utrecht: Npuls
-            </p>""",
+            """<p style="text-align:center; font-size:0.5rem; font-weight:500; color:#1a1a1a;
+                    font-family:'General Sans',sans-serif; margin:1px 0;"><br>
+                    <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 2em;max-height:3em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 2em;max-height:3em;margin-left: .2em;"> Op deze analytics tool is de Creative Commons ShareAlike
+            Naamsvermelding 4.0-licentie van toepassing. <br>Maak bij gebruik van dit werk
+            vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
+            2026 Uitnodigingsregel – EduPlan. Utrecht: Npuls
+        </p>""",
             unsafe_allow_html=True,
         )
     with _col_btn:

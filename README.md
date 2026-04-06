@@ -26,6 +26,17 @@ Tegelijkertijd weten we dat (digitale) technologie nooit neutraal is. Daarom heb
 
 
 
+## Sub-projecten
+
+| Map | Beschrijving |
+|-----|-------------|
+| [`src/`](src/) | Streamlit multi-page app template voor nieuwe CEDA-projecten |
+| [`edupulse/`](edupulse/) | EduPulse — uitvalrisico-signalering en EduPlan-tool voor mbo-instellingen |
+
+Zie [`edupulse/README.md`](edupulse/README.md) voor installatie en gebruik van EduPulse, en [`edupulse/INSTRUCTIONS.md`](edupulse/INSTRUCTIONS.md) voor een gebruikshandleiding.
+
+---
+
 ### Digitale assistentie voor overmorgen
 
 Digitale assistentie ontwikkelt zich in hoog tempo van een reactieve naar een proactieve vorm. Ze wordt steeds autonomer, kan complexere taken uitvoeren en beschikt over een groeiend leervermogen. Deze nieuwe generatie digitale assistentie bestaat uit twee samenwerkende onderdelen:
