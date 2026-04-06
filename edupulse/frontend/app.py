@@ -88,6 +88,10 @@ _defaults = {
     "gebruik_demo_data":       True,
     "upload_filename":         "",
     "toon_alle_opleidingen":   False,
+    "heeft_dropout_kolom":     False,
+    "training_status":         "idle",   # idle | training | done | failed
+    "training_message":        "",
+    "model_is_custom":         False,
 }
 for k, v in _defaults.items():
     if k not in st.session_state:
@@ -141,6 +145,37 @@ def _verwerk_upload(uploaded_file) -> None:
 
             hernoem_log: dict[str, str] = {}   # geüpload → vereist
             vul_log:    list[str]       = []
+
+            # 2b. Detecteer uitvalkolom onder alternatieve naam (bijv. Uitval, Uitgevallen)
+            if "Dropout" not in new_df.columns:
+                _dropout_synoniemen = {
+                    "dropout", "uitval", "uitgevallen", "uitgevalen",
+                    "isuitgevallen", "uitvalindicator", "uitval_indicator",
+                    "gestopt", "vroegtijdigverlaten",
+                }
+                _gevonden = next(
+                    (c for c in new_df.columns if _norm_col(c) in _dropout_synoniemen),
+                    None,
+                )
+                if _gevonden is None:
+                    try:
+                        resp = requests.post(
+                            "http://localhost:8000/map_columns",
+                            json={
+                                "uploaded_columns": list(new_df.columns),
+                                "required_columns": ["Dropout"],
+                            },
+                            timeout=30,
+                        )
+                        _llm = resp.json().get("mapping", {})
+                        _kandidaat = _llm.get("Dropout")
+                        if _kandidaat and _kandidaat in new_df.columns:
+                            _gevonden = _kandidaat
+                    except Exception:
+                        pass
+                if _gevonden:
+                    new_df = new_df.rename(columns={_gevonden: "Dropout"})
+                    hernoem_log[_gevonden] = "Dropout"
 
             ontbrekend = [c for c in vereist if c not in new_df.columns]
 
@@ -215,6 +250,15 @@ def _verwerk_upload(uploaded_file) -> None:
             st.session_state.filter_key        = None
             st.session_state.risicostudenten   = []
             st.session_state.laatste_analyse   = None
+
+            # 8. Detecteer historische data met uitvalresultaten
+            heeft_dropout = (
+                "Dropout" in new_df.columns
+                and new_df["Dropout"].notna().sum() >= 30
+            )
+            st.session_state.heeft_dropout_kolom = heeft_dropout
+            if heeft_dropout:
+                st.session_state.training_status = "idle"
 
         # 8. Feedback aan gebruiker
         regels = [f"**'{uploaded_file.name}'** geladen — {len(new_df)} lerenden."]
@@ -312,11 +356,16 @@ def _run_voorspelling(dff: pd.DataFrame):
     st.session_state.laatste_analyse  = None
     st.session_state.eduplan_genereren = False
 
+    gebruik_default = st.session_state.gebruik_demo_data
+
     def _call(row):
         try:
             resp = requests.post(
                 "http://localhost:8000/predict_dropout",
-                json={"student": row[features].to_dict()},
+                json={
+                    "student":           row[features].to_dict(),
+                    "use_default_model": gebruik_default,
+                },
                 timeout=10,
             )
             return (row, resp.json())
@@ -341,14 +390,17 @@ def _genereer_eduplan():
     naam = row["Naam"]
 
     with st.spinner(f"🕑 Bezig met genereren van het EduPlan voor {naam}…"):
+        gebruik_default = st.session_state.gebruik_demo_data
+
         def _fetch_explain():
             try:
                 return requests.post(
                     "http://localhost:8000/explain_risk",
                     json={
-                        "student":     row[features].to_dict(),
-                        "prediction":  result["prediction"],
-                        "probability": result["probability"],
+                        "student":           row[features].to_dict(),
+                        "prediction":        result["prediction"],
+                        "probability":       result["probability"],
+                        "use_default_model": gebruik_default,
                     },
                     timeout=60,
                 ).json()["explanation"]
@@ -359,7 +411,10 @@ def _genereer_eduplan():
             try:
                 return requests.post(
                     "http://localhost:8000/feature_importance",
-                    json={"student": row[features].to_dict()},
+                    json={
+                        "student":           row[features].to_dict(),
+                        "use_default_model": gebruik_default,
+                    },
                     timeout=10,
                 ).json()["feature_importance"]
             except Exception:
@@ -390,6 +445,123 @@ def _genereer_eduplan():
         analyse["docx"] = _build_word_doc(analyse)
         st.session_state.laatste_analyse   = analyse
         st.session_state.eduplan_genereren = False
+
+
+# ─────────────────────────────────────────────
+# Modeltraining
+# ─────────────────────────────────────────────
+
+def _start_training() -> None:
+    upload_df = st.session_state.uploaded_df
+    payload = {
+        "data":           upload_df.to_dict(orient="records"),
+        "dropout_column": "Dropout",
+    }
+    try:
+        resp = requests.post("http://localhost:8000/train_model", json=payload, timeout=10)
+        resultaat = resp.json().get("status")
+        if resultaat in ("started", "already_running"):
+            st.session_state.training_status = "training"
+            st.rerun()
+    except Exception as e:
+        st.error(f"Kan training niet starten: {e}")
+
+
+def _reset_model() -> None:
+    try:
+        requests.delete("http://localhost:8000/reset_model", timeout=10)
+        st.session_state.training_status  = "idle"
+        st.session_state.training_message = ""
+        st.session_state.model_is_custom  = False
+        st.session_state.risicostudenten  = []
+        st.session_state.filter_key       = None
+        st.rerun()
+    except Exception as e:
+        st.error(f"Reset mislukt: {e}")
+
+
+def _show_training_panel() -> None:
+    """Toont de trainings-UI op het startscherm wanneer historische data is geüpload."""
+    import time
+
+    status = st.session_state.training_status
+
+    if status == "idle":
+        st.info(
+            "Je data bevat een **Dropout-kolom** met historische uitvalgegevens. "
+            "Train het model op jouw eigen data voor instelling-specifieke voorspellingen."
+        )
+        if st.button("Train model op jouw data", type="primary", use_container_width=True):
+            _start_training()
+
+    elif status == "training":
+        # Bewaar starttijd in session state — overleeft Streamlit-reruns
+        if "training_start_time" not in st.session_state:
+            st.session_state.training_start_time = time.time()
+
+        verstreken = time.time() - st.session_state.training_start_time
+        minuten, seconden = divmod(int(verstreken), 60)
+        tijdtekst = f"{minuten}m {seconden}s" if minuten else f"{seconden}s"
+
+        stappen = [
+            (0,  "Gegevens laden en features valideren…"),
+            (5,  "Hyperparameterraster opbouwen (24 combinaties × 5-fold CV)…"),
+            (15, "Modellen fitten — dit duurt het langst…"),
+            (45, "Laatste fits afronden en beste model selecteren…"),
+        ]
+        fase = next(
+            (msg for drempel, msg in reversed(stappen) if verstreken >= drempel),
+            stappen[0][1],
+        )
+
+        with st.status("Model wordt getraind…", expanded=True):
+            st.write("GridSearchCV doorzoekt hyperparameters. Dit duurt doorgaans 15–60 seconden.")
+            st.markdown(f"⏱ **Verstreken tijd:** {tijdtekst}")
+            st.caption(f"Fase: {fase}")
+
+        # Eén statuscheck per render — geen blokkerende loop
+        try:
+            data = requests.get("http://localhost:8000/train_status", timeout=5).json()
+        except Exception:
+            data = {"status": "training"}
+
+        if data["status"] == "done":
+            totaal = int(time.time() - st.session_state.pop("training_start_time", time.time()))
+            st.session_state.training_status  = "done"
+            st.session_state.training_message = f"{data['message']} (getraind in {totaal}s)"
+            st.session_state.model_is_custom  = True
+            st.session_state.risicostudenten  = []
+            st.session_state.filter_key       = None
+            st.rerun()
+        elif data["status"] == "failed":
+            st.session_state.pop("training_start_time", None)
+            st.session_state.training_status  = "failed"
+            st.session_state.training_message = data["message"]
+            st.rerun()
+        else:
+            # Nog bezig — wacht kort en herlaad
+            time.sleep(2)
+            st.rerun()
+
+    elif status == "done":
+        bericht = st.session_state.get("training_message", "")
+        st.success(
+            f"Instellingsmodel actief. {bericht} "
+            "Voorspellingen worden gedaan met jouw eigen getrainde model."
+        )
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Terugzetten naar standaardmodel", use_container_width=True):
+                _reset_model()
+        with col2:
+            st.caption("Het model blijft actief na herstart van de backend.")
+
+    elif status == "failed":
+        bericht = st.session_state.get("training_message", "")
+        st.error(f"Training mislukt: {bericht}")
+        if st.button("Opnieuw proberen", use_container_width=True):
+            st.session_state.training_status = "idle"
+            st.rerun()
 
 
 # ─────────────────────────────────────────────
@@ -437,6 +609,14 @@ def show_start_screen():
         # Verwerk alleen nieuw geüpload bestand (voorkomt herhaald verwerken na rerun)
         if uploaded_file is not None and uploaded_file.name != st.session_state.upload_filename:
             _verwerk_upload(uploaded_file)
+
+        # ── Modeltraining (alleen bij geüploade historische data met Dropout-kolom) ──
+        if (
+            st.session_state.heeft_dropout_kolom
+            and not st.session_state.gebruik_demo_data
+        ):
+            _show_training_panel()
+            st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
         # ── Demo-data checkbox ──
         demo_nieuw = st.checkbox(
@@ -520,27 +700,25 @@ def _render_header():
             unsafe_allow_html=True,
         )
     with col_terug:
+        st.markdown("<div class='nav-terug'>", unsafe_allow_html=True)
         if st.button("← TERUG", key="nav_terug", use_container_width=True):
             st.session_state.page = "start"
             st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
     with col_ur:
-        if st.button(
-            "UITNODIGINGSREGEL",
-            key="nav_ur",
-            type="primary" if tab == "uitnodigingsregel" else "secondary",
-            use_container_width=True,
-        ):
+        klasse_ur = "nav-actief" if tab == "uitnodigingsregel" else "nav-inactief"
+        st.markdown(f"<div class='{klasse_ur}'>", unsafe_allow_html=True)
+        if st.button("UITNODIGINGSREGEL", key="nav_ur", use_container_width=True):
             st.session_state.actieve_tab = "uitnodigingsregel"
             st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
     with col_ep:
-        if st.button(
-            "EDUPLAN",
-            key="nav_ep",
-            type="primary" if tab == "eduplan" else "secondary",
-            use_container_width=True,
-        ):
+        klasse_ep = "nav-actief" if tab == "eduplan" else "nav-inactief"
+        st.markdown(f"<div class='{klasse_ep}'>", unsafe_allow_html=True)
+        if st.button("EDUPLAN", key="nav_ep", use_container_width=True):
             st.session_state.actieve_tab = "eduplan"
             st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ─────────────────────────────────────────────
@@ -581,9 +759,15 @@ def _render_card_header():
         col_t, col_k, col_sp, col_p = st.columns([3, 2.5, 2.5, 0.5])
 
         with col_t:
+            badge = (
+                " <span style='font-size:0.7rem; background:#e8f5e9; color:#2e7d32;"
+                " border-radius:4px; padding:2px 6px; vertical-align:middle;"
+                " font-weight:500;'>instellingsmodel</span>"
+                if st.session_state.get("model_is_custom") else ""
+            )
             st.markdown(
                 f"<h3 style='font-weight:500; margin:0; padding:6px 0;"
-                f"font-family:\"General Sans\",sans-serif;'>{opl}</h3>",
+                f"font-family:\"General Sans\",sans-serif;'>{opl}{badge}</h3>",
                 unsafe_allow_html=True,
             )
 
@@ -775,10 +959,10 @@ def _render_eduplan_content():
         st.markdown(
             f"""<div style="display:flex; align-items:center; gap:14px;
                             font-family:'General Sans',sans-serif;">
-                <div style="background: {ROZE_LICHT}; color:black; border-radius:8px;
+                <div style="background:{ROZE_LICHT}; color:#1a1a1a; border-radius:8px;
                             width:36px; height:36px; display:flex; align-items:center;
                             justify-content:center; font-size:16px; font-weight:700;
-                            flex-shrink:0;"> 🚦 </div>
+                            flex-shrink:0;">🚦</div>
                 <span style="font-size:1.25rem; font-weight:600;">EduPlan | {naam}</span>
             </div>""",
             unsafe_allow_html=True,
@@ -786,14 +970,14 @@ def _render_eduplan_content():
 
     st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
-    with st.container(border=True):
-        st.markdown(
-            f"<div style='font-family:\"General Sans\",sans-serif; font-weight:600; "
-            f"font-size:15px; line-height:1.75; background: #fceaea;'> \n"
-            f"{analyse['explanation']}"
-            f"</div>",
-            unsafe_allow_html=True,
-        )
+    st.markdown(
+        f"<div style='font-family:\"General Sans\",sans-serif; font-size:15px; "
+        f"line-height:1.85; background:{ROZE_LICHT}; border-radius:16px; "
+        f"padding:28px 32px;'>"
+        f"{analyse['explanation']}"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
 
     st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
 

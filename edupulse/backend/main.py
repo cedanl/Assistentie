@@ -37,6 +37,11 @@ import os
 import json
 import re
 import shap
+import threading
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass, field
+
+import backend.trainer as trainer
 
 api_key = os.getenv("OPENAI_API_KEY")
 app = FastAPI()
@@ -45,31 +50,81 @@ client = OpenAI()
 
 MODEL = "gpt-4.1"
 
-# Laden van ML-model (RandomForestRegressor van Uitnodigingsregel)
-clf = joblib.load("backend/model.joblib")
+# Modelpaden
+MODEL_DEFAULT_PATH = "backend/model.joblib"
+MODEL_CUSTOM_PATH  = "backend/model_custom.joblib"
 
 # Features zijn alle kolommen uit data.csv behalve weergave- en doelkolommen
 _df = pd.read_csv("shared/data.csv")
 NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
 features = [col for col in _df.columns if col not in NON_FEATURES]
 
-explainer = shap.TreeExplainer(clf)
+# Standaardmodel — altijd geladen, gebruikt bij demo-data
+clf_default      = joblib.load(MODEL_DEFAULT_PATH)
+explainer_default = shap.TreeExplainer(clf_default)
+
+# Instellingsmodel — geladen indien beschikbaar; anders alias op standaard
+if os.path.exists(MODEL_CUSTOM_PATH):
+    clf_custom      = joblib.load(MODEL_CUSTOM_PATH)
+    explainer_custom = shap.TreeExplainer(clf_custom)
+else:
+    clf_custom      = clf_default
+    explainer_custom = explainer_default
+
+# Actief model (voor /train_model en /reset_model)
+clf      = clf_custom
+explainer = explainer_custom
+
+
+def _get_model(use_default: bool):
+    """Geef het juiste (clf, explainer)-paar terug op basis van de vlag."""
+    if use_default:
+        return clf_default, explainer_default
+    return clf, explainer
+
+
+# ── Trainingstoestand ─────────────────────────────────────────────────────────
+
+@dataclass
+class _TrainingState:
+    status:  str = "idle"   # idle | training | done | failed
+    message: str = ""
+    lock: threading.Lock = field(default_factory=threading.Lock)
+
+_training = _TrainingState()
+
+
+def _reload_model(path: str) -> None:
+    """Laad model en explainer opnieuw en vervang de globale referenties atomisch."""
+    global clf, explainer
+    new_clf      = joblib.load(path)
+    new_explainer = shap.TreeExplainer(new_clf)
+    # Python-naam-toewijzing is atomisch onder de GIL; beide globals worden samen vervangen
+    clf      = new_clf
+    explainer = new_explainer
 
 
 class StudentData(BaseModel):
-    student: dict
+    student:           dict
+    use_default_model: bool = False
 
 class SummaryRequest(BaseModel):
     data: str
 
 class ExplainRequest(BaseModel):
-    student: dict
-    prediction: int
-    probability: float
+    student:           dict
+    prediction:        int
+    probability:       float
+    use_default_model: bool = False
 
 class MapColumnsRequest(BaseModel):
     uploaded_columns: list[str]
     required_columns: list[str]
+
+class TrainRequest(BaseModel):
+    data:             list[dict]
+    dropout_column:   str        = "Dropout"
+    rf_parameters:    dict | None = None
 
 
 # Nederlandse labels voor modelfeatures (voor leesbare SHAP-toelichting)
@@ -178,9 +233,9 @@ def summarize(request: SummaryRequest):
 
 @app.post("/predict_dropout")
 def predict_dropout(request: StudentData):
+    model, _ = _get_model(request.use_default_model)
     X_pred = _student_to_df(request.student)
-    score = float(clf.predict(X_pred.values)[0])
-    # Drempel 0.35 markeert risicostudenten
+    score = float(model.predict(X_pred.values)[0])
     prediction = 1 if score >= 0.35 else 0
     return {"probability": score, "prediction": prediction}
 
@@ -202,8 +257,9 @@ def explain_risk(request: ExplainRequest):
         urgentie = "reguliere monitoring volstaat voorlopig"
 
     # ── Top risicofactoren via SHAP (intern berekend) ─────────────────────────
+    _, exp = _get_model(request.use_default_model)
     X_pred = _student_to_df(student)
-    shap_vals = explainer.shap_values(X_pred.values)
+    shap_vals = exp.shap_values(X_pred.values)
     fi = {
         k: v for k, v in zip(features, shap_vals[0].tolist())
         if k not in SHAP_EXCLUDE
@@ -287,11 +343,63 @@ Maak expliciet onderscheid: wat doe je déze week, wat doe je déze maand.
 
 @app.post("/feature_importance")
 def feature_importance(request: StudentData):
+    _, exp = _get_model(request.use_default_model)
     X_pred = _student_to_df(request.student)
     # RF Regressor: shap_values() geeft shape (n_samples, n_features), geen lijst per klasse
-    shap_vals = explainer.shap_values(X_pred.values)
+    shap_vals = exp.shap_values(X_pred.values)
     fi = dict(zip(features, shap_vals[0].tolist()))
     return {"feature_importance": fi}
+
+
+@app.post("/train_model")
+def train_model_endpoint(request: TrainRequest):
+    """Start modeltraining asynchroon op basis van geüploade historische data."""
+    with _training.lock:
+        if _training.status == "training":
+            return {"status": "already_running"}
+        _training.status  = "training"
+        _training.message = ""
+
+    def _run():
+        try:
+            df_train = pd.DataFrame(request.data)
+            trainer.train_model(
+                df=df_train,
+                dropout_col=request.dropout_column,
+                feature_cols=features,
+                model_path=MODEL_CUSTOM_PATH,
+                param_grid=request.rf_parameters,
+            )
+            _reload_model(MODEL_CUSTOM_PATH)
+            with _training.lock:
+                n = len(df_train.dropna(subset=[request.dropout_column]))
+                _training.status  = "done"
+                _training.message = f"Model getraind op {n} studenten."
+        except Exception as e:
+            with _training.lock:
+                _training.status  = "failed"
+                _training.message = str(e)
+
+    ThreadPoolExecutor(max_workers=1).submit(_run)
+    return {"status": "started"}
+
+
+@app.get("/train_status")
+def train_status():
+    """Geef de huidige trainingsstatus terug (polling door de frontend)."""
+    return {"status": _training.status, "message": _training.message}
+
+
+@app.delete("/reset_model")
+def reset_model():
+    """Zet het standaardmodel terug en verwijder het instellingsmodel."""
+    if os.path.exists(MODEL_CUSTOM_PATH):
+        os.remove(MODEL_CUSTOM_PATH)
+    _reload_model(MODEL_DEFAULT_PATH)
+    with _training.lock:
+        _training.status  = "idle"
+        _training.message = ""
+    return {"status": "reset"}
 
 
 @app.post("/map_columns")
