@@ -384,7 +384,7 @@ def _run_voorspelling(dff: pd.DataFrame):
             resultaten = [r for r in pool.map(_call, rows) if r is not None]
         resultaten.sort(key=lambda x: x[1]["probability"], reverse=True)
         st.session_state.risicostudenten = resultaten
-        st.session_state.top_n = min(len(resultaten), 5)
+        st.session_state.top_n = min(len(resultaten), 10)
 
 
 def _genereer_eduplan():
