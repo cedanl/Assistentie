@@ -57,7 +57,7 @@ Streamlit frontend (frontend/app.py)
 | Endpoint | Input | Purpose |
 |----------|-------|---------|
 | `POST /predict_dropout` | All model features (dict) | Continuous dropout risk score (0–1) |
-| `POST /explain_risk` | Student data + probability | EduPlan: computes SHAP internally, then calls GPT-4.1 with student profile + top-5 risk factors |
+| `POST /explain_risk` | Student data + probability + `imputed_columns` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via GPT-4.1 met alleen SHAP-factoren (geen studentprofiel) |
 | `POST /feature_importance` | Student data | SHAP values per feature (TreeExplainer on regressor) — used for the UI bar chart |
 | `POST /summarize` | CSV data string or question | Management summary or Q&A via OpenAI |
 | `POST /map_columns` | Uploaded + required column lists | LLM-based column name mapping for CSV uploads |
@@ -107,16 +107,28 @@ The model uses 27 features derived from `shared/data.csv` (all columns except `D
 
 ## EduPlan Generation (`/explain_risk`)
 
-The EduPlan prompt is structured in four sections, grounded in MBO dropout research literature (`edupulse/docs/uitval/`):
+The EduPlan is split into two parts to prevent hallucination:
 
-1. **🔍 Risicoprofiel** — 4–6 sentences on the student's specific risk factors, using real values and the risk level (LAAG / MATIG / HOOG)
-2. **⚠️ Signalen en gespreksthema's** — 4 concrete conversation starters for the mentor's first contact
-3. **🎯 Interventies op maat** — 3–5 evidence-based interventions (motivatiegesprek, verzuimaanpak, buddy-koppeling, motivatie-interventie, LEC-doorverwijzing), adapted to the student's profile
+**Sectie 1 — deterministisch (geen LLM)**
+`_build_risicoprofiel_html()` renders Section 1 as HTML directly from actual student data. Imputed columns are shown as `<i style='color:#999;'>niet beschikbaar</i>`. The top-5 SHAP factors are listed with direction and magnitude. If data quality is insufficient (`data_onvoldoende = True`), a warning is shown instead of calling the LLM.
+
+**Secties 2–4 — LLM (GPT-4.1, temperature=0.2)**
+The LLM receives **only** the risk level and SHAP factors — no student profile. This eliminates hallucination of absent values like age, gender, and absence days.
+
+1. **🔍 Risicoprofiel** — deterministisch HTML (geen LLM)
+2. **⚠️ Signalen en gespreksthema's** — 4 gespreksstarters afgeleid van SHAP-factoren
+3. **🎯 Interventies op maat** — 3–5 evidence-based interventions, only for available factors
 4. **📋 Actiepunten** — numbered action list sorted by urgency (this week / this month)
 
 Risk levels: **LAAG** (< 35%), **MATIG** (35–65%), **HOOG** (≥ 65%).
 
-The backend computes SHAP values internally and passes the top-5 risk factors (with direction and magnitude) to the prompt, so the LLM focuses on what actually drives the risk for that specific student. `_decode_student_profile()` translates raw one-hot features into readable Dutch text before sending to the LLM.
+### Key implementation details
+
+- `BINARY_LABELS: dict[str, tuple[str, str]]` — single source of truth for 22 binary features; maps each feature to `(label_bij_1, label_bij_0)`. Used by `_factor_label(key, value)` so the LLM never sees ambiguous values like `VooroplNiveau_HAVO: 0.0`.
+- `imputed_columns: list[str]` — passed from frontend via `ExplainRequest`; features in this set are excluded from SHAP analysis and shown as "niet beschikbaar" in the profile.
+- `data_onvoldoende = max(abs(shap_val)) < 0.01` — detects when all imputed-at-median data leaves no variance; LLM call is skipped, warning returned.
+- `SHAP_EXCLUDE = {"Studentnummer"}` — excluded from SHAP display regardless.
+- `_SECTOR_COLS` and `_VOOROPL_MAP` — module-level dicts for decoding one-hot sector/education columns in the deterministic profile.
 
 ## Key Implementation Notes
 
@@ -125,7 +137,9 @@ The backend computes SHAP values internally and passes the top-5 risk factors (w
 - **Features determined dynamically** from `shared/data.csv` columns at startup
 - The model was trained with numpy arrays (no feature names); always pass `.values` to avoid sklearn warnings
 - SHAP for a regressor returns shape `(n_samples, n_features)` directly — no `[1]` class index needed
-- `/explain_risk` and `/feature_importance` both compute SHAP — this is intentional: the former uses SHAP for the prompt, the latter serves the UI bar chart
+- `/explain_risk` and `/feature_importance` both compute SHAP — this is intentional: the former uses SHAP for the deterministic profile + LLM prompt, the latter serves the UI bar chart
+- CSV uploads use `sep=None, engine="python"` to auto-detect comma, tab, semicolon, etc.
+- `vul_log` (list of imputed column names) is stored in `st.session_state` after upload and passed to `/explain_risk` as `imputed_columns`
 - All user-facing text and AI responses are in **Dutch**
 - `frontend/ui.py` exists but is currently unused
 - Package manager is **UV** (preferred over pip); cache stored in `./.uv_cache/`

@@ -12,7 +12,7 @@ graph TB
         API["backend/main.py\nFastAPI"]
         MODEL["backend/model.joblib\nRandomForestRegressor"]
         SHAP["SHAP TreeExplainer"]
-        OPENAI["OpenAI GPT-4o-mini"]
+        OPENAI["OpenAI GPT-4.1"]
     end
 
     subgraph Shared["Shared"]
@@ -58,7 +58,7 @@ sequenceDiagram
     participant BE as FastAPI Backend
     participant RF as RandomForestRegressor
     participant SHAP as SHAP Explainer
-    participant GPT as OpenAI GPT-4o-mini
+    participant GPT as OpenAI GPT-4.1
 
     Gebruiker->>FE: Startscherm — kies opleiding (zoekbalk of pill)
     FE->>FE: Navigeer naar hoofdscherm
@@ -82,10 +82,17 @@ sequenceDiagram
     SHAP-->>BE: Feature-bijdragen per kolom
     BE-->>FE: SHAP-waarden
 
-    FE->>BE: POST /explain_risk (data + kans)
-    BE->>GPT: Genereer Nederlandstalige uitleg + advies
-    GPT-->>BE: EduPlan tekst
-    BE-->>FE: AI-uitleg
+    FE->>BE: POST /explain_risk (data + kans + imputed_columns)
+    note over BE: Sectie 1: deterministisch HTML<br>vanuit echte studentdata (geen LLM)
+    BE->>SHAP: shap_values() — geïmputeerde kolommen uitgesloten
+    SHAP-->>BE: Top-5 risicofactoren
+    alt Voldoende data (max SHAP ≥ 0.01)
+        BE->>GPT: Secties 2–4: alleen risiconiveau + SHAP-factoren
+        GPT-->>BE: Begeleidingstekst (geen studentprofiel)
+    else Onvoldoende data (max SHAP < 0.01)
+        BE-->>FE: Waarschuwing — geen advies mogelijk
+    end
+    BE-->>FE: Sectie 1 (HTML) + secties 2–4 (LLM)
     FE->>Gebruiker: Toon EduPlan
 
     Gebruiker->>FE: Download rapport
@@ -97,23 +104,27 @@ sequenceDiagram
 ## 3. Schermstructuur
 
 ```
-Startscherm  (roze achtergrond #e8c8c8)
-├── Upload-veld (.csv / .xlsx) — smaller gecentreerd
-├── Zoekbalk + START-knop
+Startscherm  (roze achtergrond #f0d4d4)
+├── Upload-veld (.csv / .xlsx) — auto-detectie scheidingsteken
+├── Demo-data checkbox
+├── START DE UITNODIGINGSREGEL knop
 ├── Snelkeuze-pills (4 zichtbaar + "Meer ↓")
 └── Footer — compact, roze, sticky onderaan
 
-Hoofdscherm  (roze achtergrond #e8c8c8)
-├── Header (lichtroze #f2e4e4, sticky, schaduw)
+Hoofdscherm  (roze achtergrond #f0d4d4)
+├── Header (lichtroze #fae8e8, sticky, schaduw)
 │   ├── CEDA  (logo links)
 │   └── [← TERUG]  [UITNODIGINGSREGEL*]  [EDUPLAN]  (knoppen rechts)
 │       * actieve tab heeft witte achtergrond + zwarte rand
 ├── Witte kaart
 │   ├── Kaart-header: [Opleiding]  [KLAS: ...]  [✏]
-│   ├── Terracotta banner: "Toon mij X lerenden…" + slider
+│   ├── Terracotta banner: "Toon mij X lerenden…" + slider (default 10)
 │   ├── Tab UITNODIGINGSREGEL → horizontale staafgrafiek (hoog→laag)
 │   └── Tab EDUPLAN → student-selector + TOON EDUPLAN + EduPlan-kaart
+│       ├── Sectie 1: deterministisch risicoprofiel (HTML, geen LLM)
+│       │   └── Ontbrekende kolommen getoond als "niet beschikbaar"
+│       ├── Secties 2–4: AI-begeleidingstekst (GPT-4.1)
 │       └── PRINT  DOWNLOAD (.docx)
-└── Footer — compact, lichtroze, sticky onderaan
+└── Footer — compact, lichtroze (#fae8e8), sticky onderaan
     © 2026 CEDA — CC BY-SA 4.0
 ```
