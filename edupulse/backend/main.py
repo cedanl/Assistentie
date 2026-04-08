@@ -48,7 +48,7 @@ app = FastAPI()
 
 client = OpenAI()
 
-MODEL = "gpt-4.1"
+MODEL = "gpt-5.1"
 
 # Modelpaden
 MODEL_DEFAULT_PATH = "backend/model.joblib"
@@ -116,6 +116,7 @@ class ExplainRequest(BaseModel):
     prediction:        int
     probability:       float
     use_default_model: bool = False
+    imputed_columns:   list[str] = []
 
 class MapColumnsRequest(BaseModel):
     uploaded_columns: list[str]
@@ -160,63 +161,162 @@ FEATURE_LABELS: dict[str, str] = {
 # Features die geen inhoudelijke risicofactor zijn (niet opnemen in SHAP-toelichting)
 SHAP_EXCLUDE = {"Studentnummer"}
 
+# Binaire features: (label_bij_waarde_1, label_bij_waarde_0)
+# Enkelvoudige bron zodat positief en negatief label altijd synchroon blijven.
+BINARY_LABELS: dict[str, tuple[str, str]] = {
+    "StudentGender":          ("Geslacht: Man",                     "Geslacht: Vrouw"),
+    "max1studie":             ("Enige inschrijving ooit: ja",        "Enige inschrijving ooit: nee (eerder ingeschreven)"),
+    "ROCMondriaan":           ("Eerder bij ROC Mondriaan: ja",       "Eerder bij ROC Mondriaan: nee"),
+    "Richting_nan":           ("Opleidingsrichting onbekend: ja",    "Opleidingsrichting: bekend"),
+    "Economie":               ("Sector: Economie",                   "Sector is niet Economie"),
+    "Landbouw":               ("Sector: Landbouw",                   "Sector is niet Landbouw"),
+    "Techniek":               ("Sector: Techniek",                   "Sector is niet Techniek"),
+    "DSV":                    ("Sector: DSV",                        "Sector is niet DSV"),
+    "Zorgenwelzijn":          ("Sector: Zorg & Welzijn",             "Sector is niet Zorg & Welzijn"),
+    "Anders":                 ("Sector: Anders",                     "Sector is niet Anders"),
+    "VooroplNiveau_HAVO":     ("Vooropleiding: HAVO",                "Vooropleiding is niet HAVO"),
+    "VooroplNiveau_MBO":      ("Vooropleiding: MBO",                 "Vooropleiding is niet MBO"),
+    "VooroplNiveau_basis":    ("Vooropleiding: Basisonderwijs",      "Vooropleiding is niet Basisonderwijs"),
+    "VooroplNiveau_educatie": ("Vooropleiding: Educatie",            "Vooropleiding is niet Educatie"),
+    "VooroplNiveau_prak":     ("Vooropleiding: Praktijkonderwijs",   "Vooropleiding is niet Praktijkonderwijs"),
+    "VooroplNiveau_VMBO_BB":  ("Vooropleiding: VMBO-BB",             "Vooropleiding is niet VMBO-BB"),
+    "VooroplNiveau_VMBO_GL":  ("Vooropleiding: VMBO-GL",             "Vooropleiding is niet VMBO-GL"),
+    "VooroplNiveau_VMBO_KB":  ("Vooropleiding: VMBO-KB",             "Vooropleiding is niet VMBO-KB"),
+    "VooroplNiveau_VMBO_TL":  ("Vooropleiding: VMBO-TL",             "Vooropleiding is niet VMBO-TL"),
+    "VooroplNiveau_nan":      ("Vooropleiding: onbekend",            "Vooropleiding is bekend (niet ontbrekend)"),
+    "VooroplNiveau_VWOplus":  ("Vooropleiding: VWO of hoger",        "Vooropleiding is niet VWO of hoger"),
+    "VooroplNiveau_other":    ("Vooropleiding: anders",              "Vooropleiding is geen anders/overig"),
+}
+
+# Sector- en vooropleidingskolommen als module-level constanten (gebruikt in profiel en SHAP-filter)
+_SECTOR_COLS: dict[str, str] = {
+    "Economie": "Economie", "Landbouw": "Landbouw", "Techniek": "Techniek",
+    "DSV": "DSV", "Zorgenwelzijn": "Zorg & Welzijn", "Anders": "Anders",
+}
+_VOOROPL_MAP: dict[str, str] = {
+    "VooroplNiveau_HAVO": "HAVO",     "VooroplNiveau_MBO": "MBO",
+    "VooroplNiveau_basis": "Basisonderwijs", "VooroplNiveau_educatie": "Educatie",
+    "VooroplNiveau_prak": "Praktijkonderwijs", "VooroplNiveau_VMBO_BB": "VMBO-BB",
+    "VooroplNiveau_VMBO_GL": "VMBO-GL",  "VooroplNiveau_VMBO_KB": "VMBO-KB",
+    "VooroplNiveau_VMBO_TL": "VMBO-TL",  "VooroplNiveau_nan": "Onbekend",
+    "VooroplNiveau_VWOplus": "VWO of hoger", "VooroplNiveau_other": "Anders",
+}
+
+
+def _factor_label(key: str, value: float) -> str:
+    """Geef een voor het LLM ondubbelzinnige beschrijving van een binaire of continue factor."""
+    if key in BINARY_LABELS:
+        pos, neg = BINARY_LABELS[key]
+        return pos if value == 1 else neg
+    return f"{FEATURE_LABELS.get(key, key)}: {value}"
+
 
 def _student_to_df(student: dict) -> pd.DataFrame:
     return pd.DataFrame([student])[features]
 
 
-def _decode_student_profile(student: dict) -> str:
-    """Vertaal ruwe modelfeatures naar leesbaar Nederlands profiel voor de prompt."""
-    lines = []
+def _build_risicoprofiel_html(
+    student: dict,
+    probability: float,
+    risico_niveau: str,
+    urgentie: str,
+    top_factors: list[tuple[str, float]],
+    imputed_set: set[str],
+    model_name: str,
+    data_onvoldoende: bool = False,
+) -> str:
+    """Bouw sectie 1 (Risicoprofiel) volledig deterministisch — geen LLM betrokken.
 
-    age = student.get("StudentAge", "?")
-    gender_raw = student.get("StudentGender")
-    gender = "Man" if gender_raw == 1 else ("Vrouw" if gender_raw == 0 else "Onbekend")
+    Toont uitsluitend waarden die daadwerkelijk aanwezig zijn in de geüploade data.
+    Geïmputeerde velden worden gemarkeerd als 'niet beschikbaar'.
+    """
+    n_imputed = len(imputed_set)
+    n_features = len(features)  # module-level global
+    kleur = "#c0392b" if risico_niveau == "HOOG" else ("#e67e22" if risico_niveau == "MATIG" else "#27ae60")
 
-    lines.append(f"Leeftijd: {age} jaar")
-    lines.append(f"Geslacht: {gender}")
-    lines.append(f"Ongeoorloofd verzuim: {student.get('absence_unauthorized', 0):.1f} dagen")
-    lines.append(f"Geoorloofd verzuim: {student.get('absence_authorized', 0):.1f} dagen")
-    lines.append(f"Aantal aanmeldingen (voor deze opleiding): {int(student.get('Aanmel_aantal', 1))}")
+    def _val(key: str, fmt=None) -> str:
+        if key in imputed_set or student.get(key) is None:
+            return "<i style='color:#999;'>niet beschikbaar</i>"
+        v = student[key]
+        return fmt(v) if fmt else str(v)
 
-    max1 = student.get("max1studie")
-    if max1 == 1:
-        lines.append("Studie-ervaring: dit is de enige inschrijving ooit (geen eerdere studies)")
-    elif max1 == 0:
-        lines.append("Studie-ervaring: eerder ingeschreven geweest (studieswitch of herhaling)")
+    lines: list[str] = [
+        f"<b>🔍 RISICOPROFIEL</b>"
+        f"<span style='font-size:0.8em; color:#888; margin-left:8px;'>model: {model_name}</span>",
+        f"<b>Risiconiveau:</b> "
+        f"<span style='color:{kleur}; font-weight:700;'>{risico_niveau}</span> "
+        f"({probability:.0%}) — {urgentie}",
+        "",
+        "<b>Studentgegevens uit de data:</b>",
+        f"&nbsp;&nbsp;• Leeftijd: {_val('StudentAge', lambda v: f'{int(v)} jaar')}",
+    ]
 
-    if student.get("ROCMondriaan") == 1:
-        lines.append("Eerder ingeschreven bij ROC Mondriaan: ja")
+    if "StudentGender" in imputed_set:
+        gender_str = "<i style='color:#999;'>niet beschikbaar</i>"
+    else:
+        g = student.get("StudentGender")
+        gender_str = "Man" if g == 1 else ("Vrouw" if g == 0 else "Onbekend")
+    lines.append(f"&nbsp;&nbsp;• Geslacht: {gender_str}")
 
-    sector_cols = {
-        "Economie": "Economie", "Landbouw": "Landbouw", "Techniek": "Techniek",
-        "DSV": "DSV", "Zorgenwelzijn": "Zorg & Welzijn", "Anders": "Anders",
-    }
-    sector = next((label for col, label in sector_cols.items() if student.get(col) == 1), None)
-    if sector:
-        lines.append(f"Sector opleiding: {sector}")
+    lines.append(f"&nbsp;&nbsp;• Ongeoorloofd verzuim: {_val('absence_unauthorized', lambda v: f'{v:.1f} dagen')}")
+    lines.append(f"&nbsp;&nbsp;• Geoorloofd verzuim: {_val('absence_authorized', lambda v: f'{v:.1f} dagen')}")
+    lines.append(f"&nbsp;&nbsp;• Aantal aanmeldingen: {_val('Aanmel_aantal', lambda v: str(int(v)))}")
 
-    vooropl_map = {
-        "VooroplNiveau_HAVO":     "HAVO",
-        "VooroplNiveau_MBO":      "MBO",
-        "VooroplNiveau_basis":    "Basisonderwijs",
-        "VooroplNiveau_educatie": "Educatie",
-        "VooroplNiveau_prak":     "Praktijkonderwijs",
-        "VooroplNiveau_VMBO_BB":  "VMBO-BB (basisberoepsgericht)",
-        "VooroplNiveau_VMBO_GL":  "VMBO-GL (gemengde leerweg)",
-        "VooroplNiveau_VMBO_KB":  "VMBO-KB (kaderberoepsgericht)",
-        "VooroplNiveau_VMBO_TL":  "VMBO-TL (theoretische leerweg)",
-        "VooroplNiveau_nan":      "Onbekend",
-        "VooroplNiveau_VWOplus":  "VWO of hoger",
-        "VooroplNiveau_other":    "Anders",
-    }
-    vooropl = next((label for col, label in vooropl_map.items() if student.get(col) == 1), "Onbekend")
-    lines.append(f"Vooropleiding: {vooropl}")
+    if "max1studie" not in imputed_set:
+        max1 = student.get("max1studie")
+        if max1 == 1:
+            lines.append("&nbsp;&nbsp;• Studie-ervaring: enige inschrijving ooit")
+        elif max1 == 0:
+            lines.append("&nbsp;&nbsp;• Studie-ervaring: eerder ingeschreven geweest")
 
-    if student.get("Richting_nan") == 1:
-        lines.append("Opleidingsrichting: niet ingevuld / onbekend")
+    if student.get("ROCMondriaan") == 1 and "ROCMondriaan" not in imputed_set:
+        lines.append("&nbsp;&nbsp;• Eerder bij ROC Mondriaan: ja")
 
-    return "\n".join(lines)
+    if not all(c in imputed_set for c in _SECTOR_COLS):
+        sector = next((lbl for col, lbl in _SECTOR_COLS.items() if student.get(col) == 1), None)
+        if sector:
+            lines.append(f"&nbsp;&nbsp;• Sector: {sector}")
+
+    if not all(c in imputed_set for c in _VOOROPL_MAP):
+        vooropl = next((lbl for col, lbl in _VOOROPL_MAP.items() if student.get(col) == 1), None)
+        if vooropl:
+            lines.append(f"&nbsp;&nbsp;• Vooropleiding: {vooropl}")
+
+    if student.get("Richting_nan") == 1 and "Richting_nan" not in imputed_set:
+        lines.append("&nbsp;&nbsp;• Opleidingsrichting: niet ingevuld / onbekend")
+
+    lines.append("")
+    lines.append("<b>Bepalende risicofactoren (modelanalyse):</b>")
+    if top_factors and not data_onvoldoende:
+        for i, (k, v) in enumerate(top_factors):
+            richting = "↑ verhogend" if v > 0 else "↓ verlagend"
+            label = _factor_label(k, student.get(k, 0))
+            lines.append(
+                f"&nbsp;&nbsp;{i + 1}. {label}"
+                f" — <b>{richting}</b> ({abs(v):.3f})"
+            )
+    else:
+        lines.append("&nbsp;&nbsp;<i>Onvoldoende informatieve gegevens om factoren te bepalen.</i>")
+
+    if n_imputed > 0 and n_features > 0:
+        pct = int(100 * n_imputed / n_features)
+        lines.append("")
+        if data_onvoldoende:
+            lines.append(
+                f"<span style='color:#c0392b;'>⚠️ <b>Datakwaliteit:</b> {n_imputed} van de {n_features} "
+                f"benodigde modelkolommen ({pct}%) ontbreken in uw bestand en zijn vervangen door "
+                f"gemiddelde waarden. Het model heeft geen bruikbare variatie kunnen detecteren. "
+                f"Controleer of uw data de vereiste kolommen bevat.</span>"
+            )
+        else:
+            lines.append(
+                f"<span style='color:#e67e22;'>ℹ️ {n_imputed} van de {n_features} modelkolommen ({pct}%) "
+                f"ontbraken en zijn aangevuld met gemiddelde waarden. "
+                f"Resultaten zijn minder betrouwbaar.</span>"
+            )
+
+    lines.append("<hr style='border:none; border-top:1px solid #eee; margin:16px 0;'>")
+    return "<br>".join(lines)
 
 
 @app.post("/summarize")
@@ -256,89 +356,102 @@ def explain_risk(request: ExplainRequest):
         risico_niveau = "LAAG"
         urgentie = "reguliere monitoring volstaat voorlopig"
 
-    # ── Top risicofactoren via SHAP (intern berekend) ─────────────────────────
+    # ── SHAP: top factoren op basis van werkelijke data (geïmputeerde features uitgesloten) ──
     _, exp = _get_model(request.use_default_model)
     X_pred = _student_to_df(student)
     shap_vals = exp.shap_values(X_pred.values)
+    imputed_set = set(request.imputed_columns)
     fi = {
         k: v for k, v in zip(features, shap_vals[0].tolist())
-        if k not in SHAP_EXCLUDE
+        if k not in SHAP_EXCLUDE and k not in imputed_set
     }
     top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
-    top_factors_str = "\n".join(
-        f"  {i + 1}. {FEATURE_LABELS.get(k, k)}"
-        f" — waarde: {student.get(k, '?')}"
-        f" — bijdrage aan risico: {'↑ verhogend' if v > 0 else '↓ verlagend'} ({abs(v):.3f})"
-        for i, (k, v) in enumerate(top_factors)
+
+    # Detecteer of alle SHAP-waarden nagenoeg nul zijn (geen informatieve factoren)
+    max_shap = max((abs(v) for _, v in top_factors), default=0.0)
+    data_onvoldoende = max_shap < 0.01
+
+    # ── Sectie 1: deterministisch risicoprofiel (geen LLM) ────────────────────
+    sectie1 = _build_risicoprofiel_html(
+        student, probability, risico_niveau, urgentie,
+        top_factors, imputed_set, MODEL,
+        data_onvoldoende=data_onvoldoende,
     )
 
-    # ── Leesbaar studentprofiel ───────────────────────────────────────────────
-    profiel = _decode_student_profile(student)
+    # ── Sectie 2–4: LLM schrijft alleen begeleidingsadvies ───────────────────
+    # Als alle SHAP-waarden ~0 zijn, heeft geen enkele kolom informatie opgeleverd.
+    # In dat geval is gepersonaliseerd advies niet mogelijk.
+    if data_onvoldoende:
+        return {
+            "explanation": sectie1 + (
+                "<br><b>⚠️ Geen gepersonaliseerd advies mogelijk</b><br>"
+                "De geüploade kolommen bevatten te weinig informatie die het model herkent. "
+                "Het model heeft geen variatie kunnen detecteren ten opzichte van de gemiddelde student. "
+                "Controleer of uw databestand de juiste kolommen bevat (zoals verzuim, leeftijd, "
+                "vooropleiding en aanmeldingshistorie) en upload opnieuw."
+            )
+        }
 
-    prompt = f"""Je bent een expert in studieloopbaanbegeleiding in het Nederlandse MBO-onderwijs.
-Schrijf een EduPlan voor de mentor van de onderstaande student.
-Het EduPlan is een professioneel begeleidingsdocument dat de mentor direct helpt bij een gericht gesprek en het inzetten van passende ondersteuning.
+    # Het LLM krijgt UITSLUITEND de SHAP-factoren en het risiconiveau.
+    # Binaire features worden ondubbelzinnig gelabeld (ja/nee) zodat het LLM
+    # waarde 0 niet verwart met de aanwezigheid van het kenmerk.
+    if top_factors:
+        factoren_tekst = "\n".join(
+            f"  {i + 1}. {_factor_label(k, student.get(k, 0))}"
+            f" — {'↑ verhogend' if v > 0 else '↓ verlagend'} ({abs(v):.3f})"
+            for i, (k, v) in enumerate(top_factors)
+        )
+    else:
+        factoren_tekst = "  Onvoldoende beschikbare gegevens voor een factoranalyse."
 
-═══════════════════════════════════════
-STUDENTPROFIEL
-═══════════════════════════════════════
-{profiel}
+    prompt = f"""Je bent expert in studieloopbaanbegeleiding in het Nederlandse MBO-onderwijs.
+Schrijf de begeleidingssecties van een EduPlan voor een MBO-mentor of SLB'er.
 
-Voorspelde uitvalkans: {probability:.1%}
-Risiconiveau: {risico_niveau} — {urgentie}
+RISICONIVEAU: {risico_niveau} ({probability:.0%}) — {urgentie}
 
-═══════════════════════════════════════
-TOP 5 BEPALENDE FACTOREN (modelanalyse)
-═══════════════════════════════════════
-De onderstaande factoren dragen het meest bij aan het uitvalrisico voor déze student.
-Gebruik deze als kern van je analyse — niet alle factoren hoeven negatief te zijn.
+BEPALENDE FACTOREN VOOR DÉZE STUDENT (modelanalyse):
+{factoren_tekst}
 
-{top_factors_str}
-
-═══════════════════════════════════════
-INSTRUCTIES
-═══════════════════════════════════════
-Schrijf het EduPlan volledig in het Nederlands, in heldere professionele taal voor een MBO-mentor of SLB'er.
-Gebruik uitsluitend de werkelijke waarden uit het studentprofiel en de modelanalyse hierboven — geen fictieve getallen.
-Baseer adviezen op bewezen effectieve aanpakken uit de literatuur over MBO-uitval.
-
-Structuur het EduPlan exact als volgt:
-
-**🔍 RISICOPROFIEL**
-Beschrijf in 4–6 zinnen welke factoren bij déze student samenhangen met het uitvalrisico.
-Noem de concrete waarden (dagen verzuim, vooropleiding, aantal aanmeldingen etc.).
-Leg uit waarom juist de combinatie van deze factoren zorgelijk is.
-Benoem ook het risiconiveau ({risico_niveau}) en wat dat in de praktijk betekent voor urgentie.
+OPDRACHT:
+Schrijf precies de volgende drie secties in professioneel Nederlands.
+Baseer je UITSLUITEND op de bepalende factoren hierboven en het risiconiveau.
+Noem GEEN getallen, kenmerken of gegevens die niet expliciet in de factoren staan.
+Verzin geen leeftijden, verzuimdagen, geslacht of andere studentgegevens.
 
 **⚠️ SIGNALEN EN GESPREKSTHEMA'S**
-Geef 4 concrete gespreksonderwerpen of vragen die de mentor in het eerste contact moet verkennen, afgestemd op dit specifieke profiel.
-Denk aan: verzuimgeschiedenis vóór inschrijving, financiële of thuissituatieproblemen, motivatie en toekomstperspectief, eerdere studie-uitval of -switch.
-Formuleer ze als directe gespreksstarters die een mentor kan gebruiken.
+
+Geef 4 concrete gespreksonderwerpen of vragen die de mentor in het eerste contact moet verkennen.
+Leid de thema's direct af uit de bepalende factoren hierboven — niet uit aannames.
+Formuleer als directe gespreksstarters die een mentor letterlijk kan gebruiken.
 
 **🎯 INTERVENTIES OP MAAT**
-Geef 3–5 concrete, gefaseerde interventies specifiek voor déze student.
-Noem per interventie: wat, wie, wanneer en waarom (onderbouwing).
-Stem de keuze af op het profiel: bij hoog verzuim prioriteit aan verzuimaanpak; bij meerdere aanmeldingen aandacht voor motivatie en studiekeuze; bij onbekende vooropleiding of praktijkachtergrond extra oriëntatie.
 
-Gebruik bij voorkeur bewezen effectieve aanpakken:
-- Vroeg persoonlijk motivatiegesprek (45 min): toekomstdoelen verkennen, autonomie en verbondenheid versterken — bewezen effectief bij vroege uitvalpreventie
-- Verzuimaanpak: bij ongeoorloofd verzuim boven drempel direct contact (telefoon/mail), dan gesprek over oorzaak; bij herhaling of escalatie: leerplicht of LEC inschakelen
-- Buddy-/rolmodelkoppeling: student koppelen aan een succesvolle medestudent uit dezelfde sector als sociaal anker
-- Kortdurende motivatie-interventie: 2 sessies van 45 minuten gericht op tussendoelen stellen en studiegedrag verbinden aan toekomstperspectief (onderzoek: –31% uitvalkans)
-- Domeinoverstijgende doorverwijzing: bij multiproblematiek (schulden, gezondheid, thuissituatie) doorverwijzen naar LEC, financieel spreekuur of jongerenwerk; aanpak moet holistisch zijn maar schoolse obstakels wegnemen staat voorop
+Geef 3–5 concrete, gefaseerde interventies gebaseerd op de bepalende factoren.
+Noem per interventie: wat, wie, wanneer en waarom (onderbouwing).
+Kies alleen interventies die aansluiten bij de wél beschikbare factoren.
+Bewezen effectieve aanpakken (gebruik alleen wat relevant is voor de factoren):
+- Vroeg persoonlijk motivatiegesprek (45 min): toekomstdoelen verkennen, autonomie versterken
+- Verzuimaanpak: direct contact bij drempeloverschrijding, bij herhaling leerplicht/LEC
+- Buddy-/rolmodelkoppeling: sociaal anker via succesvolle medestudent
+- Kortdurende motivatie-interventie: 2×45 min, tussendoelen en toekomstperspectief (–31% uitvalkans)
+- Domeinoverstijgende doorverwijzing: bij multiproblematiek naar LEC/financieel spreekuur/jongerenwerk
 
 **📋 ACTIEPUNTEN VOOR DE MENTOR**
-Sluit af met een genummerde lijst van maximaal 5 actiepunten, gesorteerd op urgentie.
-Maak expliciet onderscheid: wat doe je déze week, wat doe je déze maand.
+
+Maximaal 5 genummerde actiepunten, gesorteerd op urgentie.
+Maak expliciet onderscheid: déze week vs déze maand.
 """
 
     response = client.responses.create(
         model=MODEL,
         store=False,
+        temperature=0.2,
         input=[{"role": "user", "content": prompt}]
     )
-    uitleg = response.output_text  # type: ignore
-    return {"explanation": uitleg}
+    sectie2_4 = response.output_text  # type: ignore
+
+    # Sectie 1 (deterministisch HTML) + sectie 2-4 (LLM) samenvoegen
+    return {"explanation": sectie1 + sectie2_4}
 
 
 @app.post("/feature_importance")

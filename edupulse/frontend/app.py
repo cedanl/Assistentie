@@ -92,6 +92,7 @@ _defaults = {
     "training_status":         "idle",   # idle | training | done | failed
     "training_message":        "",
     "model_is_custom":         False,
+    "vul_log":                 [],
 }
 for k, v in _defaults.items():
     if k not in st.session_state:
@@ -137,7 +138,8 @@ def _verwerk_upload(uploaded_file) -> None:
             if uploaded_file.name.endswith(".xlsx"):
                 new_df = pd.read_excel(uploaded_file)
             else:
-                new_df = pd.read_csv(uploaded_file)
+                # sep=None + engine='python' detecteert automatisch komma, tab, puntkomma, etc.
+                new_df = pd.read_csv(uploaded_file, sep=None, engine="python")
 
             # 2. Vereiste modelkolommen bepalen
             demo_df = _load_data()
@@ -250,6 +252,7 @@ def _verwerk_upload(uploaded_file) -> None:
             st.session_state.filter_key        = None
             st.session_state.risicostudenten   = []
             st.session_state.laatste_analyse   = None
+            st.session_state.vul_log           = vul_log
 
             # 8. Detecteer historische data met uitvalresultaten
             heeft_dropout = (
@@ -316,11 +319,14 @@ def _build_word_doc(analyse: dict) -> BytesIO:
     doc.add_heading("Kengetallen", 2)
     kgn = doc.add_paragraph()
     kgn.add_run("Leeftijd: ").bold = True
-    kgn.add_run(f"{analyse['leeftijd']} jaar\n")
+    _leeftijd = analyse['leeftijd']
+    kgn.add_run(f"{_leeftijd} jaar\n" if _leeftijd != "niet beschikbaar" else "niet beschikbaar\n")
     kgn.add_run("Ongeoorloofd verzuim: ").bold = True
-    kgn.add_run(f"{analyse['ongeoorloofd_verzuim']:.1f} dagen\n")
+    _ongeoorl = analyse['ongeoorloofd_verzuim']
+    kgn.add_run(f"{_ongeoorl:.1f} dagen\n" if isinstance(_ongeoorl, float) else f"{_ongeoorl}\n")
     kgn.add_run("Geoorloofd verzuim: ").bold = True
-    kgn.add_run(f"{analyse['geoorloofd_verzuim']:.1f} dagen\n")
+    _geoorl = analyse['geoorloofd_verzuim']
+    kgn.add_run(f"{_geoorl:.1f} dagen\n" if isinstance(_geoorl, float) else f"{_geoorl}\n")
     kgn.add_run("Uitvalkans: ").bold = True
     r = kgn.add_run(f"{analyse['probability']:.1%}\n")
     r.font.color.rgb = RGBColor(200, 120, 90)
@@ -378,7 +384,7 @@ def _run_voorspelling(dff: pd.DataFrame):
             resultaten = [r for r in pool.map(_call, rows) if r is not None]
         resultaten.sort(key=lambda x: x[1]["probability"], reverse=True)
         st.session_state.risicostudenten = resultaten
-        st.session_state.top_n = min(len(resultaten), 10)
+        st.session_state.top_n = min(len(resultaten), 5)
 
 
 def _genereer_eduplan():
@@ -391,6 +397,8 @@ def _genereer_eduplan():
 
     with st.spinner(f"🕑 Bezig met genereren van het EduPlan voor {naam}…"):
         gebruik_default = st.session_state.gebruik_demo_data
+        vul_log = st.session_state.get("vul_log", [])
+        vul_set = set(vul_log)
 
         def _fetch_explain():
             try:
@@ -401,6 +409,7 @@ def _genereer_eduplan():
                         "prediction":        result["prediction"],
                         "probability":       result["probability"],
                         "use_default_model": gebruik_default,
+                        "imputed_columns":   vul_log,
                     },
                     timeout=60,
                 ).json()["explanation"]
@@ -428,15 +437,20 @@ def _genereer_eduplan():
 
         fi_str = ", ".join(f"{k}: {v:.2f}" for k, v in fi_dict.items()) if fi_dict else "Niet beschikbaar."
 
+        def _safe_value(col: str, cast_fn):
+            if col in vul_set or col not in row.index:
+                return "niet beschikbaar"
+            return cast_fn(row[col])
+
         analyse = {
             "naam":                    naam,
             "opleiding":               row.get("Opleiding", "—"),
             "klas":                    row.get("Klas", "—"),
             "mentor":                  row.get("Mentor", "—"),
             "studentnummer":           int(row["Studentnummer"]) if "Studentnummer" in row.index else "—",
-            "leeftijd":                int(row["StudentAge"]) if "StudentAge" in row.index else "—",
-            "ongeoorloofd_verzuim":    float(row["absence_unauthorized"]) if "absence_unauthorized" in row.index else 0.0,
-            "geoorloofd_verzuim":      float(row.get("absence_authorized", 0)),
+            "leeftijd":                _safe_value("StudentAge", int),
+            "ongeoorloofd_verzuim":    _safe_value("absence_unauthorized", float),
+            "geoorloofd_verzuim":      _safe_value("absence_authorized", float),
             "probability":             result["probability"],
             "explanation":             exp,
             "feature_importance":      fi_str,
@@ -570,16 +584,16 @@ def _show_training_panel() -> None:
 
 def show_start_screen():
     st.markdown(START_CSS, unsafe_allow_html=True)
-    st.markdown("<div style='height:60px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
 
     # ── Titel ──
     st.markdown(
         """
-        <div style="text-align:center; margin-bottom:32px; font-family:'General Sans',sans-serif;">
-            <h1 style="font-size:3.2rem; font-weight:600; line-height:1.15; margin-bottom:4px; padding:0;">
+        <div style="text-align:center; margin-bottom:22px; margin-top:4px; font-family:'General Sans',sans-serif;">
+            <h1 style="font-size:3.2rem; font-weight:600; line-height:1.15; margin-bottom:24px; margin-top:14px; padding:8;">
                 Welkom bij de<br>Uitnodigingsregel
             </h1>
-            <p style="font-size:1.3rem; font-weight:500; color:#333; margin-top:0; padding:0;">
+            <p style="font-size:1.3rem; font-weight:500; color:#333; margin-top:4px; padding:0;">
                 op tijd de juiste lerenden uitnodigen
             </p>
         </div>
@@ -591,7 +605,7 @@ def show_start_screen():
     with col_m:
         # ── Beschrijvingstekst ──
         st.markdown(
-            """<p style="text-align:center; font-size:1rem; color:#333; margin-bottom:20px;
+            """<p style="text-align:center; font-size:1rem; font-weight:400; color:#333; margin-top:20px; margin-bottom:30px;
                          font-family:'General Sans',sans-serif; line-height:1.6;">
                 Voeg je eigen dataset met lerenden toe, om te zien of er nú lerenden zijn
                 die mogelijk risico lopen om uit te vallen. We brengen ze voor jou in beeld.
@@ -632,7 +646,7 @@ def show_start_screen():
                 st.session_state.risicostudenten = []
                 st.session_state.laatste_analyse = None
 
-        st.markdown("<div style='height:16px'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height:26px'></div>", unsafe_allow_html=True)
 
         # ── START-knop ──
         data_beschikbaar = st.session_state.gebruik_demo_data or st.session_state.uploaded_df is not None
@@ -695,7 +709,7 @@ def _render_header():
 
     with col_ceda:
         st.markdown(
-            "<p style='font-weight:700;font-size:1.5rem;font-family:\"General Sans\",sans-serif;"
+            "<p style='font-weight:600;font-size:1.5rem;font-family:\"General Sans\",sans-serif;"
             "margin:0;padding:6px 0;'>CEDA</p>",
             unsafe_allow_html=True,
         )
@@ -790,7 +804,7 @@ def _render_card_header():
 
         with col_p:
             st.markdown("<div class='potlood-btn'>", unsafe_allow_html=True)
-            if st.button("🖊️ ", key="potlood"):
+            if st.button("🖊️", key="potlood"):
                 st.session_state.toon_zoekbalk = True
                 st.rerun()
             st.markdown("</div>", unsafe_allow_html=True)
@@ -957,22 +971,22 @@ def _render_eduplan_content():
 
     with st.container(border=True):
         st.markdown(
-            f"""<div style="display:flex; align-items:center; gap:14px;
+            f"""<div style="display:flex; background:white; border-radius:16px; align-items:center; 
                             font-family:'General Sans',sans-serif;">
-                <div style="background:{ROZE_LICHT}; color:#1a1a1a; border-radius:8px;
-                            width:36px; height:36px; display:flex; align-items:center;
-                            justify-content:center; font-size:16px; font-weight:700;
-                            flex-shrink:0;">🚦</div>
-                <span style="font-size:1.25rem; font-weight:600;">EduPlan | {naam}</span>
+                <div style="background:white; color:#1a1a1a; border-radius:16px;
+                            width:68px; height:59px; display:flex; align-items:center;
+                            justify-content:center; font-size:28px; font-weight:700;
+                            flex-shrink:1;">🚦</div>
+                <span style="background:white; font-size:2.0rem; font-weight:500;">EduPlan | {naam}</span>
             </div>""",
             unsafe_allow_html=True,
         )
 
-    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:26px'></div>", unsafe_allow_html=True)
 
     st.markdown(
         f"<div style='font-family:\"General Sans\",sans-serif; font-size:15px; "
-        f"line-height:1.85; background:{ROZE_LICHT}; border-radius:16px; "
+        f"line-height:1.85; background:white; border-radius:16px; "
         f"padding:28px 32px;'>"
         f"{analyse['explanation']}"
         f"</div>",
@@ -983,17 +997,7 @@ def _render_eduplan_content():
 
     _, col_p, col_d = st.columns([4, 1.5, 1.5])
 
-    with col_p:
-        st.markdown(
-            """<button onclick="(window.parent||window).print()"
-                style="background-color:#1a1a1a;color:white;border-radius:50px;
-                       border:none;font-size:12px;font-weight:700;letter-spacing:0.07em;
-                       padding:8px 24px;box-shadow:none;cursor:pointer;width:100%;
-                       white-space:nowrap;font-family:'General Sans',sans-serif;">
-                PRINT
-            </button>""",
-            unsafe_allow_html=True,
-        )
+        
 
     with col_d:
         st.download_button(
@@ -1068,7 +1072,7 @@ with bottom():
                     font-family:'General Sans',sans-serif; margin:1px 0;"><br>
                     <img src="https://mirrors.creativecommons.org/presskit/icons/cc.svg" alt="" style="max-width: 2em;max-height:3em;margin-left: .2em;"><img src="https://mirrors.creativecommons.org/presskit/icons/by.svg" alt="" style="max-width: 2em;max-height:3em;margin-left: .2em;"> Op deze analytics tool is de Creative Commons ShareAlike
             Naamsvermelding 4.0-licentie van toepassing. <br>Maak bij gebruik van dit werk
-            vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA.
+            vermelding van de volgende referentie: AI en data waarde(n)vol inzetten: CEDA
             2026 Uitnodigingsregel – EduPlan. Utrecht: Npuls
         </p>""",
             unsafe_allow_html=True,
