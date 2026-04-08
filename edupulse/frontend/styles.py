@@ -132,12 +132,12 @@ div[data-testid="stSelectbox"] > div > div[data-baseweb="select"] > div {
 
 /* ── Potlood-knop ── */
 div.potlood-btn button {
-    background: transparent !important;
+    background: #fae8e8 !important;
     border: none !important;
     font-size: 1.2rem !important;
-    padding: 0px 0px !important;
+    text-align:center;
     color: #1a1a1a !important;
-    box-shadow: none !important;
+    box-shadow: 0 4px 32px rgba(180,100,90,0.13);
 }
 
 /* ── Zoek-input in card ── */
