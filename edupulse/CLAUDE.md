@@ -53,14 +53,22 @@ Streamlit frontend (frontend/app.py)
         → OpenAI GPT-4.1
 ```
 
-### Backend (`backend/main.py`) — 5 endpoints
+### Backend (`backend/main.py`) — 8 endpoints
 | Endpoint | Input | Purpose |
 |----------|-------|---------|
-| `POST /predict_dropout` | All model features (dict) | Continuous dropout risk score (0–1) |
-| `POST /explain_risk` | Student data + probability + `imputed_columns` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via GPT-4.1 met alleen SHAP-factoren (geen studentprofiel) |
-| `POST /feature_importance` | Student data | SHAP values per feature (TreeExplainer on regressor) — used for the UI bar chart |
+| `POST /predict_dropout` | All model features (dict) + `use_default_model` | Continuous dropout risk score (0–1) |
+| `POST /explain_risk` | Student data + probability + `imputed_columns` + `use_default_model` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via GPT-4.1 met alleen SHAP-factoren (geen studentprofiel) |
+| `POST /feature_importance` | Student data + `use_default_model` | SHAP values per feature (TreeExplainer on regressor) — used for the UI bar chart |
 | `POST /summarize` | CSV data string or question | Management summary or Q&A via OpenAI |
 | `POST /map_columns` | Uploaded + required column lists | LLM-based column name mapping for CSV uploads |
+| `POST /train_model` | `data` (list of dicts) + `dropout_column` + optional `rf_parameters` | Train a custom RandomForest on institution data; runs in background thread; saves to `backend/model_custom.joblib` |
+| `GET /train_status` | — | Returns current training state: `idle \| training \| done \| failed` with message |
+| `DELETE /reset_model` | — | Deletes `model_custom.joblib` and resets active model to default |
+
+### Backend (`backend/trainer.py`)
+Standalone training module. `train_model()` runs GridSearchCV over `DEFAULT_PARAM_GRID` on the provided DataFrame, requires ≥ 30 training rows, and saves the best estimator to disk. Called by `/train_model` in a background thread via `threading.Thread`.
+
+**Dual-model architecture:** At startup, `clf_default`/`explainer_default` are always loaded from `backend/model.joblib`. If `backend/model_custom.joblib` exists, `clf`/`explainer` (the active model) point to it; otherwise they alias the default. `use_default_model: bool` on each request selects which pair to use via `_get_model()`.
 
 ### Frontend (`frontend/app.py`) — two screens
 
@@ -140,6 +148,8 @@ Risk levels: **LAAG** (< 35%), **MATIG** (35–65%), **HOOG** (≥ 65%).
 - `/explain_risk` and `/feature_importance` both compute SHAP — this is intentional: the former uses SHAP for the deterministic profile + LLM prompt, the latter serves the UI bar chart
 - CSV uploads use `sep=None, engine="python"` to auto-detect comma, tab, semicolon, etc.
 - `vul_log` (list of imputed column names) is stored in `st.session_state` after upload and passed to `/explain_risk` as `imputed_columns`
+- Training UI state lives in `st.session_state`: `training_status` (`idle|training|done|failed`), `training_message`, and `model_is_custom` (bool). The frontend polls `/train_status` and updates these.
+- `gebruik_demo_data` (bool) and `heeft_dropout_kolom` (bool) track whether the uploaded CSV has a `Dropout` column (required to offer custom model training)
 - All user-facing text and AI responses are in **Dutch**
 - `frontend/ui.py` exists but is currently unused
 - Package manager is **UV** (preferred over pip); cache stored in `./.uv_cache/`
