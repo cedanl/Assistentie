@@ -1,5 +1,7 @@
 import streamlit as st
-from backend.example_sales import get_sales_data, calculate_sales_metrics, get_monthly_sales
+
+from backend.example_sales import calculate_sales_metrics, get_monthly_sales, get_sales_data
+
 # ---------------------------------------
 # PAGE CONFIGURATION
 # ---------------------------------------
@@ -23,7 +25,7 @@ with col1:
 with col2:
     st.metric("Average Sale", f"${metrics['average']:.2f}")
 with col3:
-    st.metric("Best Month", metrics['best_month'])
+    st.metric("Best Month", metrics["best_month"])
 with col4:
     st.metric("Growth", f"{metrics['growth']:.1f}%")
 
@@ -36,10 +38,10 @@ st.line_chart(monthly_data)
 st.subheader("Sales by Category")
 category_data = {}
 for sale in sales_data:
-    category = sale['category']
+    category = sale["category"]
     if category not in category_data:
         category_data[category] = 0
-    category_data[category] += sale['amount']
+    category_data[category] += sale["amount"]
 
 st.bar_chart(category_data)
 
