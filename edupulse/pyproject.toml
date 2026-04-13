@@ -31,7 +31,15 @@ dependencies = [
 dev = [
     "pytest>=8.0",
     "httpx>=0.27",
+    "ruff>=0.9",
 ]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+ignore = ["E501"]  # HTML-strings in st.markdown() kunnen niet zinvol worden afgebroken
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

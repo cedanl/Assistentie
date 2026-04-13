@@ -28,8 +28,18 @@ The app requires two processes running simultaneously:
 **Install dependencies:**
 ```bash
 uv sync
-# or: pip install -r requirements.txt
+# Dev dependencies (pytest, httpx):
+uv sync --extra dev
 ```
+
+**Run tests (from the `edupulse/` directory):**
+```bash
+uv run pytest tests/
+# Single test:
+uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
+```
+
+The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the OpenAI client. Tests must be run from inside `edupulse/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_openai) live in `tests/conftest.py`. `test_trainer.py` tests `backend/trainer.py` in isolation using a temporary joblib path.
 
 **Run the standalone Claude agent CLI:**
 ```bash
@@ -70,7 +80,9 @@ Standalone training module. `train_model()` runs GridSearchCV over `DEFAULT_PARA
 
 **Dual-model architecture:** At startup, `clf_default`/`explainer_default` are always loaded from `backend/model.joblib`. If `backend/model_custom.joblib` exists, `clf`/`explainer` (the active model) point to it; otherwise they alias the default. `use_default_model: bool` on each request selects which pair to use via `_get_model()`.
 
-### Frontend (`frontend/app.py`) — two screens
+### Frontend (`frontend/app.py`, `frontend/styles.py`) — two screens
+
+`styles.py` is the only other frontend module. It exports CSS strings (`START_CSS`, `MAIN_CSS`) and color constants (`TERRACOTTA`, `ROZE_BG`, `ROZE_LICHT`) imported by `app.py`. All visual styling lives there.
 
 **Start screen** (`page = "start"`)
 - Search field + START button to select an opleiding
