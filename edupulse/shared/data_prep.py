@@ -7,10 +7,11 @@ Uitvoeren vanuit de projectroot:
     python shared/data_prep.py
 """
 
-import urllib.request
-import pandas as pd
-import numpy as np
 import random
+import urllib.request
+
+import numpy as np
+import pandas as pd
 
 random.seed(42)
 np.random.seed(42)
@@ -68,5 +69,5 @@ df["Mentor"] = [random.choice(mentoren) for _ in range(n)]
 
 df.to_csv("shared/data.csv", index=False)
 print(f"\nshared/data.csv opgeslagen ({n} studenten).")
-print(f"backend/model.joblib gedownload.")
+print("backend/model.joblib gedownload.")
 print(f"\nKolommen in data.csv: {list(df.columns)}")

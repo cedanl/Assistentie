@@ -8,8 +8,8 @@ import pandas as pd
 import pytest
 from sklearn.ensemble import RandomForestRegressor
 
-from backend.main import features
 from backend import trainer
+from backend.main import features
 
 
 def _make_df(n: int, seed: int = 0) -> pd.DataFrame:

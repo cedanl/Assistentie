@@ -11,11 +11,12 @@
 # Original Authors: Ed. de Feber, Edwin Lieftink
 # -----------------------------------------------------------------------------
 
-import os
-import sys
 import argparse
 import logging
-from typing import List, Dict, Any
+import os
+import sys
+from typing import Any
+
 from anthropic import Anthropic  # type: ignore
 from pydantic import BaseModel  # type: ignore
 
@@ -34,14 +35,14 @@ logging.getLogger("httpx").setLevel(logging.WARNING)
 class Tool(BaseModel):
     name: str
     description: str
-    input_schema: Dict[str, Any]
+    input_schema: dict[str, Any]
 
 
 class AIAgent:
     def __init__(self, api_key: str):
         self.client = Anthropic(api_key=api_key)
-        self.messages: List[Dict[str, Any]] = []
-        self.tools: List[Tool] = []
+        self.messages: list[dict[str, Any]] = []
+        self.tools: list[Tool] = []
         self._setup_tools()
 
     def _setup_tools(self):
@@ -98,7 +99,7 @@ class AIAgent:
             ),
         ]
 
-    def _execute_tool(self, tool_name: str, tool_input: Dict[str, Any]) -> str:
+    def _execute_tool(self, tool_name: str, tool_input: dict[str, Any]) -> str:
         logging.info(f"Executing tool: {tool_name} with input: {tool_input}")
         try:
             if tool_name == "read_file":
@@ -119,7 +120,7 @@ class AIAgent:
 
     def _read_file(self, path: str) -> str:
         try:
-            with open(path, "r", encoding="utf-8") as f:
+            with open(path, encoding="utf-8") as f:
                 content = f.read()
             return f"File contents of {path}:\n{content}"
         except FileNotFoundError:
@@ -150,7 +151,7 @@ class AIAgent:
     def _edit_file(self, path: str, old_text: str, new_text: str) -> str:
         try:
             if os.path.exists(path) and old_text:
-                with open(path, "r", encoding="utf-8") as f:
+                with open(path, encoding="utf-8") as f:
                     content = f.read()
 
                 if old_text not in content:
