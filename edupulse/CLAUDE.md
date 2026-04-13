@@ -28,8 +28,14 @@ The app requires two processes running simultaneously:
 **Install dependencies:**
 ```bash
 uv sync
-# Dev dependencies (pytest, httpx):
+# Dev dependencies (pytest, httpx, ruff):
 uv sync --extra dev
+```
+
+**Lint and format:**
+```bash
+uv run ruff check backend/ frontend/ tests/
+uv run ruff format backend/ frontend/ tests/
 ```
 
 **Run tests (from the `edupulse/` directory):**
@@ -149,6 +155,7 @@ Risk levels: **LAAG** (< 35%), **MATIG** (35–65%), **HOOG** (≥ 65%).
 - `data_onvoldoende = max(abs(shap_val)) < 0.01` — detects when all imputed-at-median data leaves no variance; LLM call is skipped, warning returned.
 - `SHAP_EXCLUDE = {"Studentnummer"}` — excluded from SHAP display regardless.
 - `_SECTOR_COLS` and `_VOOROPL_MAP` — module-level dicts for decoding one-hot sector/education columns in the deterministic profile.
+- `_markdown_to_html()` — converts LLM markdown output to HTML. Calls `html.escape()` first to prevent XSS via raw HTML in LLM responses, then applies bold/italic/list regex substitutions.
 
 ## Key Implementation Notes
 

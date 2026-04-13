@@ -14,7 +14,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Install dependencies:**
 ```bash
 uv sync
-# or: pip install -r requirements.txt
 ```
 
 **Run a Streamlit page directly (no configured entry point yet):**
@@ -27,7 +26,13 @@ uv run streamlit run src/frontend/Overview/Home.py
 uv run src/main.py  # requires ANTHROPIC_API_KEY
 ```
 
-The root `pyproject.toml` manages the template's dependencies (`streamlit>=1.46.0`). Python >= 3.13 required.
+**Lint and format (`src/`):**
+```bash
+uv run ruff check src/
+uv run ruff format src/
+```
+
+The root `pyproject.toml` manages the template's dependencies (`streamlit>=1.46.0`, `ruff>=0.15.10`). Python >= 3.13 required. Ruff config (`[tool.ruff]`) is defined in root `pyproject.toml`.
 
 ## Template Architecture (`src/`)
 
@@ -68,5 +73,6 @@ Install dev dependencies first if needed: `cd edupulse && uv sync --extra dev`
 ## Repository-Wide Notes
 
 - Package manager: **UV** (cache in `./.uv_cache/`); prefer `uv sync` / `uv run` over bare `pip`/`python`
+- Linter/formatter: **ruff** — configured in both root `pyproject.toml` (`src/`) and `edupulse/pyproject.toml`
 - All user-facing text across both sub-projects is in **Dutch**
 - `data/` at repo root contains shared input/output folders used by `src/` examples
