@@ -28,22 +28,23 @@ FastAPI backend — gebruikt Random Forest Regressor van Uitnodigingsregel.
 
 """
 
-from fastapi import FastAPI
-from pydantic import BaseModel
-import pandas as pd
-from openai import OpenAI
-import joblib
-import os
+import html as html_module
 import json
 import re
-import shap
 import threading
-from concurrent.futures import ThreadPoolExecutor
+from collections.abc import Callable
 from dataclasses import dataclass, field
+from pathlib import Path
+
+import joblib
+import pandas as pd
+import shap
+from fastapi import FastAPI
+from openai import OpenAI
+from pydantic import BaseModel
 
 import backend.trainer as trainer
 
-api_key = os.getenv("OPENAI_API_KEY")
 app = FastAPI()
 
 client = OpenAI()
@@ -52,31 +53,32 @@ MODEL = "gpt-4.1"
 
 # Modelpaden
 MODEL_DEFAULT_PATH = "backend/model.joblib"
-MODEL_CUSTOM_PATH  = "backend/model_custom.joblib"
+MODEL_CUSTOM_PATH = "backend/model_custom.joblib"
 
 # Features zijn alle kolommen uit data.csv behalve weergave- en doelkolommen
 _df = pd.read_csv("shared/data.csv")
 NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
 features = [col for col in _df.columns if col not in NON_FEATURES]
+del _df  # DataFrame is alleen nodig voor kolom-extractie; vrijgeven na gebruik
 
 # Standaardmodel — altijd geladen, gebruikt bij demo-data
-clf_default      = joblib.load(MODEL_DEFAULT_PATH)
+clf_default = joblib.load(MODEL_DEFAULT_PATH)
 explainer_default = shap.TreeExplainer(clf_default)
 
 # Instellingsmodel — geladen indien beschikbaar; anders alias op standaard
-if os.path.exists(MODEL_CUSTOM_PATH):
-    clf_custom      = joblib.load(MODEL_CUSTOM_PATH)
+if Path(MODEL_CUSTOM_PATH).exists():
+    clf_custom = joblib.load(MODEL_CUSTOM_PATH)
     explainer_custom = shap.TreeExplainer(clf_custom)
 else:
-    clf_custom      = clf_default
+    clf_custom = clf_default
     explainer_custom = explainer_default
 
 # Actief model (voor /train_model en /reset_model)
-clf      = clf_custom
+clf = clf_custom
 explainer = explainer_custom
 
 
-def _get_model(use_default: bool):
+def _get_model(use_default: bool) -> tuple:
     """Geef het juiste (clf, explainer)-paar terug op basis van de vlag."""
     if use_default:
         return clf_default, explainer_default
@@ -85,11 +87,13 @@ def _get_model(use_default: bool):
 
 # ── Trainingstoestand ─────────────────────────────────────────────────────────
 
+
 @dataclass
 class _TrainingState:
-    status:  str = "idle"   # idle | training | done | failed
+    status: str = "idle"  # idle | training | done | failed
     message: str = ""
     lock: threading.Lock = field(default_factory=threading.Lock)
+
 
 _training = _TrainingState()
 
@@ -97,65 +101,69 @@ _training = _TrainingState()
 def _reload_model(path: str) -> None:
     """Laad model en explainer opnieuw en vervang de globale referenties atomisch."""
     global clf, explainer
-    new_clf      = joblib.load(path)
+    new_clf = joblib.load(path)
     new_explainer = shap.TreeExplainer(new_clf)
     # Python-naam-toewijzing is atomisch onder de GIL; beide globals worden samen vervangen
-    clf      = new_clf
+    clf = new_clf
     explainer = new_explainer
 
 
 class StudentData(BaseModel):
-    student:           dict
+    student: dict
     use_default_model: bool = False
+
 
 class SummaryRequest(BaseModel):
     data: str
 
+
 class ExplainRequest(BaseModel):
-    student:           dict
-    prediction:        int
-    probability:       float
+    student: dict
+    prediction: int
+    probability: float
     use_default_model: bool = False
-    imputed_columns:   list[str] = []
+    imputed_columns: list[str] = []
+
 
 class MapColumnsRequest(BaseModel):
     uploaded_columns: list[str]
     required_columns: list[str]
 
+
 class TrainRequest(BaseModel):
-    data:             list[dict]
-    dropout_column:   str        = "Dropout"
-    rf_parameters:    dict | None = None
+    data: list[dict]
+    dropout_column: str = "Dropout"
+    rf_parameters: dict | None = None
 
 
 # Nederlandse labels voor modelfeatures (voor leesbare SHAP-toelichting)
 FEATURE_LABELS: dict[str, str] = {
-    "StudentAge":             "Leeftijd (jaar)",
-    "StudentGender":          "Geslacht",
-    "Aanmel_aantal":          "Aantal aanmeldingen",
-    "max1studie":             "Slechts één studie ooit",
-    "ROCMondriaan":           "Eerder bij ROC Mondriaan",
-    "Richting_nan":           "Opleidingsrichting onbekend",
-    "absence_unauthorized":   "Ongeoorloofd verzuim (dagen)",
-    "absence_authorized":     "Geoorloofd verzuim (dagen)",
-    "Economie":               "Sector: Economie",
-    "Landbouw":               "Sector: Landbouw",
-    "Techniek":               "Sector: Techniek",
-    "DSV":                    "Sector: DSV",
-    "Zorgenwelzijn":          "Sector: Zorg & Welzijn",
-    "Anders":                 "Sector: Anders",
-    "VooroplNiveau_HAVO":     "Vooropleiding: HAVO",
-    "VooroplNiveau_MBO":      "Vooropleiding: MBO",
-    "VooroplNiveau_basis":    "Vooropleiding: Basisonderwijs",
+    "StudentAge": "Leeftijd (jaar)",
+    "StudentGender": "Geslacht",
+    "Aanmel_aantal": "Aantal aanmeldingen",
+    "max1studie": "Slechts één studie ooit",
+    "ROCMondriaan": "Eerder bij ROC Mondriaan",
+    "Richting_nan": "Opleidingsrichting onbekend",
+    "absence_unauthorized": "Ongeoorloofd verzuim (dagen)",
+    "absence_authorized": "Geoorloofd verzuim (dagen)",
+    "Economie": "Sector: Economie",
+    "Landbouw": "Sector: Landbouw",
+    "Techniek": "Sector: Techniek",
+    "DSV": "Sector: DSV",
+    "Zorgenwelzijn": "Sector: Zorg & Welzijn",
+    "Anders": "Sector: Anders",
+    "VooroplNiveau_HAVO": "Vooropleiding: HAVO",
+    "VooroplNiveau_MBO": "Vooropleiding: MBO",
+    "VooroplNiveau_basis": "Vooropleiding: Basisonderwijs",
     "VooroplNiveau_educatie": "Vooropleiding: Educatie",
-    "VooroplNiveau_prak":     "Vooropleiding: Praktijkonderwijs",
-    "VooroplNiveau_VMBO_BB":  "Vooropleiding: VMBO-BB",
-    "VooroplNiveau_VMBO_GL":  "Vooropleiding: VMBO-GL",
-    "VooroplNiveau_VMBO_KB":  "Vooropleiding: VMBO-KB",
-    "VooroplNiveau_VMBO_TL":  "Vooropleiding: VMBO-TL",
-    "VooroplNiveau_nan":      "Vooropleiding: onbekend",
-    "VooroplNiveau_VWOplus":  "Vooropleiding: VWO of hoger",
-    "VooroplNiveau_other":    "Vooropleiding: anders",
+    "VooroplNiveau_prak": "Vooropleiding: Praktijkonderwijs",
+    "VooroplNiveau_VMBO_BB": "Vooropleiding: VMBO-BB",
+    "VooroplNiveau_VMBO_GL": "Vooropleiding: VMBO-GL",
+    "VooroplNiveau_VMBO_KB": "Vooropleiding: VMBO-KB",
+    "VooroplNiveau_VMBO_TL": "Vooropleiding: VMBO-TL",
+    "VooroplNiveau_nan": "Vooropleiding: onbekend",
+    "VooroplNiveau_VWOplus": "Vooropleiding: VWO of hoger",
+    "VooroplNiveau_other": "Vooropleiding: anders",
 }
 
 # Features die geen inhoudelijke risicofactor zijn (niet opnemen in SHAP-toelichting)
@@ -164,43 +172,112 @@ SHAP_EXCLUDE = {"Studentnummer"}
 # Binaire features: (label_bij_waarde_1, label_bij_waarde_0)
 # Enkelvoudige bron zodat positief en negatief label altijd synchroon blijven.
 BINARY_LABELS: dict[str, tuple[str, str]] = {
-    "StudentGender":          ("Geslacht: Man",                     "Geslacht: Vrouw"),
-    "max1studie":             ("Enige inschrijving ooit: ja",        "Enige inschrijving ooit: nee (eerder ingeschreven)"),
-    "ROCMondriaan":           ("Eerder bij ROC Mondriaan: ja",       "Eerder bij ROC Mondriaan: nee"),
-    "Richting_nan":           ("Opleidingsrichting onbekend: ja",    "Opleidingsrichting: bekend"),
-    "Economie":               ("Sector: Economie",                   "Sector is niet Economie"),
-    "Landbouw":               ("Sector: Landbouw",                   "Sector is niet Landbouw"),
-    "Techniek":               ("Sector: Techniek",                   "Sector is niet Techniek"),
-    "DSV":                    ("Sector: DSV",                        "Sector is niet DSV"),
-    "Zorgenwelzijn":          ("Sector: Zorg & Welzijn",             "Sector is niet Zorg & Welzijn"),
-    "Anders":                 ("Sector: Anders",                     "Sector is niet Anders"),
-    "VooroplNiveau_HAVO":     ("Vooropleiding: HAVO",                "Vooropleiding is niet HAVO"),
-    "VooroplNiveau_MBO":      ("Vooropleiding: MBO",                 "Vooropleiding is niet MBO"),
-    "VooroplNiveau_basis":    ("Vooropleiding: Basisonderwijs",      "Vooropleiding is niet Basisonderwijs"),
-    "VooroplNiveau_educatie": ("Vooropleiding: Educatie",            "Vooropleiding is niet Educatie"),
-    "VooroplNiveau_prak":     ("Vooropleiding: Praktijkonderwijs",   "Vooropleiding is niet Praktijkonderwijs"),
-    "VooroplNiveau_VMBO_BB":  ("Vooropleiding: VMBO-BB",             "Vooropleiding is niet VMBO-BB"),
-    "VooroplNiveau_VMBO_GL":  ("Vooropleiding: VMBO-GL",             "Vooropleiding is niet VMBO-GL"),
-    "VooroplNiveau_VMBO_KB":  ("Vooropleiding: VMBO-KB",             "Vooropleiding is niet VMBO-KB"),
-    "VooroplNiveau_VMBO_TL":  ("Vooropleiding: VMBO-TL",             "Vooropleiding is niet VMBO-TL"),
-    "VooroplNiveau_nan":      ("Vooropleiding: onbekend",            "Vooropleiding is bekend (niet ontbrekend)"),
-    "VooroplNiveau_VWOplus":  ("Vooropleiding: VWO of hoger",        "Vooropleiding is niet VWO of hoger"),
-    "VooroplNiveau_other":    ("Vooropleiding: anders",              "Vooropleiding is geen anders/overig"),
+    "StudentGender": ("Geslacht: Man", "Geslacht: Vrouw"),
+    "max1studie": (
+        "Enige inschrijving ooit: ja",
+        "Enige inschrijving ooit: nee (eerder ingeschreven)",
+    ),
+    "ROCMondriaan": ("Eerder bij ROC Mondriaan: ja", "Eerder bij ROC Mondriaan: nee"),
+    "Richting_nan": ("Opleidingsrichting onbekend: ja", "Opleidingsrichting: bekend"),
+    "Economie": ("Sector: Economie", "Sector is niet Economie"),
+    "Landbouw": ("Sector: Landbouw", "Sector is niet Landbouw"),
+    "Techniek": ("Sector: Techniek", "Sector is niet Techniek"),
+    "DSV": ("Sector: DSV", "Sector is niet DSV"),
+    "Zorgenwelzijn": ("Sector: Zorg & Welzijn", "Sector is niet Zorg & Welzijn"),
+    "Anders": ("Sector: Anders", "Sector is niet Anders"),
+    "VooroplNiveau_HAVO": ("Vooropleiding: HAVO", "Vooropleiding is niet HAVO"),
+    "VooroplNiveau_MBO": ("Vooropleiding: MBO", "Vooropleiding is niet MBO"),
+    "VooroplNiveau_basis": (
+        "Vooropleiding: Basisonderwijs",
+        "Vooropleiding is niet Basisonderwijs",
+    ),
+    "VooroplNiveau_educatie": (
+        "Vooropleiding: Educatie",
+        "Vooropleiding is niet Educatie",
+    ),
+    "VooroplNiveau_prak": (
+        "Vooropleiding: Praktijkonderwijs",
+        "Vooropleiding is niet Praktijkonderwijs",
+    ),
+    "VooroplNiveau_VMBO_BB": (
+        "Vooropleiding: VMBO-BB",
+        "Vooropleiding is niet VMBO-BB",
+    ),
+    "VooroplNiveau_VMBO_GL": (
+        "Vooropleiding: VMBO-GL",
+        "Vooropleiding is niet VMBO-GL",
+    ),
+    "VooroplNiveau_VMBO_KB": (
+        "Vooropleiding: VMBO-KB",
+        "Vooropleiding is niet VMBO-KB",
+    ),
+    "VooroplNiveau_VMBO_TL": (
+        "Vooropleiding: VMBO-TL",
+        "Vooropleiding is niet VMBO-TL",
+    ),
+    "VooroplNiveau_nan": (
+        "Vooropleiding: Onbekend",
+        "Vooropleiding is bekend (niet ontbrekend)",
+    ),
+    "VooroplNiveau_VWOplus": (
+        "Vooropleiding: VWO of hoger",
+        "Vooropleiding is niet VWO of hoger",
+    ),
+    "VooroplNiveau_other": (
+        "Vooropleiding: Anders",
+        "Vooropleiding is geen anders/overig",
+    ),
 }
 
-# Sector- en vooropleidingskolommen als module-level constanten (gebruikt in profiel en SHAP-filter)
+# Afgeleid van BINARY_LABELS zodat labels synchroon blijven met de LLM-factorteksten.
 _SECTOR_COLS: dict[str, str] = {
-    "Economie": "Economie", "Landbouw": "Landbouw", "Techniek": "Techniek",
-    "DSV": "DSV", "Zorgenwelzijn": "Zorg & Welzijn", "Anders": "Anders",
+    k: BINARY_LABELS[k][0].removeprefix("Sector: ")
+    for k in ("Economie", "Landbouw", "Techniek", "DSV", "Zorgenwelzijn", "Anders")
 }
 _VOOROPL_MAP: dict[str, str] = {
-    "VooroplNiveau_HAVO": "HAVO",     "VooroplNiveau_MBO": "MBO",
-    "VooroplNiveau_basis": "Basisonderwijs", "VooroplNiveau_educatie": "Educatie",
-    "VooroplNiveau_prak": "Praktijkonderwijs", "VooroplNiveau_VMBO_BB": "VMBO-BB",
-    "VooroplNiveau_VMBO_GL": "VMBO-GL",  "VooroplNiveau_VMBO_KB": "VMBO-KB",
-    "VooroplNiveau_VMBO_TL": "VMBO-TL",  "VooroplNiveau_nan": "Onbekend",
-    "VooroplNiveau_VWOplus": "VWO of hoger", "VooroplNiveau_other": "Anders",
+    k: BINARY_LABELS[k][0].removeprefix("Vooropleiding: ")
+    for k in (
+        "VooroplNiveau_HAVO",
+        "VooroplNiveau_MBO",
+        "VooroplNiveau_basis",
+        "VooroplNiveau_educatie",
+        "VooroplNiveau_prak",
+        "VooroplNiveau_VMBO_BB",
+        "VooroplNiveau_VMBO_GL",
+        "VooroplNiveau_VMBO_KB",
+        "VooroplNiveau_VMBO_TL",
+        "VooroplNiveau_nan",
+        "VooroplNiveau_VWOplus",
+        "VooroplNiveau_other",
+    )
 }
+
+
+def _markdown_to_html(text: str) -> str:
+    """Converteer eenvoudige markdown (bold, lijsten, regeleinden) naar HTML.
+
+    Escapet eerst alle HTML-speciale tekens om XSS via LLM-output te voorkomen,
+    daarna worden alleen de bekende markdown-patronen omgezet naar tags.
+    """
+    text = html_module.escape(text)
+    # **bold** → <strong>bold</strong>
+    text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
+    # *italic* → <em>italic</em>
+    text = re.sub(r"\*(.+?)\*", r"<em>\1</em>", text)
+    # Regels die beginnen met een cijfer + punt → <li>
+    lines = text.split("\n")
+    html_lines = []
+    for line in lines:
+        stripped = line.strip()
+        if re.match(r"^\d+\.\s", stripped):
+            html_lines.append(f"<li>{stripped[stripped.index('.') + 2 :]}</li>")
+        elif stripped.startswith("- "):
+            html_lines.append(f"<li>{stripped[2:]}</li>")
+        elif stripped == "":
+            html_lines.append("<br>")
+        else:
+            html_lines.append(stripped)
+    return "\n".join(html_lines)
 
 
 def _factor_label(key: str, value: float) -> str:
@@ -231,10 +308,10 @@ def _build_risicoprofiel_html(
     Geïmputeerde velden worden gemarkeerd als 'niet beschikbaar'.
     """
     n_imputed = len(imputed_set)
-    n_features = len(features)  # module-level global
+    n_features = len(features)
     kleur = "#c0392b" if risico_niveau == "HOOG" else ("#e67e22" if risico_niveau == "MATIG" else "#27ae60")
 
-    def _val(key: str, fmt=None) -> str:
+    def _val(key: str, fmt: Callable[..., str] | None = None) -> str:
         if key in imputed_set or student.get(key) is None:
             return "<i style='color:#999;'>niet beschikbaar</i>"
         v = student[key]
@@ -251,12 +328,10 @@ def _build_risicoprofiel_html(
         f"&nbsp;&nbsp;• Leeftijd: {_val('StudentAge', lambda v: f'{int(v)} jaar')}",
     ]
 
-    if "StudentGender" in imputed_set:
-        gender_str = "<i style='color:#999;'>niet beschikbaar</i>"
-    else:
-        g = student.get("StudentGender")
-        gender_str = "Man" if g == 1 else ("Vrouw" if g == 0 else "Onbekend")
-    lines.append(f"&nbsp;&nbsp;• Geslacht: {gender_str}")
+    lines.append(
+        f"&nbsp;&nbsp;• Geslacht: "
+        f"{_val('StudentGender', lambda v: 'Man' if v == 1 else ('Vrouw' if v == 0 else 'Onbekend'))}"
+    )
 
     lines.append(f"&nbsp;&nbsp;• Ongeoorloofd verzuim: {_val('absence_unauthorized', lambda v: f'{v:.1f} dagen')}")
     lines.append(f"&nbsp;&nbsp;• Geoorloofd verzuim: {_val('absence_authorized', lambda v: f'{v:.1f} dagen')}")
@@ -291,10 +366,7 @@ def _build_risicoprofiel_html(
         for i, (k, v) in enumerate(top_factors):
             richting = "↑ verhogend" if v > 0 else "↓ verlagend"
             label = _factor_label(k, student.get(k, 0))
-            lines.append(
-                f"&nbsp;&nbsp;{i + 1}. {label}"
-                f" — <b>{richting}</b> ({abs(v):.3f})"
-            )
+            lines.append(f"&nbsp;&nbsp;{i + 1}. {label} — <b>{richting}</b> ({abs(v):.3f})")
     else:
         lines.append("&nbsp;&nbsp;<i>Onvoldoende informatieve gegevens om factoren te bepalen.</i>")
 
@@ -322,11 +394,7 @@ def _build_risicoprofiel_html(
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = client.responses.create(
-        model=MODEL,
-        store=False,
-        input=[{"role": "user", "content": prompt}]
-    )
+    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
     summary = response.output_text  # type: ignore
     return {"summary": summary}
 
@@ -361,10 +429,7 @@ def explain_risk(request: ExplainRequest):
     X_pred = _student_to_df(student)
     shap_vals = exp.shap_values(X_pred.values)
     imputed_set = set(request.imputed_columns)
-    fi = {
-        k: v for k, v in zip(features, shap_vals[0].tolist())
-        if k not in SHAP_EXCLUDE and k not in imputed_set
-    }
+    fi = {k: v for k, v in zip(features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set}
     top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
 
     # Detecteer of alle SHAP-waarden nagenoeg nul zijn (geen informatieve factoren)
@@ -373,8 +438,13 @@ def explain_risk(request: ExplainRequest):
 
     # ── Sectie 1: deterministisch risicoprofiel (geen LLM) ────────────────────
     sectie1 = _build_risicoprofiel_html(
-        student, probability, risico_niveau, urgentie,
-        top_factors, imputed_set, MODEL,
+        student,
+        probability,
+        risico_niveau,
+        urgentie,
+        top_factors,
+        imputed_set,
+        MODEL,
         data_onvoldoende=data_onvoldoende,
     )
 
@@ -383,7 +453,8 @@ def explain_risk(request: ExplainRequest):
     # In dat geval is gepersonaliseerd advies niet mogelijk.
     if data_onvoldoende:
         return {
-            "explanation": sectie1 + (
+            "explanation": sectie1
+            + (
                 "<br><b>⚠️ Geen gepersonaliseerd advies mogelijk</b><br>"
                 "De geüploade kolommen bevatten te weinig informatie die het model herkent. "
                 "Het model heeft geen variatie kunnen detecteren ten opzichte van de gemiddelde student. "
@@ -446,12 +517,15 @@ Maak expliciet onderscheid: déze week vs déze maand.
         model=MODEL,
         store=False,
         temperature=0.2,
-        input=[{"role": "user", "content": prompt}]
+        input=[{"role": "user", "content": prompt}],
     )
     sectie2_4 = response.output_text  # type: ignore
 
+    # Converteer markdown naar HTML zodat de frontend het correct kan renderen
+    sectie2_4_html = _markdown_to_html(sectie2_4)
+
     # Sectie 1 (deterministisch HTML) + sectie 2-4 (LLM) samenvoegen
-    return {"explanation": sectie1 + sectie2_4}
+    return {"explanation": sectie1 + sectie2_4_html}
 
 
 @app.post("/feature_importance")
@@ -470,7 +544,7 @@ def train_model_endpoint(request: TrainRequest):
     with _training.lock:
         if _training.status == "training":
             return {"status": "already_running"}
-        _training.status  = "training"
+        _training.status = "training"
         _training.message = ""
 
     def _run():
@@ -486,14 +560,14 @@ def train_model_endpoint(request: TrainRequest):
             _reload_model(MODEL_CUSTOM_PATH)
             with _training.lock:
                 n = len(df_train.dropna(subset=[request.dropout_column]))
-                _training.status  = "done"
+                _training.status = "done"
                 _training.message = f"Model getraind op {n} studenten."
         except Exception as e:
             with _training.lock:
-                _training.status  = "failed"
+                _training.status = "failed"
                 _training.message = str(e)
 
-    ThreadPoolExecutor(max_workers=1).submit(_run)
+    threading.Thread(target=_run, daemon=True).start()
     return {"status": "started"}
 
 
@@ -506,11 +580,11 @@ def train_status():
 @app.delete("/reset_model")
 def reset_model():
     """Zet het standaardmodel terug en verwijder het instellingsmodel."""
-    if os.path.exists(MODEL_CUSTOM_PATH):
-        os.remove(MODEL_CUSTOM_PATH)
+    if Path(MODEL_CUSTOM_PATH).exists():
+        Path(MODEL_CUSTOM_PATH).unlink()
     _reload_model(MODEL_DEFAULT_PATH)
     with _training.lock:
-        _training.status  = "idle"
+        _training.status = "idle"
         _training.message = ""
     return {"status": "reset"}
 
@@ -527,13 +601,9 @@ def map_columns(request: MapColumnsRequest):
         "Neem alleen kolommen op waarbij je zeker bent van de overeenkomst op basis van "
         "betekenis of naamgelijkenis (bijv. 'leeftijd' → 'StudentAge', 'verzuim' → 'absence_unauthorized'). "
         "Geef uitsluitend het JSON-object terug, zonder uitleg of markdown.\n\n"
-        "Voorbeeld: {\"StudentAge\": \"leeftijd\", \"absence_unauthorized\": \"ongeoorloofd_verzuim\"}"
+        'Voorbeeld: {"StudentAge": "leeftijd", "absence_unauthorized": "ongeoorloofd_verzuim"}'
     )
-    response = client.responses.create(
-        model=MODEL,
-        store=False,
-        input=[{"role": "user", "content": prompt}]
-    )
+    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
     raw = response.output_text.strip()
     json_match = re.search(r"\{.*\}", raw, re.DOTALL)
     try:

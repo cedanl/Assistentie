@@ -56,6 +56,15 @@ Interactive CLI with file tools: `read_file`, `list_files`, `edit_file`. Require
 
 See `edupulse/CLAUDE.md` for full details on the dropout-risk app. Key env vars: `OPENAI_API_KEY` (backend) and optionally `ANTHROPIC_API_KEY` (standalone agent CLI). Both the FastAPI backend (port 8000) and Streamlit frontend (port 8502) must run simultaneously.
 
+**Run EduPulse tests (from the `edupulse/` directory):**
+```bash
+cd edupulse && uv run pytest tests/
+# Single test:
+cd edupulse && uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
+```
+
+Install dev dependencies first if needed: `cd edupulse && uv sync --extra dev`
+
 ## Repository-Wide Notes
 
 - Package manager: **UV** (cache in `./.uv_cache/`); prefer `uv sync` / `uv run` over bare `pip`/`python`
