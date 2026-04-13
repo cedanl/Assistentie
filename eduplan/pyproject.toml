@@ -22,6 +22,7 @@ dependencies = [
     "shap>=0.51.0",
     "streamlit>=1.46.0",
     "streamlit-extras>=1.2.0",
+    "student-signal @ git+https://github.com/cedanl/student-signal.git",
     "uvicorn>=0.41.0",
 ]
 
