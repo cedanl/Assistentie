@@ -15,6 +15,7 @@ import argparse
 import logging
 import os
 import sys
+from pathlib import Path
 from typing import Any
 
 from anthropic import Anthropic  # type: ignore
@@ -130,16 +131,16 @@ class AIAgent:
 
     def _list_files(self, path: str) -> str:
         try:
-            if not os.path.exists(path):
+            p = Path(path)
+            if not p.exists():
                 return f"Path not found: {path}"
 
             items = []
-            for item in sorted(os.listdir(path)):
-                item_path = os.path.join(path, item)
-                if os.path.isdir(item_path):
-                    items.append(f"[DIR]  {item}/")
+            for entry in sorted(p.iterdir(), key=lambda x: x.name):
+                if entry.is_dir():
+                    items.append(f"[DIR]  {entry.name}/")
                 else:
-                    items.append(f"[FILE] {item}")
+                    items.append(f"[FILE] {entry.name}")
 
             if not items:
                 return f"Empty directory: {path}"
@@ -150,28 +151,18 @@ class AIAgent:
 
     def _edit_file(self, path: str, old_text: str, new_text: str) -> str:
         try:
-            if os.path.exists(path) and old_text:
-                with open(path, encoding="utf-8") as f:
-                    content = f.read()
+            p = Path(path)
+            if p.exists() and old_text:
+                content = p.read_text(encoding="utf-8")
 
                 if old_text not in content:
                     return f"Text not found in file: {old_text}"
 
-                content = content.replace(old_text, new_text)
-
-                with open(path, "w", encoding="utf-8") as f:
-                    f.write(content)
-
+                p.write_text(content.replace(old_text, new_text), encoding="utf-8")
                 return f"Successfully edited {path}"
             else:
-                # Only create directory if path contains subdirectories
-                dir_name = os.path.dirname(path)
-                if dir_name:
-                    os.makedirs(dir_name, exist_ok=True)
-
-                with open(path, "w", encoding="utf-8") as f:
-                    f.write(new_text)
-
+                p.parent.mkdir(parents=True, exist_ok=True)
+                p.write_text(new_text, encoding="utf-8")
                 return f"Successfully created {path}"
         except Exception as e:
             return f"Error editing file: {str(e)}"
@@ -203,9 +194,7 @@ class AIAgent:
 
                 for content in response.content:
                     if content.type == "text":
-                        assistant_message["content"].append(
-                            {"type": "text", "text": content.text}
-                        )
+                        assistant_message["content"].append({"type": "text", "text": content.text})
                     elif content.type == "tool_use":
                         assistant_message["content"].append(
                             {
@@ -222,9 +211,7 @@ class AIAgent:
                 for content in response.content:
                     if content.type == "tool_use":
                         result = self._execute_tool(content.name, content.input)
-                        logging.info(
-                            f"Tool result: {result[:500]}..."
-                        )  # Log first 500 chars
+                        logging.info(f"Tool result: {result[:500]}...")  # Log first 500 chars
                         tool_results.append(
                             {
                                 "type": "tool_result",
@@ -246,16 +233,12 @@ def main():
     parser = argparse.ArgumentParser(
         description="AI Code Assistant - A conversational AI agent with file editing capabilities"
     )
-    parser.add_argument(
-        "--api-key", help="Anthropic API key (or set ANTHROPIC_API_KEY env var)"
-    )
+    parser.add_argument("--api-key", help="Anthropic API key (or set ANTHROPIC_API_KEY env var)")
     args = parser.parse_args()
 
     api_key = args.api_key or os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
-        print(
-            "Error: Please provide an API key via --api-key or ANTHROPIC_API_KEY environment variable"
-        )
+        print("Error: Please provide an API key via --api-key or ANTHROPIC_API_KEY environment variable")
         sys.exit(1)
 
     agent = AIAgent(api_key)
@@ -292,5 +275,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
