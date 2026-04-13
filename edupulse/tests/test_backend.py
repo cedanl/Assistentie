@@ -4,7 +4,6 @@ import time
 from unittest.mock import MagicMock
 
 import pytest
-from fastapi.testclient import TestClient
 
 import backend.main as main_mod
 from backend.main import (
@@ -15,7 +14,6 @@ from backend.main import (
     _get_model,
     features,
 )
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Helperfuncties
@@ -177,6 +175,7 @@ def test_explain_risk_returns_sectie1_html(client, demo_student, mock_openai):
 def test_explain_risk_llm_called_when_shap_sufficient(client, demo_student, mock_openai, monkeypatch):
     """Als SHAP-waarden informatief zijn (max >= 0.01), wordt de LLM aangeroepen."""
     import numpy as np
+
     import backend.main as main_mod
 
     # Overschrijf de SHAP-explainer zodat er altijd informatieve waarden terugkomen

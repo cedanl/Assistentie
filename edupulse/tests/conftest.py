@@ -4,12 +4,13 @@ Voer tests uit vanuit de edupulse/ map:
     cd edupulse && uv run pytest tests/
 """
 
+from unittest.mock import MagicMock
+
 import pandas as pd
 import pytest
 from fastapi.testclient import TestClient
-from unittest.mock import MagicMock
 
-from backend.main import app, features
+from backend.main import app
 
 
 @pytest.fixture(scope="session")

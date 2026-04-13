@@ -4,9 +4,9 @@ Trainingslogica voor het instellingsspecifieke Random Forest-model.
 Gebaseerd op de aanpak van cedanl/Uitnodigingsregel.
 """
 
-import joblib
 from pathlib import Path
 
+import joblib
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
