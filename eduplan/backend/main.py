@@ -445,12 +445,8 @@ def rank_students(request: RankRequest):
     model, _ = _get_model(request.use_default_model)
     active_features = _get_features(request.use_default_model)
 
-    pred_df = pd.DataFrame(request.students)
-    # Vul ontbrekende feature-kolommen aan met 0 (bijv. sector-dummies die niet in de data staan)
-    for col in active_features:
-        if col not in pred_df.columns:
-            pred_df[col] = 0
-    scores = model.predict(pred_df[active_features].values).tolist()
+    pred_df = pd.DataFrame(request.students).reindex(columns=active_features, fill_value=0)
+    scores = model.predict(pred_df.values).tolist()
 
     result = [
         {**student, "probability": float(score), "prediction": 1 if score >= 0.35 else 0}
