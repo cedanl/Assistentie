@@ -8,9 +8,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Running the Application
 
-**Step 0 — Download data and model (first time only):**
+**Step 0 — Download data and model (first time only, run from `edupulse/`):**
 ```bash
-python shared/data_prep.py
+uv run python shared/data_prep.py
 ```
 
 The app requires two processes running simultaneously:
@@ -90,6 +90,8 @@ Standalone training module. `train_model()` runs GridSearchCV over `DEFAULT_PARA
 
 `styles.py` is the only other frontend module. It exports CSS strings (`START_CSS`, `MAIN_CSS`) and color constants (`TERRACOTTA`, `ROZE_BG`, `ROZE_LICHT`) imported by `app.py`. All visual styling lives there.
 
+`frontend/static/` contains SVG branding assets (e.g. `npuls-logo.svg`) served directly by Streamlit.
+
 **Start screen** (`page = "start"`)
 - Search field + START button to select an opleiding
 - Quick-select pills: first 4 opleidingen visible, rest behind "Meer ↓" toggle
@@ -156,6 +158,17 @@ Risk levels: **LAAG** (< 35%), **MATIG** (35–65%), **HOOG** (≥ 65%).
 - `SHAP_EXCLUDE = {"Studentnummer"}` — excluded from SHAP display regardless.
 - `_SECTOR_COLS` and `_VOOROPL_MAP` — module-level dicts for decoding one-hot sector/education columns in the deterministic profile.
 - `_markdown_to_html()` — converts LLM markdown output to HTML. Calls `html.escape()` first to prevent XSS via raw HTML in LLM responses, then applies bold/italic/list regex substitutions.
+
+## OpenAI Client
+
+The backend uses the **Responses API** (not Chat Completions):
+
+```python
+response = client.responses.create(model="gpt-4.1", ...)
+text = response.output_text  # NOT .choices[0].message.content
+```
+
+The `mock_openai` fixture in `tests/conftest.py` mocks `mock_client.responses.create` and sets `mock_response.output_text`. When writing new tests that touch LLM calls, mock this path — not `chat.completions.create`.
 
 ## Key Implementation Notes
 

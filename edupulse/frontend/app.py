@@ -708,8 +708,8 @@ def _render_header():
 
     with col_ceda:
         st.markdown(
-            '<p style=\'font-weight:600;font-size:1.5rem;font-family:"General Sans",sans-serif;'
-            "margin:0;padding:6px 0;'>CEDA</p>",
+            "<img src='app/static/npuls-logo.svg' alt='Npuls logo'"
+            " style='height:48px;width:auto;display:block;padding:6px 0;'>",
             unsafe_allow_html=True,
         )
     with col_terug:

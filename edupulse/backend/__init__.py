@@ -3,14 +3,14 @@
 # dependencies = [
 #     "anthropic",
 #     "pydantic",
-#     "streamlit", 
-#     "pandas", 
-#     "scikit-learn", 
-#     "fastapi", 
-#     "uvicorn", 
-#     "openai",  
-#     "requests",  
-#     "plotly",  
+#     "streamlit",
+#     "pandas",
+#     "scikit-learn",
+#     "fastapi",
+#     "uvicorn",
+#     "openai",
+#     "requests",
+#     "plotly",
 #     "shap"
 # ]
 # ///
@@ -23,6 +23,6 @@
 
 """backend/__init__.py
 
-FastAPI backend 
+FastAPI backend
 
 """

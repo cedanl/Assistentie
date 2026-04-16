@@ -59,7 +59,10 @@ Interactive CLI with file tools: `read_file`, `list_files`, `edit_file`. Require
 
 ## EduPulse Sub-Project
 
-See `edupulse/CLAUDE.md` for full details on the dropout-risk app. Key env vars: `OPENAI_API_KEY` (backend) and optionally `ANTHROPIC_API_KEY` (standalone agent CLI). Both the FastAPI backend (port 8000) and Streamlit frontend (port 8502) must run simultaneously.
+See `edupulse/CLAUDE.md` for full details on the dropout-risk app. Key points:
+- Env vars: `OPENAI_API_KEY` (backend GPT-4.1 via Responses API), `ANTHROPIC_API_KEY` (standalone agent CLI only)
+- Both the FastAPI backend (port 8000) and Streamlit frontend (port 8502) must run simultaneously
+- SVG branding assets live in `edupulse/frontend/static/`
 
 **Run EduPulse tests (from the `edupulse/` directory):**
 ```bash

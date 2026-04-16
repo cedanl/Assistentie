@@ -35,5 +35,6 @@ def mock_openai(monkeypatch) -> MagicMock:
     mock_client = MagicMock()
     mock_client.responses.create.return_value = mock_response
     import backend.main as main_mod
+
     monkeypatch.setattr(main_mod, "client", mock_client)
     return mock_client
