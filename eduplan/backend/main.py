@@ -42,6 +42,7 @@ import shap
 from fastapi import FastAPI
 from openai import OpenAI
 from pydantic import BaseModel
+from sklearn.ensemble import RandomForestRegressor
 
 import backend.trainer as trainer
 
@@ -78,7 +79,7 @@ clf = clf_custom
 explainer = explainer_custom
 
 
-def _get_model(use_default: bool) -> tuple:
+def _get_model(use_default: bool) -> tuple[RandomForestRegressor, shap.TreeExplainer]:
     """Geef het juiste (clf, explainer)-paar terug op basis van de vlag."""
     if use_default:
         return clf_default, explainer_default
@@ -98,7 +99,7 @@ class _TrainingState:
 _training = _TrainingState()
 
 
-def _reload_model(path: str) -> None:
+def _reload_model(path: str | Path) -> None:
     """Laad model en explainer opnieuw en vervang de globale referenties atomisch."""
     global clf, explainer
     new_clf = joblib.load(path)
@@ -289,6 +290,7 @@ def _factor_label(key: str, value: float) -> str:
 
 
 def _student_to_df(student: dict) -> pd.DataFrame:
+    """Zet een student-dict om naar een DataFrame met de verwachte featurekolommen."""
     return pd.DataFrame([student])[features]
 
 
@@ -309,7 +311,8 @@ def _build_risicoprofiel_html(
     """
     n_imputed = len(imputed_set)
     n_features = len(features)
-    kleur = "#c0392b" if risico_niveau == "HOOG" else ("#e67e22" if risico_niveau == "MATIG" else "#27ae60")
+    kleur_map = {"HOOG": "#c0392b", "MATIG": "#e67e22", "LAAG": "#27ae60"}
+    kleur = kleur_map[risico_niveau]
 
     def _val(key: str, fmt: Callable[..., str] | None = None) -> str:
         if key in imputed_set or student.get(key) is None:
@@ -580,8 +583,9 @@ def train_status():
 @app.delete("/reset_model")
 def reset_model():
     """Zet het standaardmodel terug en verwijder het instellingsmodel."""
-    if Path(MODEL_CUSTOM_PATH).exists():
-        Path(MODEL_CUSTOM_PATH).unlink()
+    custom_path = Path(MODEL_CUSTOM_PATH)
+    if custom_path.exists():
+        custom_path.unlink()
     _reload_model(MODEL_DEFAULT_PATH)
     with _training.lock:
         _training.status = "idle"

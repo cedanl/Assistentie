@@ -1,6 +1,6 @@
 # Frontend
 
-Streamlit frontend voor de EduPulse / Uitnodigingsregel applicatie.
+Streamlit frontend voor de EduPlan / Uitnodigingsregel applicatie.
 
 ## Bestanden
 

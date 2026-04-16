@@ -1,6 +1,6 @@
 # Backend
 
-FastAPI backend voor de EduPulse applicatie.
+FastAPI backend voor de EduPlan applicatie.
 
 ## Endpoints
 

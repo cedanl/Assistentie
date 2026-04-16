@@ -1,4 +1,4 @@
-## Aanpassingen Edupulse
+## Aanpassingen Eduplan
 
 ## Situatie 
 
@@ -6,7 +6,7 @@ Gebruik de data en het voorspel model van de Uitnodigingsregel
 
 De twee systemen hebben een fundamenteel ander feature-schema: 
 
-| Aspect 	 | EduPulse (huidig) 							| Uitnodigingsregel  |
+| Aspect 	 | EduPlan (huidig) 							| Uitnodigingsregel  |
 | ------	 | ------------	 								| ------------       |
 | Features 	 | 4 (Cijfer, Aanwezigheid, EC, Waarschuwingen) | 28 (leeftijd, vooropleiding, sector, verzuim, etc.)
 | Model type | RandomForest classifier (.predict\_proba()) 	| 3 regressors (.predict() → continue score) 		   
@@ -19,7 +19,7 @@ De twee systemen hebben een fundamenteel ander feature-schema:
 	- Alleen het bestand models/random\_forest\_regressor.joblib gebruikt (of het .joblib van onze voorkeur) 
 	- De synthetische data data/raw/synth\_data\_train.csv en synth\_data\_pred.csv als basis gebruikt voor shared/data.csv 
 	
-Wat ik zelf heb moeten aanpassen in EduPulse: 
+Wat ik zelf heb moeten aanpassen in EduPlan: 
 1. backend/main.py 
 	
 	- Vervangen van het StudentData Pydantic model met de 28 features van Uitnodigingsregel. 

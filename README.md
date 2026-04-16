@@ -31,9 +31,9 @@ Tegelijkertijd weten we dat (digitale) technologie nooit neutraal is. Daarom heb
 | Map | Beschrijving |
 |-----|-------------|
 | [`src/`](src/) | Streamlit multi-page app template voor nieuwe CEDA-projecten |
-| [`edupulse/`](edupulse/) | EduPulse — uitvalrisico-signalering en EduPlan-tool voor mbo-instellingen |
+| [`eduplan/`](eduplan/) | EduPlan — uitvalrisico-signalering en EduPlan-tool voor mbo-instellingen |
 
-Zie [`edupulse/README.md`](edupulse/README.md) voor installatie en gebruik van EduPulse, en [`edupulse/INSTRUCTIONS.md`](edupulse/INSTRUCTIONS.md) voor een gebruikshandleiding.
+Zie [`eduplan/README.md`](eduplan/README.md) voor installatie en gebruik van EduPlan, en [`eduplan/INSTRUCTIONS.md`](eduplan/INSTRUCTIONS.md) voor een gebruikshandleiding.
 
 ---
 

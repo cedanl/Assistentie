@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **CEDAssistentie** is the CEDA (Centrum Educatieve Digitale Assistentie) monorepo exploring AI-powered digital assistance for Dutch MBO (secondary vocational) education. It contains two independent sub-projects:
 
 - **`src/`** — A Streamlit multi-page app template for new CEDA projects
-- **`edupulse/`** — A production EduPulse app for student dropout risk prediction (has its own `CLAUDE.md` with full details)
+- **`eduplan/`** — A production EduPlan app for student dropout risk prediction (has its own `CLAUDE.md` with full details)
 
 ## Running the Template App (`src/`)
 
@@ -57,25 +57,25 @@ Frontend pages import from `backend/` for data processing. Keep UI code in `fron
 ### Standalone Claude Agent (`src/main.py`)
 Interactive CLI with file tools: `read_file`, `list_files`, `edit_file`. Requires `ANTHROPIC_API_KEY`. Logs to `agent.log`.
 
-## EduPulse Sub-Project
+## EduPlan Sub-Project
 
-See `edupulse/CLAUDE.md` for full details on the dropout-risk app. Key points:
+See `eduplan/CLAUDE.md` for full details on the dropout-risk app. Key points:
 - Env vars: `OPENAI_API_KEY` (backend GPT-4.1 via Responses API), `ANTHROPIC_API_KEY` (standalone agent CLI only)
 - Both the FastAPI backend (port 8000) and Streamlit frontend (port 8502) must run simultaneously
-- SVG branding assets live in `edupulse/frontend/static/`
+- SVG branding assets live in `eduplan/frontend/static/`
 
-**Run EduPulse tests (from the `edupulse/` directory):**
+**Run EduPlan tests (from the `eduplan/` directory):**
 ```bash
-cd edupulse && uv run pytest tests/
+cd eduplan && uv run pytest tests/
 # Single test:
-cd edupulse && uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
+cd eduplan && uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
 ```
 
-Install dev dependencies first if needed: `cd edupulse && uv sync --extra dev`
+Install dev dependencies first if needed: `cd eduplan && uv sync --extra dev`
 
 ## Repository-Wide Notes
 
 - Package manager: **UV** (cache in `./.uv_cache/`); prefer `uv sync` / `uv run` over bare `pip`/`python`
-- Linter/formatter: **ruff** — configured in both root `pyproject.toml` (`src/`) and `edupulse/pyproject.toml`
+- Linter/formatter: **ruff** — configured in both root `pyproject.toml` (`src/`) and `eduplan/pyproject.toml`
 - All user-facing text across both sub-projects is in **Dutch**
 - `data/` at repo root contains shared input/output folders used by `src/` examples

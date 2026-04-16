@@ -1,18 +1,13 @@
 @echo off
-REM Helper script om de EduPulse app te starten met uv (Windows)
+REM Helper script om de EduPlan app te starten met uv (Windows)
 
 echo.
 echo ========================================
-echo   EduPulse - FASTAPI Starter Script
+echo   EduPlan - Streamlit Starter Script
 echo ========================================
 echo.
 
 cd /d "%~dp0"
-REM ###############################################################################################
-REM DIT IS TEN STRENGSTE VERBODEN. MAAR VOOR DEZE DEMO HEB IK MIJN PERSOONLIJKE API_KEY VOOR NU HIER EVEN VERSTOPT.
-REM NIET VERSPREIDEN SVP!!!!!!
-ECHO set OPENAI_API_KEY=VRAAG AAN ED
-REM ###############################################################################################
 
 if not exist "pyproject.toml" (
     echo uv project niet gevonden. Aanmaken...
@@ -52,15 +47,18 @@ REM     )
 REM )
 
 echo.
-echo [START] Starting EduPulse FastAPI Server met uvicorn...
+echo [START] Starting EduPlan Streamlit Server met uv...
+echo [INFO] De app opent automatisch in je browser op http://localhost:8501 of http://localhost:8502
 echo.
 echo Druk op Ctrl+C om de app te stoppen.
 echo.
 
-# uvicorn backend.main:app --reload
-uvicorn --host "127.0.0.1" --port 8000 backend.main:app --reload
+uv run streamlit run frontend/app.py --server.headless false
+
 if errorlevel 1 (
     echo.
     echo [FOUT] Er is een fout opgetreden bij het starten van de app.
+	echo Waarschijlijk is de port 8501 bezet. We proberen port 8502.
+	uv run streamlit run --server.port 8502 frontend/app.py --server.headless false
+    
 )
-

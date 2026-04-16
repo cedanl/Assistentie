@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**EduPulse** is a student dropout risk detection and intervention tool for Dutch MBO institutions. It uses a **RandomForestRegressor** from [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) to predict dropout risk and generates AI-powered explanations in Dutch via OpenAI GPT-4.1.
+**EduPlan** is a student dropout risk detection and intervention tool for Dutch MBO institutions. It uses a **RandomForestRegressor** from [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) to predict dropout risk and generates AI-powered explanations in Dutch via OpenAI GPT-4.1.
 
 ## Running the Application
 
-**Step 0 — Download data and model (first time only, run from `edupulse/`):**
+**Step 0 — Download data and model (first time only, run from `eduplan/`):**
 ```bash
 uv run python shared/data_prep.py
 ```
@@ -38,14 +38,14 @@ uv run ruff check backend/ frontend/ tests/
 uv run ruff format backend/ frontend/ tests/
 ```
 
-**Run tests (from the `edupulse/` directory):**
+**Run tests (from the `eduplan/` directory):**
 ```bash
 uv run pytest tests/
 # Single test:
 uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
 ```
 
-The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the OpenAI client. Tests must be run from inside `edupulse/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_openai) live in `tests/conftest.py`. `test_trainer.py` tests `backend/trainer.py` in isolation using a temporary joblib path.
+The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the OpenAI client. Tests must be run from inside `eduplan/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_openai) live in `tests/conftest.py`. `test_trainer.py` tests `backend/trainer.py` in isolation using a temporary joblib path.
 
 **Run the standalone Claude agent CLI:**
 ```bash
@@ -187,4 +187,4 @@ The `mock_openai` fixture in `tests/conftest.py` mocks `mock_client.responses.cr
 - Package manager is **UV** (preferred over pip); cache stored in `./.uv_cache/`
 - Model source: [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) — `models/random_forest_regressor.joblib`
 - Data source: [cedanl/Uitnodigingsregel](https://github.com/cedanl/Uitnodigingsregel) — `data/raw/synth_data_pred.csv`
-- Research basis for EduPlan prompts: `edupulse/docs/uitval/uitval_en_interventies.md`
+- Research basis for EduPlan prompts: `eduplan/docs/uitval/uitval_en_interventies.md`

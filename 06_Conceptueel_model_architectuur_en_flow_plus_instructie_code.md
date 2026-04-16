@@ -248,7 +248,7 @@ sequenceDiagram
 ## Projectstructuur (actueel)
 
 ```
-edupulse/
+eduplan/
 │
 ├── backend/
 │   ├── __init__.py
@@ -356,7 +356,7 @@ Een losstaande CLI-tool die **niet** deel uitmaakt van de webapplicatie.
 ## Installatie
 
 ```bash
-cd edupulse
+cd eduplan
 uv sync
 # of: pip install -r requirements.txt
 ```

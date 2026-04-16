@@ -1,4 +1,4 @@
-# EduPulse — Architectuur & Flow
+# EduPlan — Architectuur & Flow
 
 ## 1. Architectuur
 

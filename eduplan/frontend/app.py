@@ -25,6 +25,7 @@
 # ─────────────────────────────────────────────
 
 import html
+import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 from io import BytesIO
@@ -499,8 +500,6 @@ def _reset_model() -> None:
 
 def _show_training_panel() -> None:
     """Toont de trainings-UI op het startscherm wanneer historische data is geüpload."""
-    import time
-
     status = st.session_state.training_status
 
     if status == "idle":
@@ -1041,7 +1040,7 @@ def show_main_screen():
 
     dff = _gefilterde_df()
 
-    if len(dff) > 0:
+    if not dff.empty:
         _run_voorspelling(dff)
 
     with st.container(border=True):

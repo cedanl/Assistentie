@@ -1,4 +1,4 @@
-# CEDA EduPulse — Uitnodigingsregel
+# CEDA EduPlan — Uitnodigingsregel
 
 Studentuitval-signalering en interventietool voor mbo-instellingen, ontwikkeld door CEDA.
 Gebruikt een **Random Forest Regressor** van het [Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel)-project (MondriaanBI) om uitvalrisico te voorspellen, aangevuld met SHAP-uitleg en Nederlandstalige AI-adviezen via OpenAI GPT-4.1.

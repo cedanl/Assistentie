@@ -1,7 +1,7 @@
-"""Gedeelde fixtures voor EduPulse tests.
+"""Gedeelde fixtures voor EduPlan tests.
 
-Voer tests uit vanuit de edupulse/ map:
-    cd edupulse && uv run pytest tests/
+Voer tests uit vanuit de eduplan/ map:
+    cd eduplan && uv run pytest tests/
 """
 
 from unittest.mock import MagicMock

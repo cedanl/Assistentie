@@ -1,21 +1,14 @@
 #!/usr/bin/env bash
-# Helper script to start the EduPulse FastAPI app using uv (Unix/Linux)
+# Helper script to start the EduPlan Streamlit frontend using uv (Unix/Linux)
 
-set -e
+# set -e
 
 # cd "$(dirname "$0")" # Ensure we're in the script's directory
-
-# #########################################################################################
-# THIS IS STRICTLY FORBIDDEN. TEMPORARILY STORED MY PERSONAL API KEY HERE FOR DEMO.
-# DO NOT DISTRIBUTE!!!!!!
-# export set OPENAI_API_KEY=ASK ED
-# #########################################################################################
-
 echo
 echo
 echo "##################################################################"
 echo "#                                                                #"
-echo "#             EduPulse FastAPI backend                           #"
+echo "#             EduPlan Streamlit frontend                        #"
 echo "#                                                                #"
 echo "##################################################################"
 echo
@@ -23,16 +16,19 @@ echo
 
 # Initialize uv project if not present
 if [ ! -f "pyproject.toml" ]; then
-  echo "Project EduPulse niet gevonden. Aanmaken..."
+  echo "Project EduPlan niet gevonden. Aanmaken..."
   uv init
-  echo "Project EduPulse geinitialiseerd"
+  echo "Project EduPlan geinitialiseerd"
+  echo "Virtual environment niet gevonden. Aanmaken..."
+  uv venv
+  echo "Virtual environment aangemaakt..."
 fi
 
 # Create virtual environment if not present
 if [ ! -d ".venv" ]; then
   echo "Virtual environment niet gevonden. Aanmaken..."
   uv venv
-  echo "Virtual environment aangemaakt"
+  echo "Virtual environment aangemaakt..."
 fi
 
 # Activate virtual environment
@@ -44,7 +40,7 @@ echo "Omgeving geactiveerd"
 echo "Installeren van dependencies..."
 uv add -U -r requirements.txt
 
-# If you want to enforce .env presence, uncomment and adapt these warnings/checks
+# If you want to enforce .env presence, uncomment these warnings/checks
 # if [ ! -f .env ]; then
 #     echo "[WAARSCHUWING] .env bestand niet gevonden!"
 #     echo
@@ -60,14 +56,18 @@ uv add -U -r requirements.txt
 # fi
 
 echo
-echo "[START] Starting EduPulse FastAPI Server met uvicorn..."
+echo "[START] Starting EduPlan Streamlit Server met uv..."
+echo "[INFO] De app opent automatisch in je browser op http://localhost:8502 of http://localhost:8503"
 echo
 echo "Druk op Ctrl+C om de app te stoppen."
 echo
 
-uvicorn --host "127.0.0.1" --port 8000 backend.main:app --reload
+# Try first port (8502)
+uv run streamlit run --server.port 8502 frontend/app.py --server.headless false
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
   echo
-  echo "[FOUT] Er is een fout opgetreden bij het starten van de app."
+  echo "[BUSY] De Streamlit server is niet gestart. Port 8502 wordt waarschijlijk al gebruikt."
+  echo "We proberen de Streamlit server te starten met port 8503."
+  uv run streamlit run --server.port 8503 frontend/app.py --server.headless false
 fi

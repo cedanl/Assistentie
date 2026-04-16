@@ -8,7 +8,7 @@ _De ‘EduPlan’ heeft pas impact wanneer deze wenselijk, uitvoerbaar en levens
 
 **Experiment uitvoeren -** We voeren het experiment uit om de geselecteerde hypothese(s) te toetsen en in het kielzog hiervan verzamelen we zo veel mogelijk informatie om duidelijkheid te krijgen over de overige aannames. 
 
-**Bewijs presenteren -** We (in)valideren de hypothese(s) en komen met een advies om met de ‘EduPulse’ te stoppen, hem aan te passen of hem juist vanwege de goede testresultaten door te ontwikkelen. Alle leerpunten verwerken we direct in de aangescherpte ‘EduPulse’.
+**Bewijs presenteren -** We (in)valideren de hypothese(s) en komen met een advies om met de ‘EduPlan’ te stoppen, hem aan te passen of hem juist vanwege de goede testresultaten door te ontwikkelen. Alle leerpunten verwerken we direct in de aangescherpte ‘EduPlan’.
 
 
 

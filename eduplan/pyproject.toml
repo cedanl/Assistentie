@@ -4,7 +4,7 @@ cache-dir = "./.uv_cache"
 [project]
 name = "streamlit-app-template"
 version = "0.1.0"
-description = "CEDA Edupulse App"
+description = "CEDA Eduplan App"
 authors = [
     {name = "Ed de Feber", email = "ed.defeber@surf.nl"}
 ]

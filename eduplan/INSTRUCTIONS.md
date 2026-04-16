@@ -1,6 +1,6 @@
-# EduPulse — Gebruikshandleiding
+# EduPlan — Gebruikshandleiding
 
-Deze handleiding beschrijft hoe je EduPulse installeert, start en gebruikt als mentor of coördinator binnen een mbo-instelling.
+Deze handleiding beschrijft hoe je EduPlan installeert, start en gebruikt als mentor of coördinator binnen een mbo-instelling.
 
 ---
 
@@ -16,7 +16,7 @@ Deze handleiding beschrijft hoe je EduPulse installeert, start en gebruikt als m
 
 ### 1. Afhankelijkheden installeren
 
-Voer dit uit vanuit de `edupulse/`-map:
+Voer dit uit vanuit de `eduplan/`-map:
 
 ```bash
 uv sync
@@ -34,7 +34,7 @@ Dit downloadt:
 
 ### 3. Omgevingsvariabele instellen
 
-Maak een `.env`-bestand aan in de `edupulse/`-map (of exporteer de variabele):
+Maak een `.env`-bestand aan in de `eduplan/`-map (of exporteer de variabele):
 
 ```bash
 OPENAI_API_KEY=sk-...
@@ -44,7 +44,7 @@ OPENAI_API_KEY=sk-...
 
 ## Applicatie starten
 
-EduPulse bestaat uit twee processen die tegelijk moeten draaien. Open twee terminals vanuit de `edupulse/`-map.
+EduPlan bestaat uit twee processen die tegelijk moeten draaien. Open twee terminals vanuit de `eduplan/`-map.
 
 **Terminal 1 — Backend (FastAPI, poort 8000):**
 
@@ -66,7 +66,7 @@ Open daarna je browser op **http://localhost:8502**.
 
 ## Eigen data uploaden
 
-EduPulse werkt standaard met de meegeleverde synthetische data (`shared/data.csv`). Je kunt ook een eigen databestand uploaden:
+EduPlan werkt standaard met de meegeleverde synthetische data (`shared/data.csv`). Je kunt ook een eigen databestand uploaden:
 
 1. Klik op het upload-veld op het startscherm.
 2. Upload een `.csv`- of `.xlsx`-bestand.
