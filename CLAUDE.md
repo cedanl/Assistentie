@@ -63,6 +63,7 @@ See `eduplan/CLAUDE.md` for full details on the dropout-risk app. Key points:
 - Env vars: `OPENAI_API_KEY` (backend GPT-4.1 via Responses API), `ANTHROPIC_API_KEY` (standalone agent CLI only)
 - Both the FastAPI backend (port 8000) and Streamlit frontend (port 8502) must run simultaneously
 - SVG branding assets live in `eduplan/frontend/static/`
+- Depends on [`student-signal`](https://github.com/cedanl/student-signal) (CEDA library, installed via `git+https://`) for KNN-imputation, encoding, and RandomForest training
 
 **Run EduPlan tests (from the `eduplan/` directory):**
 ```bash

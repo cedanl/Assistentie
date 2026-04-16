@@ -69,10 +69,11 @@ Streamlit frontend (frontend/app.py)
         → OpenAI GPT-4.1
 ```
 
-### Backend (`backend/main.py`) — 8 endpoints
+### Backend (`backend/main.py`) — 9 endpoints
 | Endpoint | Input | Purpose |
 |----------|-------|---------|
-| `POST /predict_dropout` | All model features (dict) + `use_default_model` | Continuous dropout risk score (0–1) |
+| `POST /predict_dropout` | All model features (dict) + `use_default_model` | Continuous dropout risk score (0–1) for a single student |
+| `POST /rank_students` | `students` (list of dicts) + `use_default_model` | Bulk-predict all students at once; returns list sorted high→low by risk score |
 | `POST /explain_risk` | Student data + probability + `imputed_columns` + `use_default_model` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via GPT-4.1 met alleen SHAP-factoren (geen studentprofiel) |
 | `POST /feature_importance` | Student data + `use_default_model` | SHAP values per feature (TreeExplainer on regressor) — used for the UI bar chart |
 | `POST /summarize` | CSV data string or question | Management summary or Q&A via OpenAI |
@@ -82,7 +83,11 @@ Streamlit frontend (frontend/app.py)
 | `DELETE /reset_model` | — | Deletes `model_custom.joblib` and resets active model to default |
 
 ### Backend (`backend/trainer.py`)
-Standalone training module. `train_model()` runs GridSearchCV over `DEFAULT_PARAM_GRID` on the provided DataFrame, requires ≥ 30 training rows, and saves the best estimator to disk. Called by `/train_model` in a background thread via `threading.Thread`.
+Standalone training module. `train_model()` requires ≥ 30 training rows and is called by `/train_model` in a background thread via `threading.Thread`. It delegates to the [`student-signal`](https://github.com/cedanl/student-signal) CEDA library:
+- `student_signal.prepare()` — KNN-imputation, encoding, and scaling fitted on training data
+- `student_signal.modeling.train.train_random_forest()` — GridSearchCV over the provided (or default) `param_grid`
+
+After training, both `model_custom.joblib` and `model_custom_features.json` (the post-`prepare()` feature list) are written to `backend/`.
 
 **Dual-model architecture:** At startup, `clf_default`/`explainer_default` are always loaded from `backend/model.joblib`. If `backend/model_custom.joblib` exists, `clf`/`explainer` (the active model) point to it; otherwise they alias the default. `use_default_model: bool` on each request selects which pair to use via `_get_model()`.
 
@@ -174,7 +179,7 @@ The `mock_openai` fixture in `tests/conftest.py` mocks `mock_client.responses.cr
 
 - **No hard threshold** — all students are returned with their risk score; the frontend sorts high→low
 - **Auto-prediction** — prediction runs automatically when the opleiding/klas filter changes; results cached in `st.session_state.risicostudenten`
-- **Features determined dynamically** from `shared/data.csv` columns at startup
+- **Features loaded dynamically** at startup: from `backend/model_features.json` (or `model_custom_features.json`) if it exists, falling back to `shared/data.csv` column derivation
 - The model was trained with numpy arrays (no feature names); always pass `.values` to avoid sklearn warnings
 - SHAP for a regressor returns shape `(n_samples, n_features)` directly — no `[1]` class index needed
 - `/explain_risk` and `/feature_importance` both compute SHAP — this is intentional: the former uses SHAP for the deterministic profile + LLM prompt, the latter serves the UI bar chart
