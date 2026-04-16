@@ -13,10 +13,10 @@ from sklearn.model_selection import GridSearchCV
 
 # Standaard hyperparameterraster — snel genoeg voor MBO-schaalgrootte (300–2000 rijen)
 DEFAULT_PARAM_GRID: dict = {
-    "n_estimators":      [100, 200],
-    "max_depth":         [5, 10, None],
+    "n_estimators": [100, 200],
+    "max_depth": [5, 10, None],
     "min_samples_split": [2, 5],
-    "max_features":      ["sqrt", "log2"],
+    "max_features": ["sqrt", "log2"],
 }
 
 
@@ -66,7 +66,7 @@ def train_model(
         param_grid=grid,
         cv=5,
         scoring="neg_mean_squared_error",
-        n_jobs=1,          # n_jobs=1 voorkomt problemen met forking in een daemon-thread
+        n_jobs=1,  # n_jobs=1 voorkomt problemen met forking in een daemon-thread
         refit=True,
         verbose=0,
     )

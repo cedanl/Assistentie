@@ -100,4 +100,5 @@ st.markdown(
     
     Ready to build something amazing? Start exploring the examples in the sidebar and 
     leverage Streamlit's powerful caching and state management features!
-    """)
+    """
+)

@@ -44,8 +44,13 @@ def test_factor_label_unknown_key_falls_back_to_key():
 
 def test_build_risicoprofiel_hoog_bevat_risiconiveau():
     html = _build_risicoprofiel_html(
-        student={"StudentAge": 20, "StudentGender": 1, "absence_unauthorized": 10.0,
-                 "absence_authorized": 0.0, "Aanmel_aantal": 1.0},
+        student={
+            "StudentAge": 20,
+            "StudentGender": 1,
+            "absence_unauthorized": 10.0,
+            "absence_authorized": 0.0,
+            "Aanmel_aantal": 1.0,
+        },
         probability=0.75,
         risico_niveau="HOOG",
         urgentie="directe actie vereist (deze week)",

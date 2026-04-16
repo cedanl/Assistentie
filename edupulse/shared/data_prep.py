@@ -16,11 +16,11 @@ import pandas as pd
 random.seed(42)
 np.random.seed(42)
 
-PRED_URL  = "https://raw.githubusercontent.com/cedanl/Uitnodigingsregel/main/data/raw/synth_data_pred.csv"
+PRED_URL = "https://raw.githubusercontent.com/cedanl/Uitnodigingsregel/main/data/raw/synth_data_pred.csv"
 MODEL_URL = "https://raw.githubusercontent.com/MondriaanBI/Uitnodigingsregel/main/models/random_forest_regressor.joblib"
 
 print("Bezig met downloaden van data en model...")
-urllib.request.urlretrieve(PRED_URL,  "shared/synth_data_pred.csv")
+urllib.request.urlretrieve(PRED_URL, "shared/synth_data_pred.csv")
 urllib.request.urlretrieve(MODEL_URL, "backend/model.joblib")
 print("Download klaar.")
 
@@ -30,13 +30,14 @@ print(f"Rijen: {len(df)}")
 
 # Leid Opleiding af uit de sector-kolommen (één-hete codering)
 sector_map = {
-    "Economie":    "Economie",
-    "Landbouw":    "Landbouw",
-    "Techniek":    "Techniek",
-    "DSV":         "DSV",
+    "Economie": "Economie",
+    "Landbouw": "Landbouw",
+    "Techniek": "Techniek",
+    "DSV": "DSV",
     "Zorgenwelzijn": "Zorg & Welzijn",
-    "Anders":      "Anders",
+    "Anders": "Anders",
 }
+
 
 def get_opleiding(row):
     for col, label in sector_map.items():
@@ -44,27 +45,77 @@ def get_opleiding(row):
             return label
     return "Overig"
 
+
 df["Opleiding"] = df.apply(get_opleiding, axis=1)
 
 # Voeg synthetische weergave-kolommen toe (Naam, Klas, Mentor)
 voornamen = [
-    "Julia", "Arantxa", "Maddox", "Nova", "Shane", "Richard", "Paolo", "Aisha", "Edith", "Edwin", "Steven", "Sam", "Lisa",
-    "Mohammed", "Ali", "Koen", "Eva", "Tessa", "Daan", "Ameen", "Lucas", "Fatima",
-    "Nour", "Mehmet", "Emma", "Lars",
+    "Julia",
+    "Arantxa",
+    "Maddox",
+    "Nova",
+    "Shane",
+    "Richard",
+    "Paolo",
+    "Aisha",
+    "Edith",
+    "Edwin",
+    "Steven",
+    "Sam",
+    "Lisa",
+    "Mohammed",
+    "Ali",
+    "Koen",
+    "Eva",
+    "Tessa",
+    "Daan",
+    "Ameen",
+    "Lucas",
+    "Fatima",
+    "Nour",
+    "Mehmet",
+    "Emma",
+    "Lars",
 ]
 achternamen = [
-    "de Vries", "Boussata", "Abu-Hanna", "Benjamins", "Bos", "Jansen", "Pietersen", "Massaro", "Luyendijk", "van Vleuten", "de Vries", "Hol", "Mulder", "Sanchez",
-    "Jansen", "Bakker", "Sterk", "Noordenbos", "Groen", "Smit", "Kuiper", "De Groot",
+    "de Vries",
+    "Boussata",
+    "Abu-Hanna",
+    "Benjamins",
+    "Bos",
+    "Jansen",
+    "Pietersen",
+    "Massaro",
+    "Luyendijk",
+    "van Vleuten",
+    "de Vries",
+    "Hol",
+    "Mulder",
+    "Sanchez",
+    "Jansen",
+    "Bakker",
+    "Sterk",
+    "Noordenbos",
+    "Groen",
+    "Smit",
+    "Kuiper",
+    "De Groot",
 ]
-klassen  = ["1A", "1B", "2A", "2B", "3A", "3B"]
+klassen = ["1A", "1B", "2A", "2B", "3A", "3B"]
 mentoren = [
-    "mev. Smit", "mev. Safon", "mev. Hulsema", "dhr. Hanna",
-    "dhr. Benjamins", "dhr. Mulder", "mev. Kuiper", "dhr. De Groot",
+    "mev. Smit",
+    "mev. Safon",
+    "mev. Hulsema",
+    "dhr. Hanna",
+    "dhr. Benjamins",
+    "dhr. Mulder",
+    "mev. Kuiper",
+    "dhr. De Groot",
 ]
 
 n = len(df)
-df["Naam"]   = [f"{random.choice(voornamen)} {random.choice(achternamen)}" for _ in range(n)]
-df["Klas"]   = [random.choice(klassen)  for _ in range(n)]
+df["Naam"] = [f"{random.choice(voornamen)} {random.choice(achternamen)}" for _ in range(n)]
+df["Klas"] = [random.choice(klassen) for _ in range(n)]
 df["Mentor"] = [random.choice(mentoren) for _ in range(n)]
 
 df.to_csv("shared/data.csv", index=False)

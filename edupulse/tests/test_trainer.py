@@ -15,9 +15,7 @@ from backend.main import features
 def _make_df(n: int, seed: int = 0) -> pd.DataFrame:
     """Genereer een synthetisch DataFrame met alle model-features en een Dropout-kolom."""
     rng = np.random.default_rng(seed)
-    df = pd.DataFrame(
-        rng.random((n, len(features))), columns=features
-    )
+    df = pd.DataFrame(rng.random((n, len(features))), columns=features)
     df["Dropout"] = rng.integers(0, 2, size=n).astype(float)
     return df
 
