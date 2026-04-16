@@ -45,7 +45,7 @@ uv run pytest tests/
 uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
 ```
 
-The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the OpenAI client. Tests must be run from inside `eduplan/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_openai) live in `tests/conftest.py`. `test_trainer.py` tests `backend/trainer.py` in isolation using a temporary joblib path.
+The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the OpenAI client. Tests must be run from inside `eduplan/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_openai) live in `tests/conftest.py`. `test_trainer.py` uses an `autouse` fixture `mock_student_signal` that mocks `trainer.prepare` and `trainer.train_random_forest` — keeping trainer tests fast and independent of the student-signal library.
 
 **Run the standalone Claude agent CLI:**
 ```bash
@@ -69,22 +69,23 @@ Streamlit frontend (frontend/app.py)
         → OpenAI GPT-4.1
 ```
 
-### Backend (`backend/main.py`) — 8 endpoints
+### Backend (`backend/main.py`) — 9 endpoints
 | Endpoint | Input | Purpose |
 |----------|-------|---------|
 | `POST /predict_dropout` | All model features (dict) + `use_default_model` | Continuous dropout risk score (0–1) |
+| `POST /rank_students` | `students` (list of dicts) + `use_default_model` | Bulk-ranking: scoort alle studenten in één call, gesorteerd hoog→laag; vervangt N losse `/predict_dropout` calls |
 | `POST /explain_risk` | Student data + probability + `imputed_columns` + `use_default_model` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via GPT-4.1 met alleen SHAP-factoren (geen studentprofiel) |
 | `POST /feature_importance` | Student data + `use_default_model` | SHAP values per feature (TreeExplainer on regressor) — used for the UI bar chart |
 | `POST /summarize` | CSV data string or question | Management summary or Q&A via OpenAI |
 | `POST /map_columns` | Uploaded + required column lists | LLM-based column name mapping for CSV uploads |
-| `POST /train_model` | `data` (list of dicts) + `dropout_column` + optional `rf_parameters` | Train a custom RandomForest on institution data; runs in background thread; saves to `backend/model_custom.joblib` |
+| `POST /train_model` | `data` (list of dicts) + `dropout_column` + optional `rf_parameters` | Train a custom RandomForest via student-signal; runs in background thread; saves `model_custom.joblib` + `model_custom_features.json` |
 | `GET /train_status` | — | Returns current training state: `idle \| training \| done \| failed` with message |
-| `DELETE /reset_model` | — | Deletes `model_custom.joblib` and resets active model to default |
+| `DELETE /reset_model` | — | Deletes `model_custom.joblib` + `model_custom_features.json` and resets active model to default |
 
 ### Backend (`backend/trainer.py`)
-Standalone training module. `train_model()` runs GridSearchCV over `DEFAULT_PARAM_GRID` on the provided DataFrame, requires ≥ 30 training rows, and saves the best estimator to disk. Called by `/train_model` in a background thread via `threading.Thread`.
+Standalone training module. `train_model(df, dropout_col, model_path, features_path)` uses **[student-signal](https://github.com/cedanl/student-signal)** voor data-voorbereiding (KNN-imputation via `prepare()`) en modeltraining (`train_random_forest()`). Requires ≥ 30 rows. Saves model to `model_path` and the resulting feature list to `features_path` as JSON. Returns `tuple[RandomForestRegressor, list[str]]`. Called by `/train_model` in a background thread.
 
-**Dual-model architecture:** At startup, `clf_default`/`explainer_default` are always loaded from `backend/model.joblib`. If `backend/model_custom.joblib` exists, `clf`/`explainer` (the active model) point to it; otherwise they alias the default. `use_default_model: bool` on each request selects which pair to use via `_get_model()`.
+**Dual-model architecture:** At startup, `clf_default`/`explainer_default`/`features_default` are always loaded from `backend/model.joblib` + `backend/model_features.json`. If `model_custom.joblib` exists, `clf`/`explainer`/`features` (the active set) point to the custom model; otherwise they alias the defaults. `_get_model(use_default)` returns the `(clf, explainer)` pair; `_get_features(use_default)` returns the matching feature list. `_reload_model(path)` updates all three globals atomically. Features path is resolved via `_FEATURES_PATH: dict[str, str]`.
 
 ### Frontend (`frontend/app.py`, `frontend/styles.py`) — two screens
 
@@ -173,8 +174,8 @@ The `mock_openai` fixture in `tests/conftest.py` mocks `mock_client.responses.cr
 ## Key Implementation Notes
 
 - **No hard threshold** — all students are returned with their risk score; the frontend sorts high→low
-- **Auto-prediction** — prediction runs automatically when the opleiding/klas filter changes; results cached in `st.session_state.risicostudenten`
-- **Features determined dynamically** from `shared/data.csv` columns at startup
+- **Auto-prediction** — prediction runs automatically when the opleiding/klas filter changes; `_run_voorspelling()` does one bulk `/rank_students` call; results cached in `st.session_state.risicostudenten`
+- **Features determined dynamically** from `backend/model_features.json` (written by student-signal at training time); fallback to `shared/data.csv` columns if JSON is absent
 - The model was trained with numpy arrays (no feature names); always pass `.values` to avoid sklearn warnings
 - SHAP for a regressor returns shape `(n_samples, n_features)` directly — no `[1]` class index needed
 - `/explain_risk` and `/feature_importance` both compute SHAP — this is intentional: the former uses SHAP for the deterministic profile + LLM prompt, the latter serves the UI bar chart
