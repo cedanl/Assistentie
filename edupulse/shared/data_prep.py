@@ -7,14 +7,12 @@ Uitvoeren vanuit de projectroot:
     python shared/data_prep.py
 """
 
-import random
 import urllib.request
 
 import numpy as np
 import pandas as pd
 
-random.seed(42)
-np.random.seed(42)
+rng = np.random.default_rng(42)
 
 PRED_URL = "https://raw.githubusercontent.com/cedanl/Uitnodigingsregel/main/data/raw/synth_data_pred.csv"
 MODEL_URL = "https://raw.githubusercontent.com/MondriaanBI/Uitnodigingsregel/main/models/random_forest_regressor.joblib"
@@ -39,14 +37,10 @@ sector_map = {
 }
 
 
-def get_opleiding(row):
-    for col, label in sector_map.items():
-        if col in row.index and row[col] == 1:
-            return label
-    return "Overig"
-
-
-df["Opleiding"] = df.apply(get_opleiding, axis=1)
+sector_cols = [c for c in sector_map if c in df.columns]
+df["Opleiding"] = (
+    df[sector_cols].idxmax(axis=1).map(sector_map).where(df[sector_cols].eq(1).any(axis=1), other="Overig")
+)
 
 # Voeg synthetische weergave-kolommen toe (Naam, Klas, Mentor)
 voornamen = [
@@ -114,9 +108,9 @@ mentoren = [
 ]
 
 n = len(df)
-df["Naam"] = [f"{random.choice(voornamen)} {random.choice(achternamen)}" for _ in range(n)]
-df["Klas"] = [random.choice(klassen) for _ in range(n)]
-df["Mentor"] = [random.choice(mentoren) for _ in range(n)]
+df["Naam"] = [f"{v} {a}" for v, a in zip(rng.choice(voornamen, size=n), rng.choice(achternamen, size=n))]
+df["Klas"] = rng.choice(klassen, size=n)
+df["Mentor"] = rng.choice(mentoren, size=n)
 
 df.to_csv("shared/data.csv", index=False)
 print(f"\nshared/data.csv opgeslagen ({n} studenten).")

@@ -12,7 +12,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 
 # Standaard hyperparameterraster — snel genoeg voor MBO-schaalgrootte (300–2000 rijen)
-DEFAULT_PARAM_GRID: dict = {
+DEFAULT_PARAM_GRID: dict[str, list[int | str | None]] = {
     "n_estimators": [100, 200],
     "max_depth": [5, 10, None],
     "min_samples_split": [2, 5],
@@ -24,7 +24,7 @@ def train_model(
     df: pd.DataFrame,
     dropout_col: str,
     feature_cols: list[str],
-    model_path: str,
+    model_path: str | Path,
     param_grid: dict | None = None,
     random_seed: int = 42,
 ) -> RandomForestRegressor:
