@@ -442,6 +442,8 @@ def predict_dropout(request: StudentData):
 @app.post("/rank_students")
 def rank_students(request: RankRequest):
     """Rangschik alle studenten op uitvalrisico in één bulk-aanroep."""
+    if not request.students:
+        return []
     model, _ = _get_model(request.use_default_model)
     active_features = _get_features(request.use_default_model)
 
