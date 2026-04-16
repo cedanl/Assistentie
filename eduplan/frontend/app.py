@@ -106,7 +106,6 @@ if st.session_state.uploaded_df is not None:
 else:
     df = _load_data()
 
-features = [col for col in df.columns if col not in NON_FEATURES]
 QUICK_OPLEIDINGEN = sorted(df["Opleiding"].unique().tolist())
 
 
@@ -353,8 +352,8 @@ def _build_word_doc(analyse: dict) -> BytesIO:
 
 
 def _run_voorspelling(dff: pd.DataFrame):
-    """Doe API-calls voor alle studenten in dff; sla op in session_state."""
-    opl = st.session_state.selected_opleiding
+    """Doe API-call voor alle studenten in dff; sla op in session_state."""
+    opl  = st.session_state.selected_opleiding
     klas = st.session_state.selected_klas
     key = (opl, klas)
 
@@ -367,25 +366,20 @@ def _run_voorspelling(dff: pd.DataFrame):
 
     gebruik_default = st.session_state.gebruik_demo_data
 
-    def _call(row):
-        try:
-            resp = requests.post(
-                "http://localhost:8000/predict_dropout",
-                json={
-                    "student": row[features].to_dict(),
-                    "use_default_model": gebruik_default,
-                },
-                timeout=10,
-            )
-            return (row, resp.json())
-        except Exception:
-            return None
-
     with st.spinner("Risico berekenen…"):
-        rows = [row for _, row in dff.iterrows()]
-        with ThreadPoolExecutor(max_workers=5) as pool:
-            resultaten = [r for r in pool.map(_call, rows) if r is not None]
-        resultaten.sort(key=lambda x: x[1]["probability"], reverse=True)
+        resp = requests.post(
+            "http://localhost:8000/rank_students",
+            json={
+                "students":          dff.to_dict(orient="records"),
+                "use_default_model": gebruik_default,
+            },
+            timeout=30,
+        )
+        ranked = resp.json()
+        resultaten = [
+            (pd.Series(s), {"probability": s["probability"], "prediction": s["prediction"]})
+            for s in ranked
+        ]
         st.session_state.risicostudenten = resultaten
         st.session_state.top_n = min(len(resultaten), 10)
 
@@ -408,9 +402,9 @@ def _genereer_eduplan():
                 return requests.post(
                     "http://localhost:8000/explain_risk",
                     json={
-                        "student": row[features].to_dict(),
-                        "prediction": result["prediction"],
-                        "probability": result["probability"],
+                        "student":           row.to_dict(),
+                        "prediction":        result["prediction"],
+                        "probability":       result["probability"],
                         "use_default_model": gebruik_default,
                         "imputed_columns": vul_log,
                     },
@@ -424,7 +418,7 @@ def _genereer_eduplan():
                 return requests.post(
                     "http://localhost:8000/feature_importance",
                     json={
-                        "student": row[features].to_dict(),
+                        "student":           row.to_dict(),
                         "use_default_model": gebruik_default,
                     },
                     timeout=10,

@@ -290,6 +290,45 @@ def test_reset_model_sets_status_idle(client):
     assert resp.json()["status"] == "idle"
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Endpoints — /rank_students
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def test_rank_students_returns_sorted_list(client, demo_student):
+    """Bulk-ranking geeft een gesorteerde lijst (hoog → laag risico) terug."""
+    students = [demo_student.copy() for _ in range(5)]
+    resp = client.post("/rank_students", json={"students": students})
+    assert resp.status_code == 200
+    ranked = resp.json()
+    assert len(ranked) == 5
+    probs = [s["probability"] for s in ranked]
+    assert probs == sorted(probs, reverse=True)
+
+
+def test_rank_students_each_has_probability_and_prediction(client, demo_student):
+    """Elk resultaat bevat 'probability' (float 0–1) en 'prediction' (0 of 1)."""
+    resp = client.post("/rank_students", json={"students": [demo_student]})
+    result = resp.json()[0]
+    assert 0.0 <= result["probability"] <= 1.0
+    assert result["prediction"] in (0, 1)
+
+
+def test_rank_students_uses_default_model_flag(client, demo_student):
+    resp = client.post(
+        "/rank_students",
+        json={"students": [demo_student], "use_default_model": True},
+    )
+    assert resp.status_code == 200
+    assert "probability" in resp.json()[0]
+
+
+def test_rank_students_empty_list_returns_empty(client):
+    resp = client.post("/rank_students", json={"students": []})
+    assert resp.status_code == 200
+    assert resp.json() == []
+
+
 def test_train_model_endpoint_starts(client, demo_student):
     """Training start asynchroon; endpoint geeft direct 'started' of 'already_running' terug."""
     rows = [dict(demo_student, Dropout=float(i % 2)) for i in range(35)]

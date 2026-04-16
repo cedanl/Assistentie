@@ -53,29 +53,45 @@ client = OpenAI()
 MODEL = "gpt-4.1"
 
 # Modelpaden
-MODEL_DEFAULT_PATH = "backend/model.joblib"
-MODEL_CUSTOM_PATH = "backend/model_custom.joblib"
+MODEL_DEFAULT_PATH          = "backend/model.joblib"
+MODEL_CUSTOM_PATH           = "backend/model_custom.joblib"
+MODEL_DEFAULT_FEATURES_PATH = "backend/model_features.json"
+MODEL_CUSTOM_FEATURES_PATH  = "backend/model_custom_features.json"
 
-# Features zijn alle kolommen uit data.csv behalve weergave- en doelkolommen
-_df = pd.read_csv("shared/data.csv")
-NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
-features = [col for col in _df.columns if col not in NON_FEATURES]
-del _df  # DataFrame is alleen nodig voor kolom-extractie; vrijgeven na gebruik
+_FEATURES_PATH: dict[str, str] = {
+    MODEL_DEFAULT_PATH: MODEL_DEFAULT_FEATURES_PATH,
+    MODEL_CUSTOM_PATH:  MODEL_CUSTOM_FEATURES_PATH,
+}
+
+
+def _load_features(path: str) -> list[str]:
+    """Laad feature-lijst uit JSON; val terug op shared/data.csv als het bestand ontbreekt."""
+    if Path(path).exists():
+        with open(path) as f:
+            return json.load(f)
+    _NON = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
+    return [c for c in pd.read_csv("shared/data.csv").columns if c not in _NON]
+
+
+# Features per model — dynamisch bepaald door student-signal bij training
+features_default = _load_features(MODEL_DEFAULT_FEATURES_PATH)
+features_custom  = _load_features(MODEL_CUSTOM_FEATURES_PATH) if Path(MODEL_CUSTOM_FEATURES_PATH).exists() else features_default
+features         = features_custom  # actieve feature-lijst
 
 # Standaardmodel — altijd geladen, gebruikt bij demo-data
-clf_default = joblib.load(MODEL_DEFAULT_PATH)
+clf_default       = joblib.load(MODEL_DEFAULT_PATH)
 explainer_default = shap.TreeExplainer(clf_default)
 
 # Instellingsmodel — geladen indien beschikbaar; anders alias op standaard
 if Path(MODEL_CUSTOM_PATH).exists():
-    clf_custom = joblib.load(MODEL_CUSTOM_PATH)
+    clf_custom       = joblib.load(MODEL_CUSTOM_PATH)
     explainer_custom = shap.TreeExplainer(clf_custom)
 else:
-    clf_custom = clf_default
+    clf_custom       = clf_default
     explainer_custom = explainer_default
 
-# Actief model (voor /train_model en /reset_model)
-clf = clf_custom
+# Actief model
+clf      = clf_custom
 explainer = explainer_custom
 
 
@@ -84,6 +100,11 @@ def _get_model(use_default: bool) -> tuple[RandomForestRegressor, shap.TreeExpla
     if use_default:
         return clf_default, explainer_default
     return clf, explainer
+
+
+def _get_features(use_default: bool) -> list[str]:
+    """Geef de feature-lijst voor het actieve model."""
+    return features_default if use_default else features
 
 
 # ── Trainingstoestand ─────────────────────────────────────────────────────────
@@ -100,13 +121,16 @@ _training = _TrainingState()
 
 
 def _reload_model(path: str | Path) -> None:
-    """Laad model en explainer opnieuw en vervang de globale referenties atomisch."""
-    global clf, explainer
-    new_clf = joblib.load(path)
+    """Laad model, explainer en features opnieuw en vervang de globale referenties atomisch."""
+    global clf, explainer, features, features_custom
+    new_clf       = joblib.load(path)
     new_explainer = shap.TreeExplainer(new_clf)
-    # Python-naam-toewijzing is atomisch onder de GIL; beide globals worden samen vervangen
-    clf = new_clf
-    explainer = new_explainer
+    new_features  = _load_features(_FEATURES_PATH[str(path)])
+    # Python-naam-toewijzing is atomisch onder de GIL
+    clf             = new_clf
+    explainer       = new_explainer
+    features        = new_features
+    features_custom = new_features
 
 
 class StudentData(BaseModel):
@@ -135,6 +159,10 @@ class TrainRequest(BaseModel):
     data: list[dict]
     dropout_column: str = "Dropout"
     rf_parameters: dict | None = None
+
+class RankRequest(BaseModel):
+    students:          list[dict]
+    use_default_model: bool = False
 
 
 # Nederlandse labels voor modelfeatures (voor leesbare SHAP-toelichting)
@@ -411,6 +439,25 @@ def predict_dropout(request: StudentData):
     return {"probability": score, "prediction": prediction}
 
 
+@app.post("/rank_students")
+def rank_students(request: RankRequest):
+    """Rangschik alle studenten op uitvalrisico in één bulk-aanroep."""
+    if not request.students:
+        return []
+    model, _ = _get_model(request.use_default_model)
+    active_features = _get_features(request.use_default_model)
+
+    pred_df = pd.DataFrame(request.students).reindex(columns=active_features, fill_value=0)
+    scores = model.predict(pred_df.values).tolist()
+
+    result = [
+        {**student, "probability": float(score), "prediction": 1 if score >= 0.35 else 0}
+        for student, score in zip(request.students, scores)
+    ]
+    result.sort(key=lambda x: x["probability"], reverse=True)
+    return result
+
+
 @app.post("/explain_risk")
 def explain_risk(request: ExplainRequest):
     student = request.student
@@ -553,18 +600,17 @@ def train_model_endpoint(request: TrainRequest):
     def _run():
         try:
             df_train = pd.DataFrame(request.data)
-            trainer.train_model(
+            _, feature_cols = trainer.train_model(
                 df=df_train,
                 dropout_col=request.dropout_column,
-                feature_cols=features,
                 model_path=MODEL_CUSTOM_PATH,
+                features_path=MODEL_CUSTOM_FEATURES_PATH,
                 param_grid=request.rf_parameters,
             )
             _reload_model(MODEL_CUSTOM_PATH)
             with _training.lock:
-                n = len(df_train.dropna(subset=[request.dropout_column]))
-                _training.status = "done"
-                _training.message = f"Model getraind op {n} studenten."
+                _training.status  = "done"
+                _training.message = f"Model getraind op {len(df_train)} studenten ({len(feature_cols)} features)."
         except Exception as e:
             with _training.lock:
                 _training.status = "failed"
@@ -583,9 +629,8 @@ def train_status():
 @app.delete("/reset_model")
 def reset_model():
     """Zet het standaardmodel terug en verwijder het instellingsmodel."""
-    custom_path = Path(MODEL_CUSTOM_PATH)
-    if custom_path.exists():
-        custom_path.unlink()
+    for p in (MODEL_CUSTOM_PATH, MODEL_CUSTOM_FEATURES_PATH):
+        Path(p).unlink(missing_ok=True)
     _reload_model(MODEL_DEFAULT_PATH)
     with _training.lock:
         _training.status = "idle"
