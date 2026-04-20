@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from sqlalchemy import Boolean, Column, Date, DateTime, Float, Integer, String
 from pydantic import BaseModel, ConfigDict
 from backend.database import Base
@@ -57,7 +57,7 @@ class HistorischStudentDB(Base):
 class AgentLogDB(Base):
     __tablename__ = "agent_log"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    timestamp = Column(DateTime, default=datetime.utcnow)
+    timestamp = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     sessie_id = Column(String, index=True)
     gebruiker = Column(String)
     tool_naam = Column(String)
