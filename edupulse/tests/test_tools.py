@@ -1,5 +1,6 @@
 # tests/test_tools.py
 import pytest
+from datetime import date
 from unittest.mock import MagicMock
 from backend.agent.tools import ToolRegistry
 from backend.models import StudentDB
@@ -19,7 +20,7 @@ def mock_student():
     s.cohort = "2024-2025"
     s.niveau = 4
     s.leerweg = "BOL"
-    s.intakedatum = "2024-09-01"
+    s.intakedatum = date(2024, 9, 1)
     s.aanwezigheid = 0.52
     s.voortgang = 0.61
     s.bsa_studiepunten = 34
@@ -34,6 +35,10 @@ def registry(mock_student):
     db = MagicMock()
     db.query.return_value.filter_by.return_value.first.return_value = mock_student
     db.query.return_value.all.return_value = [mock_student]
+    # For filter().limit().all() chain in search_students:
+    db.query.return_value.filter.return_value.limit.return_value.all.return_value = [mock_student]
+    # For filter().all() chain in get_cohort_comparison:
+    db.query.return_value.filter.return_value.all.return_value = [mock_student]
     predictor = MagicMock()
     predictor.predict.return_value = {
         "kans": 0.42,
@@ -71,3 +76,15 @@ def test_tool_handlers_volledig(registry):
     for naam in ["get_student_data", "predict_dropout_risk",
                  "get_cohort_comparison", "get_mentor_info", "search_students"]:
         assert naam in handlers
+
+def test_get_cohort_comparison(registry):
+    result = registry.get_cohort_comparison("20240001")
+    assert "cohortgemiddelde" in result
+    assert "student" in result
+    assert "aantal_cohortgenoten" in result
+
+def test_search_students_geeft_resultaten(registry):
+    result = registry.search_students("Test")
+    assert isinstance(result, list)
+    assert len(result) >= 1
+    assert result[0]["studentnummer"] == "20240001"

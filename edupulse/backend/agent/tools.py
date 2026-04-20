@@ -1,11 +1,12 @@
 # backend/agent/tools.py
+from sqlalchemy import and_
 from backend.models import StudentDB, StudentSchema
 from backend.ml.predict import RisicoPredictor, DREMPEL
 
 TOOL_DEFINITIONS = [
     {
         "name": "get_student_data",
-        "description": "Haal het volledige profiel op van een student op basis van studentnummer of naam.",
+        "description": "Haal het volledige profiel op van een student op basis van studentnummer.",
         "input_schema": {
             "type": "object",
             "properties": {
@@ -98,7 +99,11 @@ class ToolRegistry:
             return err
         cohortgenoten = (
             self.db.query(StudentDB)
-            .filter_by(opleiding=student.opleiding, cohort=student.cohort)
+            .filter(
+                StudentDB.opleiding == student.opleiding,
+                StudentDB.cohort == student.cohort,
+                StudentDB.studentnummer != student.studentnummer,
+            )
             .all()
         )
         if not cohortgenoten:
@@ -134,12 +139,16 @@ class ToolRegistry:
         }
 
     def search_students(self, query: str) -> list[dict]:
-        alle = self.db.query(StudentDB).all()
-        q = query.lower()
-        treffer = [
-            s for s in alle
-            if q in s.naam.lower() or q in s.studentnummer.lower()
-        ][:10]
+        from sqlalchemy import or_
+        treffer = (
+            self.db.query(StudentDB)
+            .filter(or_(
+                StudentDB.naam.ilike(f"%{query}%"),
+                StudentDB.studentnummer.ilike(f"%{query}%"),
+            ))
+            .limit(10)
+            .all()
+        )
         return [
             {"studentnummer": s.studentnummer, "naam": s.naam,
              "opleiding": s.opleiding, "cohort": s.cohort}
