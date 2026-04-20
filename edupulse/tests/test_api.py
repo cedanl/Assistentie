@@ -5,7 +5,8 @@ from unittest.mock import patch, MagicMock
 
 @pytest.fixture(scope="module")
 def client():
-    with patch("backend.agent.kernel.AgentKernel.run", return_value="Test antwoord van agent."):
+    with patch("backend.agent.kernel.AgentKernel.run", return_value="Test antwoord van agent."), \
+         patch("backend.agent.llm.anthropic.Anthropic", return_value=MagicMock()):
         from backend.main import app
         with TestClient(app) as c:
             yield c
@@ -47,3 +48,16 @@ def test_agent_chat(client):
     assert r.status_code == 200
     assert "response" in r.json()
     assert "session_id" in r.json()
+
+def test_risk_503_als_model_niet_geladen(client):
+    import backend.main as main_module
+    original = main_module.predictor
+    main_module.predictor = None
+    try:
+        studenten = client.get("/students?limit=1").json()
+        if studenten:
+            nr = studenten[0]["studentnummer"]
+            r = client.get(f"/risk/{nr}")
+            assert r.status_code == 503
+    finally:
+        main_module.predictor = original

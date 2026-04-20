@@ -2,7 +2,7 @@
 import os
 import uuid
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -26,6 +26,7 @@ async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
     if os.path.exists(MODEL_PATH):
         predictor = RisicoPredictor(model_path=MODEL_PATH, feature_path=FEATURE_PATH)
+    app.state.llm = ClaudeLLMProvider()
     yield
 
 app = FastAPI(title="EduPulse API", version="0.1.0", lifespan=lifespan)
@@ -37,13 +38,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def _get_kernel(db: Session = Depends(get_db)) -> AgentKernel:
+def _get_kernel(request: Request, db: Session = Depends(get_db)) -> AgentKernel:
     if predictor is None:
         raise HTTPException(503, "Model nog niet geladen — run train.py eerst.")
     registry = ToolRegistry(db=db, predictor=predictor)
     harness = Harness(handlers=registry.get_handlers(), db=db)
-    llm = ClaudeLLMProvider()
-    return AgentKernel(llm=llm, harness=harness)
+    return AgentKernel(llm=request.app.state.llm, harness=harness)
 
 @app.get("/health")
 def health():
@@ -63,7 +63,7 @@ def get_student(studentnummer: str, db: Session = Depends(get_db)):
 @app.get("/risk/{studentnummer}", response_model=RisicoPredictie)
 def get_risk(studentnummer: str, db: Session = Depends(get_db)):
     if predictor is None:
-        raise HTTPException(503, "Model niet geladen.")
+        raise HTTPException(503, "Model nog niet geladen — run train.py eerst.")
     student = db.query(StudentDB).filter_by(studentnummer=studentnummer).first()
     if not student:
         raise HTTPException(404, f"Student {studentnummer!r} niet gevonden.")
@@ -78,7 +78,12 @@ def get_risk(studentnummer: str, db: Session = Depends(get_db)):
     )
 
 @app.post("/agent/chat", response_model=ChatResponse)
-def agent_chat(request: ChatRequest, kernel: AgentKernel = Depends(_get_kernel)):
-    sessie_id = request.session_id or str(uuid.uuid4())
-    antwoord = kernel.run(request.message, sessie_id=sessie_id)
+def agent_chat(chat_request: ChatRequest, kernel: AgentKernel = Depends(_get_kernel)):
+    sessie_id = chat_request.session_id or str(uuid.uuid4())
+    try:
+        antwoord = kernel.run(chat_request.message, sessie_id=sessie_id)
+    except Exception:
+        import logging
+        logging.exception("Agent fout voor sessie %s", sessie_id)
+        raise HTTPException(503, "Agent tijdelijk niet beschikbaar.")
     return ChatResponse(session_id=sessie_id, response=antwoord)
