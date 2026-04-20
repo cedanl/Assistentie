@@ -1,3 +1,4 @@
+import json
 import uuid
 from backend.agent.llm import LLMProvider
 from backend.agent.harness import Harness
@@ -37,10 +38,7 @@ class AgentKernel:
             )
 
             if response.stop_reason == "end_turn":
-                tekst = next(
-                    (b.text for b in response.content if hasattr(b, "text")),
-                    "Geen antwoord ontvangen."
-                )
+                tekst = " ".join(b.text for b in response.content if hasattr(b, "text")) or "Geen antwoord ontvangen."
                 return tekst
 
             if response.stop_reason == "tool_use":
@@ -53,10 +51,11 @@ class AgentKernel:
                         tool_results.append({
                             "type": "tool_result",
                             "tool_use_id": block.id,
-                            "content": str(result),
+                            "content": json.dumps(result, ensure_ascii=False, default=str),
                         })
-
                 messages.append({"role": "assistant", "content": response.content})
                 messages.append({"role": "user", "content": tool_results})
+            else:
+                return f"Onverwachte stop_reason: {response.stop_reason!r}."
 
         return "Maximale stappen bereikt. Probeer een specifiekere vraag."

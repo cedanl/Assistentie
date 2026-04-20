@@ -21,31 +21,39 @@ class Harness:
 
     def execute(self, tool_naam: str, inputs: dict, sessie_id: str) -> dict:
         if tool_naam not in self.handlers:
-            return {"error": f"Tool '{tool_naam}' staat niet op de whitelist."}
+            result = {"error": f"Tool '{tool_naam}' staat niet op de whitelist."}
+            self._log(tool_naam, inputs, result, sessie_id, 0, status="geblokkeerd")
+            return result
 
         if self._teller[sessie_id] >= MAX_CALLS_PER_SESSIE:
-            return {"error": "Rate limit bereikt voor deze sessie."}
+            result = {"error": "Rate limit bereikt voor deze sessie."}
+            self._log(tool_naam, inputs, result, sessie_id, 0, status="rate_limit")
+            return result
 
         start = time.monotonic()
         self._teller[sessie_id] += 1
 
         try:
             result = self.handlers[tool_naam](**inputs)
+            status = "ok"
         except Exception as e:
             result = {"error": str(e)}
+            status = "error"
 
         duur_ms = int((time.monotonic() - start) * 1000)
-        self._log(tool_naam, inputs, result, sessie_id, duur_ms)
+        self._log(tool_naam, inputs, result, sessie_id, duur_ms, status=status)
         return result
 
     def _hash_pii(self, tekst: str) -> str:
         return hashlib.sha256(tekst.encode()).hexdigest()[:12]
 
     def _log(self, tool_naam: str, inputs: dict, result: dict,
-             sessie_id: str, duur_ms: int):
+             sessie_id: str, duur_ms: int, status: str = "ok"):
+        import json
+        import logging
         input_str = str(inputs)
         input_hash = self._hash_pii(input_str)
-        output_summary = str(result)[:200]
+        output_summary = json.dumps(result, ensure_ascii=False, default=str)[:200]
         try:
             log = AgentLogDB(
                 timestamp=datetime.now(timezone.utc),
@@ -59,4 +67,4 @@ class Harness:
             self.db.add(log)
             self.db.commit()
         except Exception:
-            pass
+            logging.exception("AgentLogDB write mislukt voor sessie %s", sessie_id)
