@@ -13,6 +13,8 @@ model:
   custom_path: backend/model_custom.joblib
   default_features_path: backend/model_features.json
   custom_features_path: backend/model_custom_features.json
+  custom_imputer_path: backend/model_custom_imputer.joblib
+  custom_scaler_path: backend/model_custom_scaler.joblib
   min_training_rows: 30
 
 training:

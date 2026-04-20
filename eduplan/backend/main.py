@@ -86,6 +86,8 @@ MODEL_DEFAULT_PATH = _cfg["model"]["default_path"]
 MODEL_CUSTOM_PATH = _cfg["model"]["custom_path"]
 MODEL_DEFAULT_FEATURES_PATH = _cfg["model"]["default_features_path"]
 MODEL_CUSTOM_FEATURES_PATH = _cfg["model"]["custom_features_path"]
+MODEL_CUSTOM_IMPUTER_PATH = _cfg["model"]["custom_imputer_path"]
+MODEL_CUSTOM_SCALER_PATH = _cfg["model"]["custom_scaler_path"]
 
 # Voorspellingsdrempels
 _THRESHOLD_HIGH = _cfg["prediction"]["risk_threshold_high"]
@@ -123,13 +125,16 @@ explainer_default = shap.TreeExplainer(clf_default)
 if Path(MODEL_CUSTOM_PATH).exists():
     clf_custom = joblib.load(MODEL_CUSTOM_PATH)
     explainer_custom = shap.TreeExplainer(clf_custom)
+    imputer_custom = joblib.load(MODEL_CUSTOM_IMPUTER_PATH) if Path(MODEL_CUSTOM_IMPUTER_PATH).exists() else None
 else:
     clf_custom = clf_default
     explainer_custom = explainer_default
+    imputer_custom = None
 
 # Actief model
 clf = clf_custom
 explainer = explainer_custom
+imputer = imputer_custom
 
 
 def _get_model(use_default: bool) -> tuple[RandomForestRegressor, shap.TreeExplainer]:
@@ -158,14 +163,16 @@ _training = _TrainingState()
 
 
 def _reload_model(path: str | Path) -> None:
-    """Laad model, explainer en features opnieuw en vervang de globale referenties atomisch."""
-    global clf, explainer, features, features_custom
+    """Laad model, explainer, imputer en features opnieuw en vervang de globale referenties atomisch."""
+    global clf, explainer, imputer, features, features_custom
     new_clf = joblib.load(path)
     new_explainer = shap.TreeExplainer(new_clf)
     new_features = _load_features(_FEATURES_PATH[str(path)])
+    new_imputer = joblib.load(MODEL_CUSTOM_IMPUTER_PATH) if Path(MODEL_CUSTOM_IMPUTER_PATH).exists() else None
     # Python-naam-toewijzing is atomisch onder de GIL
     clf = new_clf
     explainer = new_explainer
+    imputer = new_imputer
     features = new_features
     features_custom = new_features
 
@@ -358,6 +365,16 @@ def _factor_label(key: str, value: float) -> str:
     return f"{FEATURE_LABELS.get(key, key)}: {value}"
 
 
+def _apply_imputer(df: pd.DataFrame) -> pd.DataFrame:
+    """Pas de custom imputer toe op numerieke kolommen, indien beschikbaar."""
+    if imputer is None:
+        return df
+    numerical_cols = [c for c in df.select_dtypes(include=["number"]).columns if c in df.columns]
+    result = df.copy()
+    result[numerical_cols] = imputer.transform(result[numerical_cols])
+    return result
+
+
 def _student_to_df(student: dict, feat: list[str] | None = None) -> pd.DataFrame:
     """Zet een student-dict om naar een DataFrame met de verwachte featurekolommen."""
     f = feat if feat is not None else features
@@ -490,6 +507,7 @@ def rank_students(request: RankRequest):
     active_features = _get_features(request.use_default_model)
 
     pred_df = pd.DataFrame(request.students).reindex(columns=active_features, fill_value=0)
+    pred_df = _apply_imputer(pred_df)
     scores = model.predict(pred_df.values).tolist()
 
     result = [
@@ -645,6 +663,8 @@ def train_model_endpoint(request: TrainRequest):
                 dropout_col=request.dropout_column,
                 model_path=MODEL_CUSTOM_PATH,
                 features_path=MODEL_CUSTOM_FEATURES_PATH,
+                imputer_path=MODEL_CUSTOM_IMPUTER_PATH,
+                scaler_path=MODEL_CUSTOM_SCALER_PATH,
                 param_grid=request.rf_parameters,
             )
             _reload_model(MODEL_CUSTOM_PATH)

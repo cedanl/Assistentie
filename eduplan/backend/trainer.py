@@ -23,6 +23,8 @@ def train_model(
     dropout_col: str,
     model_path: str | Path,
     features_path: str,
+    imputer_path: str | None = None,
+    scaler_path: str | None = None,
     param_grid: dict | None = None,
     random_seed: int = 42,
 ) -> tuple[RandomForestRegressor, list[str]]:
@@ -37,6 +39,8 @@ def train_model(
         dropout_col:   Naam van de uitval-doelkolom (bijv. "Dropout").
         model_path:    Pad voor het getrainde model (.joblib).
         features_path: Pad voor de bijbehorende feature-lijst (.json).
+        imputer_path:  Pad voor de fitted KNNImputer (.joblib). Indien None: niet opgeslagen.
+        scaler_path:   Pad voor de fitted MinMaxScaler (.joblib). Indien None: niet opgeslagen.
         param_grid:    GridSearchCV-raster; gebruikt student-signal standaard indien None.
         random_seed:   Random state voor reproduceerbaarheid.
 
@@ -72,5 +76,9 @@ def train_model(
     joblib.dump(model, model_path)
     with open(features_path, "w") as f:
         json.dump(feature_cols, f)
+    if imputer_path:
+        joblib.dump(prepared.imputer, imputer_path)
+    if scaler_path:
+        joblib.dump(prepared.scaler, scaler_path)
 
     return model, feature_cols
