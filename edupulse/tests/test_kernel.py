@@ -1,7 +1,6 @@
 # tests/test_kernel.py
-import json
-from unittest.mock import MagicMock, patch
-from backend.agent.kernel import AgentKernel, MAX_STAPPEN
+from unittest.mock import MagicMock
+from backend.agent.kernel import AgentKernel
 
 def maak_kernel(stop_reason="end_turn", tool_calls=None):
     llm = MagicMock()

@@ -1,6 +1,4 @@
 import pytest
-import os
-import pandas as pd
 from backend.ml.train import train_model
 from backend.ml.predict import RisicoPredictor
 

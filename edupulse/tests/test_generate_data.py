@@ -1,4 +1,3 @@
-import pandas as pd
 from backend.ml.generate_data import genereer_actieve_studenten, genereer_historische_studenten
 
 

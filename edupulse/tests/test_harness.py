@@ -1,5 +1,5 @@
 # tests/test_harness.py
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 from backend.agent.harness import Harness, MAX_CALLS_PER_SESSIE
 
 def maak_harness(handlers=None):

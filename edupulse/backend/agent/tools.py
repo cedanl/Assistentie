@@ -1,5 +1,4 @@
 # backend/agent/tools.py
-from sqlalchemy import and_
 from backend.models import StudentDB, StudentSchema
 from backend.ml.predict import RisicoPredictor, DREMPEL
 

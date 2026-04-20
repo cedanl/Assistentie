@@ -1,6 +1,4 @@
-import pytest
 from sqlalchemy import inspect
-from backend.database import Base
 from backend.models import StudentDB, HistorischStudentDB, AgentLogDB  # noqa: F401 — required for metadata registration
 
 
