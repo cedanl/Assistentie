@@ -20,7 +20,9 @@ with st.sidebar:
     zoek = st.text_input("Naam of studentnummer", placeholder="Bijv. Youssef of 20240001")
     if zoek:
         try:
-            studenten = requests.get(f"{API}/students?limit=100").json()
+            resp = requests.get(f"{API}/students?limit=100", timeout=10)
+            resp.raise_for_status()
+            studenten = resp.json()
             q = zoek.lower()
             treffer = [
                 s for s in studenten
@@ -36,8 +38,12 @@ with st.sidebar:
 if st.session_state.geselecteerde_student:
     nr = st.session_state.geselecteerde_student
     try:
-        student = requests.get(f"{API}/students/{nr}").json()
-        risico = requests.get(f"{API}/risk/{nr}").json()
+        resp_s = requests.get(f"{API}/students/{nr}", timeout=10)
+        resp_s.raise_for_status()
+        student = resp_s.json()
+        resp_r = requests.get(f"{API}/risk/{nr}", timeout=10)
+        resp_r.raise_for_status()
+        risico = resp_r.json()
 
         col1, col2, col3 = st.columns([2, 1, 1])
         with col1:

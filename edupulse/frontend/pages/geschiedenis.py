@@ -8,7 +8,9 @@ st.title("Eerdere berekeningen")
 st.caption("Overzicht van alle studenten en hun uitvalrisico.")
 
 try:
-    studenten = requests.get(f"{API}/students?limit=1000").json()
+    resp = requests.get(f"{API}/students?limit=1000", timeout=10)
+    resp.raise_for_status()
+    studenten = resp.json()
 except Exception:
     st.error("API niet bereikbaar. Start de backend eerst.")
     st.stop()
@@ -29,12 +31,17 @@ if filter_opleiding != "Alle":
     weergave = [s for s in weergave if s["opleiding"] == filter_opleiding]
 
 risicos = []
+mislukt = 0
 for s in weergave:
     try:
-        r = requests.get(f"{API}/risk/{s['studentnummer']}").json()
-        risicos.append({**s, **r})
+        resp_r = requests.get(f"{API}/risk/{s['studentnummer']}", timeout=10)
+        resp_r.raise_for_status()
+        risicos.append({**s, **resp_r.json()})
     except Exception:
-        pass
+        mislukt += 1
+
+if mislukt:
+    st.warning(f"{mislukt} student(en) konden niet worden geladen.")
 
 if filter_status == "Dreiging":
     risicos = [r for r in risicos if r.get("status") == "dreiging"]
