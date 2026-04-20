@@ -1,7 +1,6 @@
 # backend/ml/train.py
 import json
 import joblib
-import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import GridSearchCV, train_test_split
@@ -32,6 +31,7 @@ def train_model(
 ) -> dict:
     df_enc, encoders = _encode(df)
     X = df_enc[ALLE_FEATURES].fillna(df_enc[ALLE_FEATURES].median(numeric_only=True))
+    feature_medians = df_enc[ALLE_FEATURES].median(numeric_only=True).to_dict()
     y = df_enc["uitgevallen"].astype(int)
 
     X_train, X_test, y_train, y_test = train_test_split(
@@ -59,7 +59,7 @@ def train_model(
     best_acc = max(xgb_acc, rf_acc)
     model_naam = "XGBoost" if xgb_acc >= rf_acc else "RandomForest"
 
-    joblib.dump({"model": best_model, "encoders": encoders}, model_path)
+    joblib.dump({"model": best_model, "encoders": encoders, "feature_medians": feature_medians}, model_path)
     with open(feature_path, "w") as f:
         json.dump({"features": ALLE_FEATURES, "categorisch": CATEGORISCHE_FEATURES}, f)
 

@@ -4,6 +4,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import shap
+import warnings
 
 DREMPEL = 0.35  # >= 35% kans = dreiging
 
@@ -16,6 +17,7 @@ class RisicoPredictor:
         artefact = joblib.load(model_path)
         self.model = artefact["model"]
         self.encoders = artefact["encoders"]
+        self.feature_medians = artefact.get("feature_medians", {})
         with open(feature_path) as f:
             meta = json.load(f)
         self.features = meta["features"]
@@ -31,8 +33,17 @@ class RisicoPredictor:
             if val in le.classes_:
                 df[col] = le.transform([val])
             else:
+                warnings.warn(
+                    f"Onbekende waarde '{val}' voor feature '{col}', gebruik 0 als fallback.",
+                    UserWarning,
+                    stacklevel=2,
+                )
                 df[col] = 0
-        return df.fillna(0)
+        for col in df.columns:
+            if col in self.feature_medians:
+                df[col] = df[col].fillna(self.feature_medians[col])
+        df = df.fillna(0)
+        return df
 
     def predict(self, student: dict) -> dict:
         df = self._prep(student)
