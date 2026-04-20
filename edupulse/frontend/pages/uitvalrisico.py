@@ -69,7 +69,7 @@ if st.session_state.geselecteerde_student:
         # SHAP top-3
         st.markdown("**Top-3 beïnvloedende factoren:**")
         for item in risico["shap_top3"]:
-            richting = "🔴" if item["bijdrage"] < 0 else "🟢"
+            richting = "🔴" if item["bijdrage"] > 0 else "🟢"
             st.markdown(f"{richting} **{item['feature']}** — bijdrage: `{item['bijdrage']:.3f}`")
 
     except Exception as e:

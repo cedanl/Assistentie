@@ -6,18 +6,21 @@ from backend.models import AgentLogDB
 
 MAX_CALLS_PER_SESSIE = 60
 
+# Module-level counter zodat rate limiting werkt over meerdere HTTP-requests heen.
+_sessie_teller: dict[str, int] = defaultdict(int)
+
+
 class Harness:
     """
     Governance wrapper om agent tool-calls:
     - Whitelist: alleen geregistreerde tools
-    - Rate limiting per sessie
-    - Logging naar agent_log tabel (PII gehashed)
+    - Rate limiting per sessie (persistent over requests)
+    - Logging naar agent_log tabel (PII gehashed, output geanonimiseerd)
     """
 
     def __init__(self, handlers: dict, db):
         self.handlers = handlers
         self.db = db
-        self._teller: dict[str, int] = defaultdict(int)
 
     def execute(self, tool_naam: str, inputs: dict, sessie_id: str) -> dict:
         if tool_naam not in self.handlers:
@@ -25,13 +28,13 @@ class Harness:
             self._log(tool_naam, inputs, result, sessie_id, 0, status="geblokkeerd")
             return result
 
-        if self._teller[sessie_id] >= MAX_CALLS_PER_SESSIE:
+        if _sessie_teller[sessie_id] >= MAX_CALLS_PER_SESSIE:
             result = {"error": "Rate limit bereikt voor deze sessie."}
             self._log(tool_naam, inputs, result, sessie_id, 0, status="rate_limit")
             return result
 
         start = time.monotonic()
-        self._teller[sessie_id] += 1
+        _sessie_teller[sessie_id] += 1
 
         try:
             result = self.handlers[tool_naam](**inputs)
@@ -53,7 +56,11 @@ class Harness:
         import logging
         input_str = str(inputs)
         input_hash = self._hash_pii(input_str)
-        output_summary = json.dumps(result, ensure_ascii=False, default=str)[:200]
+        # Sla geen PII op in output_summary — alleen type en omvang van het resultaat.
+        output_summary = json.dumps({
+            "status": status,
+            "items": len(result) if isinstance(result, list) else (0 if "error" in result else 1),
+        })
         try:
             log = AgentLogDB(
                 timestamp=datetime.now(timezone.utc),

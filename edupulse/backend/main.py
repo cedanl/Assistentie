@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from backend.database import get_db, engine, Base
-from backend.models import StudentDB, StudentSchema, ChatRequest, ChatResponse, RisicoPredictie
+from backend.models import StudentDB, AgentLogDB, StudentSchema, ChatRequest, ChatResponse, RisicoPredictie
 from backend.agent.llm import ClaudeLLMProvider
 from backend.agent.tools import ToolRegistry
 from backend.agent.harness import Harness
@@ -33,7 +33,7 @@ app = FastAPI(title="EduPulse API", version="0.1.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8503", "http://localhost:8501"],
+    allow_origins=["http://localhost:8503"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -76,6 +76,26 @@ def get_risk(studentnummer: str, db: Session = Depends(get_db)):
         status="dreiging" if result["kans"] >= DREMPEL else "op_koers",
         shap_top3=result["shap_top3"],
     )
+
+@app.get("/agent/sessions/{sessie_id}")
+def get_session(sessie_id: str, db: Session = Depends(get_db)):
+    logs = (
+        db.query(AgentLogDB)
+        .filter(AgentLogDB.sessie_id == sessie_id)
+        .order_by(AgentLogDB.timestamp)
+        .all()
+    )
+    return [
+        {
+            "id": log.id,
+            "timestamp": log.timestamp.isoformat(),
+            "tool_naam": log.tool_naam,
+            "input_hash": log.input_hash,
+            "output_summary": log.output_summary,
+            "duur_ms": log.duur_ms,
+        }
+        for log in logs
+    ]
 
 @app.post("/agent/chat", response_model=ChatResponse)
 def agent_chat(chat_request: ChatRequest, kernel: AgentKernel = Depends(_get_kernel)):
