@@ -8,21 +8,25 @@ Uitvoeren vanuit de projectroot:
 """
 
 import urllib.request
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import yaml
+
+_cfg = yaml.safe_load((Path(__file__).parent.parent / "config.yaml").read_text())
 
 rng = np.random.default_rng(42)
 
-PRED_URL = "https://raw.githubusercontent.com/cedanl/Uitnodigingsregel/main/data/raw/synth_data_pred.csv"
-MODEL_URL = "https://raw.githubusercontent.com/MondriaanBI/Uitnodigingsregel/main/models/random_forest_regressor.joblib"
+PRED_URL = _cfg["downloads"]["data_url"]
+MODEL_URL = _cfg["downloads"]["model_url"]
 
 print("Bezig met downloaden van data en model...")
-urllib.request.urlretrieve(PRED_URL, "shared/synth_data_pred.csv")
-urllib.request.urlretrieve(MODEL_URL, "backend/model.joblib")
+urllib.request.urlretrieve(PRED_URL, _cfg["downloads"]["raw_data_path"])
+urllib.request.urlretrieve(MODEL_URL, _cfg["model"]["default_path"])
 print("Download klaar.")
 
-df = pd.read_csv("shared/synth_data_pred.csv", sep="\t")
+df = pd.read_csv(_cfg["downloads"]["raw_data_path"], sep="\t")
 print(f"Kolommen ({len(df.columns)}): {list(df.columns)}")
 print(f"Rijen: {len(df)}")
 
@@ -112,7 +116,7 @@ df["Naam"] = [f"{v} {a}" for v, a in zip(rng.choice(voornamen, size=n), rng.choi
 df["Klas"] = rng.choice(klassen, size=n)
 df["Mentor"] = rng.choice(mentoren, size=n)
 
-df.to_csv("shared/data.csv", index=False)
+df.to_csv(_cfg["data"]["path"], index=False)
 print(f"\nshared/data.csv opgeslagen ({n} studenten).")
 print("backend/model.joblib gedownload.")
 print(f"\nKolommen in data.csv: {list(df.columns)}")

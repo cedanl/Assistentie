@@ -1,0 +1,40 @@
+# EduPlan deployment configuratie
+# Model hyperparameters voor onderzoek leven in student-signal's config.yaml.
+# Dit bestand bevat alle EduPlan-specifieke instellingen: paden, kolomnamen en drempelwaarden.
+
+data:
+  path: shared/data.csv
+  target_column: Dropout
+  exclude_columns: [Naam, Opleiding, Klas, Mentor]
+  id_column: Studentnummer
+
+model:
+  default_path: backend/model.joblib
+  custom_path: backend/model_custom.joblib
+  default_features_path: backend/model_features.json
+  custom_features_path: backend/model_custom_features.json
+  min_training_rows: 30
+
+training:
+  rf_parameters:
+    n_estimators: [100, 200]
+    max_depth: [5, 10, null]
+    min_samples_split: [2, 5]
+    max_features: ["sqrt", "log2"]
+
+prediction:
+  risk_threshold_high: 0.65
+  risk_threshold_moderate: 0.35
+  shap_quality_threshold: 0.01
+  shap_top_factors: 5
+
+shap:
+  exclude_columns: [Studentnummer]
+
+llm:
+  model: gpt-4.1
+
+downloads:
+  data_url: "https://raw.githubusercontent.com/cedanl/Uitnodigingsregel/main/data/raw/synth_data_pred.csv"
+  model_url: "https://raw.githubusercontent.com/MondriaanBI/Uitnodigingsregel/main/models/random_forest_regressor.joblib"
+  raw_data_path: shared/synth_data_pred.csv

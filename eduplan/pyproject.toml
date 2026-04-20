@@ -24,6 +24,7 @@ dependencies = [
     "streamlit>=1.46.0",
     "streamlit-extras>=1.2.0",
     "student-signal @ git+https://github.com/cedanl/student-signal.git",
+    "pyyaml>=6.0",
     "uvicorn>=0.41.0",
 ]
 

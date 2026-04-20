@@ -10,9 +10,12 @@ from pathlib import Path
 
 import joblib
 import pandas as pd
+import yaml
 from sklearn.ensemble import RandomForestRegressor
 from student_signal import prepare
 from student_signal.modeling.train import train_random_forest
+
+_cfg = yaml.safe_load((Path(__file__).parent.parent / "config.yaml").read_text())
 
 
 def train_model(
@@ -43,14 +46,15 @@ def train_model(
     Raises:
         ValueError: Als er te weinig trainingsrijen zijn.
     """
-    if len(df) < 30:
+    min_rows = _cfg["model"]["min_training_rows"]
+    if len(df) < min_rows:
         raise ValueError(
             f"Te weinig trainingsdata: {len(df)} rijen "
-            f"(minimum: 30). Controleer of de kolom '{dropout_col}' voldoende gevulde waarden heeft."
+            f"(minimum: {min_rows}). Controleer of de kolom '{dropout_col}' voldoende gevulde waarden heeft."
         )
 
     # Zorg voor een id-kolom (vereist door student-signal's prepare)
-    id_col = "Studentnummer" if "Studentnummer" in df.columns else "__id__"
+    id_col = _cfg["data"]["id_column"] if _cfg["data"]["id_column"] in df.columns else "__id__"
     if id_col == "__id__":
         df = df.copy()
         df["__id__"] = range(len(df))
@@ -58,12 +62,7 @@ def train_model(
     # student-signal: KNN-imputation, encoding, scaling — alles gefitst op traindata
     prepared = prepare(df, df, target_col=dropout_col, id_col=id_col)
 
-    rf_params = param_grid or {
-        "n_estimators": [100, 200],
-        "max_depth": [5, 10, None],
-        "min_samples_split": [2, 5],
-        "max_features": ["sqrt", "log2"],
-    }
+    rf_params = param_grid or _cfg["training"]["rf_parameters"]
 
     model = train_random_forest(prepared.train_df, random_seed, dropout_col, rf_params)
 
