@@ -366,12 +366,21 @@ def _factor_label(key: str, value: float) -> str:
 
 
 def _apply_imputer(df: pd.DataFrame) -> pd.DataFrame:
-    """Pas de custom imputer toe op numerieke kolommen, indien beschikbaar."""
+    """Pas de custom imputer toe op kolommen waarop hij gefitst is, indien beschikbaar.
+
+    De inferentie-imputer is gefitst op de post-encoding feature-kolommen (zonder
+    doelkolom). Dit werkt correct na reindex() naar active_features, omdat beide
+    dezelfde kolomnamen delen.
+    """
     if imputer is None:
         return df
-    numerical_cols = [c for c in df.select_dtypes(include=["number"]).columns if c in df.columns]
+    fitted_cols = list(imputer.feature_names_in_)
+    missing = [c for c in fitted_cols if c not in df.columns]
+    if missing:
+        # Niet alle gefitte kolommen aanwezig — imputer kan niet worden toegepast.
+        return df
     result = df.copy()
-    result[numerical_cols] = imputer.transform(result[numerical_cols])
+    result[fitted_cols] = imputer.transform(df[fitted_cols])
     return result
 
 

@@ -12,6 +12,7 @@ import joblib
 import pandas as pd
 import yaml
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.impute import KNNImputer
 from student_signal import prepare
 from student_signal.modeling.train import train_random_forest
 
@@ -57,6 +58,12 @@ def train_model(
             f"(minimum: {min_rows}). Controleer of de kolom '{dropout_col}' voldoende gevulde waarden heeft."
         )
 
+    # Verwijder metadata-kolommen (naam, opleiding, klas, mentor) vóór prepare() zodat
+    # ze niet als modelfeature worden meegenomen (anders encodeert student-signal ze
+    # als per-student dummies die bij inferentie niet terugkomen).
+    exclude_meta = set(_cfg["data"]["exclude_columns"])
+    df = df.drop(columns=[c for c in exclude_meta if c in df.columns], errors="ignore")
+
     # Zorg voor een id-kolom (vereist door student-signal's prepare)
     id_col = _cfg["data"]["id_column"] if _cfg["data"]["id_column"] in df.columns else "__id__"
     if id_col == "__id__":
@@ -76,8 +83,17 @@ def train_model(
     joblib.dump(model, model_path)
     with open(features_path, "w") as f:
         json.dump(feature_cols, f)
+
+    # Sla een inferentie-imputer op gefitst op de post-encoding feature-matrix (zonder
+    # doelkolom). prepared.imputer bevat ook de doelkolom en is daardoor niet bruikbaar
+    # bij inferentie waarbij Dropout ontbreekt.
     if imputer_path:
-        joblib.dump(prepared.imputer, imputer_path)
+        numeric_feat_cols = prepared.X_train.select_dtypes(include=["number"]).columns.tolist()
+        if numeric_feat_cols:
+            inference_imputer = KNNImputer(n_neighbors=5)
+            inference_imputer.fit(prepared.X_train[numeric_feat_cols])
+            joblib.dump(inference_imputer, imputer_path)
+
     if scaler_path:
         joblib.dump(prepared.scaler, scaler_path)
 
