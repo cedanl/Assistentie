@@ -86,9 +86,11 @@ _defaults = {
     "laatste_analyse": None,
     "eduplan_genereren": False,
     "geselecteerde_student": 0,
-    "uploaded_df": None,
+    "trainings_df": None,        # historische data met Dropout-kolom (voor training)
+    "trainings_filename": "",
+    "predictie_df": None,        # huidig cohort zonder Dropout (voor ranking)
+    "predictie_filename": "",
     "gebruik_demo_data": True,
-    "upload_filename": "",
     "toon_alle_opleidingen": False,
     "heeft_dropout_kolom": False,
     "training_status": "idle",  # idle | training | done | failed
@@ -100,9 +102,9 @@ for k, v in _defaults.items():
     if k not in st.session_state:
         st.session_state[k] = v
 
-# Gebruik geüpload bestand indien aanwezig, anders standaard data
-if st.session_state.uploaded_df is not None:
-    df = st.session_state.uploaded_df
+# Gebruik huidig cohort indien aanwezig, anders standaard demo-data
+if st.session_state.predictie_df is not None:
+    df = st.session_state.predictie_df
 else:
     df = _load_data()
 
@@ -132,156 +134,165 @@ def _pill_klik(opl: str) -> None:
     st.session_state.filter_key = None
 
 
-def _verwerk_upload(uploaded_file) -> None:
-    """Laad het geüploade bestand, koppel kolommen via fuzzy-matching + LLM en vul ontbrekende aan."""
-    try:
-        with st.spinner("Bestand laden en kolommen koppelen…"):
-            # 1. Lees bestand
-            if uploaded_file.name.endswith(".xlsx"):
-                new_df = pd.read_excel(uploaded_file)
+def _lees_bestand(uploaded_file) -> pd.DataFrame:
+    """Lees CSV of Excel naar DataFrame."""
+    if uploaded_file.name.endswith(".xlsx"):
+        return pd.read_excel(uploaded_file)
+    return pd.read_csv(uploaded_file, sep=None, engine="python")
+
+
+def _match_kolommen(
+    new_df: pd.DataFrame,
+) -> tuple[pd.DataFrame, dict[str, str], list[str]]:
+    """Match kolommen van geüpload bestand naar model-features via fuzzy-match + LLM.
+
+    Retourneert (aangepaste df, hernoem_log, vul_log).
+    """
+    demo_df = _load_data()
+    vereist = [c for c in demo_df.columns if c not in NON_FEATURES]
+    hernoem_log: dict[str, str] = {}
+    vul_log: list[str] = []
+
+    ontbrekend = [c for c in vereist if c not in new_df.columns]
+    if ontbrekend:
+        # Lokale fuzzy-match
+        norm_upload = {_norm_col(c): c for c in new_df.columns}
+        nog_ontbrekend = []
+        rename_now: dict[str, str] = {}
+
+        for req in ontbrekend:
+            kandidaat = norm_upload.get(_norm_col(req))
+            if kandidaat and kandidaat not in rename_now:
+                rename_now[kandidaat] = req
+                hernoem_log[kandidaat] = req
             else:
-                # sep=None + engine='python' detecteert automatisch komma, tab, puntkomma, etc.
-                new_df = pd.read_csv(uploaded_file, sep=None, engine="python")
+                nog_ontbrekend.append(req)
 
-            # 2. Vereiste modelkolommen bepalen
-            demo_df = _load_data()
-            vereist = [c for c in demo_df.columns if c not in NON_FEATURES]
+        # LLM-koppeling voor resterende kolommen
+        if nog_ontbrekend:
+            try:
+                vrije_kolommen = [c for c in new_df.columns if c not in rename_now]
+                resp = requests.post(
+                    "http://localhost:8000/map_columns",
+                    json={"uploaded_columns": vrije_kolommen, "required_columns": nog_ontbrekend},
+                    timeout=30,
+                )
+                for req, upl in resp.json().get("mapping", {}).items():
+                    if req in nog_ontbrekend and upl in new_df.columns and upl not in rename_now:
+                        rename_now[upl] = req
+                        hernoem_log[upl] = req
+            except Exception:
+                pass
 
-            hernoem_log: dict[str, str] = {}  # geüpload → vereist
-            vul_log: list[str] = []
+        if rename_now:
+            new_df = new_df.rename(columns=rename_now)
 
-            # 2b. Detecteer uitvalkolom onder alternatieve naam (bijv. Uitval, Uitgevallen)
+        # Nog steeds ontbrekend → aanvullen met mediaanwaarden
+        nog_missen = [c for c in vereist if c not in new_df.columns]
+        if nog_missen:
+            medians = demo_df[nog_missen].median()
+            for col in nog_missen:
+                new_df[col] = medians[col]
+                vul_log.append(col)
+
+    # Metadata-kolommen aanvullen indien afwezig
+    if "Opleiding" not in new_df.columns:
+        new_df["Opleiding"] = "Geüploade opleiding"
+    if "Klas" not in new_df.columns:
+        new_df["Klas"] = "Klas A"
+    if "Naam" not in new_df.columns:
+        new_df["Naam"] = (
+            new_df["Studentnummer"].astype(str)
+            if "Studentnummer" in new_df.columns
+            else [f"Lerende {i + 1}" for i in range(len(new_df))]
+        )
+    if "Mentor" not in new_df.columns:
+        new_df["Mentor"] = "Mentor"
+
+    return new_df, hernoem_log, vul_log
+
+
+def _feedback_upload(filename: str, n: int, hernoem_log: dict, vul_log: list) -> None:
+    """Toon feedback na succesvolle upload."""
+    regels = [f"**'{filename}'** geladen — {n} lerenden."]
+    if hernoem_log:
+        koppelingen = ", ".join(f"`{u}` → `{r}`" for u, r in hernoem_log.items())
+        regels.append(f"**Kolommen automatisch gekoppeld:** {koppelingen}")
+    if vul_log:
+        regels.append(
+            "**Kolommen niet gevonden, aangevuld met standaardwaarden:** "
+            + ", ".join(f"`{c}`" for c in vul_log)
+        )
+    if hernoem_log or vul_log:
+        st.info("\n\n".join(regels))
+    else:
+        st.success(regels[0])
+
+
+def _verwerk_trainingsdata(uploaded_file) -> None:
+    """Laad historische data (met Dropout-kolom) voor modeltraining."""
+    try:
+        with st.spinner("Trainingsdata laden en kolommen koppelen…"):
+            new_df = _lees_bestand(uploaded_file)
+
+            # Detecteer uitvalkolom onder alternatieve naam
             if "Dropout" not in new_df.columns:
-                _dropout_synoniemen = {
-                    "dropout",
-                    "uitval",
-                    "uitgevallen",
-                    "uitgevalen",
-                    "isuitgevallen",
-                    "uitvalindicator",
-                    "uitval_indicator",
-                    "gestopt",
-                    "vroegtijdigverlaten",
+                _synoniemen = {
+                    "dropout", "uitval", "uitgevallen", "uitgevalen", "isuitgevallen",
+                    "uitvalindicator", "uitval_indicator", "gestopt", "vroegtijdigverlaten",
                 }
                 _gevonden = next(
-                    (c for c in new_df.columns if _norm_col(c) in _dropout_synoniemen),
-                    None,
+                    (c for c in new_df.columns if _norm_col(c) in _synoniemen), None
                 )
                 if _gevonden is None:
                     try:
                         resp = requests.post(
                             "http://localhost:8000/map_columns",
-                            json={
-                                "uploaded_columns": list(new_df.columns),
-                                "required_columns": ["Dropout"],
-                            },
+                            json={"uploaded_columns": list(new_df.columns), "required_columns": ["Dropout"]},
                             timeout=30,
                         )
-                        _llm = resp.json().get("mapping", {})
-                        _kandidaat = _llm.get("Dropout")
+                        _kandidaat = resp.json().get("mapping", {}).get("Dropout")
                         if _kandidaat and _kandidaat in new_df.columns:
                             _gevonden = _kandidaat
                     except Exception:
                         pass
                 if _gevonden:
                     new_df = new_df.rename(columns={_gevonden: "Dropout"})
-                    hernoem_log[_gevonden] = "Dropout"
 
-            ontbrekend = [c for c in vereist if c not in new_df.columns]
+            new_df, hernoem_log, vul_log = _match_kolommen(new_df)
 
-            if ontbrekend:
-                # 3a. Lokale fuzzy-match (case/underscore/spatie insensitief)
-                norm_upload = {_norm_col(c): c for c in new_df.columns}
-                nog_ontbrekend = []
-                rename_now: dict[str, str] = {}  # uploaded → required
-
-                for req in ontbrekend:
-                    kandidaat = norm_upload.get(_norm_col(req))
-                    if kandidaat and kandidaat not in rename_now:
-                        rename_now[kandidaat] = req
-                        hernoem_log[kandidaat] = req
-                    else:
-                        nog_ontbrekend.append(req)
-
-                # 3b. LLM-koppeling voor resterende ontbrekende kolommen
-                if nog_ontbrekend:
-                    try:
-                        # Stuur alleen kolommen mee die nog niet zijn gekoppeld
-                        vrije_kolommen = [c for c in new_df.columns if c not in rename_now]
-                        resp = requests.post(
-                            "http://localhost:8000/map_columns",
-                            json={
-                                "uploaded_columns": vrije_kolommen,
-                                "required_columns": nog_ontbrekend,
-                            },
-                            timeout=30,
-                        )
-                        llm_mapping = resp.json().get("mapping", {})
-                        for req, upl in llm_mapping.items():
-                            if req in nog_ontbrekend and upl in new_df.columns and upl not in rename_now:
-                                rename_now[upl] = req
-                                hernoem_log[upl] = req
-                    except Exception:
-                        pass
-
-                # 4. Kolommen hernoemen
-                if rename_now:
-                    new_df = new_df.rename(columns=rename_now)
-
-                # 5. Nog steeds ontbrekend → aanvullen met mediaanwaarden uit demo-data
-                nog_missen = [c for c in vereist if c not in new_df.columns]
-                if nog_missen:
-                    medians = demo_df[nog_missen].median()
-                    for col in nog_missen:
-                        new_df[col] = medians[col]
-                        vul_log.append(col)
-
-            # 6. Metadata-kolommen aanvullen indien afwezig
-            if "Opleiding" not in new_df.columns:
-                new_df["Opleiding"] = "Geüploade opleiding"
-            if "Klas" not in new_df.columns:
-                new_df["Klas"] = "Klas A"
-            if "Naam" not in new_df.columns:
-                if "Studentnummer" in new_df.columns:
-                    new_df["Naam"] = new_df["Studentnummer"].astype(str)
-                else:
-                    new_df["Naam"] = [f"Lerende {i + 1}" for i in range(len(new_df))]
-            if "Mentor" not in new_df.columns:
-                new_df["Mentor"] = "Mentor"
-
-            # 7. Opslaan in session state
-            st.session_state.uploaded_df = new_df
-            st.session_state.upload_filename = uploaded_file.name
-            st.session_state.gebruik_demo_data = False
-            st.session_state.filter_key = None
-            st.session_state.risicostudenten = []
-            st.session_state.laatste_analyse = None
-            st.session_state.vul_log = vul_log
-
-            # 8. Detecteer historische data met uitvalresultaten
             heeft_dropout = "Dropout" in new_df.columns and new_df["Dropout"].notna().sum() >= 30
+            st.session_state.trainings_df = new_df
+            st.session_state.trainings_filename = uploaded_file.name
             st.session_state.heeft_dropout_kolom = heeft_dropout
             if heeft_dropout:
                 st.session_state.training_status = "idle"
 
-        # 8. Feedback aan gebruiker
-        regels = [f"**'{uploaded_file.name}'** geladen — {len(new_df)} lerenden."]
-        if hernoem_log:
-            koppelingen = ", ".join(f"`{u}` → `{r}`" for u, r in hernoem_log.items())
-            regels.append(f"**Kolommen automatisch gekoppeld:** {koppelingen}")
-        if vul_log:
-            regels.append(
-                "**Kolommen niet gevonden, aangevuld met standaardwaarden:** " + ", ".join(f"`{c}`" for c in vul_log)
-            )
-        if hernoem_log or vul_log:
-            st.info("\n\n".join(regels))
-        else:
-            st.success(regels[0])
-
+        _feedback_upload(uploaded_file.name, len(new_df), hernoem_log, vul_log)
         st.rerun()
-
     except Exception as e:
-        st.error(f"Fout bij het inladen van het bestand: {e}")
+        st.error(f"Fout bij het inladen van de trainingsdata: {e}")
+
+
+def _verwerk_predictiedata(uploaded_file) -> None:
+    """Laad huidig cohort (zonder Dropout-kolom) voor ranking."""
+    try:
+        with st.spinner("Huidig cohort laden en kolommen koppelen…"):
+            new_df = _lees_bestand(uploaded_file)
+            new_df, hernoem_log, vul_log = _match_kolommen(new_df)
+
+            st.session_state.predictie_df = new_df
+            st.session_state.predictie_filename = uploaded_file.name
+            st.session_state.gebruik_demo_data = False
+            st.session_state.vul_log = vul_log
+            st.session_state.filter_key = None
+            st.session_state.risicostudenten = []
+            st.session_state.laatste_analyse = None
+
+        _feedback_upload(uploaded_file.name, len(new_df), hernoem_log, vul_log)
+        st.rerun()
+    except Exception as e:
+        st.error(f"Fout bij het inladen van het huidig cohort: {e}")
 
 
 def _klassen_voor(opleiding: str) -> list[str]:
@@ -501,7 +512,7 @@ def _genereer_eduplan():
 
 
 def _start_training() -> None:
-    upload_df = st.session_state.uploaded_df
+    upload_df = st.session_state.trainings_df
     payload = {
         "data": upload_df.to_dict(orient="records"),
         "dropout_column": "Dropout",
@@ -644,21 +655,40 @@ def show_start_screen():
             unsafe_allow_html=True,
         )
 
-        # ── Bestand uploaden ──
-        uploaded_file = st.file_uploader(
-            "Voeg je databestand toe",
+        # ── Upload 1: historische trainingsdata ──
+        st.markdown(
+            "<p style='font-size:0.9rem; font-weight:600; color:#555; margin-bottom:4px;"
+            "font-family:\"General Sans\",sans-serif;'>Historische data (voor modeltraining)</p>",
+            unsafe_allow_html=True,
+        )
+        trainings_file = st.file_uploader(
+            "Historische data",
             type=["csv", "xlsx"],
             label_visibility="collapsed",
+            key="upload_trainingsdata",
         )
-
-        # Verwerk alleen nieuw geüpload bestand (voorkomt herhaald verwerken na rerun)
-        if uploaded_file is not None and uploaded_file.name != st.session_state.upload_filename:
-            _verwerk_upload(uploaded_file)
+        if trainings_file is not None and trainings_file.name != st.session_state.trainings_filename:
+            _verwerk_trainingsdata(trainings_file)
 
         # ── Modeltraining (alleen bij geüploade historische data met Dropout-kolom) ──
-        if st.session_state.heeft_dropout_kolom and not st.session_state.gebruik_demo_data:
+        if st.session_state.heeft_dropout_kolom:
             _show_training_panel()
             st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
+        # ── Upload 2: huidig cohort ──
+        st.markdown(
+            "<p style='font-size:0.9rem; font-weight:600; color:#555; margin-bottom:4px;"
+            "font-family:\"General Sans\",sans-serif;'>Huidig cohort (studenten om te ranken)</p>",
+            unsafe_allow_html=True,
+        )
+        predictie_file = st.file_uploader(
+            "Huidig cohort",
+            type=["csv", "xlsx"],
+            label_visibility="collapsed",
+            key="upload_predictiedata",
+        )
+        if predictie_file is not None and predictie_file.name != st.session_state.predictie_filename:
+            _verwerk_predictiedata(predictie_file)
 
         # ── Demo-data checkbox ──
         demo_nieuw = st.checkbox(
@@ -668,8 +698,8 @@ def show_start_screen():
         if demo_nieuw != st.session_state.gebruik_demo_data:
             st.session_state.gebruik_demo_data = demo_nieuw
             if demo_nieuw:
-                st.session_state.uploaded_df = None
-                st.session_state.upload_filename = ""
+                st.session_state.predictie_df = None
+                st.session_state.predictie_filename = ""
                 st.session_state.filter_key = None
                 st.session_state.risicostudenten = []
                 st.session_state.laatste_analyse = None
@@ -677,7 +707,7 @@ def show_start_screen():
         st.markdown("<div style='height:26px'></div>", unsafe_allow_html=True)
 
         # ── START-knop ──
-        data_beschikbaar = st.session_state.gebruik_demo_data or st.session_state.uploaded_df is not None
+        data_beschikbaar = st.session_state.gebruik_demo_data or st.session_state.predictie_df is not None
         if st.button(
             "START DE UITNODIGINGSREGEL",
             type="primary",
