@@ -202,7 +202,7 @@ def _match_kolommen(
         new_df["Klas"] = "Klas A"
     if "Naam" not in new_df.columns:
         new_df["Naam"] = (
-            new_df["Studentnummer"].astype(str)
+            new_df["Studentnummer"].apply(lambda x: f"Student {x}")
             if "Studentnummer" in new_df.columns
             else [f"Lerende {i + 1}" for i in range(len(new_df))]
         )
