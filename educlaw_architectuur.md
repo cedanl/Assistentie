@@ -49,7 +49,7 @@ Wel: “de agent mag alleen doen wat past bij zijn taak, rol en context.”
 
 ### 2. 🛡️ Het framework is de harnaslaag
 
-![educlaw_harnas]src/assets/educlaw_harnas.png)
+![educlaw_harnas](src/assets/educlaw_harnas.png)
 EduClaw is niet alleen een AI-model.  
 Het is vooral een **harnessed framework**:
 
