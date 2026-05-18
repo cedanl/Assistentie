@@ -317,9 +317,10 @@ def _factor_label(key: str, value: float) -> str:
     return f"{FEATURE_LABELS.get(key, key)}: {value}"
 
 
-def _student_to_df(student: dict) -> pd.DataFrame:
+def _student_to_df(student: dict, feat: list[str] | None = None) -> pd.DataFrame:
     """Zet een student-dict om naar een DataFrame met de verwachte featurekolommen."""
-    return pd.DataFrame([student])[features]
+    f = feat if feat is not None else features
+    return pd.DataFrame([student]).reindex(columns=f, fill_value=0)
 
 
 def _build_risicoprofiel_html(
@@ -433,7 +434,7 @@ def summarize(request: SummaryRequest):
 @app.post("/predict_dropout")
 def predict_dropout(request: StudentData):
     model, _ = _get_model(request.use_default_model)
-    X_pred = _student_to_df(request.student)
+    X_pred = _student_to_df(request.student, _get_features(request.use_default_model))
     score = float(model.predict(X_pred.values)[0])
     prediction = 1 if score >= 0.35 else 0
     return {"probability": score, "prediction": prediction}
@@ -476,10 +477,11 @@ def explain_risk(request: ExplainRequest):
 
     # ── SHAP: top factoren op basis van werkelijke data (geïmputeerde features uitgesloten) ──
     _, exp = _get_model(request.use_default_model)
-    X_pred = _student_to_df(student)
+    active_features = _get_features(request.use_default_model)
+    X_pred = _student_to_df(student, active_features)
     shap_vals = exp.shap_values(X_pred.values)
     imputed_set = set(request.imputed_columns)
-    fi = {k: v for k, v in zip(features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set}
+    fi = {k: v for k, v in zip(active_features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set}
     top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
 
     # Detecteer of alle SHAP-waarden nagenoeg nul zijn (geen informatieve factoren)
@@ -581,10 +583,11 @@ Maak expliciet onderscheid: déze week vs déze maand.
 @app.post("/feature_importance")
 def feature_importance(request: StudentData):
     _, exp = _get_model(request.use_default_model)
-    X_pred = _student_to_df(request.student)
+    active_features = _get_features(request.use_default_model)
+    X_pred = _student_to_df(request.student, active_features)
     # RF Regressor: shap_values() geeft shape (n_samples, n_features), geen lijst per klasse
     shap_vals = exp.shap_values(X_pred.values)
-    fi = dict(zip(features, shap_vals[0].tolist()))
+    fi = dict(zip(active_features, shap_vals[0].tolist()))
     return {"feature_importance": fi}
 
 
