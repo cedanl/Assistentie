@@ -39,11 +39,14 @@ import joblib
 import pandas as pd
 import shap
 from anthropic import Anthropic
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestRegressor
 
 import backend.trainer as trainer
+
+load_dotenv()
 
 app = FastAPI()
 
