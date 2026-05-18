@@ -12,18 +12,17 @@ icon = ":material/folder:"
 # PAGE ELEMENTS
 # ---------------------------------------
 st.title("✅ Task Manager")
-st.balloons()
 
 # Add new task
 st.subheader("Add New Task")
 with st.form("add_task"):
-    title = st.text_input("Task Title")
+    task_title = st.text_input("Task Title")
     description = st.text_area("Description")
     priority = st.selectbox("Priority", ["Low", "Medium", "High"])
 
     if st.form_submit_button("Add Task"):
-        if title:
-            add_task(title, description, priority)
+        if task_title:
+            add_task(task_title, description, priority)
             st.success("Task added successfully!")
         else:
             st.error("Please enter a task title")
@@ -34,6 +33,8 @@ tasks = get_tasks()
 
 if not tasks:
     st.info("No tasks yet. Add one above!")
+
+PRIORITY_COLOR = {"High": "🔴", "Medium": "🟡", "Low": "🟢"}
 
 for task in tasks:
     with st.container():
@@ -48,8 +49,7 @@ for task in tasks:
                 st.write(f"*{task['description']}*")
 
         with col2:
-            color = {"High": "🔴", "Medium": "🟡", "Low": "🟢"}
-            st.write(color.get(task["priority"], "") + task["priority"])
+            st.write(PRIORITY_COLOR.get(task["priority"], "") + task["priority"])
 
         with col3:
             if st.button("Toggle", key=f"toggle_{task['id']}"):

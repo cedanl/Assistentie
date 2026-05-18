@@ -39,12 +39,30 @@ class Tool(BaseModel):
     input_schema: dict[str, Any]
 
 
+MODEL = "claude-sonnet-4-5-20250929"
+MAX_AGENT_ITERATIONS = 25
+
+
 class AIAgent:
     def __init__(self, api_key: str):
         self.client = Anthropic(api_key=api_key)
         self.messages: list[dict[str, Any]] = []
         self.tools: list[Tool] = []
+        # Beperk tools tot het huidige werk-directory om path-traversal te voorkomen.
+        # Een door het model voorgesteld pad wordt resolved binnen deze root.
+        self.workspace = Path.cwd().resolve()
         self._setup_tools()
+
+    def _safe_path(self, user_path: str) -> Path:
+        """Resolveer een door het model aangegeven pad binnen self.workspace.
+
+        Voorkomt dat het model bestanden buiten de werkmap leest of schrijft via
+        absolute paden (/etc/passwd) of '..'-traversal.
+        """
+        candidate = (self.workspace / user_path).resolve()
+        if not candidate.is_relative_to(self.workspace):
+            raise PermissionError(f"Pad buiten workspace ({self.workspace}): {user_path}")
+        return candidate
 
     def _setup_tools(self):
         self.tools = [
@@ -121,50 +139,53 @@ class AIAgent:
 
     def _read_file(self, path: str) -> str:
         try:
-            content = Path(path).read_text(encoding="utf-8")
+            p = self._safe_path(path)
+            content = p.read_text(encoding="utf-8")
             return f"File contents of {path}:\n{content}"
+        except PermissionError as e:
+            return f"Access denied: {e}"
         except FileNotFoundError:
             return f"File not found: {path}"
-        except Exception as e:
-            return f"Error reading file: {str(e)}"
+        except OSError as e:
+            return f"Error reading file: {e}"
 
     def _list_files(self, path: str) -> str:
         try:
-            p = Path(path)
+            p = self._safe_path(path)
             if not p.exists():
                 return f"Path not found: {path}"
 
             items = []
             for entry in sorted(p.iterdir(), key=lambda x: x.name):
-                if entry.is_dir():
-                    items.append(f"[DIR]  {entry.name}/")
-                else:
-                    items.append(f"[FILE] {entry.name}")
+                marker = "[DIR] " if entry.is_dir() else "[FILE]"
+                suffix = "/" if entry.is_dir() else ""
+                items.append(f"{marker} {entry.name}{suffix}")
 
             if not items:
                 return f"Empty directory: {path}"
 
             return f"Contents of {path}:\n" + "\n".join(items)
-        except Exception as e:
-            return f"Error listing files: {str(e)}"
+        except PermissionError as e:
+            return f"Access denied: {e}"
+        except OSError as e:
+            return f"Error listing files: {e}"
 
     def _edit_file(self, path: str, old_text: str, new_text: str) -> str:
         try:
-            p = Path(path)
+            p = self._safe_path(path)
             if p.exists() and old_text:
                 content = p.read_text(encoding="utf-8")
-
                 if old_text not in content:
                     return f"Text not found in file: {old_text}"
-
                 p.write_text(content.replace(old_text, new_text), encoding="utf-8")
                 return f"Successfully edited {path}"
-            else:
-                p.parent.mkdir(parents=True, exist_ok=True)
-                p.write_text(new_text, encoding="utf-8")
-                return f"Successfully created {path}"
-        except Exception as e:
-            return f"Error editing file: {str(e)}"
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text(new_text, encoding="utf-8")
+            return f"Successfully created {path}"
+        except PermissionError as e:
+            return f"Access denied: {e}"
+        except OSError as e:
+            return f"Error editing file: {e}"
 
     def chat(self, user_input: str) -> str:
         logging.info(f"User input: {user_input}")
@@ -179,53 +200,52 @@ class AIAgent:
             for tool in self.tools
         ]
 
-        while True:
+        for _ in range(MAX_AGENT_ITERATIONS):
             try:
                 response = self.client.messages.create(
-                    model="claude-sonnet-4-5-20250929",
+                    model=MODEL,
                     max_tokens=4096,
                     system="You are a helpful coding assistant operating in a terminal environment. Output only plain text without markdown formatting, as your responses appear directly in the terminal. Be concise but thorough, providing clear and practical advice with a friendly tone. Don't use any asterisk characters in your responses.",
                     messages=self.messages,
                     tools=tool_schemas,
                 )
-
-                assistant_message = {"role": "assistant", "content": []}
-
-                for content in response.content:
-                    if content.type == "text":
-                        assistant_message["content"].append({"type": "text", "text": content.text})
-                    elif content.type == "tool_use":
-                        assistant_message["content"].append(
-                            {
-                                "type": "tool_use",
-                                "id": content.id,
-                                "name": content.name,
-                                "input": content.input,
-                            }
-                        )
-
-                self.messages.append(assistant_message)
-
-                tool_results = []
-                for content in response.content:
-                    if content.type == "tool_use":
-                        result = self._execute_tool(content.name, content.input)
-                        logging.info(f"Tool result: {result[:500]}...")
-                        tool_results.append(
-                            {
-                                "type": "tool_result",
-                                "tool_use_id": content.id,
-                                "content": result,
-                            }
-                        )
-
-                if tool_results:
-                    self.messages.append({"role": "user", "content": tool_results})
-                else:
-                    return response.content[0].text if response.content else ""
-
             except Exception as e:
                 return f"Error: {str(e)}"
+
+            assistant_message = {"role": "assistant", "content": []}
+            for content in response.content:
+                if content.type == "text":
+                    assistant_message["content"].append({"type": "text", "text": content.text})
+                elif content.type == "tool_use":
+                    assistant_message["content"].append(
+                        {
+                            "type": "tool_use",
+                            "id": content.id,
+                            "name": content.name,
+                            "input": content.input,
+                        }
+                    )
+            self.messages.append(assistant_message)
+
+            tool_results = []
+            for content in response.content:
+                if content.type == "tool_use":
+                    result = self._execute_tool(content.name, content.input)
+                    logging.info(f"Tool result: {result[:500]}...")
+                    tool_results.append(
+                        {
+                            "type": "tool_result",
+                            "tool_use_id": content.id,
+                            "content": result,
+                        }
+                    )
+
+            if not tool_results:
+                # Geen tool-call meer: pak alle text-blocks van het assistant antwoord.
+                return "".join(b.text for b in response.content if b.type == "text")
+            self.messages.append({"role": "user", "content": tool_results})
+
+        return f"[Agent stopte na {MAX_AGENT_ITERATIONS} iteraties zonder eindantwoord.]"
 
 
 def main():
