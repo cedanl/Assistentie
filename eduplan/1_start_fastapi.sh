@@ -65,6 +65,11 @@ echo
 echo "Druk op Ctrl+C om de app te stoppen."
 echo
 
+# Laad .env zodat ANTHROPIC_API_KEY (en andere env vars) beschikbaar zijn voor de backend
+set -a
+[ -f .env ] && source .env
+set +a
+
 uvicorn --host "127.0.0.1" --port 8000 backend.main:app --reload
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
