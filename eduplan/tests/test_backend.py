@@ -240,10 +240,10 @@ def test_summarize_returns_summary(client, mock_anthropic):
     assert resp.json()["summary"] == "Gemockte LLM-uitvoer"
 
 
-def test_map_columns_returns_mapping(client, mock_openai):
-    mock_openai.responses.create.return_value.output_text = (
-        '{"StudentAge": "leeftijd", "absence_unauthorized": "verzuim"}'
-    )
+def test_map_columns_returns_mapping(client, mock_anthropic):
+    mock_anthropic.messages.create.return_value.content = [
+        MagicMock(text='"StudentAge": "leeftijd", "absence_unauthorized": "verzuim"}')
+    ]
     resp = client.post(
         "/map_columns",
         json={
@@ -256,9 +256,9 @@ def test_map_columns_returns_mapping(client, mock_openai):
     assert mapping.get("StudentAge") == "leeftijd"
 
 
-def test_map_columns_invalid_json_returns_empty(client, mock_openai):
+def test_map_columns_invalid_json_returns_empty(client, mock_anthropic):
     """Ongeldige LLM-output levert een leeg mapping-object op (geen crash)."""
-    mock_openai.responses.create.return_value.output_text = "geen json hier"
+    mock_anthropic.messages.create.return_value.content = [MagicMock(text="geen json hier")]
     resp = client.post(
         "/map_columns",
         json={"uploaded_columns": ["x"], "required_columns": ["StudentAge"]},

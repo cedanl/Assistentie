@@ -671,8 +671,15 @@ def map_columns(request: MapColumnsRequest):
         "Geef uitsluitend het JSON-object terug, zonder uitleg of markdown.\n\n"
         'Voorbeeld: {"StudentAge": "leeftijd", "absence_unauthorized": "ongeoorloofd_verzuim"}'
     )
-    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
-    raw = response.output_text.strip()
+    response = anthropic_client.messages.create(
+        model=ANTHROPIC_MODEL,
+        max_tokens=1024,
+        messages=[
+            {"role": "user", "content": prompt},
+            {"role": "assistant", "content": "{"},
+        ],
+    )
+    raw = "{" + response.content[0].text.strip()
     json_match = re.search(r"\{.*\}", raw, re.DOTALL)
     try:
         mapping = json.loads(json_match.group()) if json_match else {}
