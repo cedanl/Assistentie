@@ -8,7 +8,6 @@
 #     "scikit-learn",
 #     "fastapi",
 #     "uvicorn",
-#     "openai",
 #     "requests",
 #     "plotly",
 #     "shap",
@@ -41,7 +40,6 @@ import pandas as pd
 import shap
 from fastapi import FastAPI
 from anthropic import Anthropic
-from openai import OpenAI
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestRegressor
 
@@ -49,11 +47,7 @@ import backend.trainer as trainer
 
 app = FastAPI()
 
-client = OpenAI()
-
-MODEL = "gpt-5.4-mini-2026-03-17"
-
-anthropic_client = Anthropic()
+client = Anthropic()
 ANTHROPIC_MODEL = "claude-sonnet-4-6"
 
 # Modelpaden
@@ -436,7 +430,7 @@ def _build_risicoprofiel_html(
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = anthropic_client.messages.create(
+    response = client.messages.create(
         model=ANTHROPIC_MODEL,
         max_tokens=512,
         messages=[{"role": "user", "content": prompt}],
@@ -512,7 +506,7 @@ def explain_risk(request: ExplainRequest):
         urgentie,
         top_factors,
         imputed_set,
-        MODEL,
+        ANTHROPIC_MODEL,
         data_onvoldoende=data_onvoldoende,
     )
 
@@ -581,7 +575,7 @@ Maximaal 5 genummerde actiepunten, gesorteerd op urgentie.
 Maak expliciet onderscheid: déze week vs déze maand.
 """
 
-    response = anthropic_client.messages.create(
+    response = client.messages.create(
         model=ANTHROPIC_MODEL,
         max_tokens=2048,
         temperature=0.2,
@@ -671,7 +665,7 @@ def map_columns(request: MapColumnsRequest):
         "Geef uitsluitend het JSON-object terug, zonder uitleg of markdown.\n\n"
         'Voorbeeld: {"StudentAge": "leeftijd", "absence_unauthorized": "ongeoorloofd_verzuim"}'
     )
-    response = anthropic_client.messages.create(
+    response = client.messages.create(
         model=ANTHROPIC_MODEL,
         max_tokens=1024,
         messages=[
