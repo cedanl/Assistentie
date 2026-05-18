@@ -394,9 +394,18 @@ def _genereer_eduplan():
         vul_log = st.session_state.get("vul_log", [])
         vul_set = set(vul_log)
 
+        def _error_html(title: str, detail: str) -> str:
+            return (
+                "<div style='border-left:4px solid #c0392b; background:#fdf3f1; "
+                "padding:14px 18px; border-radius:6px; font-family:\"General Sans\",sans-serif;'>"
+                f"<b style='color:#c0392b;'>⚠️ {html.escape(title)}</b><br>"
+                f"<span style='color:#444;'>{html.escape(detail)}</span>"
+                "</div>"
+            )
+
         def _fetch_explain():
             try:
-                return requests.post(
+                resp = requests.post(
                     "http://localhost:8000/explain_risk",
                     json={
                         "student": row.to_dict(),
@@ -406,21 +415,49 @@ def _genereer_eduplan():
                         "imputed_columns": vul_log,
                     },
                     timeout=60,
-                ).json()["explanation"]
-            except Exception:
-                return "Uitleg kon niet worden gegenereerd."
+                )
+            except requests.Timeout:
+                return _error_html(
+                    "Time-out bij genereren EduPlan",
+                    "De backend reageerde niet binnen 60 seconden. Mogelijk is het LLM-model traag of de Anthropic API onbereikbaar.",
+                )
+            except requests.ConnectionError:
+                return _error_html(
+                    "Backend niet bereikbaar",
+                    "Geen verbinding met http://localhost:8000. Controleer of de FastAPI backend draait (./1_start_fastapi.sh).",
+                )
+            except requests.RequestException as e:
+                return _error_html("Netwerkfout", str(e))
+
+            if resp.status_code != 200:
+                snippet = resp.text[:300] if resp.text else "(geen response body)"
+                return _error_html(
+                    f"Backend fout (HTTP {resp.status_code})",
+                    f"Het /explain_risk endpoint gaf een fout terug. Bekijk de backend-log voor details. Response: {snippet}",
+                )
+
+            try:
+                return resp.json()["explanation"]
+            except (ValueError, KeyError) as e:
+                return _error_html(
+                    "Onverwachte response van backend",
+                    f"De response bevatte geen geldige JSON met 'explanation' veld: {e}",
+                )
 
         def _fetch_fi():
             try:
-                return requests.post(
+                resp = requests.post(
                     "http://localhost:8000/feature_importance",
                     json={
                         "student": row.to_dict(),
                         "use_default_model": gebruik_default,
                     },
                     timeout=10,
-                ).json()["feature_importance"]
-            except Exception:
+                )
+                if resp.status_code != 200:
+                    return {}
+                return resp.json().get("feature_importance", {})
+            except (requests.RequestException, ValueError):
                 return {}
 
         with ThreadPoolExecutor(max_workers=2) as pool:
