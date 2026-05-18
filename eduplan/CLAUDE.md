@@ -47,6 +47,8 @@ uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
 
 The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the OpenAI client. Tests must be run from inside `eduplan/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_openai) live in `tests/conftest.py`. `test_trainer.py` uses an `autouse` fixture `mock_student_signal` that mocks `trainer.prepare` and `trainer.train_random_forest` — keeping trainer tests fast and independent of the student-signal library.
 
+There is also a project-root `eduplan/conftest.py` that patches `openai.OpenAI` *before* `backend.main` is imported. This is required because `ALL_PROXY` in the dev environment sets a SOCKS proxy that httpx cannot use without the optional `socksio` package — without this patch, OpenAI client construction at import time would fail. Don't remove it.
+
 **Run the standalone Claude agent CLI:**
 ```bash
 python main.py  # requires ANTHROPIC_API_KEY
@@ -113,7 +115,11 @@ Standalone training module. `train_model(df, dropout_col, model_path, features_p
 - `synth_data_pred.csv` — raw download, tab-separated
 
 ### `main.py` — Standalone Claude agent
-Independent CLI tool with file read/edit tools. Not part of the main app.
+Independent CLI tool with file read/edit tools. Not part of the main app. The `agents/` directory is a placeholder for future agent code — currently it only contains a README pointing back to `main.py`.
+
+### Legacy artefacts (ignore)
+- `backend/main.py.bak`, `frontend/app.py.bak`, `shared/data_prep.py.bak` — pre-refactor copies kept around for reference, not loaded by anything
+- `backend/model.pkl` — older pickle next to the active `backend/model.joblib`; only `.joblib` is loaded
 
 ## Model Features
 
@@ -188,4 +194,5 @@ The `mock_openai` fixture in `tests/conftest.py` mocks `mock_client.responses.cr
 - Package manager is **UV** (preferred over pip); cache stored in `./.uv_cache/`
 - Model source: [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) — `models/random_forest_regressor.joblib`
 - Data source: [cedanl/Uitnodigingsregel](https://github.com/cedanl/Uitnodigingsregel) — `data/raw/synth_data_pred.csv`
-- Research basis for EduPlan prompts: `eduplan/docs/uitval/uitval_en_interventies.md`
+- Research basis for EduPlan prompts: `eduplan/docs/uitval/uitval_en_interventies.md`; source PDFs in the same folder (`Eegdeman.pdf`, `De-Uitnodigingsregel-Literatuuroverzicht-en-interventies.pdf`, `Proces_Instroom_Hutspot_highres-1.pdf`)
+- Frontend extras: `streamlit-extras` (UI helpers) and `pillow` (image handling) are in `pyproject.toml` and may be used when extending the UI

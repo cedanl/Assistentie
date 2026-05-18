@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-**CEDAssistentie** is the CEDA (Centrum Educatieve Digitale Assistentie) monorepo exploring AI-powered digital assistance for Dutch MBO (secondary vocational) education. It contains two independent sub-projects:
+**CEDAssistentie** is the CEDA (Centrum Educatieve Digitale Assistentie) monorepo exploring AI-powered digital assistance for Dutch MBO (secondary vocational) education. It contains three independent sub-projects:
 
 - **`src/`** — A Streamlit multi-page app template for new CEDA projects
 - **`eduplan/`** — A production EduPlan app for student dropout risk prediction (has its own `CLAUDE.md` with full details)
+- **`edupulse/`** — EduClaw Sprint 1 app: a harnessed agentic uitvalrisico-check for MBO begeleiders. FastAPI backend (port 8001) + Streamlit frontend (port 8503) + Claude agent kernel. Has its own `CLAUDE.md`. Distinct from `eduplan/` — different ports, uses Anthropic (not OpenAI) for the agent kernel, has its own SQLite DB and ML pipeline (`backend/ml/`).
 
 ## Running the Template App (`src/`)
 
