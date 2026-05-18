@@ -25,10 +25,9 @@ with st.sidebar:
             resp.raise_for_status()
             studenten = resp.json()
             q = zoek.lower()
-            treffer = [
-                s for s in studenten
-                if q in s["naam"].lower() or q in s["studentnummer"]
-            ][:8]
+            treffer = [s for s in studenten if q in s["naam"].lower() or q in s["studentnummer"]][
+                :8
+            ]
             for s in treffer:
                 if st.button(f"{s['naam']} ({s['studentnummer']})", key=s["studentnummer"]):
                     st.session_state.geselecteerde_student = s["studentnummer"]
@@ -51,16 +50,16 @@ if st.session_state.geselecteerde_student:
             st.markdown(f"### {student['naam']}")
             st.caption(f"{student['opleiding']} · {student['cohort']} · {student['leerweg']}")
         status_label = "⚠️ Dreiging" if risico["status"] == "dreiging" else "✅ Op koers"
-        aanw = student['aanwezigheid']
-        bsa = student['bsa_studiepunten']
+        aanw = student["aanwezigheid"]
+        bsa = student["bsa_studiepunten"]
 
         with m1:
-            st.metric("🎯 Succeskans", f"{risico['succes_kans']*100:.0f}%", status_label)
+            st.metric("🎯 Succeskans", f"{risico['succes_kans'] * 100:.0f}%", status_label)
         with m2:
-            st.metric("⚠️ Uitvalkans", f"{risico['uitval_kans']*100:.0f}%", status_label)
+            st.metric("⚠️ Uitvalkans", f"{risico['uitval_kans'] * 100:.0f}%", status_label)
         with m3:
             aanw_label = "✅ Voldoende" if aanw >= 0.80 else "⚠️ Te laag"
-            st.metric("📅 Aanwezigheid", f"{aanw*100:.0f}%", aanw_label)
+            st.metric("📅 Aanwezigheid", f"{aanw * 100:.0f}%", aanw_label)
         with m4:
             bsa_label = "✅ Op schema" if bsa >= 40 else "⚠️ Achterstand"
             st.metric("📚 BSA punten", bsa, bsa_label)

@@ -1,13 +1,16 @@
 # backend/seed.py
 """Vul de SQLite database met synthetische studenten."""
+
 import sys
 import os
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pandas as pd
 from backend.database import engine, Base, SessionLocal
 from backend.models import StudentDB
 from backend.ml.generate_data import genereer_actieve_studenten
+
 
 def seed():
     Base.metadata.create_all(bind=engine)
@@ -32,6 +35,7 @@ def seed():
         print("Database al gevuld — overgeslagen.")
 
     db.close()
+
 
 if __name__ == "__main__":
     seed()

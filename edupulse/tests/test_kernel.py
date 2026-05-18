@@ -2,6 +2,7 @@
 from unittest.mock import MagicMock
 from backend.agent.kernel import AgentKernel
 
+
 def maak_kernel(stop_reason="end_turn", tool_calls=None):
     llm = MagicMock()
     harness = MagicMock()
@@ -41,10 +42,12 @@ def maak_kernel(stop_reason="end_turn", tool_calls=None):
     llm.chat.return_value = response
     return AgentKernel(llm=llm, harness=harness)
 
+
 def test_end_turn_geeft_tekst_terug():
     kernel = maak_kernel("end_turn")
     result = kernel.run("Test vraag")
     assert result == "Test antwoord."
+
 
 def test_tool_use_roept_harness_aan():
     kernel = maak_kernel("tool_use")
@@ -54,10 +57,12 @@ def test_tool_use_roept_harness_aan():
     )
     assert result == "Antwoord na tool."
 
+
 def test_onbekende_stop_reason_geeft_foutmelding():
     kernel = maak_kernel("onbekend")
     result = kernel.run("Test")
     assert "Onverwachte stop_reason" in result
+
 
 def test_sessie_id_wordt_aangemaakt_als_none():
     kernel = maak_kernel("end_turn")

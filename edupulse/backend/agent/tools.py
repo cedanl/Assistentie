@@ -9,43 +9,40 @@ TOOL_DEFINITIONS = [
         "input_schema": {
             "type": "object",
             "properties": {
-                "studentnummer": {"type": "string", "description": "Het studentnummer (bijv. '20240001')"}
+                "studentnummer": {
+                    "type": "string",
+                    "description": "Het studentnummer (bijv. '20240001')",
+                }
             },
-            "required": ["studentnummer"]
-        }
+            "required": ["studentnummer"],
+        },
     },
     {
         "name": "predict_dropout_risk",
         "description": "Bereken het uitvalrisico voor een student en geef de top-3 beïnvloedende factoren.",
         "input_schema": {
             "type": "object",
-            "properties": {
-                "studentnummer": {"type": "string"}
-            },
-            "required": ["studentnummer"]
-        }
+            "properties": {"studentnummer": {"type": "string"}},
+            "required": ["studentnummer"],
+        },
     },
     {
         "name": "get_cohort_comparison",
         "description": "Vergelijk de student met het gemiddelde van zijn/haar cohort en opleiding.",
         "input_schema": {
             "type": "object",
-            "properties": {
-                "studentnummer": {"type": "string"}
-            },
-            "required": ["studentnummer"]
-        }
+            "properties": {"studentnummer": {"type": "string"}},
+            "required": ["studentnummer"],
+        },
     },
     {
         "name": "get_mentor_info",
         "description": "Geef naam en e-mail van de mentor van een student.",
         "input_schema": {
             "type": "object",
-            "properties": {
-                "studentnummer": {"type": "string"}
-            },
-            "required": ["studentnummer"]
-        }
+            "properties": {"studentnummer": {"type": "string"}},
+            "required": ["studentnummer"],
+        },
     },
     {
         "name": "search_students",
@@ -55,10 +52,11 @@ TOOL_DEFINITIONS = [
             "properties": {
                 "query": {"type": "string", "description": "Naam of (deel van) studentnummer"}
             },
-            "required": ["query"]
-        }
+            "required": ["query"],
+        },
     },
 ]
+
 
 class ToolRegistry:
     def __init__(self, db, predictor: RisicoPredictor):
@@ -139,18 +137,25 @@ class ToolRegistry:
 
     def search_students(self, query: str) -> list[dict]:
         from sqlalchemy import or_
+
         treffer = (
             self.db.query(StudentDB)
-            .filter(or_(
-                StudentDB.naam.ilike(f"%{query}%"),
-                StudentDB.studentnummer.ilike(f"%{query}%"),
-            ))
+            .filter(
+                or_(
+                    StudentDB.naam.ilike(f"%{query}%"),
+                    StudentDB.studentnummer.ilike(f"%{query}%"),
+                )
+            )
             .limit(10)
             .all()
         )
         return [
-            {"studentnummer": s.studentnummer, "naam": s.naam,
-             "opleiding": s.opleiding, "cohort": s.cohort}
+            {
+                "studentnummer": s.studentnummer,
+                "naam": s.naam,
+                "opleiding": s.opleiding,
+                "cohort": s.cohort,
+            }
             for s in treffer
         ]
 

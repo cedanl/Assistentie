@@ -6,11 +6,26 @@ def test_student_table_heeft_alle_kolommen(test_engine):
     inspector = inspect(test_engine)
     kolommen = {c["name"] for c in inspector.get_columns("studenten")}
     verwacht = {
-        "studentnummer", "naam", "email", "leeftijd", "geslacht",
-        "vooropleiding", "sector", "opleiding", "crebocode", "cohort",
-        "niveau", "leerweg", "intakedatum", "aanwezigheid", "voortgang",
-        "bsa_studiepunten", "cijfer_nederlands", "cijfer_rekenen",
-        "mentor_naam", "mentor_email"
+        "studentnummer",
+        "naam",
+        "email",
+        "leeftijd",
+        "geslacht",
+        "vooropleiding",
+        "sector",
+        "opleiding",
+        "crebocode",
+        "cohort",
+        "niveau",
+        "leerweg",
+        "intakedatum",
+        "aanwezigheid",
+        "voortgang",
+        "bsa_studiepunten",
+        "cijfer_nederlands",
+        "cijfer_rekenen",
+        "mentor_naam",
+        "mentor_email",
     }
     assert verwacht.issubset(kolommen)
 

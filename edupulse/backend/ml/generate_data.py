@@ -126,7 +126,9 @@ def genereer_historische_studenten(n: int = 10000) -> pd.DataFrame:
             + max(0, (6.0 - student["cijfer_nederlands"]) / 10.0) * 0.08
         )
         # Basiskans + factoren + ruis
-        uitval_kans = 0.08 + attendance_factor + progress_factor + grade_factor + rng.normal(0, 0.03)
+        uitval_kans = (
+            0.08 + attendance_factor + progress_factor + grade_factor + rng.normal(0, 0.03)
+        )
         uitval_kans = float(np.clip(uitval_kans, 0.0, 1.0))
         student["uitgevallen"] = bool(rng.random() < uitval_kans)
         rows.append(student)
@@ -135,6 +137,7 @@ def genereer_historische_studenten(n: int = 10000) -> pd.DataFrame:
 
 if __name__ == "__main__":
     import os
+
     data_dir = os.path.join(os.path.dirname(__file__), "..", "..", "data")
     os.makedirs(data_dir, exist_ok=True)
 

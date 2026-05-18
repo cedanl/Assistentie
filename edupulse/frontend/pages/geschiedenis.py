@@ -21,8 +21,7 @@ with col1:
     filter_status = st.selectbox("Filter op status", ["Alle", "Dreiging", "Op koers"])
 with col2:
     filter_opleiding = st.selectbox(
-        "Filter op opleiding",
-        ["Alle"] + sorted(list({s["opleiding"] for s in studenten}))
+        "Filter op opleiding", ["Alle"] + sorted(list({s["opleiding"] for s in studenten}))
     )
 
 # Haal risico's op voor eerste 50 (performance sprint 1)
@@ -57,7 +56,7 @@ if risicos:
     c1, c2, c3 = st.columns(3)
     c1.metric("Studenten", totaal)
     c2.metric("⚠ Dreiging", dreiging)
-    c3.metric("Gem. succeskans", f"{gem*100:.0f}%")
+    c3.metric("Gem. succeskans", f"{gem * 100:.0f}%")
 
     st.divider()
 
@@ -66,13 +65,13 @@ if risicos:
         label = "⚠ Dreiging" if r.get("status") == "dreiging" else "✓ Op koers"
         with st.expander(
             f"{kleur} {r['naam']} ({r['studentnummer']}) — "
-            f"{r.get('succes_kans', 0)*100:.0f}% succeskans — {label}"
+            f"{r.get('succes_kans', 0) * 100:.0f}% succeskans — {label}"
         ):
             col1, col2 = st.columns(2)
             with col1:
                 st.write(f"**Opleiding:** {r['opleiding']}")
                 st.write(f"**Cohort:** {r['cohort']}")
-                st.write(f"**Aanwezigheid:** {r['aanwezigheid']*100:.0f}%")
+                st.write(f"**Aanwezigheid:** {r['aanwezigheid'] * 100:.0f}%")
                 st.write(f"**BSA punten:** {r['bsa_studiepunten']}")
             with col2:
                 st.write(f"**Nederlands:** {r['cijfer_nederlands']}")

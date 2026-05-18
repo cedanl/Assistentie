@@ -7,7 +7,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
 from backend.database import get_db, engine, Base
-from backend.models import StudentDB, AgentLogDB, StudentSchema, ChatRequest, ChatResponse, RisicoPredictie
+from backend.models import (
+    StudentDB,
+    AgentLogDB,
+    StudentSchema,
+    ChatRequest,
+    ChatResponse,
+    RisicoPredictie,
+)
 from backend.agent.llm import ClaudeLLMProvider
 from backend.agent.tools import ToolRegistry
 from backend.agent.harness import Harness
@@ -20,6 +27,7 @@ FEATURE_PATH = os.path.join(DATA_DIR, "feature_list.json")
 
 predictor: RisicoPredictor | None = None
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global predictor
@@ -28,6 +36,7 @@ async def lifespan(app: FastAPI):
         predictor = RisicoPredictor(model_path=MODEL_PATH, feature_path=FEATURE_PATH)
     app.state.llm = ClaudeLLMProvider()
     yield
+
 
 app = FastAPI(title="EduPulse API", version="0.1.0", lifespan=lifespan)
 
@@ -38,6 +47,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 def _get_kernel(request: Request, db: Session = Depends(get_db)) -> AgentKernel:
     if predictor is None:
         raise HTTPException(503, "Model nog niet geladen — run train.py eerst.")
@@ -45,13 +55,16 @@ def _get_kernel(request: Request, db: Session = Depends(get_db)) -> AgentKernel:
     harness = Harness(handlers=registry.get_handlers(), db=db)
     return AgentKernel(llm=request.app.state.llm, harness=harness)
 
+
 @app.get("/health")
 def health():
     return {"status": "ok", "model_geladen": predictor is not None}
 
+
 @app.get("/students", response_model=list[StudentSchema])
 def list_students(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     return db.query(StudentDB).offset(skip).limit(limit).all()
+
 
 @app.get("/students/{studentnummer}", response_model=StudentSchema)
 def get_student(studentnummer: str, db: Session = Depends(get_db)):
@@ -59,6 +72,7 @@ def get_student(studentnummer: str, db: Session = Depends(get_db)):
     if not student:
         raise HTTPException(404, f"Student {studentnummer!r} niet gevonden.")
     return student
+
 
 @app.get("/risk/{studentnummer}", response_model=RisicoPredictie)
 def get_risk(studentnummer: str, db: Session = Depends(get_db)):
@@ -76,6 +90,7 @@ def get_risk(studentnummer: str, db: Session = Depends(get_db)):
         status="dreiging" if result["kans"] >= DREMPEL else "op_koers",
         shap_top3=result["shap_top3"],
     )
+
 
 @app.get("/agent/sessions/{sessie_id}")
 def get_session(sessie_id: str, db: Session = Depends(get_db)):
@@ -97,6 +112,7 @@ def get_session(sessie_id: str, db: Session = Depends(get_db)):
         for log in logs
     ]
 
+
 @app.post("/agent/chat", response_model=ChatResponse)
 def agent_chat(chat_request: ChatRequest, kernel: AgentKernel = Depends(_get_kernel)):
     sessie_id = chat_request.session_id or str(uuid.uuid4())
@@ -104,6 +120,7 @@ def agent_chat(chat_request: ChatRequest, kernel: AgentKernel = Depends(_get_ker
         antwoord = kernel.run(chat_request.message, sessie_id=sessie_id)
     except Exception:
         import logging
+
         logging.exception("Agent fout voor sessie %s", sessie_id)
         raise HTTPException(503, "Agent tijdelijk niet beschikbaar.")
     return ChatResponse(session_id=sessie_id, response=antwoord)

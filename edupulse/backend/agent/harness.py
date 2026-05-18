@@ -50,17 +50,29 @@ class Harness:
     def _hash_pii(self, tekst: str) -> str:
         return hashlib.sha256(tekst.encode()).hexdigest()[:12]
 
-    def _log(self, tool_naam: str, inputs: dict, result: dict,
-             sessie_id: str, duur_ms: int, status: str = "ok"):
+    def _log(
+        self,
+        tool_naam: str,
+        inputs: dict,
+        result: dict,
+        sessie_id: str,
+        duur_ms: int,
+        status: str = "ok",
+    ):
         import json
         import logging
+
         input_str = str(inputs)
         input_hash = self._hash_pii(input_str)
         # Sla geen PII op in output_summary — alleen type en omvang van het resultaat.
-        output_summary = json.dumps({
-            "status": status,
-            "items": len(result) if isinstance(result, list) else (0 if "error" in result else 1),
-        })
+        output_summary = json.dumps(
+            {
+                "status": status,
+                "items": len(result)
+                if isinstance(result, list)
+                else (0 if "error" in result else 1),
+            }
+        )
         try:
             log = AgentLogDB(
                 timestamp=datetime.now(timezone.utc),

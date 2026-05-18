@@ -10,7 +10,8 @@ st.set_page_config(
 )
 
 # CEDA huisstijl
-st.markdown("""
+st.markdown(
+    """
 <style>
   :root {
     --oranje: #DD784B;
@@ -92,10 +93,13 @@ st.markdown("""
     padding: 10px 28px;
   }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # Branding balk — direct onder de zwarte native header
-st.markdown("""
+st.markdown(
+    """
 <div class="edupulse-branding">
   <span style="color:#DD784B;font-size:1.3rem;">◉</span>
   <span style="color:white;font-weight:700;">Npuls</span>
@@ -105,7 +109,9 @@ st.markdown("""
     Moving Education.
   </span>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 paginas = [
     st.Page("pages/uitvalrisico.py", title="Uitvalrisico check", icon="🎯"),
@@ -115,7 +121,8 @@ nav = st.navigation(paginas)
 nav.run()
 
 with bottom():
-    st.markdown("""
+    st.markdown(
+        """
     <div class="edupulse-footer">
       <p style="text-align:center;font-size:0.55rem;font-weight:500;color:#aaa;
                 font-family:'General Sans',sans-serif;margin:0;">
@@ -128,4 +135,6 @@ with bottom():
         <em>AI en data waarde(n)vol inzetten: CEDA 2026 – EduPulse. Utrecht: Npuls</em>
       </p>
     </div>
-    """, unsafe_allow_html=True)
+    """,
+        unsafe_allow_html=True,
+    )

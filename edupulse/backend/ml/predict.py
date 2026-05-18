@@ -8,11 +8,10 @@ import warnings
 
 DREMPEL = 0.35  # >= 35% kans = dreiging
 
+
 class RisicoPredictor:
     def __init__(
-        self,
-        model_path: str = "data/model.pkl",
-        feature_path: str = "data/feature_list.json"
+        self, model_path: str = "data/model.pkl", feature_path: str = "data/feature_list.json"
     ):
         artefact = joblib.load(model_path)
         self.model = artefact["model"]
@@ -62,8 +61,7 @@ class RisicoPredictor:
 
         top_idx = np.argsort(np.abs(sv))[::-1][:3].tolist()
         shap_top3 = [
-            {"feature": self.features[i], "bijdrage": round(float(sv[i]), 4)}
-            for i in top_idx
+            {"feature": self.features[i], "bijdrage": round(float(sv[i]), 4)} for i in top_idx
         ]
 
         return {"kans": round(kans, 4), "shap_top3": shap_top3}

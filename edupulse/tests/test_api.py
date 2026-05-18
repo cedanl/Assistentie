@@ -3,18 +3,24 @@ import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 
+
 @pytest.fixture(scope="module")
 def client():
-    with patch("backend.agent.kernel.AgentKernel.run", return_value="Test antwoord van agent."), \
-         patch("backend.agent.llm.anthropic.Anthropic", return_value=MagicMock()):
+    with (
+        patch("backend.agent.kernel.AgentKernel.run", return_value="Test antwoord van agent."),
+        patch("backend.agent.llm.anthropic.Anthropic", return_value=MagicMock()),
+    ):
         from backend.main import app
+
         with TestClient(app) as c:
             yield c
+
 
 def test_health(client):
     r = client.get("/health")
     assert r.status_code == 200
     assert r.json()["status"] == "ok"
+
 
 def test_list_students(client):
     r = client.get("/students?limit=5")
@@ -22,6 +28,7 @@ def test_list_students(client):
     data = r.json()
     assert isinstance(data, list)
     assert len(data) <= 5
+
 
 def test_get_student_bestaat(client):
     studenten = client.get("/students?limit=1").json()
@@ -31,9 +38,11 @@ def test_get_student_bestaat(client):
         assert r.status_code == 200
         assert r.json()["studentnummer"] == nr
 
+
 def test_get_student_niet_gevonden(client):
     r = client.get("/students/BESTAATNIET")
     assert r.status_code == 404
+
 
 def test_risk_endpoint(client):
     studenten = client.get("/students?limit=1").json()
@@ -43,14 +52,17 @@ def test_risk_endpoint(client):
         assert r.status_code == 200
         assert "uitval_kans" in r.json()
 
+
 def test_agent_chat(client):
     r = client.post("/agent/chat", json={"message": "Hoe staat student 20240001 ervoor?"})
     assert r.status_code == 200
     assert "response" in r.json()
     assert "session_id" in r.json()
 
+
 def test_risk_503_als_model_niet_geladen(client):
     import backend.main as main_module
+
     original = main_module.predictor
     main_module.predictor = None
     try:

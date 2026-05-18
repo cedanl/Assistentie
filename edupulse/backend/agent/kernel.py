@@ -19,6 +19,7 @@ Beperkingen:
 - Houd rekening met privacy (AVG): deel nooit onnodige persoonsgegevens
 - Reageer in het Nederlands"""
 
+
 class AgentKernel:
     def __init__(self, llm: LLMProvider, harness: Harness):
         self.llm = llm
@@ -38,21 +39,24 @@ class AgentKernel:
             )
 
             if response.stop_reason == "end_turn":
-                tekst = " ".join(b.text for b in response.content if hasattr(b, "text")) or "Geen antwoord ontvangen."
+                tekst = (
+                    " ".join(b.text for b in response.content if hasattr(b, "text"))
+                    or "Geen antwoord ontvangen."
+                )
                 return tekst
 
             if response.stop_reason == "tool_use":
                 tool_results = []
                 for block in response.content:
                     if block.type == "tool_use":
-                        result = self.harness.execute(
-                            block.name, block.input, sessie_id
+                        result = self.harness.execute(block.name, block.input, sessie_id)
+                        tool_results.append(
+                            {
+                                "type": "tool_result",
+                                "tool_use_id": block.id,
+                                "content": json.dumps(result, ensure_ascii=False, default=str),
+                            }
                         )
-                        tool_results.append({
-                            "type": "tool_result",
-                            "tool_use_id": block.id,
-                            "content": json.dumps(result, ensure_ascii=False, default=str),
-                        })
                 messages.append({"role": "assistant", "content": response.content})
                 messages.append({"role": "user", "content": tool_results})
             else:
