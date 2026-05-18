@@ -56,7 +56,7 @@ def test_build_risicoprofiel_hoog_bevat_risiconiveau():
         urgentie="directe actie vereist (deze week)",
         top_factors=[("absence_unauthorized", 0.12)],
         imputed_set=set(),
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
     )
     assert "HOOG" in html
     assert "75%" in html
@@ -70,7 +70,7 @@ def test_build_risicoprofiel_matig():
         urgentie="actie aanbevolen binnen twee weken",
         top_factors=[],
         imputed_set=set(),
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
     )
     assert "MATIG" in html
 
@@ -83,7 +83,7 @@ def test_build_risicoprofiel_imputed_field_toont_niet_beschikbaar():
         urgentie="actie aanbevolen binnen twee weken",
         top_factors=[],
         imputed_set={"StudentAge", "absence_unauthorized"},
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
     )
     assert "niet beschikbaar" in html
 
@@ -96,7 +96,7 @@ def test_build_risicoprofiel_data_onvoldoende_toont_waarschuwing():
         urgentie="reguliere monitoring volstaat",
         top_factors=[("StudentAge", 0.001)],
         imputed_set={"StudentAge"},
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
         data_onvoldoende=True,
     )
     assert "Datakwaliteit" in html or "onvoldoende" in html.lower()
