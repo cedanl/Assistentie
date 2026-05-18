@@ -1,9 +1,11 @@
-# backend/main.py
-import os
+import logging
 import uuid
 from contextlib import asynccontextmanager
+from pathlib import Path
+
 from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from backend.database import get_db, engine, Base
@@ -21,9 +23,9 @@ from backend.agent.harness import Harness
 from backend.agent.kernel import AgentKernel
 from backend.ml.predict import RisicoPredictor, DREMPEL
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), "..", "data")
-MODEL_PATH = os.path.join(DATA_DIR, "model.pkl")
-FEATURE_PATH = os.path.join(DATA_DIR, "feature_list.json")
+DATA_DIR = Path(__file__).parent.parent / "data"
+MODEL_PATH = DATA_DIR / "model.pkl"
+FEATURE_PATH = DATA_DIR / "feature_list.json"
 
 predictor: RisicoPredictor | None = None
 
@@ -32,8 +34,8 @@ predictor: RisicoPredictor | None = None
 async def lifespan(app: FastAPI):
     global predictor
     Base.metadata.create_all(bind=engine)
-    if os.path.exists(MODEL_PATH):
-        predictor = RisicoPredictor(model_path=MODEL_PATH, feature_path=FEATURE_PATH)
+    if MODEL_PATH.exists():
+        predictor = RisicoPredictor(model_path=str(MODEL_PATH), feature_path=str(FEATURE_PATH))
     app.state.llm = ClaudeLLMProvider()
     yield
 
@@ -64,6 +66,17 @@ def health():
 @app.get("/students", response_model=list[StudentSchema])
 def list_students(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     return db.query(StudentDB).offset(skip).limit(limit).all()
+
+
+@app.get("/students/search", response_model=list[StudentSchema])
+def search_students(q: str, limit: int = 10, db: Session = Depends(get_db)):
+    """Zoek studenten op (deel van) naam of studentnummer (case-insensitive)."""
+    return (
+        db.query(StudentDB)
+        .filter(or_(StudentDB.naam.ilike(f"%{q}%"), StudentDB.studentnummer.ilike(f"%{q}%")))
+        .limit(limit)
+        .all()
+    )
 
 
 @app.get("/students/{studentnummer}", response_model=StudentSchema)
@@ -119,8 +132,6 @@ def agent_chat(chat_request: ChatRequest, kernel: AgentKernel = Depends(_get_ker
     try:
         antwoord = kernel.run(chat_request.message, sessie_id=sessie_id)
     except Exception:
-        import logging
-
         logging.exception("Agent fout voor sessie %s", sessie_id)
         raise HTTPException(503, "Agent tijdelijk niet beschikbaar.")
     return ChatResponse(session_id=sessie_id, response=antwoord)

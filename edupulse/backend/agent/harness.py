@@ -1,7 +1,10 @@
 import hashlib
+import json
+import logging
 import time
 from collections import defaultdict
 from datetime import datetime, timezone
+
 from backend.models import AgentLogDB
 
 MAX_CALLS_PER_SESSIE = 60
@@ -59,9 +62,6 @@ class Harness:
         duur_ms: int,
         status: str = "ok",
     ):
-        import json
-        import logging
-
         input_str = str(inputs)
         input_hash = self._hash_pii(input_str)
         # Sla geen PII op in output_summary — alleen type en omvang van het resultaat.
