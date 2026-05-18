@@ -2,9 +2,74 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+Behavioral guidelines to reduce common LLM coding mistakes. Merge with project-specific instructions as needed.
+
+**Tradeoff:** These guidelines bias toward caution over speed. For trivial tasks, use judgment.
+
+## 1. Think Before Coding
+
+**Don't assume. Don't hide confusion. Surface tradeoffs.**
+
+Before implementing:
+- State your assumptions explicitly. If uncertain, ask.
+- If multiple interpretations exist, present them - don't pick silently.
+- If a simpler approach exists, say so. Push back when warranted.
+- If something is unclear, stop. Name what's confusing. Ask.
+
+## 2. Simplicity First
+
+**Minimum code that solves the problem. Nothing speculative.**
+
+- No features beyond what was asked.
+- No abstractions for single-use code.
+- No "flexibility" or "configurability" that wasn't requested.
+- No error handling for impossible scenarios.
+- If you write 200 lines and it could be 50, rewrite it.
+
+Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+
+## 3. Surgical Changes
+
+**Touch only what you must. Clean up only your own mess.**
+
+When editing existing code:
+- Don't "improve" adjacent code, comments, or formatting.
+- Don't refactor things that aren't broken.
+- Match existing style, even if you'd do it differently.
+- If you notice unrelated dead code, mention it - don't delete it.
+
+When your changes create orphans:
+- Remove imports/variables/functions that YOUR changes made unused.
+- Don't remove pre-existing dead code unless asked.
+
+The test: Every changed line should trace directly to the user's request.
+
+## 4. Goal-Driven Execution
+
+**Define success criteria. Loop until verified.**
+
+Transform tasks into verifiable goals:
+- "Add validation" → "Write tests for invalid inputs, then make them pass"
+- "Fix the bug" → "Write a test that reproduces it, then make it pass"
+- "Refactor X" → "Ensure tests pass before and after"
+
+For multi-step tasks, state a brief plan:
+```
+1. [Step] → verify: [check]
+2. [Step] → verify: [check]
+3. [Step] → verify: [check]
+```
+
+Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+
+---
+
+**These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+
 ## Project Overview
 
-**EduPlan** is a student dropout risk detection and intervention tool for Dutch MBO institutions. It uses a **RandomForestRegressor** from [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) to predict dropout risk and generates AI-powered explanations in Dutch via OpenAI GPT-4.1.
+**EduPlan** is a student dropout risk detection and intervention tool for Dutch MBO institutions. It uses a **RandomForestRegressor** from [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) to predict dropout risk and generates AI-powered explanations in Dutch via an OpenAI model (the `MODEL` constant in `backend/main.py`).
 
 ## Running the Application
 
@@ -56,7 +121,7 @@ python main.py  # requires ANTHROPIC_API_KEY
 
 ## Required Environment Variables
 
-- `OPENAI_API_KEY` — used by the backend for GPT-4.1 explanations
+- `OPENAI_API_KEY` — used by the backend for LLM explanations (model set via the `MODEL` constant in `backend/main.py`)
 - `ANTHROPIC_API_KEY` — used only by `main.py` (the standalone agent CLI)
 
 ## Architecture
@@ -68,7 +133,7 @@ Streamlit frontend (frontend/app.py)
     → FastAPI backend (backend/main.py)
         → RandomForestRegressor (backend/model.joblib)
         → SHAP TreeExplainer
-        → OpenAI GPT-4.1
+        → OpenAI Responses API
 ```
 
 ### Backend (`backend/main.py`) — 9 endpoints
@@ -76,7 +141,7 @@ Streamlit frontend (frontend/app.py)
 |----------|-------|---------|
 | `POST /predict_dropout` | All model features (dict) + `use_default_model` | Continuous dropout risk score (0–1) |
 | `POST /rank_students` | `students` (list of dicts) + `use_default_model` | Bulk-ranking: scoort alle studenten in één call, gesorteerd hoog→laag; vervangt N losse `/predict_dropout` calls |
-| `POST /explain_risk` | Student data + probability + `imputed_columns` + `use_default_model` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via GPT-4.1 met alleen SHAP-factoren (geen studentprofiel) |
+| `POST /explain_risk` | Student data + probability + `imputed_columns` + `use_default_model` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via LLM met alleen SHAP-factoren (geen studentprofiel) |
 | `POST /feature_importance` | Student data + `use_default_model` | SHAP values per feature (TreeExplainer on regressor) — used for the UI bar chart |
 | `POST /summarize` | CSV data string or question | Management summary or Q&A via OpenAI |
 | `POST /map_columns` | Uploaded + required column lists | LLM-based column name mapping for CSV uploads |
@@ -147,7 +212,7 @@ The EduPlan is split into two parts to prevent hallucination:
 **Sectie 1 — deterministisch (geen LLM)**
 `_build_risicoprofiel_html()` renders Section 1 as HTML directly from actual student data. Imputed columns are shown as `<i style='color:#999;'>niet beschikbaar</i>`. The top-5 SHAP factors are listed with direction and magnitude. If data quality is insufficient (`data_onvoldoende = True`), a warning is shown instead of calling the LLM.
 
-**Secties 2–4 — LLM (GPT-4.1, temperature=0.2)**
+**Secties 2–4 — LLM (temperature=0.2)**
 The LLM receives **only** the risk level and SHAP factors — no student profile. This eliminates hallucination of absent values like age, gender, and absence days.
 
 1. **🔍 Risicoprofiel** — deterministisch HTML (geen LLM)
@@ -171,7 +236,7 @@ Risk levels: **LAAG** (< 35%), **MATIG** (35–65%), **HOOG** (≥ 65%).
 The backend uses the **Responses API** (not Chat Completions):
 
 ```python
-response = client.responses.create(model="gpt-4.1", ...)
+response = client.responses.create(model=MODEL, ...)
 text = response.output_text  # NOT .choices[0].message.content
 ```
 
@@ -192,6 +257,7 @@ The `mock_openai` fixture in `tests/conftest.py` mocks `mock_client.responses.cr
 - All user-facing text and AI responses are in **Dutch**
 - `frontend/ui.py` exists but is currently unused
 - Package manager is **UV** (preferred over pip); cache stored in `./.uv_cache/`
+- `scikit-learn` is pinned to **exact** `==1.6.1` (not a range) to match the version the bundled `backend/model.joblib` was serialized on. Loading on a different version emits `InconsistentVersionWarning` and risks silent prediction drift. Unpin only after retraining or replacing the model.
 - Model source: [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) — `models/random_forest_regressor.joblib`
 - Data source: [cedanl/Uitnodigingsregel](https://github.com/cedanl/Uitnodigingsregel) — `data/raw/synth_data_pred.csv`
 - Research basis for EduPlan prompts: `eduplan/docs/uitval/uitval_en_interventies.md`; source PDFs in the same folder (`Eegdeman.pdf`, `De-Uitnodigingsregel-Literatuuroverzicht-en-interventies.pdf`, `Proces_Instroom_Hutspot_highres-1.pdf`)
