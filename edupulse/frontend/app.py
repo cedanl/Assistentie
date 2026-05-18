@@ -45,7 +45,8 @@ st.markdown("""
     padding-top: 3.75rem !important;
   }
 
-  /* Branding balk — direct onder de native header, geen tussenruimte.
+  /* Branding balk — direct onder de native header, blijft binnen de
+     main block-container zodat de sidebar de inhoud niet afdekt.
      Negatieve margin-top compenseert de flex-gap tussen de (onzichtbare)
      style-markdown en deze branding-markdown. */
   .edupulse-branding {
@@ -54,9 +55,6 @@ st.markdown("""
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    width: 100vw;
     margin-top: -1rem;
     margin-bottom: 24px;
   }
