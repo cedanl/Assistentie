@@ -53,14 +53,14 @@ client = OpenAI()
 MODEL = "gpt-4.1"
 
 # Modelpaden
-MODEL_DEFAULT_PATH          = "backend/model.joblib"
-MODEL_CUSTOM_PATH           = "backend/model_custom.joblib"
+MODEL_DEFAULT_PATH = "backend/model.joblib"
+MODEL_CUSTOM_PATH = "backend/model_custom.joblib"
 MODEL_DEFAULT_FEATURES_PATH = "backend/model_features.json"
-MODEL_CUSTOM_FEATURES_PATH  = "backend/model_custom_features.json"
+MODEL_CUSTOM_FEATURES_PATH = "backend/model_custom_features.json"
 
 _FEATURES_PATH: dict[str, str] = {
     MODEL_DEFAULT_PATH: MODEL_DEFAULT_FEATURES_PATH,
-    MODEL_CUSTOM_PATH:  MODEL_CUSTOM_FEATURES_PATH,
+    MODEL_CUSTOM_PATH: MODEL_CUSTOM_FEATURES_PATH,
 }
 
 
@@ -75,23 +75,25 @@ def _load_features(path: str) -> list[str]:
 
 # Features per model — dynamisch bepaald door student-signal bij training
 features_default = _load_features(MODEL_DEFAULT_FEATURES_PATH)
-features_custom  = _load_features(MODEL_CUSTOM_FEATURES_PATH) if Path(MODEL_CUSTOM_FEATURES_PATH).exists() else features_default
-features         = features_custom  # actieve feature-lijst
+features_custom = (
+    _load_features(MODEL_CUSTOM_FEATURES_PATH) if Path(MODEL_CUSTOM_FEATURES_PATH).exists() else features_default
+)
+features = features_custom  # actieve feature-lijst
 
 # Standaardmodel — altijd geladen, gebruikt bij demo-data
-clf_default       = joblib.load(MODEL_DEFAULT_PATH)
+clf_default = joblib.load(MODEL_DEFAULT_PATH)
 explainer_default = shap.TreeExplainer(clf_default)
 
 # Instellingsmodel — geladen indien beschikbaar; anders alias op standaard
 if Path(MODEL_CUSTOM_PATH).exists():
-    clf_custom       = joblib.load(MODEL_CUSTOM_PATH)
+    clf_custom = joblib.load(MODEL_CUSTOM_PATH)
     explainer_custom = shap.TreeExplainer(clf_custom)
 else:
-    clf_custom       = clf_default
+    clf_custom = clf_default
     explainer_custom = explainer_default
 
 # Actief model
-clf      = clf_custom
+clf = clf_custom
 explainer = explainer_custom
 
 
@@ -123,13 +125,13 @@ _training = _TrainingState()
 def _reload_model(path: str | Path) -> None:
     """Laad model, explainer en features opnieuw en vervang de globale referenties atomisch."""
     global clf, explainer, features, features_custom
-    new_clf       = joblib.load(path)
+    new_clf = joblib.load(path)
     new_explainer = shap.TreeExplainer(new_clf)
-    new_features  = _load_features(_FEATURES_PATH[str(path)])
+    new_features = _load_features(_FEATURES_PATH[str(path)])
     # Python-naam-toewijzing is atomisch onder de GIL
-    clf             = new_clf
-    explainer       = new_explainer
-    features        = new_features
+    clf = new_clf
+    explainer = new_explainer
+    features = new_features
     features_custom = new_features
 
 
@@ -160,8 +162,9 @@ class TrainRequest(BaseModel):
     dropout_column: str = "Dropout"
     rf_parameters: dict | None = None
 
+
 class RankRequest(BaseModel):
-    students:          list[dict]
+    students: list[dict]
     use_default_model: bool = False
 
 
@@ -481,7 +484,9 @@ def explain_risk(request: ExplainRequest):
     X_pred = _student_to_df(student, active_features)
     shap_vals = exp.shap_values(X_pred.values)
     imputed_set = set(request.imputed_columns)
-    fi = {k: v for k, v in zip(active_features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set}
+    fi = {
+        k: v for k, v in zip(active_features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set
+    }
     top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
 
     # Detecteer of alle SHAP-waarden nagenoeg nul zijn (geen informatieve factoren)
@@ -612,7 +617,7 @@ def train_model_endpoint(request: TrainRequest):
             )
             _reload_model(MODEL_CUSTOM_PATH)
             with _training.lock:
-                _training.status  = "done"
+                _training.status = "done"
                 _training.message = f"Model getraind op {len(df_train)} studenten ({len(feature_cols)} features)."
         except Exception as e:
             with _training.lock:

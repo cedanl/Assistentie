@@ -11,7 +11,6 @@ from pathlib import Path
 import joblib
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
-
 from student_signal import prepare
 from student_signal.modeling.train import train_random_forest
 
@@ -60,10 +59,10 @@ def train_model(
     prepared = prepare(df, df, target_col=dropout_col, id_col=id_col)
 
     rf_params = param_grid or {
-        "n_estimators":      [100, 200],
-        "max_depth":         [5, 10, None],
+        "n_estimators": [100, 200],
+        "max_depth": [5, 10, None],
         "min_samples_split": [2, 5],
-        "max_features":      ["sqrt", "log2"],
+        "max_features": ["sqrt", "log2"],
     }
 
     model = train_random_forest(prepared.train_df, random_seed, dropout_col, rf_params)

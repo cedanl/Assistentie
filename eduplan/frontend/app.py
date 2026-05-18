@@ -353,7 +353,7 @@ def _build_word_doc(analyse: dict) -> BytesIO:
 
 def _run_voorspelling(dff: pd.DataFrame):
     """Doe API-call voor alle studenten in dff; sla op in session_state."""
-    opl  = st.session_state.selected_opleiding
+    opl = st.session_state.selected_opleiding
     klas = st.session_state.selected_klas
     key = (opl, klas)
 
@@ -370,16 +370,13 @@ def _run_voorspelling(dff: pd.DataFrame):
         resp = requests.post(
             "http://localhost:8000/rank_students",
             json={
-                "students":          dff.to_dict(orient="records"),
+                "students": dff.to_dict(orient="records"),
                 "use_default_model": gebruik_default,
             },
             timeout=30,
         )
         ranked = resp.json()
-        resultaten = [
-            (pd.Series(s), {"probability": s["probability"], "prediction": s["prediction"]})
-            for s in ranked
-        ]
+        resultaten = [(pd.Series(s), {"probability": s["probability"], "prediction": s["prediction"]}) for s in ranked]
         st.session_state.risicostudenten = resultaten
         st.session_state.top_n = min(len(resultaten), 10)
 
@@ -402,9 +399,9 @@ def _genereer_eduplan():
                 return requests.post(
                     "http://localhost:8000/explain_risk",
                     json={
-                        "student":           row.to_dict(),
-                        "prediction":        result["prediction"],
-                        "probability":       result["probability"],
+                        "student": row.to_dict(),
+                        "prediction": result["prediction"],
+                        "probability": result["probability"],
                         "use_default_model": gebruik_default,
                         "imputed_columns": vul_log,
                     },
@@ -418,7 +415,7 @@ def _genereer_eduplan():
                 return requests.post(
                     "http://localhost:8000/feature_importance",
                     json={
-                        "student":           row.to_dict(),
+                        "student": row.to_dict(),
                         "use_default_model": gebruik_default,
                     },
                     timeout=10,
