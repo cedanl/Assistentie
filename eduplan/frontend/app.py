@@ -397,7 +397,7 @@ def _genereer_eduplan():
         def _error_html(title: str, detail: str) -> str:
             return (
                 "<div style='border-left:4px solid #c0392b; background:#fdf3f1; "
-                "padding:14px 18px; border-radius:6px; font-family:\"General Sans\",sans-serif;'>"
+                "padding:14px 18px; border-radius:6px;'>"
                 f"<b style='color:#c0392b;'>⚠️ {html.escape(title)}</b><br>"
                 f"<span style='color:#444;'>{html.escape(detail)}</span>"
                 "</div>"
@@ -445,6 +445,9 @@ def _genereer_eduplan():
                 )
 
         def _fetch_fi():
+            # Stille fallback naar {}: feature importance voedt een ondersteunende
+            # bar chart die zelf gracefully omgaat met een lege dict. Een fout hier
+            # mag het hoofd-EduPlan (van _fetch_explain) niet overschaduwen.
             try:
                 resp = requests.post(
                     "http://localhost:8000/feature_importance",

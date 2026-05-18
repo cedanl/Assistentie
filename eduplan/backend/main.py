@@ -38,8 +38,8 @@ from pathlib import Path
 import joblib
 import pandas as pd
 import shap
-from fastapi import FastAPI
 from anthropic import Anthropic
+from fastapi import FastAPI
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestRegressor
 
@@ -49,6 +49,30 @@ app = FastAPI()
 
 client = Anthropic()
 ANTHROPIC_MODEL = "claude-sonnet-4-6"
+
+
+def _call_llm(
+    prompt: str,
+    *,
+    max_tokens: int,
+    temperature: float | None = None,
+    prefill: str | None = None,
+) -> str:
+    """Roep het Anthropic Messages API aan en geef de gegenereerde tekst terug.
+
+    Met optionele assistant-prefill om de output te starten (handig voor JSON of
+    andere structured output). De prefill wordt vooraan aan de response geplakt.
+    """
+    messages: list[dict] = [{"role": "user", "content": prompt}]
+    if prefill is not None:
+        messages.append({"role": "assistant", "content": prefill})
+    kwargs: dict = {"model": ANTHROPIC_MODEL, "max_tokens": max_tokens, "messages": messages}
+    if temperature is not None:
+        kwargs["temperature"] = temperature
+    response = client.messages.create(**kwargs)
+    text = response.content[0].text
+    return (prefill + text) if prefill is not None else text
+
 
 # Modelpaden
 MODEL_DEFAULT_PATH = "backend/model.joblib"
@@ -429,13 +453,9 @@ def _build_risicoprofiel_html(
 
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
+    """Genereer een management-samenvatting van BI-data via het LLM."""
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = client.messages.create(
-        model=ANTHROPIC_MODEL,
-        max_tokens=512,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    summary = response.content[0].text
+    summary = _call_llm(prompt, max_tokens=512)
     return {"summary": summary}
 
 
@@ -575,13 +595,7 @@ Maximaal 5 genummerde actiepunten, gesorteerd op urgentie.
 Maak expliciet onderscheid: déze week vs déze maand.
 """
 
-    response = client.messages.create(
-        model=ANTHROPIC_MODEL,
-        max_tokens=2048,
-        temperature=0.2,
-        messages=[{"role": "user", "content": prompt}],
-    )
-    sectie2_4 = response.content[0].text
+    sectie2_4 = _call_llm(prompt, max_tokens=2048, temperature=0.2)
 
     # Converteer markdown naar HTML zodat de frontend het correct kan renderen
     sectie2_4_html = _markdown_to_html(sectie2_4)
@@ -665,18 +679,9 @@ def map_columns(request: MapColumnsRequest):
         "Geef uitsluitend het JSON-object terug, zonder uitleg of markdown.\n\n"
         'Voorbeeld: {"StudentAge": "leeftijd", "absence_unauthorized": "ongeoorloofd_verzuim"}'
     )
-    response = client.messages.create(
-        model=ANTHROPIC_MODEL,
-        max_tokens=1024,
-        messages=[
-            {"role": "user", "content": prompt},
-            {"role": "assistant", "content": "{"},
-        ],
-    )
-    raw = "{" + response.content[0].text.strip()
-    json_match = re.search(r"\{.*\}", raw, re.DOTALL)
+    raw = _call_llm(prompt, max_tokens=1024, prefill="{").strip()
     try:
-        mapping = json.loads(json_match.group()) if json_match else {}
-    except Exception:
+        mapping = json.loads(raw[: raw.rfind("}") + 1])
+    except json.JSONDecodeError:
         mapping = {}
     return {"mapping": mapping}
