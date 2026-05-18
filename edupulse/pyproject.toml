@@ -22,6 +22,7 @@ dependencies = [
     "shap>=0.46.0",
     "faker>=30.0.0",
     "joblib>=1.4.0",
+    "streamlit-extras>=1.4.1",
 ]
 
 [project.optional-dependencies]

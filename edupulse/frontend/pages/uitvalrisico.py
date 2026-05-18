@@ -1,6 +1,7 @@
 # frontend/pages/uitvalrisico.py
 import requests
 import streamlit as st
+from streamlit_extras.metric_cards import style_metric_cards
 
 API = "http://localhost:8001"
 
@@ -45,26 +46,26 @@ if st.session_state.geselecteerde_student:
         resp_r.raise_for_status()
         risico = resp_r.json()
 
-        col1, col2, col3 = st.columns([2, 1, 1])
-        with col1:
+        naam_col, m1, m2, m3, m4 = st.columns([2, 1, 1, 1, 1])
+        with naam_col:
             st.markdown(f"### {student['naam']}")
             st.caption(f"{student['opleiding']} · {student['cohort']} · {student['leerweg']}")
-        with col2:
-            kleur = "dreiging" if risico["status"] == "dreiging" else "opkoers"
-            label = "⚠ Dreiging" if risico["status"] == "dreiging" else "✓ Op koers"
-            st.markdown(f"""
-            <div class='metric-card' style='text-align:center;'>
-              <div style='font-size:0.7rem;color:#AAA;text-transform:uppercase;letter-spacing:0.08em;'>
-                Succeskans
-              </div>
-              <div class='{kleur}' style='font-size:2.5rem;'>{risico['succes_kans']*100:.0f}%</div>
-              <div class='{kleur}'>{label}</div>
-            </div>""", unsafe_allow_html=True)
-        with col3:
-            st.markdown("<div class='metric-card'>", unsafe_allow_html=True)
-            st.metric("Aanwezigheid", f"{student['aanwezigheid']*100:.0f}%")
-            st.metric("BSA punten", student['bsa_studiepunten'])
-            st.markdown("</div>", unsafe_allow_html=True)
+        status_label = "⚠️ Dreiging" if risico["status"] == "dreiging" else "✅ Op koers"
+        aanw = student['aanwezigheid']
+        bsa = student['bsa_studiepunten']
+
+        with m1:
+            st.metric("🎯 Succeskans", f"{risico['succes_kans']*100:.0f}%", status_label)
+        with m2:
+            st.metric("⚠️ Uitvalkans", f"{risico['uitval_kans']*100:.0f}%", status_label)
+        with m3:
+            aanw_label = "✅ Voldoende" if aanw >= 0.80 else "⚠️ Te laag"
+            st.metric("📅 Aanwezigheid", f"{aanw*100:.0f}%", aanw_label)
+        with m4:
+            bsa_label = "✅ Op schema" if bsa >= 40 else "⚠️ Achterstand"
+            st.metric("📚 BSA punten", bsa, bsa_label)
+
+        style_metric_cards(border_left_color="#DD784B", box_shadow=True)
 
         # SHAP top-3
         st.markdown("**Top-3 beïnvloedende factoren:**")
@@ -98,8 +99,11 @@ if vraag:
                     timeout=60,
                 )
                 data = r.json()
-                antwoord = data["response"]
-                st.session_state.sessie_id = data["session_id"]
+                if not r.ok:
+                    antwoord = f"⚠️ Backend fout ({r.status_code}): {data.get('detail', r.text)}"
+                else:
+                    antwoord = data["response"]
+                    st.session_state.sessie_id = data["session_id"]
             except Exception as e:
                 antwoord = f"Fout: {e}. Is de backend actief op poort 8001?"
         st.markdown(antwoord)
