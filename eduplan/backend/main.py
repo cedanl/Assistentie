@@ -50,7 +50,7 @@ app = FastAPI()
 
 client = OpenAI()
 
-MODEL = "gpt-4.1"
+MODEL = "gpt-5.4-mini-2026-03-17"
 
 # Modelpaden
 MODEL_DEFAULT_PATH = "backend/model.joblib"
