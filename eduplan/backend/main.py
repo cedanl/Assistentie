@@ -581,13 +581,13 @@ Maximaal 5 genummerde actiepunten, gesorteerd op urgentie.
 Maak expliciet onderscheid: déze week vs déze maand.
 """
 
-    response = client.responses.create(
-        model=MODEL,
-        store=False,
+    response = anthropic_client.messages.create(
+        model=ANTHROPIC_MODEL,
+        max_tokens=2048,
         temperature=0.2,
-        input=[{"role": "user", "content": prompt}],
+        messages=[{"role": "user", "content": prompt}],
     )
-    sectie2_4 = response.output_text  # type: ignore
+    sectie2_4 = response.content[0].text
 
     # Converteer markdown naar HTML zodat de frontend het correct kan renderen
     sectie2_4_html = _markdown_to_html(sectie2_4)

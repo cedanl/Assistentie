@@ -163,7 +163,7 @@ def test_feature_importance_values_are_floats(client, demo_student):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def test_explain_risk_returns_sectie1_html(client, demo_student, mock_openai):
+def test_explain_risk_returns_sectie1_html(client, demo_student, mock_anthropic):
     payload = {
         "student": demo_student,
         "prediction": 1,
@@ -177,7 +177,7 @@ def test_explain_risk_returns_sectie1_html(client, demo_student, mock_openai):
     assert "HOOG" in explanation
 
 
-def test_explain_risk_llm_called_when_shap_sufficient(client, demo_student, mock_openai, monkeypatch):
+def test_explain_risk_llm_called_when_shap_sufficient(client, demo_student, mock_anthropic, monkeypatch):
     """Als SHAP-waarden informatief zijn (max >= 0.01), wordt de LLM aangeroepen."""
     import numpy as np
 
@@ -199,10 +199,10 @@ def test_explain_risk_llm_called_when_shap_sufficient(client, demo_student, mock
         "imputed_columns": [],
     }
     client.post("/explain_risk", json=payload)
-    assert mock_openai.responses.create.called
+    assert mock_anthropic.messages.create.called
 
 
-def test_explain_risk_data_onvoldoende_skips_llm(client, demo_student, mock_openai):
+def test_explain_risk_data_onvoldoende_skips_llm(client, demo_student, mock_anthropic):
     """Als alle kolommen geïmputeerd zijn, wordt de LLM niet aangeroepen."""
     payload = {
         "student": demo_student,
@@ -212,11 +212,11 @@ def test_explain_risk_data_onvoldoende_skips_llm(client, demo_student, mock_open
     }
     resp = client.post("/explain_risk", json=payload)
     assert resp.status_code == 200
-    assert not mock_openai.responses.create.called
+    assert not mock_anthropic.messages.create.called
     assert "Geen gepersonaliseerd advies" in resp.json()["explanation"]
 
 
-def test_explain_risk_laag_risico(client, demo_student, mock_openai):
+def test_explain_risk_laag_risico(client, demo_student, mock_anthropic):
     payload = {
         "student": demo_student,
         "prediction": 0,
