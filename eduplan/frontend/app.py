@@ -1079,11 +1079,12 @@ with bottom():
             try:
                 with open("docs/model_analysis.html", "rb") as _f:
                     st.download_button(
-                        label="📊 Download model evaluatie",
+                        label="📊 Modelevaluatie",
                         data=_f.read(),
                         file_name="model_analysis.html",
                         mime="text/html",
                         use_container_width=True,
+                        help="Download het modelevaluatie-rapport (HTML)",
                     )
             except FileNotFoundError:
                 pass
