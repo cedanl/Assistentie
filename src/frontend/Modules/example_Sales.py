@@ -1,6 +1,11 @@
 import streamlit as st
 
-from backend.example_sales import calculate_sales_metrics, get_monthly_sales, get_sales_data
+from backend.example_sales import (
+    calculate_sales_metrics,
+    get_monthly_sales,
+    get_sales_by_category,
+    get_sales_data,
+)
 
 # ---------------------------------------
 # PAGE CONFIGURATION
@@ -12,7 +17,6 @@ icon = ":material/euro:"
 # PAGE ELEMENTS
 # ---------------------------------------
 st.title("📈 Sales Dashboard")
-st.balloons()
 
 # Get data
 sales_data = get_sales_data()
@@ -31,19 +35,11 @@ with col4:
 
 # Monthly sales chart
 st.subheader("Monthly Sales Trend")
-monthly_data = get_monthly_sales(sales_data)
-st.line_chart(monthly_data)
+st.line_chart(get_monthly_sales(sales_data))
 
 # Sales by category
 st.subheader("Sales by Category")
-category_data = {}
-for sale in sales_data:
-    category = sale["category"]
-    if category not in category_data:
-        category_data[category] = 0
-    category_data[category] += sale["amount"]
-
-st.bar_chart(category_data)
+st.bar_chart(get_sales_by_category(sales_data))
 
 # Raw data table
 if st.checkbox("Show detailed sales data"):
