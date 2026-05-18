@@ -75,6 +75,10 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - **`eduplan/`** — A production EduPlan app for student dropout risk prediction (has its own `CLAUDE.md` with full details)
 - **`edupulse/`** — EduClaw Sprint 1 app: a harnessed agentic uitvalrisico-check for MBO begeleiders. FastAPI backend (port 8001) + Streamlit frontend (port 8503) + Claude agent kernel. Has its own `CLAUDE.md`. Distinct from `eduplan/` — different ports, uses Anthropic (not OpenAI) for the agent kernel, has its own SQLite DB and ML pipeline (`backend/ml/`).
 
+The root `pyproject.toml` package is named `streamlit-app-template` (the `src/` template is the root package); the repo as a whole is referred to as **CEDAssistentie**. Don't be surprised when `uv sync` at the root reports `streamlit-app-template`.
+
+Numbered `.md` files at the repo root (`02_…md` through `10_…md`, plus `educlaw_architectuur.md`, `experiment_v2_UPA.md`) are conceptual/use-case writeups in Dutch. They are not loaded by any code — treat them as reference reading, not source.
+
 ## Running the Template App (`src/`)
 
 **Install dependencies:**
@@ -101,6 +105,8 @@ uv run ruff format src/
 The root `pyproject.toml` manages the template's dependencies (`streamlit>=1.46.0`, `ruff>=0.15.10`). Python >= 3.13 required. Ruff config (`[tool.ruff]`) is defined in root `pyproject.toml`.
 
 ## Template Architecture (`src/`)
+
+`src/` is a *scaffolding template* for new CEDA Streamlit apps, not a running app. `src/backend/` currently contains only example modules (`example_sales.py`, `example_task.py`, `utils/`). The conventions below describe how to add pages to a new project that starts from this template.
 
 ### Page Configuration Pattern
 New Streamlit apps register pages in an entry `main.py` using `st.navigation` / `st.Page`. Each page file exposes `title` and `icon` variables at module level. The current `src/main.py` is not a Streamlit entry point — it is the standalone Claude agent CLI (see below).
@@ -139,6 +145,19 @@ cd eduplan && uv run pytest tests/test_backend.py::test_factor_label_binary_valu
 ```
 
 Install dev dependencies first if needed: `cd eduplan && uv sync --extra dev`
+
+## EduPulse Sub-Project
+
+See `edupulse/CLAUDE.md` for full details. First-time setup (from `edupulse/`):
+
+```bash
+uv sync
+uv run python -m backend.ml.generate_data   # synthetic CSVs in data/
+uv run python -m backend.ml.train           # writes data/model.pkl + feature_list.json
+uv run python -m backend.seed               # seeds SQLite with ~1000 students
+```
+
+Then run backend on **8001** and frontend on **8503** (see `edupulse/CLAUDE.md` for exact commands). Requires `ANTHROPIC_API_KEY` for the agent kernel.
 
 ## Repository-Wide Notes
 
