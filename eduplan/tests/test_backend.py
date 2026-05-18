@@ -233,7 +233,7 @@ def test_explain_risk_laag_risico(client, demo_student, mock_openai):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def test_summarize_returns_summary(client, mock_openai):
+def test_summarize_returns_summary(client, mock_anthropic):
     resp = client.post("/summarize", json={"data": "student1,student2"})
     assert resp.status_code == 200
     assert "summary" in resp.json()

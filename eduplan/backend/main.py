@@ -436,8 +436,12 @@ def _build_risicoprofiel_html(
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
-    summary = response.output_text  # type: ignore
+    response = anthropic_client.messages.create(
+        model=ANTHROPIC_MODEL,
+        max_tokens=512,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    summary = response.content[0].text
     return {"summary": summary}
 
 
