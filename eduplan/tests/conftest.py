@@ -38,3 +38,16 @@ def mock_openai(monkeypatch) -> MagicMock:
 
     monkeypatch.setattr(main_mod, "client", mock_client)
     return mock_client
+
+
+@pytest.fixture
+def mock_anthropic(monkeypatch) -> MagicMock:
+    """Vervangt de Anthropic-client in backend.main door een mock."""
+    mock_response = MagicMock()
+    mock_response.content = [MagicMock(text="Gemockte LLM-uitvoer")]
+    mock_client = MagicMock()
+    mock_client.messages.create.return_value = mock_response
+    import backend.main as main_mod
+
+    monkeypatch.setattr(main_mod, "anthropic_client", mock_client)
+    return mock_client

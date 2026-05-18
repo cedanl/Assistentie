@@ -40,6 +40,7 @@ import joblib
 import pandas as pd
 import shap
 from fastapi import FastAPI
+from anthropic import Anthropic
 from openai import OpenAI
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestRegressor
@@ -51,6 +52,9 @@ app = FastAPI()
 client = OpenAI()
 
 MODEL = "gpt-5.4-mini-2026-03-17"
+
+anthropic_client = Anthropic()
+ANTHROPIC_MODEL = "claude-sonnet-4-6"
 
 # Modelpaden
 MODEL_DEFAULT_PATH = "backend/model.joblib"

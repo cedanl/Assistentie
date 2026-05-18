@@ -11,6 +11,7 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "anthropic>=0.43.0",
     "fastapi>=0.135.1",
     "openai>=2.26.0",
     "pandas>=2.3.3",
