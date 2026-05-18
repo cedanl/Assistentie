@@ -5,12 +5,6 @@ set -e
 
 # cd "$(dirname "$0")" # Ensure we're in the script's directory
 
-# #########################################################################################
-# THIS IS STRICTLY FORBIDDEN. TEMPORARILY STORED MY PERSONAL API KEY HERE FOR DEMO.
-# DO NOT DISTRIBUTE!!!!!!
-# export set OPENAI_API_KEY=ASK ED
-# #########################################################################################
-
 echo
 echo
 echo "##################################################################"
@@ -42,22 +36,7 @@ echo "Omgeving geactiveerd"
 
 # Install dependencies
 echo "Installeren van dependencies..."
-uv add -U -r requirements.txt
-
-# If you want to enforce .env presence, uncomment and adapt these warnings/checks
-# if [ ! -f .env ]; then
-#     echo "[WAARSCHUWING] .env bestand niet gevonden!"
-#     echo
-#     echo "Kopieer .env.example naar .env en voeg je OpenAI API key toe:"
-#     echo "    cp .env.example .env"
-#     echo
-#     read -p "Wil je doorgaan zonder .env bestand? (j/n): " continue
-#     if [[ ! "$continue" =~ ^[jJ]([aA])?$ ]]; then
-#         echo
-#         echo "[GESTOPT] Maak eerst een .env bestand aan."
-#         exit 1
-#     fi
-# fi
+uv sync
 
 echo
 echo "[START] Starting EduPlan FastAPI Server met uvicorn..."

@@ -38,22 +38,12 @@ echo "Omgeving geactiveerd"
 
 # Install dependencies
 echo "Installeren van dependencies..."
-uv add -U -r requirements.txt
+uv sync
 
-# If you want to enforce .env presence, uncomment these warnings/checks
-# if [ ! -f .env ]; then
-#     echo "[WAARSCHUWING] .env bestand niet gevonden!"
-#     echo
-#     echo "Kopieer .env.example naar .env en voeg je OpenAI API key toe:"
-#     echo "    cp .env.example .env"
-#     echo
-#     read -p "Wil je doorgaan zonder .env bestand? (j/n): " continue
-#     if [[ ! "$continue" =~ ^[jJ]([aA])?$ ]]; then
-#         echo
-#         echo "[GESTOPT] Maak eerst een .env bestand aan."
-#         exit 1
-#     fi
-# fi
+# Laad .env zodat ANTHROPIC_API_KEY (en andere env vars) beschikbaar zijn voor de frontend
+set -a
+[ -f .env ] && source .env
+set +a
 
 echo
 echo "[START] Starting EduPlan Streamlit Server met uv..."
