@@ -1,4 +1,3 @@
-# frontend/pages/uitvalrisico.py
 import requests
 import streamlit as st
 from streamlit_extras.metric_cards import style_metric_cards
@@ -21,17 +20,14 @@ with st.sidebar:
     zoek = st.text_input("Naam of studentnummer", placeholder="Bijv. Youssef of 20240001")
     if zoek:
         try:
-            resp = requests.get(f"{API}/students?limit=100", timeout=10)
+            resp = requests.get(
+                f"{API}/students/search", params={"q": zoek, "limit": 8}, timeout=10
+            )
             resp.raise_for_status()
-            studenten = resp.json()
-            q = zoek.lower()
-            treffer = [s for s in studenten if q in s["naam"].lower() or q in s["studentnummer"]][
-                :8
-            ]
-            for s in treffer:
+            for s in resp.json():
                 if st.button(f"{s['naam']} ({s['studentnummer']})", key=s["studentnummer"]):
                     st.session_state.geselecteerde_student = s["studentnummer"]
-        except Exception:
+        except requests.RequestException:
             st.error("API niet bereikbaar. Start de backend eerst.")
 
 # Student kaart

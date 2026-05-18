@@ -1,4 +1,5 @@
-# backend/agent/tools.py
+from sqlalchemy import or_
+
 from backend.models import StudentDB, StudentSchema
 from backend.ml.predict import RisicoPredictor, DREMPEL
 
@@ -63,20 +64,20 @@ class ToolRegistry:
         self.db = db
         self.predictor = predictor
 
-    def _student_of_fout(self, studentnummer: str):
+    def _get_student_or_error(self, studentnummer: str) -> tuple[StudentDB | None, dict | None]:
         student = self.db.query(StudentDB).filter_by(studentnummer=studentnummer).first()
         if not student:
             return None, {"error": f"Student {studentnummer!r} niet gevonden."}
         return student, None
 
     def get_student_data(self, studentnummer: str) -> dict:
-        student, err = self._student_of_fout(studentnummer)
+        student, err = self._get_student_or_error(studentnummer)
         if err:
             return err
         return StudentSchema.model_validate(student).model_dump(mode="json")
 
     def predict_dropout_risk(self, studentnummer: str) -> dict:
-        student, err = self._student_of_fout(studentnummer)
+        student, err = self._get_student_or_error(studentnummer)
         if err:
             return err
         data = StudentSchema.model_validate(student).model_dump()
@@ -91,7 +92,7 @@ class ToolRegistry:
         }
 
     def get_cohort_comparison(self, studentnummer: str) -> dict:
-        student, err = self._student_of_fout(studentnummer)
+        student, err = self._get_student_or_error(studentnummer)
         if err:
             return err
         cohortgenoten = (
@@ -125,7 +126,7 @@ class ToolRegistry:
         }
 
     def get_mentor_info(self, studentnummer: str) -> dict:
-        student, err = self._student_of_fout(studentnummer)
+        student, err = self._get_student_or_error(studentnummer)
         if err:
             return err
         return {
@@ -136,8 +137,6 @@ class ToolRegistry:
         }
 
     def search_students(self, query: str) -> list[dict]:
-        from sqlalchemy import or_
-
         treffer = (
             self.db.query(StudentDB)
             .filter(
