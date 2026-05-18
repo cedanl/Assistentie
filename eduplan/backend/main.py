@@ -8,7 +8,6 @@
 #     "scikit-learn",
 #     "fastapi",
 #     "uvicorn",
-#     "openai",
 #     "requests",
 #     "plotly",
 #     "shap",
@@ -40,7 +39,7 @@ import joblib
 import pandas as pd
 import shap
 from fastapi import FastAPI
-from openai import OpenAI
+from anthropic import Anthropic
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestRegressor
 
@@ -48,9 +47,8 @@ import backend.trainer as trainer
 
 app = FastAPI()
 
-client = OpenAI()
-
-MODEL = "gpt-5.4-mini-2026-03-17"
+client = Anthropic()
+ANTHROPIC_MODEL = "claude-sonnet-4-6"
 
 # Modelpaden
 MODEL_DEFAULT_PATH = "backend/model.joblib"
@@ -432,8 +430,12 @@ def _build_risicoprofiel_html(
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
-    summary = response.output_text  # type: ignore
+    response = client.messages.create(
+        model=ANTHROPIC_MODEL,
+        max_tokens=512,
+        messages=[{"role": "user", "content": prompt}],
+    )
+    summary = response.content[0].text
     return {"summary": summary}
 
 
@@ -504,7 +506,7 @@ def explain_risk(request: ExplainRequest):
         urgentie,
         top_factors,
         imputed_set,
-        MODEL,
+        ANTHROPIC_MODEL,
         data_onvoldoende=data_onvoldoende,
     )
 
@@ -573,13 +575,13 @@ Maximaal 5 genummerde actiepunten, gesorteerd op urgentie.
 Maak expliciet onderscheid: déze week vs déze maand.
 """
 
-    response = client.responses.create(
-        model=MODEL,
-        store=False,
+    response = client.messages.create(
+        model=ANTHROPIC_MODEL,
+        max_tokens=2048,
         temperature=0.2,
-        input=[{"role": "user", "content": prompt}],
+        messages=[{"role": "user", "content": prompt}],
     )
-    sectie2_4 = response.output_text  # type: ignore
+    sectie2_4 = response.content[0].text
 
     # Converteer markdown naar HTML zodat de frontend het correct kan renderen
     sectie2_4_html = _markdown_to_html(sectie2_4)
@@ -663,8 +665,15 @@ def map_columns(request: MapColumnsRequest):
         "Geef uitsluitend het JSON-object terug, zonder uitleg of markdown.\n\n"
         'Voorbeeld: {"StudentAge": "leeftijd", "absence_unauthorized": "ongeoorloofd_verzuim"}'
     )
-    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
-    raw = response.output_text.strip()
+    response = client.messages.create(
+        model=ANTHROPIC_MODEL,
+        max_tokens=1024,
+        messages=[
+            {"role": "user", "content": prompt},
+            {"role": "assistant", "content": "{"},
+        ],
+    )
+    raw = "{" + response.content[0].text.strip()
     json_match = re.search(r"\{.*\}", raw, re.DOTALL)
     try:
         mapping = json.loads(json_match.group()) if json_match else {}

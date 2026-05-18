@@ -69,7 +69,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ## Project Overview
 
-**EduPlan** is a student dropout risk detection and intervention tool for Dutch MBO institutions. It uses a **RandomForestRegressor** from [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) to predict dropout risk and generates AI-powered explanations in Dutch via an OpenAI model (the `MODEL` constant in `backend/main.py`).
+**EduPlan** is a student dropout risk detection and intervention tool for Dutch MBO institutions. It uses a **RandomForestRegressor** from [MondriaanBI/Uitnodigingsregel](https://github.com/MondriaanBI/Uitnodigingsregel) to predict dropout risk and generates AI-powered explanations in Dutch via an Anthropic model (the `ANTHROPIC_MODEL` constant in `backend/main.py`, currently `claude-sonnet-4-6`).
 
 ## Running the Application
 
@@ -110,9 +110,9 @@ uv run pytest tests/
 uv run pytest tests/test_backend.py::test_factor_label_binary_value_1
 ```
 
-The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the OpenAI client. Tests must be run from inside `eduplan/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_openai) live in `tests/conftest.py`. `test_trainer.py` uses an `autouse` fixture `mock_student_signal` that mocks `trainer.prepare` and `trainer.train_random_forest` — keeping trainer tests fast and independent of the student-signal library.
+The test suite uses `fastapi.testclient.TestClient` (no running server needed) and `monkeypatch` to mock the Anthropic client. Tests must be run from inside `eduplan/` so relative paths to `shared/data.csv` and `backend/model.joblib` resolve correctly. Shared fixtures (client, demo_student, mock_anthropic) live in `tests/conftest.py`. `test_trainer.py` uses an `autouse` fixture `mock_student_signal` that mocks `trainer.prepare` and `trainer.train_random_forest` — keeping trainer tests fast and independent of the student-signal library.
 
-There is also a project-root `eduplan/conftest.py` that patches `openai.OpenAI` *before* `backend.main` is imported. This is required because `ALL_PROXY` in the dev environment sets a SOCKS proxy that httpx cannot use without the optional `socksio` package — without this patch, OpenAI client construction at import time would fail. Don't remove it.
+There is also a project-root `eduplan/conftest.py` that patches `anthropic.Anthropic` *before* `backend.main` is imported. This is required because `ALL_PROXY` in the dev environment sets a SOCKS proxy that httpx cannot use without the optional `socksio` package — without this patch, Anthropic client construction at import time would fail. Don't remove it.
 
 **Run the standalone Claude agent CLI:**
 ```bash
@@ -121,8 +121,7 @@ python main.py  # requires ANTHROPIC_API_KEY
 
 ## Required Environment Variables
 
-- `OPENAI_API_KEY` — used by the backend for LLM explanations (model set via the `MODEL` constant in `backend/main.py`)
-- `ANTHROPIC_API_KEY` — used only by `main.py` (the standalone agent CLI)
+- `ANTHROPIC_API_KEY` — used by the backend for LLM explanations (model set via the `ANTHROPIC_MODEL` constant in `backend/main.py`); also used by the standalone Claude agent CLI in `main.py`.
 
 ## Architecture
 
@@ -133,7 +132,7 @@ Streamlit frontend (frontend/app.py)
     → FastAPI backend (backend/main.py)
         → RandomForestRegressor (backend/model.joblib)
         → SHAP TreeExplainer
-        → OpenAI Responses API
+        → Anthropic Messages API
 ```
 
 ### Backend (`backend/main.py`) — 9 endpoints
@@ -143,8 +142,8 @@ Streamlit frontend (frontend/app.py)
 | `POST /rank_students` | `students` (list of dicts) + `use_default_model` | Bulk-ranking: scoort alle studenten in één call, gesorteerd hoog→laag; vervangt N losse `/predict_dropout` calls |
 | `POST /explain_risk` | Student data + probability + `imputed_columns` + `use_default_model` | EduPlan: sectie 1 deterministisch HTML; secties 2–4 via LLM met alleen SHAP-factoren (geen studentprofiel) |
 | `POST /feature_importance` | Student data + `use_default_model` | SHAP values per feature (TreeExplainer on regressor) — used for the UI bar chart |
-| `POST /summarize` | CSV data string or question | Management summary or Q&A via OpenAI |
-| `POST /map_columns` | Uploaded + required column lists | LLM-based column name mapping for CSV uploads |
+| `POST /summarize` | CSV data string or question | Management summary or Q&A via Anthropic |
+| `POST /map_columns` | Uploaded + required column lists | LLM-based column name mapping for CSV uploads; uses Anthropic assistant-turn prefill (`{"role": "assistant", "content": "{"}`) to force well-formed JSON output |
 | `POST /train_model` | `data` (list of dicts) + `dropout_column` + optional `rf_parameters` | Train a custom RandomForest via student-signal; runs in background thread; saves `model_custom.joblib` + `model_custom_features.json` |
 | `GET /train_status` | — | Returns current training state: `idle \| training \| done \| failed` with message |
 | `DELETE /reset_model` | — | Deletes `model_custom.joblib` + `model_custom_features.json` and resets active model to default |
@@ -231,16 +230,16 @@ Risk levels: **LAAG** (< 35%), **MATIG** (35–65%), **HOOG** (≥ 65%).
 - `_SECTOR_COLS` and `_VOOROPL_MAP` — module-level dicts for decoding one-hot sector/education columns in the deterministic profile.
 - `_markdown_to_html()` — converts LLM markdown output to HTML. Calls `html.escape()` first to prevent XSS via raw HTML in LLM responses, then applies bold/italic/list/heading (`#`–`####` → `<h2>`–`<h4>`) regex substitutions.
 
-## OpenAI Client
+## Anthropic Client
 
-The backend uses the **Responses API** (not Chat Completions):
+The backend uses the **Messages API**:
 
 ```python
-response = client.responses.create(model=MODEL, ...)
-text = response.output_text  # NOT .choices[0].message.content
+response = client.messages.create(model=ANTHROPIC_MODEL, max_tokens=2048, ...)
+text = response.content[0].text  # NOT response.output_text
 ```
 
-The `mock_openai` fixture in `tests/conftest.py` mocks `mock_client.responses.create` and sets `mock_response.output_text`. When writing new tests that touch LLM calls, mock this path — not `chat.completions.create`.
+The `mock_anthropic` fixture in `tests/conftest.py` mocks `mock_client.messages.create` and sets `mock_response.content = [MagicMock(text="...")]`. When writing new tests that touch LLM calls, mock this path.
 
 ## Key Implementation Notes
 

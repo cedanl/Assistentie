@@ -56,7 +56,7 @@ def test_build_risicoprofiel_hoog_bevat_risiconiveau():
         urgentie="directe actie vereist (deze week)",
         top_factors=[("absence_unauthorized", 0.12)],
         imputed_set=set(),
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
     )
     assert "HOOG" in html
     assert "75%" in html
@@ -70,7 +70,7 @@ def test_build_risicoprofiel_matig():
         urgentie="actie aanbevolen binnen twee weken",
         top_factors=[],
         imputed_set=set(),
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
     )
     assert "MATIG" in html
 
@@ -83,7 +83,7 @@ def test_build_risicoprofiel_imputed_field_toont_niet_beschikbaar():
         urgentie="actie aanbevolen binnen twee weken",
         top_factors=[],
         imputed_set={"StudentAge", "absence_unauthorized"},
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
     )
     assert "niet beschikbaar" in html
 
@@ -96,7 +96,7 @@ def test_build_risicoprofiel_data_onvoldoende_toont_waarschuwing():
         urgentie="reguliere monitoring volstaat",
         top_factors=[("StudentAge", 0.001)],
         imputed_set={"StudentAge"},
-        model_name="gpt-4.1",
+        model_name="claude-sonnet-4-6",
         data_onvoldoende=True,
     )
     assert "Datakwaliteit" in html or "onvoldoende" in html.lower()
@@ -163,7 +163,7 @@ def test_feature_importance_values_are_floats(client, demo_student):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def test_explain_risk_returns_sectie1_html(client, demo_student, mock_openai):
+def test_explain_risk_returns_sectie1_html(client, demo_student, mock_anthropic):
     payload = {
         "student": demo_student,
         "prediction": 1,
@@ -177,7 +177,7 @@ def test_explain_risk_returns_sectie1_html(client, demo_student, mock_openai):
     assert "HOOG" in explanation
 
 
-def test_explain_risk_llm_called_when_shap_sufficient(client, demo_student, mock_openai, monkeypatch):
+def test_explain_risk_llm_called_when_shap_sufficient(client, demo_student, mock_anthropic, monkeypatch):
     """Als SHAP-waarden informatief zijn (max >= 0.01), wordt de LLM aangeroepen."""
     import numpy as np
 
@@ -199,10 +199,10 @@ def test_explain_risk_llm_called_when_shap_sufficient(client, demo_student, mock
         "imputed_columns": [],
     }
     client.post("/explain_risk", json=payload)
-    assert mock_openai.responses.create.called
+    assert mock_anthropic.messages.create.called
 
 
-def test_explain_risk_data_onvoldoende_skips_llm(client, demo_student, mock_openai):
+def test_explain_risk_data_onvoldoende_skips_llm(client, demo_student, mock_anthropic):
     """Als alle kolommen geïmputeerd zijn, wordt de LLM niet aangeroepen."""
     payload = {
         "student": demo_student,
@@ -212,11 +212,11 @@ def test_explain_risk_data_onvoldoende_skips_llm(client, demo_student, mock_open
     }
     resp = client.post("/explain_risk", json=payload)
     assert resp.status_code == 200
-    assert not mock_openai.responses.create.called
+    assert not mock_anthropic.messages.create.called
     assert "Geen gepersonaliseerd advies" in resp.json()["explanation"]
 
 
-def test_explain_risk_laag_risico(client, demo_student, mock_openai):
+def test_explain_risk_laag_risico(client, demo_student, mock_anthropic):
     payload = {
         "student": demo_student,
         "prediction": 0,
@@ -233,17 +233,17 @@ def test_explain_risk_laag_risico(client, demo_student, mock_openai):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-def test_summarize_returns_summary(client, mock_openai):
+def test_summarize_returns_summary(client, mock_anthropic):
     resp = client.post("/summarize", json={"data": "student1,student2"})
     assert resp.status_code == 200
     assert "summary" in resp.json()
     assert resp.json()["summary"] == "Gemockte LLM-uitvoer"
 
 
-def test_map_columns_returns_mapping(client, mock_openai):
-    mock_openai.responses.create.return_value.output_text = (
-        '{"StudentAge": "leeftijd", "absence_unauthorized": "verzuim"}'
-    )
+def test_map_columns_returns_mapping(client, mock_anthropic):
+    mock_anthropic.messages.create.return_value.content = [
+        MagicMock(text='"StudentAge": "leeftijd", "absence_unauthorized": "verzuim"}')
+    ]
     resp = client.post(
         "/map_columns",
         json={
@@ -256,9 +256,9 @@ def test_map_columns_returns_mapping(client, mock_openai):
     assert mapping.get("StudentAge") == "leeftijd"
 
 
-def test_map_columns_invalid_json_returns_empty(client, mock_openai):
+def test_map_columns_invalid_json_returns_empty(client, mock_anthropic):
     """Ongeldige LLM-output levert een leeg mapping-object op (geen crash)."""
-    mock_openai.responses.create.return_value.output_text = "geen json hier"
+    mock_anthropic.messages.create.return_value.content = [MagicMock(text="geen json hier")]
     resp = client.post(
         "/map_columns",
         json={"uploaded_columns": ["x"], "required_columns": ["StudentAge"]},

@@ -126,7 +126,7 @@ Interactive CLI with file tools: `read_file`, `list_files`, `edit_file`. Require
 ## EduPlan Sub-Project
 
 See `eduplan/CLAUDE.md` for full details on the dropout-risk app. Key points:
-- Env vars: `OPENAI_API_KEY` (backend GPT-4.1 via Responses API), `ANTHROPIC_API_KEY` (standalone agent CLI only)
+- Env vars: `ANTHROPIC_API_KEY` (backend Sonnet 4.6 via Messages API; also used by the standalone agent CLI)
 - Both the FastAPI backend (port 8000) and Streamlit frontend (port 8502) must run simultaneously
 - SVG branding assets live in `eduplan/frontend/static/`
 - Training uses **[student-signal](https://github.com/cedanl/student-signal)** (KNN-imputation + GridSearchCV); feature lists are stored as JSON next to each model file

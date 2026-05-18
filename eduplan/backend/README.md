@@ -7,9 +7,9 @@ FastAPI backend voor de EduPlan applicatie.
 | Endpoint | Input | Functie |
 |----------|-------|---------|
 | `POST /predict_dropout` | Studentkenmerken + `use_default_model` | Uitvalkans als continue score (0–1) via RandomForestRegressor |
-| `POST /explain_risk` | Studentdata + uitvalkans + `use_default_model` | Nederlandstalige AI-uitleg via GPT-4.1; berekent SHAP intern en stuurt top-5 risicofactoren mee |
+| `POST /explain_risk` | Studentdata + uitvalkans + `use_default_model` | Nederlandstalige AI-uitleg via Claude Sonnet 4.6; berekent SHAP intern en stuurt top-5 risicofactoren mee |
 | `POST /feature_importance` | Studentdata + `use_default_model` | SHAP-waarden per feature (TreeExplainer) — gebruikt door de UI-staafgrafiek |
-| `POST /summarize` | CSV-string of vrije vraag | Managementsamenvatting of Q&A via GPT-4.1 (OpenAI Responses API met code interpreter) |
+| `POST /summarize` | CSV-string of vrije vraag | Managementsamenvatting of Q&A via Claude Sonnet 4.6 (Anthropic Messages API) |
 | `POST /map_columns` | Geüploade + vereiste kolomnamen | LLM-gebaseerde kolomnaam-mapping bij CSV-uploads met afwijkende headers |
 | `POST /train_model` | Studentdata met `Dropout`-kolom + optioneel `rf_parameters` | Start asynchroon GridSearchCV-training; retourneert direct `{"status": "started"}` |
 | `GET /train_status` | — | Geeft huidige trainingsstatus terug: `idle` / `training` / `done` / `failed` |
