@@ -18,7 +18,7 @@ dependencies = [
     "plotly>=6.6.0",
     "python-docx>=1.2.0",
     "requests>=2.32.5",
-    "scikit-learn>=1.8.0",
+    "scikit-learn==1.6.1",  # exact match for bundled model.joblib — unpickling on a different version emits InconsistentVersionWarning and risks silent breakage
     "shap>=0.51.0",
     "streamlit>=1.46.0",
     "streamlit-extras>=1.2.0",
