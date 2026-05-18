@@ -301,7 +301,10 @@ def _markdown_to_html(text: str) -> str:
     html_lines = []
     for line in lines:
         stripped = line.strip()
-        if re.match(r"^\d+\.\s", stripped):
+        if m := re.match(r"^(#{1,4})\s+(.*)$", stripped):
+            level = min(max(len(m.group(1)) + 1, 2), 4)
+            html_lines.append(f"<h{level}>{m.group(2).strip()}</h{level}>")
+        elif re.match(r"^\d+\.\s", stripped):
             html_lines.append(f"<li>{stripped[stripped.index('.') + 2 :]}</li>")
         elif stripped.startswith("- "):
             html_lines.append(f"<li>{stripped[2:]}</li>")
