@@ -8,7 +8,6 @@
 #     "scikit-learn",
 #     "fastapi",
 #     "uvicorn",
-#     "openai",
 #     "requests",
 #     "plotly",
 #     "shap",
@@ -39,28 +38,54 @@ from pathlib import Path
 import joblib
 import pandas as pd
 import shap
+from anthropic import Anthropic
+from dotenv import load_dotenv
 from fastapi import FastAPI
-from openai import OpenAI
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestRegressor
 
 import backend.trainer as trainer
 
+load_dotenv()
+
 app = FastAPI()
 
-client = OpenAI()
+client = Anthropic()
+ANTHROPIC_MODEL = "claude-sonnet-4-6"
 
-MODEL = "gpt-4.1"
+
+def _call_llm(
+    prompt: str,
+    *,
+    max_tokens: int,
+    temperature: float | None = None,
+    prefill: str | None = None,
+) -> str:
+    """Roep het Anthropic Messages API aan en geef de gegenereerde tekst terug.
+
+    Met optionele assistant-prefill om de output te starten (handig voor JSON of
+    andere structured output). De prefill wordt vooraan aan de response geplakt.
+    """
+    messages: list[dict] = [{"role": "user", "content": prompt}]
+    if prefill is not None:
+        messages.append({"role": "assistant", "content": prefill})
+    kwargs: dict = {"model": ANTHROPIC_MODEL, "max_tokens": max_tokens, "messages": messages}
+    if temperature is not None:
+        kwargs["temperature"] = temperature
+    response = client.messages.create(**kwargs)
+    text = response.content[0].text
+    return (prefill + text) if prefill is not None else text
+
 
 # Modelpaden
-MODEL_DEFAULT_PATH          = "backend/model.joblib"
-MODEL_CUSTOM_PATH           = "backend/model_custom.joblib"
+MODEL_DEFAULT_PATH = "backend/model.joblib"
+MODEL_CUSTOM_PATH = "backend/model_custom.joblib"
 MODEL_DEFAULT_FEATURES_PATH = "backend/model_features.json"
-MODEL_CUSTOM_FEATURES_PATH  = "backend/model_custom_features.json"
+MODEL_CUSTOM_FEATURES_PATH = "backend/model_custom_features.json"
 
 _FEATURES_PATH: dict[str, str] = {
     MODEL_DEFAULT_PATH: MODEL_DEFAULT_FEATURES_PATH,
-    MODEL_CUSTOM_PATH:  MODEL_CUSTOM_FEATURES_PATH,
+    MODEL_CUSTOM_PATH: MODEL_CUSTOM_FEATURES_PATH,
 }
 
 
@@ -75,23 +100,25 @@ def _load_features(path: str) -> list[str]:
 
 # Features per model — dynamisch bepaald door student-signal bij training
 features_default = _load_features(MODEL_DEFAULT_FEATURES_PATH)
-features_custom  = _load_features(MODEL_CUSTOM_FEATURES_PATH) if Path(MODEL_CUSTOM_FEATURES_PATH).exists() else features_default
-features         = features_custom  # actieve feature-lijst
+features_custom = (
+    _load_features(MODEL_CUSTOM_FEATURES_PATH) if Path(MODEL_CUSTOM_FEATURES_PATH).exists() else features_default
+)
+features = features_custom  # actieve feature-lijst
 
 # Standaardmodel — altijd geladen, gebruikt bij demo-data
-clf_default       = joblib.load(MODEL_DEFAULT_PATH)
+clf_default = joblib.load(MODEL_DEFAULT_PATH)
 explainer_default = shap.TreeExplainer(clf_default)
 
 # Instellingsmodel — geladen indien beschikbaar; anders alias op standaard
 if Path(MODEL_CUSTOM_PATH).exists():
-    clf_custom       = joblib.load(MODEL_CUSTOM_PATH)
+    clf_custom = joblib.load(MODEL_CUSTOM_PATH)
     explainer_custom = shap.TreeExplainer(clf_custom)
 else:
-    clf_custom       = clf_default
+    clf_custom = clf_default
     explainer_custom = explainer_default
 
 # Actief model
-clf      = clf_custom
+clf = clf_custom
 explainer = explainer_custom
 
 
@@ -123,13 +150,13 @@ _training = _TrainingState()
 def _reload_model(path: str | Path) -> None:
     """Laad model, explainer en features opnieuw en vervang de globale referenties atomisch."""
     global clf, explainer, features, features_custom
-    new_clf       = joblib.load(path)
+    new_clf = joblib.load(path)
     new_explainer = shap.TreeExplainer(new_clf)
-    new_features  = _load_features(_FEATURES_PATH[str(path)])
+    new_features = _load_features(_FEATURES_PATH[str(path)])
     # Python-naam-toewijzing is atomisch onder de GIL
-    clf             = new_clf
-    explainer       = new_explainer
-    features        = new_features
+    clf = new_clf
+    explainer = new_explainer
+    features = new_features
     features_custom = new_features
 
 
@@ -160,8 +187,9 @@ class TrainRequest(BaseModel):
     dropout_column: str = "Dropout"
     rf_parameters: dict | None = None
 
+
 class RankRequest(BaseModel):
-    students:          list[dict]
+    students: list[dict]
     use_default_model: bool = False
 
 
@@ -298,7 +326,10 @@ def _markdown_to_html(text: str) -> str:
     html_lines = []
     for line in lines:
         stripped = line.strip()
-        if re.match(r"^\d+\.\s", stripped):
+        if m := re.match(r"^(#{1,4})\s+(.*)$", stripped):
+            level = min(max(len(m.group(1)) + 1, 2), 4)
+            html_lines.append(f"<h{level}>{m.group(2).strip()}</h{level}>")
+        elif re.match(r"^\d+\.\s", stripped):
             html_lines.append(f"<li>{stripped[stripped.index('.') + 2 :]}</li>")
         elif stripped.startswith("- "):
             html_lines.append(f"<li>{stripped[2:]}</li>")
@@ -317,9 +348,10 @@ def _factor_label(key: str, value: float) -> str:
     return f"{FEATURE_LABELS.get(key, key)}: {value}"
 
 
-def _student_to_df(student: dict) -> pd.DataFrame:
+def _student_to_df(student: dict, feat: list[str] | None = None) -> pd.DataFrame:
     """Zet een student-dict om naar een DataFrame met de verwachte featurekolommen."""
-    return pd.DataFrame([student])[features]
+    f = feat if feat is not None else features
+    return pd.DataFrame([student]).reindex(columns=f, fill_value=0)
 
 
 def _build_risicoprofiel_html(
@@ -424,16 +456,16 @@ def _build_risicoprofiel_html(
 
 @app.post("/summarize")
 def summarize(request: SummaryRequest):
+    """Genereer een management-samenvatting van BI-data via het LLM."""
     prompt = f"Vat deze BI-data samen voor het management (max 5 regels):\n{request.data}\nSamenvatting:"
-    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
-    summary = response.output_text  # type: ignore
+    summary = _call_llm(prompt, max_tokens=512)
     return {"summary": summary}
 
 
 @app.post("/predict_dropout")
 def predict_dropout(request: StudentData):
     model, _ = _get_model(request.use_default_model)
-    X_pred = _student_to_df(request.student)
+    X_pred = _student_to_df(request.student, _get_features(request.use_default_model))
     score = float(model.predict(X_pred.values)[0])
     prediction = 1 if score >= 0.35 else 0
     return {"probability": score, "prediction": prediction}
@@ -476,10 +508,13 @@ def explain_risk(request: ExplainRequest):
 
     # ── SHAP: top factoren op basis van werkelijke data (geïmputeerde features uitgesloten) ──
     _, exp = _get_model(request.use_default_model)
-    X_pred = _student_to_df(student)
+    active_features = _get_features(request.use_default_model)
+    X_pred = _student_to_df(student, active_features)
     shap_vals = exp.shap_values(X_pred.values)
     imputed_set = set(request.imputed_columns)
-    fi = {k: v for k, v in zip(features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set}
+    fi = {
+        k: v for k, v in zip(active_features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set
+    }
     top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
 
     # Detecteer of alle SHAP-waarden nagenoeg nul zijn (geen informatieve factoren)
@@ -494,7 +529,7 @@ def explain_risk(request: ExplainRequest):
         urgentie,
         top_factors,
         imputed_set,
-        MODEL,
+        ANTHROPIC_MODEL,
         data_onvoldoende=data_onvoldoende,
     )
 
@@ -563,13 +598,7 @@ Maximaal 5 genummerde actiepunten, gesorteerd op urgentie.
 Maak expliciet onderscheid: déze week vs déze maand.
 """
 
-    response = client.responses.create(
-        model=MODEL,
-        store=False,
-        temperature=0.2,
-        input=[{"role": "user", "content": prompt}],
-    )
-    sectie2_4 = response.output_text  # type: ignore
+    sectie2_4 = _call_llm(prompt, max_tokens=2048, temperature=0.2)
 
     # Converteer markdown naar HTML zodat de frontend het correct kan renderen
     sectie2_4_html = _markdown_to_html(sectie2_4)
@@ -581,10 +610,11 @@ Maak expliciet onderscheid: déze week vs déze maand.
 @app.post("/feature_importance")
 def feature_importance(request: StudentData):
     _, exp = _get_model(request.use_default_model)
-    X_pred = _student_to_df(request.student)
+    active_features = _get_features(request.use_default_model)
+    X_pred = _student_to_df(request.student, active_features)
     # RF Regressor: shap_values() geeft shape (n_samples, n_features), geen lijst per klasse
     shap_vals = exp.shap_values(X_pred.values)
-    fi = dict(zip(features, shap_vals[0].tolist()))
+    fi = dict(zip(active_features, shap_vals[0].tolist()))
     return {"feature_importance": fi}
 
 
@@ -609,7 +639,7 @@ def train_model_endpoint(request: TrainRequest):
             )
             _reload_model(MODEL_CUSTOM_PATH)
             with _training.lock:
-                _training.status  = "done"
+                _training.status = "done"
                 _training.message = f"Model getraind op {len(df_train)} studenten ({len(feature_cols)} features)."
         except Exception as e:
             with _training.lock:
@@ -652,11 +682,9 @@ def map_columns(request: MapColumnsRequest):
         "Geef uitsluitend het JSON-object terug, zonder uitleg of markdown.\n\n"
         'Voorbeeld: {"StudentAge": "leeftijd", "absence_unauthorized": "ongeoorloofd_verzuim"}'
     )
-    response = client.responses.create(model=MODEL, store=False, input=[{"role": "user", "content": prompt}])
-    raw = response.output_text.strip()
-    json_match = re.search(r"\{.*\}", raw, re.DOTALL)
+    raw = _call_llm(prompt, max_tokens=1024, prefill="{").strip()
     try:
-        mapping = json.loads(json_match.group()) if json_match else {}
-    except Exception:
+        mapping = json.loads(raw[: raw.rfind("}") + 1])
+    except json.JSONDecodeError:
         mapping = {}
     return {"mapping": mapping}

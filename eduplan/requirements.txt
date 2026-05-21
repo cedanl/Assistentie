@@ -4,7 +4,7 @@ pandas
 scikit-learn 
 fastapi 
 uvicorn 
-openai 
+anthropic
 requests 
 plotly 
 shap

@@ -49,10 +49,13 @@ if "file_bytes" in st.session_state:
     st.write(f"**File Size:** {st.session_state['file_size']} bytes")
 
     raw = st.session_state["file_bytes"]
-    if st.session_state["file_type"] == "text/plain":
-        content = raw.decode("utf-8")
-        st.text_area("Preview:", content, height=200)
-    else:
+    file_type = st.session_state["file_type"]
+    file_name = st.session_state["file_name"]
+    if file_type == "text/plain":
+        st.text_area("Preview:", raw.decode("utf-8"), height=200)
+    elif file_type in ("text/csv", "application/vnd.ms-excel") or file_name.endswith(".csv"):
         st.dataframe(parse_csv(raw))
+    else:
+        st.info(f"Voorbeeld niet beschikbaar voor bestandstype '{file_type or 'onbekend'}'.")
 else:
     st.info("No file uploaded yet")

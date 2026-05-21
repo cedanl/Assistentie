@@ -1,0 +1,1001 @@
+studentnummer,naam,email,leeftijd,geslacht,vooropleiding,sector,opleiding,crebocode,cohort,niveau,leerweg,intakedatum,aanwezigheid,voortgang,bsa_studiepunten,cijfer_nederlands,cijfer_rekenen,mentor_naam,mentor_email
+20240001,Bjorn Kolen,b.kolen@student.roc.nl,22,M,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.648,0.565,39,7.1,5.0,Anita Jansen,a.jansen@roc.nl
+20240002,Daan van den Assem,d.vandenassem@student.roc.nl,22,V,VMBO-K,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.694,0.649,39,9.2,5.7,Anita Jansen,a.jansen@roc.nl
+20240003,Thijn Mulder-de Graaf,t.mulder-degraaf@student.roc.nl,21,M,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.537,0.605,36,7.6,6.6,Jan de Vries,j.devries@roc.nl
+20240004,Lindsey Honing-Reimes,l.honing-reimes@student.roc.nl,20,V,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.805,0.76,40,6.9,7.1,Anita Jansen,a.jansen@roc.nl
+20240005,Naud Schiffer-der Kijnder,n.schiffer-derkijnder@student.roc.nl,18,M,VMBO-B,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.878,0.78,43,7.4,5.9,Peter Smit,p.smit@roc.nl
+20240006,Loes Butselaar,l.butselaar@student.roc.nl,18,V,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.775,0.764,42,4.7,4.3,Jan de Vries,j.devries@roc.nl
+20240007,Danique Klomp Jan,d.klompjan@student.roc.nl,21,M,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.742,0.734,32,7.2,6.6,Anita Jansen,a.jansen@roc.nl
+20240008,Ninthe Roukes,n.roukes@student.roc.nl,20,M,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.774,0.662,39,8.4,4.6,Anita Jansen,a.jansen@roc.nl
+20240009,"Maryam Bourgondië, van","m.bourgondië,van@student.roc.nl",18,V,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.863,0.873,48,5.8,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240010,Jenna Marchand,j.marchand@student.roc.nl,23,M,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.713,0.707,37,5.2,4.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240011,Faye Meis,f.meis@student.roc.nl,17,M,VMBO-B,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.826,0.772,36,6.9,8.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240012,Mila van Olst,m.vanolst@student.roc.nl,20,V,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.627,0.736,49,6.5,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240013,Owen Werdes-Vos,o.werdes-vos@student.roc.nl,24,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.725,0.726,40,5.7,4.6,Fatima El Amrani,f.elamrani@roc.nl
+20240014,Damian Bijlsma-Bekbergen,d.bijlsma-bekbergen@student.roc.nl,22,M,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.526,0.669,39,6.8,4.7,Anita Jansen,a.jansen@roc.nl
+20240015,Bilal Bernaards-van Kuijc,b.bernaards-vankuijc@student.roc.nl,27,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.801,0.829,44,5.4,5.6,Peter Smit,p.smit@roc.nl
+20240016,Elena van der Heiden,e.vanderheiden@student.roc.nl,19,M,MBO niveau 3,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.947,0.932,58,5.6,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240017,Maria Le Marec,m.lemarec@student.roc.nl,18,M,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.678,0.692,39,6.6,5.3,Jan de Vries,j.devries@roc.nl
+20240018,Levi van den Brand,l.vandenbrand@student.roc.nl,28,V,VMBO-K,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.902,0.916,51,5.4,5.7,Fatima El Amrani,f.elamrani@roc.nl
+20240019,Jip van Voorst,j.vanvoorst@student.roc.nl,19,V,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.987,0.899,50,8.8,4.2,Jan de Vries,j.devries@roc.nl
+20240020,Noa ter Waarbeek,n.terwaarbeek@student.roc.nl,19,M,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.615,0.635,35,6.7,5.3,Anita Jansen,a.jansen@roc.nl
+20240021,Maya le Gallen,m.legallen@student.roc.nl,22,M,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.592,0.64,44,7.4,5.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240022,Bastiaan Sanders,b.sanders@student.roc.nl,16,V,VMBO-T,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.568,0.603,24,5.9,7.1,Jan de Vries,j.devries@roc.nl
+20240023,Zakaria Meyer-Huisman,z.meyer-huisman@student.roc.nl,21,V,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.77,0.758,44,7.9,4.8,Peter Smit,p.smit@roc.nl
+20240024,Mason van der Lede-Rek,m.vanderlede-rek@student.roc.nl,17,V,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.625,0.554,22,8.5,5.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240025,Mette Heribert van Laon,m.heribertvanlaon@student.roc.nl,16,M,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.564,0.585,35,7.5,6.6,Fatima El Amrani,f.elamrani@roc.nl
+20240026,Janne Fredriks-de Pauw,j.fredriks-depauw@student.roc.nl,19,M,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.742,0.812,32,5.9,7.4,Anita Jansen,a.jansen@roc.nl
+20240027,Mark Vegt,m.vegt@student.roc.nl,23,M,MBO niveau 2,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.674,0.721,36,6.2,7.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240028,Sylvie van Vermandois,s.vanvermandois@student.roc.nl,21,M,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.58,0.645,36,7.0,6.8,Anita Jansen,a.jansen@roc.nl
+20240029,Vigo Weylant,v.weylant@student.roc.nl,16,V,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.833,0.833,50,5.7,6.8,Anita Jansen,a.jansen@roc.nl
+20240030,Benthe Rijks,b.rijks@student.roc.nl,17,V,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.668,0.698,37,6.9,7.1,Fatima El Amrani,f.elamrani@roc.nl
+20240031,Luuk Bresse,l.bresse@student.roc.nl,16,M,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.743,0.769,38,7.5,7.8,Anita Jansen,a.jansen@roc.nl
+20240032,Zoë Dekker-van Herstal,z.dekker-vanherstal@student.roc.nl,21,M,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.9,0.894,33,6.1,9.7,Jan de Vries,j.devries@roc.nl
+20240033,Kick Kamper,k.kamper@student.roc.nl,21,M,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.627,0.624,31,5.5,8.1,Anita Jansen,a.jansen@roc.nl
+20240034,Maryam van Ginneke,m.vanginneke@student.roc.nl,18,V,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.809,0.841,43,8.1,3.0,Jan de Vries,j.devries@roc.nl
+20240035,Chloé der Kijnder,c.derkijnder@student.roc.nl,17,V,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.681,0.689,40,9.1,6.2,Anita Jansen,a.jansen@roc.nl
+20240036,Nathan Uphuis,n.uphuis@student.roc.nl,16,V,VMBO-B,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.698,0.637,35,5.8,7.0,Fatima El Amrani,f.elamrani@roc.nl
+20240037,Wouter Bastiaanse-de Vrome,w.bastiaanse-devrome@student.roc.nl,19,V,VMBO-B,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.557,0.617,39,9.0,4.6,Fatima El Amrani,f.elamrani@roc.nl
+20240038,Berat Mercks,b.mercks@student.roc.nl,24,M,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.893,0.781,44,4.6,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240039,Aron Bolkesteijn,a.bolkesteijn@student.roc.nl,18,V,HAVO,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.956,0.905,44,5.2,7.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240040,Kayleigh Geneart,k.geneart@student.roc.nl,24,M,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.692,0.742,49,9.7,5.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240041,Ryan Lagerweij,r.lagerweij@student.roc.nl,19,M,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.94,0.915,52,4.7,6.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240042,Marit de Hoog-de Haas,m.dehoog-dehaas@student.roc.nl,19,M,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.886,0.914,44,6.3,6.3,Fatima El Amrani,f.elamrani@roc.nl
+20240043,Youssef Lankle,y.lankle@student.roc.nl,21,V,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.879,0.703,41,6.5,7.4,Peter Smit,p.smit@roc.nl
+20240044,Abel Kolen,a.kolen@student.roc.nl,18,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.566,0.57,38,3.9,5.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240045,Julie van Landen,j.vanlanden@student.roc.nl,17,V,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.919,0.908,47,7.5,6.3,Peter Smit,p.smit@roc.nl
+20240046,Jort van der Meer,j.vandermeer@student.roc.nl,19,V,VMBO-T,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.619,0.759,37,8.4,6.7,Peter Smit,p.smit@roc.nl
+20240047,Mare de Bruin,m.debruin@student.roc.nl,16,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.744,0.823,50,8.1,4.9,Anita Jansen,a.jansen@roc.nl
+20240048,Yusuf Scherms,y.scherms@student.roc.nl,22,M,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.699,0.533,27,7.6,7.1,Anita Jansen,a.jansen@roc.nl
+20240049,Rafael Kok-Huisman,r.kok-huisman@student.roc.nl,21,M,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.754,0.554,34,8.2,6.2,Fatima El Amrani,f.elamrani@roc.nl
+20240050,Floris Koning,f.koning@student.roc.nl,21,X,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.466,0.552,27,6.4,5.2,Peter Smit,p.smit@roc.nl
+20240051,Olivia Kleybrink,o.kleybrink@student.roc.nl,21,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.68,0.613,42,7.9,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240052,Dirk van Stralen,d.vanstralen@student.roc.nl,20,V,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.842,0.742,38,8.4,4.7,Jan de Vries,j.devries@roc.nl
+20240053,Aimée Koret,a.koret@student.roc.nl,20,V,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.778,0.741,39,8.4,8.9,Fatima El Amrani,f.elamrani@roc.nl
+20240054,Isis Mangel-Cornelisz,i.mangel-cornelisz@student.roc.nl,20,V,MBO niveau 2,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.33,0.464,33,6.6,6.6,Anita Jansen,a.jansen@roc.nl
+20240055,Sarah Haack,s.haack@student.roc.nl,21,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.642,0.722,37,6.6,6.7,Fatima El Amrani,f.elamrani@roc.nl
+20240056,Tess Lijn,t.lijn@student.roc.nl,20,M,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.751,0.8,38,7.0,8.1,Peter Smit,p.smit@roc.nl
+20240057,Max Dennenberg-Köster,m.dennenberg-köster@student.roc.nl,16,V,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.748,0.655,39,6.8,6.1,Anita Jansen,a.jansen@roc.nl
+20240058,Amir Rippey-van den Berg,a.rippey-vandenberg@student.roc.nl,26,M,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.847,0.746,48,7.3,8.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240059,Jonas Huijben,j.huijben@student.roc.nl,17,V,VMBO-T,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.748,0.712,45,8.6,6.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240060,Aaron Molegraaf-Jansdr,a.molegraaf-jansdr@student.roc.nl,19,M,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.683,0.676,40,2.3,3.9,Jan de Vries,j.devries@roc.nl
+20240061,Iris Dries,i.dries@student.roc.nl,16,M,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.69,0.781,42,5.1,6.0,Jan de Vries,j.devries@roc.nl
+20240062,Liz Dircken,l.dircken@student.roc.nl,20,V,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.884,0.905,51,4.9,6.7,Jan de Vries,j.devries@roc.nl
+20240063,Daan van Kusen,d.vankusen@student.roc.nl,21,V,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.569,0.679,42,6.8,6.5,Peter Smit,p.smit@roc.nl
+20240064,Elena van Susa-Verbeek,e.vansusa-verbeek@student.roc.nl,17,M,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.635,0.745,39,4.7,4.8,Peter Smit,p.smit@roc.nl
+20240065,Joy van Enschot,j.vanenschot@student.roc.nl,19,M,MBO niveau 2,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.707,0.562,39,6.8,5.5,Jan de Vries,j.devries@roc.nl
+20240066,Bjorn van Dijk-Soos,b.vandijk-soos@student.roc.nl,19,M,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.903,0.885,45,7.4,5.0,Anita Jansen,a.jansen@roc.nl
+20240067,Janne Rubben,j.rubben@student.roc.nl,19,V,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.55,0.62,33,8.0,5.3,Anita Jansen,a.jansen@roc.nl
+20240068,Boaz Helmerhorst,b.helmerhorst@student.roc.nl,21,M,VMBO-T,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.754,0.593,31,8.3,6.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240069,Rik Osterhoudt,r.osterhoudt@student.roc.nl,20,V,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.458,0.465,25,8.0,8.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240070,Sebastiaan Cosman,s.cosman@student.roc.nl,23,M,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.908,0.662,45,6.3,4.7,Peter Smit,p.smit@roc.nl
+20240071,Brent Sanders,b.sanders@student.roc.nl,20,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.702,0.672,47,6.5,5.9,Jan de Vries,j.devries@roc.nl
+20240072,Kian van Susa,k.vansusa@student.roc.nl,19,M,VMBO-B,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.712,0.592,24,5.9,6.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240073,Boaz Billung-van Vlaanderen,b.billung-vanvlaanderen@student.roc.nl,18,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.713,0.73,28,5.0,4.6,Jan de Vries,j.devries@roc.nl
+20240074,Brian Maas,b.maas@student.roc.nl,16,V,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.911,0.768,42,4.8,5.2,Peter Smit,p.smit@roc.nl
+20240075,Jonas Broeshart,j.broeshart@student.roc.nl,21,V,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.655,0.611,43,7.8,5.9,Fatima El Amrani,f.elamrani@roc.nl
+20240076,Aaliyah Willemsen-Jorrisen,a.willemsen-jorrisen@student.roc.nl,25,V,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.948,0.899,44,5.7,9.6,Jan de Vries,j.devries@roc.nl
+20240077,Victor Briere,v.briere@student.roc.nl,18,V,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.793,0.688,41,7.6,5.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240078,Tristan David,t.david@student.roc.nl,18,V,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.865,0.629,36,7.3,7.1,Peter Smit,p.smit@roc.nl
+20240079,Nick Timmermans-van Mare,n.timmermans-vanmare@student.roc.nl,16,M,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.86,0.719,36,7.0,5.3,Fatima El Amrani,f.elamrani@roc.nl
+20240080,Lucy Wever,l.wever@student.roc.nl,19,M,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.711,0.753,45,7.4,8.5,Jan de Vries,j.devries@roc.nl
+20240081,Pieter Wigman,p.wigman@student.roc.nl,21,M,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.615,0.758,42,7.0,4.4,Peter Smit,p.smit@roc.nl
+20240082,Pepijn Spreeuw,p.spreeuw@student.roc.nl,22,M,VMBO-T,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.657,0.678,38,4.1,7.1,Fatima El Amrani,f.elamrani@roc.nl
+20240083,Anne Haneberg,a.haneberg@student.roc.nl,16,M,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.608,0.565,32,7.0,4.1,Anita Jansen,a.jansen@roc.nl
+20240084,Aron Bellemans,a.bellemans@student.roc.nl,18,V,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.714,0.804,48,7.0,6.9,Fatima El Amrani,f.elamrani@roc.nl
+20240085,Rayan Weyland,r.weyland@student.roc.nl,21,V,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.578,0.542,36,6.4,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240086,Jamie Jacobs,j.jacobs@student.roc.nl,21,M,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.766,0.825,43,7.2,4.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240087,Dylano Kuijpers-Eijkelboom,d.kuijpers-eijkelboom@student.roc.nl,22,X,HAVO,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.774,0.744,47,3.2,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240088,Lorenzo Billung-van der Klijn,l.billung-vanderklijn@student.roc.nl,20,M,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.852,0.717,43,5.0,7.9,Jan de Vries,j.devries@roc.nl
+20240089,Femke de Graaf,f.degraaf@student.roc.nl,18,V,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.76,0.813,51,5.7,9.4,Jan de Vries,j.devries@roc.nl
+20240090,Nadia Zijlmans,n.zijlmans@student.roc.nl,20,V,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.744,0.716,38,5.5,5.1,Anita Jansen,a.jansen@roc.nl
+20240091,Meike Mol,m.mol@student.roc.nl,19,X,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.722,0.64,48,8.4,5.8,Peter Smit,p.smit@roc.nl
+20240092,Zoey Feltzer,z.feltzer@student.roc.nl,21,V,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.561,0.624,31,7.2,7.6,Anita Jansen,a.jansen@roc.nl
+20240093,Liza van 't Riet,l.van'triet@student.roc.nl,16,V,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.748,0.742,43,7.3,6.5,Fatima El Amrani,f.elamrani@roc.nl
+20240094,Philip Strik,p.strik@student.roc.nl,17,M,MBO niveau 2,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.845,0.777,44,5.3,7.3,Fatima El Amrani,f.elamrani@roc.nl
+20240095,Ivy van Loon,i.vanloon@student.roc.nl,18,M,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.964,0.913,53,4.4,4.0,Fatima El Amrani,f.elamrani@roc.nl
+20240096,Luuk Henric van den Nuwenhuse,l.henricvandennuwenhuse@student.roc.nl,23,V,HAVO,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.637,0.557,22,7.3,7.0,Anita Jansen,a.jansen@roc.nl
+20240097,Anne de Nijs-van Bovene,a.denijs-vanbovene@student.roc.nl,16,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.899,0.785,50,6.4,3.8,Jan de Vries,j.devries@roc.nl
+20240098,Damian Welf,d.welf@student.roc.nl,21,M,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.887,0.714,38,6.8,5.1,Jan de Vries,j.devries@roc.nl
+20240099,Sanne van Roijen,s.vanroijen@student.roc.nl,18,M,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.791,0.84,45,8.0,3.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240100,Jordy de Werd-de Gruijl,j.dewerd-degruijl@student.roc.nl,19,M,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.977,0.917,48,5.9,6.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240101,Emir Cornelisse-Post,e.cornelisse-post@student.roc.nl,20,V,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.539,0.548,31,6.1,6.6,Fatima El Amrani,f.elamrani@roc.nl
+20240102,Hanna Glasses,h.glasses@student.roc.nl,20,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.87,0.775,43,8.0,3.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240103,Lina de Vrome,l.devrome@student.roc.nl,23,V,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.708,0.593,27,7.2,2.9,Fatima El Amrani,f.elamrani@roc.nl
+20240104,Elif van Limburg,e.vanlimburg@student.roc.nl,20,V,MBO niveau 2,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.797,0.789,45,4.6,7.4,Peter Smit,p.smit@roc.nl
+20240105,Mohamed van der Strigt,m.vanderstrigt@student.roc.nl,16,M,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.797,0.771,43,7.2,6.0,Anita Jansen,a.jansen@roc.nl
+20240106,Joy van de Biesenbos,j.vandebiesenbos@student.roc.nl,21,M,MBO niveau 3,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.666,0.682,37,7.7,5.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240107,Milan van Breugel,m.vanbreugel@student.roc.nl,16,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.684,0.681,39,3.9,6.6,Anita Jansen,a.jansen@roc.nl
+20240108,Liv van den Hoek,l.vandenhoek@student.roc.nl,20,V,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.572,0.61,38,5.0,7.7,Fatima El Amrani,f.elamrani@roc.nl
+20240109,Owen de Nijs,o.denijs@student.roc.nl,25,M,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.623,0.659,35,7.7,4.3,Jan de Vries,j.devries@roc.nl
+20240110,Thijmen van Suinvorde-Verbruggen,t.vansuinvorde-verbruggen@student.roc.nl,20,M,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.685,0.693,35,5.9,5.4,Jan de Vries,j.devries@roc.nl
+20240111,Jim Charon,j.charon@student.roc.nl,21,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.831,0.819,38,7.7,5.0,Anita Jansen,a.jansen@roc.nl
+20240112,Lena 's Gravensande,l.'sgravensande@student.roc.nl,19,V,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.401,0.534,36,6.7,2.8,Peter Smit,p.smit@roc.nl
+20240113,Lizz Schuylenborch-van Landen,l.schuylenborch-vanlanden@student.roc.nl,23,M,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.945,0.946,48,6.6,5.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240114,Johannes Blonk-van Spreuwel,j.blonk-vanspreuwel@student.roc.nl,21,M,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.673,0.783,44,6.7,6.6,Anita Jansen,a.jansen@roc.nl
+20240115,Floortje Groote,f.groote@student.roc.nl,22,V,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.274,0.334,18,6.2,7.2,Peter Smit,p.smit@roc.nl
+20240116,Bilal Marchand,b.marchand@student.roc.nl,21,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.54,0.509,24,4.1,6.2,Peter Smit,p.smit@roc.nl
+20240117,Lisa Garret-Vastenhouw,l.garret-vastenhouw@student.roc.nl,21,V,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.632,0.619,39,5.3,8.2,Jan de Vries,j.devries@roc.nl
+20240118,Jolie Bosch,j.bosch@student.roc.nl,20,V,HAVO,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.561,0.658,41,8.8,8.3,Jan de Vries,j.devries@roc.nl
+20240119,Sofia van Boulogne,s.vanboulogne@student.roc.nl,24,M,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.707,0.542,26,4.0,5.8,Anita Jansen,a.jansen@roc.nl
+20240120,Feline van Luyssel,f.vanluyssel@student.roc.nl,21,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.581,0.647,34,7.1,5.2,Jan de Vries,j.devries@roc.nl
+20240121,Amy Kallen,a.kallen@student.roc.nl,16,V,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.728,0.798,43,5.3,5.5,Anita Jansen,a.jansen@roc.nl
+20240122,Pleun Suijker,p.suijker@student.roc.nl,22,M,VMBO-B,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.868,0.839,39,6.8,4.6,Fatima El Amrani,f.elamrani@roc.nl
+20240123,Raf van der Pouw,r.vanderpouw@student.roc.nl,16,M,MBO niveau 2,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.635,0.533,36,5.1,5.8,Anita Jansen,a.jansen@roc.nl
+20240124,Lucas Dijkman,l.dijkman@student.roc.nl,18,M,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.62,0.643,37,8.7,4.4,Jan de Vries,j.devries@roc.nl
+20240125,Mark de Koning,m.dekoning@student.roc.nl,20,M,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.747,0.668,34,5.0,6.8,Fatima El Amrani,f.elamrani@roc.nl
+20240126,Elize van der Ploeg-van Ooyen,e.vanderploeg-vanooyen@student.roc.nl,22,M,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.833,0.722,33,8.0,6.2,Anita Jansen,a.jansen@roc.nl
+20240127,Liam Brumleve-Hanegraaff,l.brumleve-hanegraaff@student.roc.nl,21,X,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.768,0.668,34,6.8,6.2,Peter Smit,p.smit@roc.nl
+20240128,Carlijn van Ginkel,c.vanginkel@student.roc.nl,21,M,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.77,0.667,43,5.4,6.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240129,Imran Huijs,i.huijs@student.roc.nl,25,M,VMBO-B,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.542,0.638,50,7.1,7.1,Peter Smit,p.smit@roc.nl
+20240130,Casper Rubben,c.rubben@student.roc.nl,18,X,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.811,0.756,41,6.3,4.3,Anita Jansen,a.jansen@roc.nl
+20240131,Amir Arnold,a.arnold@student.roc.nl,20,M,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.866,0.801,47,6.6,5.7,Jan de Vries,j.devries@roc.nl
+20240132,Maria Heribert van Laon,m.heribertvanlaon@student.roc.nl,20,V,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.697,0.554,24,5.7,7.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240133,Chloë van Heusden-van der Lede,c.vanheusden-vanderlede@student.roc.nl,24,M,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.682,0.709,40,6.9,7.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240134,Lynn Neuteboom,l.neuteboom@student.roc.nl,17,V,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.825,0.684,40,5.7,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240135,Fleur Kolen-Arens,f.kolen-arens@student.roc.nl,20,M,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.641,0.56,33,6.5,7.2,Peter Smit,p.smit@roc.nl
+20240136,Demi Bierstraten,d.bierstraten@student.roc.nl,20,M,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.781,0.729,47,10.0,3.9,Jan de Vries,j.devries@roc.nl
+20240137,Liz Zaal,l.zaal@student.roc.nl,17,M,MBO niveau 2,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.591,0.672,39,4.4,4.9,Peter Smit,p.smit@roc.nl
+20240138,Owen Perrono,o.perrono@student.roc.nl,19,M,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.891,0.911,49,6.5,5.2,Fatima El Amrani,f.elamrani@roc.nl
+20240139,Noor de Backer,n.debacker@student.roc.nl,20,X,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.639,0.571,42,5.5,6.2,Peter Smit,p.smit@roc.nl
+20240140,Niels de Keijzer,n.dekeijzer@student.roc.nl,18,V,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.792,0.723,41,7.2,4.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240141,Pippa Spruyt-van der Noot,p.spruyt-vandernoot@student.roc.nl,17,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.774,0.633,33,4.7,5.2,Jan de Vries,j.devries@roc.nl
+20240142,Fatima Veltman,f.veltman@student.roc.nl,16,M,VMBO-K,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.679,0.658,33,6.8,6.0,Anita Jansen,a.jansen@roc.nl
+20240143,Hidde van Duivenvoorde,h.vanduivenvoorde@student.roc.nl,21,V,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.859,0.914,58,6.1,3.6,Anita Jansen,a.jansen@roc.nl
+20240144,Lara de Lange,l.delange@student.roc.nl,23,M,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.452,0.382,23,7.9,7.5,Jan de Vries,j.devries@roc.nl
+20240145,Maxim Goyaerts van Waderle,m.goyaertsvanwaderle@student.roc.nl,18,M,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.72,0.682,39,7.6,6.7,Jan de Vries,j.devries@roc.nl
+20240146,Mia van de Eerenbeemt,m.vandeeerenbeemt@student.roc.nl,21,M,MBO niveau 3,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.807,0.803,46,4.0,8.4,Anita Jansen,a.jansen@roc.nl
+20240147,Yfke Boers-de Gratie,y.boers-degratie@student.roc.nl,17,M,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.721,0.691,38,4.2,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240148,Boris Uittenbosch,b.uittenbosch@student.roc.nl,19,M,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.713,0.815,46,8.2,8.5,Jan de Vries,j.devries@roc.nl
+20240149,Casper Eckhardt,c.eckhardt@student.roc.nl,18,V,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.877,0.845,53,6.3,2.9,Peter Smit,p.smit@roc.nl
+20240150,Aaliyah Diesbergen,a.diesbergen@student.roc.nl,20,V,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.859,0.712,39,4.3,7.3,Anita Jansen,a.jansen@roc.nl
+20240151,Joris Gellemeyer,j.gellemeyer@student.roc.nl,17,M,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.627,0.722,43,5.6,4.0,Peter Smit,p.smit@roc.nl
+20240152,Imke Oosterhek,i.oosterhek@student.roc.nl,16,M,HAVO,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.956,0.924,37,4.5,6.0,Anita Jansen,a.jansen@roc.nl
+20240153,Laurens Gemen,l.gemen@student.roc.nl,20,M,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.4,0.547,27,5.4,6.6,Jan de Vries,j.devries@roc.nl
+20240154,Arie Fredriks,a.fredriks@student.roc.nl,20,V,HAVO,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.453,0.468,27,7.2,5.0,Peter Smit,p.smit@roc.nl
+20240155,Justin Kirpenstein,j.kirpenstein@student.roc.nl,22,M,MBO niveau 2,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.772,0.736,47,7.5,6.3,Peter Smit,p.smit@roc.nl
+20240156,Olivia de Haan,o.dehaan@student.roc.nl,20,V,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.708,0.747,41,6.6,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240157,Rosalie Govarts-Korstman,r.govarts-korstman@student.roc.nl,24,V,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.836,0.61,24,5.9,8.0,Fatima El Amrani,f.elamrani@roc.nl
+20240158,Jesse Schiffer,j.schiffer@student.roc.nl,23,V,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.762,0.611,39,6.8,5.4,Jan de Vries,j.devries@roc.nl
+20240159,Joshua van Wijland,j.vanwijland@student.roc.nl,21,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.796,0.6,33,7.9,5.5,Anita Jansen,a.jansen@roc.nl
+20240160,Robin Heerschop,r.heerschop@student.roc.nl,20,V,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.957,0.85,50,6.7,5.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240161,Victor Tammerijn,v.tammerijn@student.roc.nl,16,M,MBO niveau 2,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.964,0.778,50,7.1,6.4,Anita Jansen,a.jansen@roc.nl
+20240162,Femke Meijer,f.meijer@student.roc.nl,23,M,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.708,0.714,42,5.7,4.9,Peter Smit,p.smit@roc.nl
+20240163,Hugo Boddaugh-Jochems,h.boddaugh-jochems@student.roc.nl,17,V,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.622,0.665,48,7.2,7.3,Anita Jansen,a.jansen@roc.nl
+20240164,Evie Tuithof,e.tuithof@student.roc.nl,23,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.633,0.717,39,7.7,4.4,Fatima El Amrani,f.elamrani@roc.nl
+20240165,Aron van de Elzas,a.vandeelzas@student.roc.nl,18,M,VMBO-K,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.513,0.665,38,6.0,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240166,Alyssa Jorlink,a.jorlink@student.roc.nl,17,V,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.63,0.707,36,7.4,6.2,Fatima El Amrani,f.elamrani@roc.nl
+20240167,Riley Hanegraaff,r.hanegraaff@student.roc.nl,24,M,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.34,0.435,24,6.8,4.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240168,Lise van Veen,l.vanveen@student.roc.nl,16,M,MBO niveau 2,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.548,0.636,43,6.1,6.9,Peter Smit,p.smit@roc.nl
+20240169,Thijn Verschut,t.verschut@student.roc.nl,24,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.804,0.712,38,8.2,3.6,Peter Smit,p.smit@roc.nl
+20240170,Cornelis van Veen,c.vanveen@student.roc.nl,19,V,VMBO-B,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.791,0.79,49,6.9,6.1,Anita Jansen,a.jansen@roc.nl
+20240171,Nadia Vastenhouw,n.vastenhouw@student.roc.nl,20,V,VMBO-K,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.916,0.817,39,6.9,8.1,Anita Jansen,a.jansen@roc.nl
+20240172,Maya le Guellec,m.leguellec@student.roc.nl,18,V,MBO niveau 2,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.894,0.776,40,5.6,6.0,Peter Smit,p.smit@roc.nl
+20240173,Mason van Noort-Thomas,m.vannoort-thomas@student.roc.nl,17,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.328,0.397,23,4.6,6.3,Peter Smit,p.smit@roc.nl
+20240174,Wesley Holthuis,w.holthuis@student.roc.nl,21,V,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.954,0.916,57,7.7,7.4,Fatima El Amrani,f.elamrani@roc.nl
+20240175,Nina Erhout,n.erhout@student.roc.nl,19,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.92,0.825,50,7.2,6.5,Anita Jansen,a.jansen@roc.nl
+20240176,Bradley de Boer-Koster,b.deboer-koster@student.roc.nl,18,M,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.803,0.798,40,6.4,7.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240177,Chloé van Wallaert-le Floch,c.vanwallaert-lefloch@student.roc.nl,17,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.785,0.766,39,4.9,7.4,Jan de Vries,j.devries@roc.nl
+20240178,Jente Versluijs,j.versluijs@student.roc.nl,16,V,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.646,0.604,40,7.8,4.8,Jan de Vries,j.devries@roc.nl
+20240179,Meike Fortuyn,m.fortuyn@student.roc.nl,21,X,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.579,0.703,36,7.6,7.6,Jan de Vries,j.devries@roc.nl
+20240180,Sterre Jonkman,s.jonkman@student.roc.nl,24,V,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.83,0.681,53,5.3,4.5,Jan de Vries,j.devries@roc.nl
+20240181,Marinus Martens,m.martens@student.roc.nl,20,M,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.938,0.738,43,7.0,7.5,Anita Jansen,a.jansen@roc.nl
+20240182,Dex Westerburg,d.westerburg@student.roc.nl,19,V,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.796,0.809,38,7.9,6.4,Jan de Vries,j.devries@roc.nl
+20240183,Josephine Chotzen-de Kale,j.chotzen-dekale@student.roc.nl,18,M,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.677,0.646,46,6.6,3.1,Peter Smit,p.smit@roc.nl
+20240184,Elise van Ooyen,e.vanooyen@student.roc.nl,24,M,VMBO-K,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.778,0.648,38,5.0,5.8,Jan de Vries,j.devries@roc.nl
+20240185,Arie Mol-van Schevinghuizen,a.mol-vanschevinghuizen@student.roc.nl,23,V,HAVO,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.174,0.257,18,6.3,6.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240186,Jasper Zeemans-van der Maath,j.zeemans-vandermaath@student.roc.nl,22,M,MBO niveau 2,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.836,0.61,36,8.9,4.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240187,Tessa van der Flaas,t.vanderflaas@student.roc.nl,17,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.588,0.667,38,7.0,5.2,Fatima El Amrani,f.elamrani@roc.nl
+20240188,Nisa van der Stael,n.vanderstael@student.roc.nl,26,M,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.899,0.781,50,7.5,8.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240189,Luca Luitgardis van Neustrië,l.luitgardisvanneustrië@student.roc.nl,18,M,MBO niveau 3,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.902,0.915,46,4.4,7.9,Peter Smit,p.smit@roc.nl
+20240190,Mila van Voorst,m.vanvoorst@student.roc.nl,27,V,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.826,0.727,36,6.5,6.3,Anita Jansen,a.jansen@roc.nl
+20240191,Stef Ellis,s.ellis@student.roc.nl,17,V,MBO niveau 2,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.735,0.742,41,8.2,6.1,Anita Jansen,a.jansen@roc.nl
+20240192,Lucas Persijn,l.persijn@student.roc.nl,20,M,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.58,0.579,28,6.1,5.6,Fatima El Amrani,f.elamrani@roc.nl
+20240193,Maurits Serra-Spruyt,m.serra-spruyt@student.roc.nl,23,V,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.751,0.791,44,4.8,7.4,Anita Jansen,a.jansen@roc.nl
+20240194,Thijmen van Santen-Mudden,t.vansanten-mudden@student.roc.nl,19,M,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.924,0.752,37,6.9,7.7,Peter Smit,p.smit@roc.nl
+20240195,Laura Mansveld,l.mansveld@student.roc.nl,22,M,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.733,0.768,47,6.6,6.4,Jan de Vries,j.devries@roc.nl
+20240196,Lukas Guit,l.guit@student.roc.nl,16,M,MBO niveau 2,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.73,0.751,35,7.1,6.6,Jan de Vries,j.devries@roc.nl
+20240197,Bastiaan van Praagh-Vallenduuk,b.vanpraagh-vallenduuk@student.roc.nl,20,V,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.719,0.72,34,8.2,7.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240198,Faye van Saksen,f.vansaksen@student.roc.nl,19,M,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.777,0.672,39,5.5,6.9,Anita Jansen,a.jansen@roc.nl
+20240199,Lot van Praagh,l.vanpraagh@student.roc.nl,17,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.576,0.679,34,5.9,5.0,Jan de Vries,j.devries@roc.nl
+20240200,Sylvie de Koning,s.dekoning@student.roc.nl,22,V,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.683,0.761,38,7.4,7.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240201,Tess Ehlert,t.ehlert@student.roc.nl,17,M,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.555,0.683,43,6.1,5.5,Peter Smit,p.smit@roc.nl
+20240202,Azra Spiker,a.spiker@student.roc.nl,23,V,MBO niveau 3,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.632,0.61,40,7.2,4.4,Jan de Vries,j.devries@roc.nl
+20240203,Esila Mudden,e.mudden@student.roc.nl,23,V,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.487,0.475,27,8.3,4.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240204,Yasmin van Haarlem,y.vanhaarlem@student.roc.nl,21,M,MBO niveau 2,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.66,0.651,33,5.0,7.5,Anita Jansen,a.jansen@roc.nl
+20240205,Hugo van der Noot,h.vandernoot@student.roc.nl,19,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.802,0.702,41,8.6,5.6,Fatima El Amrani,f.elamrani@roc.nl
+20240206,Dylan Wolters,d.wolters@student.roc.nl,19,V,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.837,0.602,31,6.1,8.7,Anita Jansen,a.jansen@roc.nl
+20240207,Madelief Schrik,m.schrik@student.roc.nl,23,V,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.658,0.694,36,7.4,6.9,Fatima El Amrani,f.elamrani@roc.nl
+20240208,Elena Vaessen,e.vaessen@student.roc.nl,20,M,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.747,0.709,39,6.8,7.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240209,Jayden van Wijk,j.vanwijk@student.roc.nl,17,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.512,0.584,30,6.3,6.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240210,Luke Arnold,l.arnold@student.roc.nl,18,V,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.869,0.674,30,6.4,6.6,Jan de Vries,j.devries@roc.nl
+20240211,Elin Giselmeyer,e.giselmeyer@student.roc.nl,17,V,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.841,0.823,44,4.0,6.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240212,Daniel Buijs,d.buijs@student.roc.nl,16,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.798,0.669,41,6.3,4.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240213,Youssef Draaisma-Blees,y.draaisma-blees@student.roc.nl,20,V,VMBO-K,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.734,0.718,36,5.4,7.1,Peter Smit,p.smit@roc.nl
+20240214,Mehmet van Embden,m.vanembden@student.roc.nl,19,V,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.86,0.655,35,8.6,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240215,Ceylin Gerritse,c.gerritse@student.roc.nl,19,V,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.891,0.806,44,6.6,7.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240216,Luuk van der Sloot-Mol,l.vandersloot-mol@student.roc.nl,21,M,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.888,0.79,42,9.0,9.1,Anita Jansen,a.jansen@roc.nl
+20240217,Cas van de Elzas-Spruit,c.vandeelzas-spruit@student.roc.nl,18,M,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.782,0.549,39,5.6,6.6,Jan de Vries,j.devries@roc.nl
+20240218,Maaike van der Zijl,m.vanderzijl@student.roc.nl,22,M,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.498,0.547,24,6.2,7.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240219,Kick Lonen-Demmendaal,k.lonen-demmendaal@student.roc.nl,21,V,HAVO,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.873,0.786,47,7.0,6.4,Anita Jansen,a.jansen@roc.nl
+20240220,Benthe van Cuijck-Draaisma,b.vancuijck-draaisma@student.roc.nl,17,M,VMBO-K,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.719,0.713,43,5.2,6.5,Fatima El Amrani,f.elamrani@roc.nl
+20240221,Cornelis van Velzen,c.vanvelzen@student.roc.nl,21,M,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.856,0.776,42,7.5,5.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240222,Danique van 't Houteveen-Romijn,d.van'thouteveen-romijn@student.roc.nl,16,M,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.938,0.825,47,5.1,7.6,Jan de Vries,j.devries@roc.nl
+20240223,Nienke Van Bragt,n.vanbragt@student.roc.nl,17,V,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.763,0.818,41,5.3,7.8,Anita Jansen,a.jansen@roc.nl
+20240224,Lola Leene,l.leene@student.roc.nl,19,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.685,0.529,35,5.1,6.9,Fatima El Amrani,f.elamrani@roc.nl
+20240225,Dean Friehus,d.friehus@student.roc.nl,22,M,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.704,0.509,30,6.9,9.0,Jan de Vries,j.devries@roc.nl
+20240226,Luna Laffray-Rijcken,l.laffray-rijcken@student.roc.nl,17,V,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.78,0.833,52,7.9,9.7,Anita Jansen,a.jansen@roc.nl
+20240227,Fiene Gervais,f.gervais@student.roc.nl,20,V,MBO niveau 2,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.842,0.776,43,4.5,7.5,Jan de Vries,j.devries@roc.nl
+20240228,Olaf Le Grand,o.legrand@student.roc.nl,21,V,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.501,0.67,41,7.5,7.9,Fatima El Amrani,f.elamrani@roc.nl
+20240229,Selina Marchand,s.marchand@student.roc.nl,19,M,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.947,0.924,42,8.5,5.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240230,Olivier Kleibrink,o.kleibrink@student.roc.nl,24,M,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.748,0.784,45,6.2,6.8,Anita Jansen,a.jansen@roc.nl
+20240231,Adriana Uit de Willigen,a.uitdewilligen@student.roc.nl,20,M,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.67,0.465,31,5.7,6.3,Peter Smit,p.smit@roc.nl
+20240232,Kai Haneberg,k.haneberg@student.roc.nl,20,X,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.698,0.745,34,8.2,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240233,Selina Pison,s.pison@student.roc.nl,16,M,VMBO-K,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.779,0.691,37,7.2,7.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240234,Kai Prinsen,k.prinsen@student.roc.nl,17,M,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.735,0.69,45,6.9,7.2,Fatima El Amrani,f.elamrani@roc.nl
+20240235,Pieter Lonen-Verharen,p.lonen-verharen@student.roc.nl,17,V,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.772,0.811,40,4.7,7.2,Anita Jansen,a.jansen@roc.nl
+20240236,Alicia van Holland-van Ham,a.vanholland-vanham@student.roc.nl,16,M,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.892,0.866,46,5.2,6.9,Fatima El Amrani,f.elamrani@roc.nl
+20240237,Bastiaan Heere,b.heere@student.roc.nl,22,M,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.588,0.686,40,7.3,7.8,Fatima El Amrani,f.elamrani@roc.nl
+20240238,Ravi Hondeveld,r.hondeveld@student.roc.nl,21,V,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.885,0.68,36,8.5,5.7,Fatima El Amrani,f.elamrani@roc.nl
+20240239,Luna van de Berg,l.vandeberg@student.roc.nl,19,V,HAVO,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.839,0.703,35,6.8,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240240,Wessel Hofman,w.hofman@student.roc.nl,19,V,MBO niveau 2,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.828,0.776,42,6.4,5.8,Anita Jansen,a.jansen@roc.nl
+20240241,Suze Vierdag,s.vierdag@student.roc.nl,20,M,MBO niveau 2,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.665,0.694,37,6.4,4.3,Peter Smit,p.smit@roc.nl
+20240242,Ninthe Beourgeois,n.beourgeois@student.roc.nl,25,M,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.594,0.722,40,4.4,4.7,Fatima El Amrani,f.elamrani@roc.nl
+20240243,Nina van de Pavert-Coenen,n.vandepavert-coenen@student.roc.nl,21,V,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.529,0.605,32,5.1,4.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240244,Elif de Koning,e.dekoning@student.roc.nl,16,V,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.558,0.651,35,6.3,5.2,Jan de Vries,j.devries@roc.nl
+20240245,Arie van Ghoerle,a.vanghoerle@student.roc.nl,16,M,VMBO-K,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.821,0.807,56,4.8,4.9,Jan de Vries,j.devries@roc.nl
+20240246,Daniël Aelftrud van Wessex,d.aelftrudvanwessex@student.roc.nl,24,V,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.632,0.593,33,5.3,7.2,Fatima El Amrani,f.elamrani@roc.nl
+20240247,Jesper Jansen,j.jansen@student.roc.nl,22,M,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.531,0.623,38,6.7,8.3,Anita Jansen,a.jansen@roc.nl
+20240248,Catharina van Engelen-Jurrijens,c.vanengelen-jurrijens@student.roc.nl,17,V,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.958,0.71,37,6.7,3.5,Fatima El Amrani,f.elamrani@roc.nl
+20240249,Sil van Maaren,s.vanmaaren@student.roc.nl,18,V,VMBO-B,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.877,0.839,40,4.8,6.6,Peter Smit,p.smit@roc.nl
+20240250,Jayson Eckhardt,j.eckhardt@student.roc.nl,17,M,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.59,0.704,36,5.3,6.9,Jan de Vries,j.devries@roc.nl
+20240251,Bradley van Westfalen,b.vanwestfalen@student.roc.nl,20,V,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.781,0.813,49,7.0,9.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240252,Nadine Louws,n.louws@student.roc.nl,19,V,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.791,0.811,49,6.3,6.3,Anita Jansen,a.jansen@roc.nl
+20240253,Lois Schroeff-van de Veen,l.schroeff-vandeveen@student.roc.nl,16,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.523,0.626,39,5.7,6.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240254,Elena Schuylenborch,e.schuylenborch@student.roc.nl,17,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.914,0.854,46,7.8,6.2,Peter Smit,p.smit@roc.nl
+20240255,Linn Bernaards,l.bernaards@student.roc.nl,21,M,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.584,0.551,29,6.8,6.8,Peter Smit,p.smit@roc.nl
+20240256,Senna de Werd,s.dewerd@student.roc.nl,19,M,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.505,0.572,31,7.9,7.4,Fatima El Amrani,f.elamrani@roc.nl
+20240257,Beau Tillmanno,b.tillmanno@student.roc.nl,23,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.395,0.586,25,7.3,7.4,Jan de Vries,j.devries@roc.nl
+20240258,Mare Klein-van der Veiver,m.klein-vanderveiver@student.roc.nl,21,M,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.775,0.784,46,5.9,7.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240259,Maria Ridder-Molegraaf,m.ridder-molegraaf@student.roc.nl,23,V,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.537,0.618,34,6.4,4.9,Jan de Vries,j.devries@roc.nl
+20240260,Ise Mol,i.mol@student.roc.nl,21,X,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.641,0.696,30,6.8,9.1,Fatima El Amrani,f.elamrani@roc.nl
+20240261,Pepijn Knoers,p.knoers@student.roc.nl,18,V,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.747,0.747,34,7.3,4.4,Jan de Vries,j.devries@roc.nl
+20240262,Yusuf Sterkman,y.sterkman@student.roc.nl,16,V,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.694,0.692,40,4.1,5.2,Anita Jansen,a.jansen@roc.nl
+20240263,Inaya Erhout,i.erhout@student.roc.nl,16,M,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.818,0.795,38,8.2,5.1,Anita Jansen,a.jansen@roc.nl
+20240264,Linde Luster,l.luster@student.roc.nl,16,V,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.201,0.324,20,6.5,6.6,Peter Smit,p.smit@roc.nl
+20240265,Pieter Wensen,p.wensen@student.roc.nl,19,V,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.826,0.854,48,7.2,9.1,Anita Jansen,a.jansen@roc.nl
+20240266,Ruben van den Velden-Pieters,r.vandenvelden-pieters@student.roc.nl,23,M,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.766,0.704,35,5.4,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240267,Sep Hoekstra,s.hoekstra@student.roc.nl,20,M,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.881,0.632,42,8.4,5.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240268,Sanne Boer,s.boer@student.roc.nl,18,V,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.633,0.717,49,7.1,5.7,Peter Smit,p.smit@roc.nl
+20240269,Alexander Hehl,a.hehl@student.roc.nl,18,M,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.43,0.469,21,5.5,8.0,Fatima El Amrani,f.elamrani@roc.nl
+20240270,Jack van Kusen,j.vankusen@student.roc.nl,19,V,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.548,0.574,44,7.0,2.9,Anita Jansen,a.jansen@roc.nl
+20240271,Esther de Nijs,e.denijs@student.roc.nl,20,M,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.811,0.838,46,5.6,5.7,Jan de Vries,j.devries@roc.nl
+20240272,Sjoerd Uit de Willigen,s.uitdewilligen@student.roc.nl,21,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.43,0.525,30,4.1,7.8,Fatima El Amrani,f.elamrani@roc.nl
+20240273,Thijmen Everts,t.everts@student.roc.nl,18,V,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.347,0.538,28,7.6,5.7,Jan de Vries,j.devries@roc.nl
+20240274,Dewi Simons,d.simons@student.roc.nl,21,M,MBO niveau 3,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.518,0.528,28,5.2,8.7,Jan de Vries,j.devries@roc.nl
+20240275,Aya van der Klijn,a.vanderklijn@student.roc.nl,16,V,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.528,0.585,37,4.6,8.5,Anita Jansen,a.jansen@roc.nl
+20240276,Sarah Huls,s.huls@student.roc.nl,16,V,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.821,0.735,48,6.6,8.1,Peter Smit,p.smit@roc.nl
+20240277,Dana Molegraaf,d.molegraaf@student.roc.nl,19,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.834,0.707,46,8.0,7.4,Jan de Vries,j.devries@roc.nl
+20240278,Hailey van Wijland,h.vanwijland@student.roc.nl,16,V,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.854,0.662,42,6.1,7.4,Peter Smit,p.smit@roc.nl
+20240279,Maud Berends,m.berends@student.roc.nl,20,M,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.817,0.765,41,5.1,6.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240280,Louise van Orleans,l.vanorleans@student.roc.nl,18,V,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.763,0.663,36,9.5,5.1,Fatima El Amrani,f.elamrani@roc.nl
+20240281,Kai van der Hoeven,k.vanderhoeven@student.roc.nl,25,M,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.844,0.8,45,6.8,5.4,Peter Smit,p.smit@roc.nl
+20240282,Vajèn Krabbe,v.krabbe@student.roc.nl,21,X,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.809,0.852,43,4.9,7.9,Fatima El Amrani,f.elamrani@roc.nl
+20240283,Kyan Verhoeven,k.verhoeven@student.roc.nl,17,M,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.522,0.63,41,7.6,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240284,Dewi Scardino,d.scardino@student.roc.nl,16,M,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.897,0.732,42,8.8,4.2,Jan de Vries,j.devries@roc.nl
+20240285,Mads van Grondelle,m.vangrondelle@student.roc.nl,17,X,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.756,0.675,36,8.1,6.5,Fatima El Amrani,f.elamrani@roc.nl
+20240286,Yara Fredriks,y.fredriks@student.roc.nl,17,V,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.816,0.758,43,6.4,7.0,Anita Jansen,a.jansen@roc.nl
+20240287,Emir van Noort,e.vannoort@student.roc.nl,20,V,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.66,0.619,31,3.7,5.6,Jan de Vries,j.devries@roc.nl
+20240288,Tobias Pauwels,t.pauwels@student.roc.nl,22,M,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.627,0.564,41,6.9,5.8,Peter Smit,p.smit@roc.nl
+20240289,Mohamed Gerritse,m.gerritse@student.roc.nl,22,V,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.497,0.538,33,5.3,8.0,Anita Jansen,a.jansen@roc.nl
+20240290,Guusje Fiere,g.fiere@student.roc.nl,20,M,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.41,0.425,26,6.6,7.4,Anita Jansen,a.jansen@roc.nl
+20240291,Joris Oosterhout,j.oosterhout@student.roc.nl,18,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.887,0.841,40,6.2,5.5,Jan de Vries,j.devries@roc.nl
+20240292,Joey Marchal,j.marchal@student.roc.nl,22,V,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.782,0.667,35,6.8,6.1,Peter Smit,p.smit@roc.nl
+20240293,Bram Vrancken,b.vrancken@student.roc.nl,18,M,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.81,0.75,37,3.6,5.7,Peter Smit,p.smit@roc.nl
+20240294,Silke Bud-Versluijs,s.bud-versluijs@student.roc.nl,20,M,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.915,0.868,43,5.2,4.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240295,Ben Hoogers,b.hoogers@student.roc.nl,23,V,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.598,0.629,33,4.4,6.6,Peter Smit,p.smit@roc.nl
+20240296,Noëlle Keijzer-Helmerhorst,n.keijzer-helmerhorst@student.roc.nl,21,M,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.851,0.637,34,7.0,6.5,Peter Smit,p.smit@roc.nl
+20240297,Felix Meis-Kosten,f.meis-kosten@student.roc.nl,19,M,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.922,0.833,34,6.3,6.3,Peter Smit,p.smit@roc.nl
+20240298,Nadia Kisman,n.kisman@student.roc.nl,22,M,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.739,0.798,35,7.7,6.7,Anita Jansen,a.jansen@roc.nl
+20240299,Rick Verhoeven-Hoppenbrouwer,r.verhoeven-hoppenbrouwer@student.roc.nl,25,V,VMBO-K,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.865,0.808,46,5.5,7.8,Peter Smit,p.smit@roc.nl
+20240300,Isabel Peeters,i.peeters@student.roc.nl,20,M,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.742,0.681,36,8.1,5.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240301,Nadia Bijlsma,n.bijlsma@student.roc.nl,16,V,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.973,0.821,46,7.7,5.7,Peter Smit,p.smit@roc.nl
+20240302,Tycho Hagendoorn,t.hagendoorn@student.roc.nl,21,V,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.938,0.812,42,6.7,6.3,Fatima El Amrani,f.elamrani@roc.nl
+20240303,Maud Waardeloo,m.waardeloo@student.roc.nl,25,M,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.708,0.718,39,8.2,3.6,Anita Jansen,a.jansen@roc.nl
+20240304,Jolijn Tammerijn,j.tammerijn@student.roc.nl,16,M,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.83,0.845,40,6.7,7.6,Fatima El Amrani,f.elamrani@roc.nl
+20240305,Sam Bökenkamp,s.bökenkamp@student.roc.nl,17,M,HAVO,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.94,0.912,47,4.8,7.2,Anita Jansen,a.jansen@roc.nl
+20240306,Catharina Aertsz,c.aertsz@student.roc.nl,17,M,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.69,0.766,40,7.8,7.1,Anita Jansen,a.jansen@roc.nl
+20240307,Lindsey Lemmens,l.lemmens@student.roc.nl,18,M,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.765,0.729,33,5.3,5.1,Anita Jansen,a.jansen@roc.nl
+20240308,Johannes van der Linden-Gerritse,j.vanderlinden-gerritse@student.roc.nl,21,M,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.682,0.614,30,6.0,6.1,Anita Jansen,a.jansen@roc.nl
+20240309,Mees le Gulcher,m.legulcher@student.roc.nl,21,M,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.753,0.717,33,5.0,7.9,Anita Jansen,a.jansen@roc.nl
+20240310,Fabian Robbrechts Bruijne,f.robbrechtsbruijne@student.roc.nl,24,M,MBO niveau 2,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.546,0.685,34,7.1,5.5,Fatima El Amrani,f.elamrani@roc.nl
+20240311,Olivier Serra,o.serra@student.roc.nl,19,M,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.645,0.748,51,6.8,3.3,Anita Jansen,a.jansen@roc.nl
+20240312,Madelief Wooning,m.wooning@student.roc.nl,18,M,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.668,0.59,27,7.8,2.4,Peter Smit,p.smit@roc.nl
+20240313,Yusuf Lamotte,y.lamotte@student.roc.nl,20,V,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.63,0.695,40,6.1,7.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240314,Aya Brands,a.brands@student.roc.nl,18,V,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.719,0.683,40,6.9,4.0,Jan de Vries,j.devries@roc.nl
+20240315,Veerle Willemsen-Flink,v.willemsen-flink@student.roc.nl,17,M,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.331,0.49,34,5.6,7.7,Fatima El Amrani,f.elamrani@roc.nl
+20240316,Selina van Engeland,s.vanengeland@student.roc.nl,18,V,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.95,0.88,40,7.6,5.3,Peter Smit,p.smit@roc.nl
+20240317,Marinus Mol-Ernst,m.mol-ernst@student.roc.nl,20,V,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.297,0.399,28,6.7,7.7,Peter Smit,p.smit@roc.nl
+20240318,Suze Furda,s.furda@student.roc.nl,19,V,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.882,0.775,32,7.8,5.4,Peter Smit,p.smit@roc.nl
+20240319,"Dirk de Graaf-Werl-Arnsberg, van","d.degraaf-werl-arnsberg,van@student.roc.nl",19,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.777,0.822,45,6.4,7.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240320,Joost Broekhoven,j.broekhoven@student.roc.nl,17,X,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.92,0.783,38,5.5,5.1,Fatima El Amrani,f.elamrani@roc.nl
+20240321,Amy Totwiller,a.totwiller@student.roc.nl,19,M,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.835,0.767,50,7.4,7.4,Jan de Vries,j.devries@roc.nl
+20240322,Kay Driessen-Post,k.driessen-post@student.roc.nl,21,M,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.785,0.75,37,6.7,6.3,Fatima El Amrani,f.elamrani@roc.nl
+20240323,Kyan Heijmen-Stuivenberg,k.heijmen-stuivenberg@student.roc.nl,19,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.709,0.787,51,5.8,6.3,Jan de Vries,j.devries@roc.nl
+20240324,Esmee Vermeulen-Chevresson,e.vermeulen-chevresson@student.roc.nl,19,V,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.866,0.767,50,6.9,5.0,Anita Jansen,a.jansen@roc.nl
+20240325,Vigo Vegt-Boudewijns,v.vegt-boudewijns@student.roc.nl,16,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.846,0.747,32,5.9,5.4,Peter Smit,p.smit@roc.nl
+20240326,Jonathan Beernink,j.beernink@student.roc.nl,28,M,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.683,0.592,37,8.3,7.5,Jan de Vries,j.devries@roc.nl
+20240327,Dean Merkx,d.merkx@student.roc.nl,18,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.87,0.852,39,7.2,7.4,Jan de Vries,j.devries@roc.nl
+20240328,Luka Korsman-Brouwer,l.korsman-brouwer@student.roc.nl,21,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.751,0.578,35,6.6,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240329,Tijmen Elsenaar,t.elsenaar@student.roc.nl,22,M,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.885,0.832,41,7.7,7.5,Peter Smit,p.smit@roc.nl
+20240330,Bradley Arnold,b.arnold@student.roc.nl,29,V,HAVO,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.414,0.622,29,4.8,6.6,Peter Smit,p.smit@roc.nl
+20240331,Amy van Hagen-van der Lede,a.vanhagen-vanderlede@student.roc.nl,21,V,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.96,0.737,44,5.9,3.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240332,Sem van der Laan,s.vanderlaan@student.roc.nl,18,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.639,0.718,49,7.2,5.0,Anita Jansen,a.jansen@roc.nl
+20240333,Mara Korstman,m.korstman@student.roc.nl,20,V,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.672,0.557,42,6.7,5.8,Peter Smit,p.smit@roc.nl
+20240334,Renske Booden,r.booden@student.roc.nl,17,V,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.553,0.641,29,5.8,5.1,Fatima El Amrani,f.elamrani@roc.nl
+20240335,Joëlle Geldens-Neuzerling,j.geldens-neuzerling@student.roc.nl,26,V,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.728,0.807,48,7.1,7.9,Jan de Vries,j.devries@roc.nl
+20240336,Julie Bezemer-de Hoog,j.bezemer-dehoog@student.roc.nl,20,V,MBO niveau 2,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.44,0.518,27,6.6,7.4,Jan de Vries,j.devries@roc.nl
+20240337,Angelina Uphuis,a.uphuis@student.roc.nl,18,M,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.795,0.729,49,7.6,6.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240338,Maud Schelvis,m.schelvis@student.roc.nl,20,V,HAVO,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.549,0.543,38,5.1,5.8,Jan de Vries,j.devries@roc.nl
+20240339,Louise Tielemans-Vierdag,l.tielemans-vierdag@student.roc.nl,24,M,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.623,0.631,27,8.0,5.8,Peter Smit,p.smit@roc.nl
+20240340,Sven le Guellec,s.leguellec@student.roc.nl,20,V,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.764,0.792,50,4.7,7.2,Fatima El Amrani,f.elamrani@roc.nl
+20240341,Jordy Holthuis,j.holthuis@student.roc.nl,16,M,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.608,0.536,24,6.9,4.7,Fatima El Amrani,f.elamrani@roc.nl
+20240342,Liz Wolters,l.wolters@student.roc.nl,17,V,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.765,0.695,31,6.6,8.1,Jan de Vries,j.devries@roc.nl
+20240343,Senna van de Wiel,s.vandewiel@student.roc.nl,17,V,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.933,0.826,39,6.5,5.0,Anita Jansen,a.jansen@roc.nl
+20240344,Elisabeth van Luyssel,e.vanluyssel@student.roc.nl,24,M,MBO niveau 3,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.632,0.718,44,5.5,7.2,Peter Smit,p.smit@roc.nl
+20240345,Melissa le Gulcher-Billung,m.legulcher-billung@student.roc.nl,24,V,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.936,0.839,49,7.1,5.5,Peter Smit,p.smit@roc.nl
+20240346,Kyra Eerden,k.eerden@student.roc.nl,17,M,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.603,0.599,36,6.6,4.1,Peter Smit,p.smit@roc.nl
+20240347,Matthias Schatteleijn,m.schatteleijn@student.roc.nl,18,M,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.711,0.672,40,6.9,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240348,Adam Haneberg,a.haneberg@student.roc.nl,21,V,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.878,0.817,47,5.3,6.2,Fatima El Amrani,f.elamrani@roc.nl
+20240349,Milo Coolen-Bresé,m.coolen-bresé@student.roc.nl,22,V,MBO niveau 3,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.719,0.682,35,5.0,8.5,Jan de Vries,j.devries@roc.nl
+20240350,Zakaria Claesner,z.claesner@student.roc.nl,16,V,HAVO,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.844,0.883,53,6.6,6.9,Jan de Vries,j.devries@roc.nl
+20240351,Brent Kleijse,b.kleijse@student.roc.nl,23,V,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.892,0.796,44,6.9,7.6,Jan de Vries,j.devries@roc.nl
+20240352,Fien Bertho,f.bertho@student.roc.nl,20,V,HAVO,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.519,0.616,34,6.7,6.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240353,Jonathan van den Pol,j.vandenpol@student.roc.nl,17,X,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.81,0.618,39,4.6,5.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240354,Mehmet Wever,m.wever@student.roc.nl,16,M,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.483,0.561,31,4.3,7.2,Peter Smit,p.smit@roc.nl
+20240355,Aaliyah Roukes,a.roukes@student.roc.nl,16,M,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.473,0.618,26,6.2,6.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240356,Tristan Overdijk-van der Kint,t.overdijk-vanderkint@student.roc.nl,20,M,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.773,0.748,41,6.3,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240357,Dina Kunen-Schatteleijn,d.kunen-schatteleijn@student.roc.nl,21,M,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.747,0.574,36,5.5,8.8,Anita Jansen,a.jansen@roc.nl
+20240358,Annabel Goyaerts van Waderle,a.goyaertsvanwaderle@student.roc.nl,24,M,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.84,0.725,35,6.9,7.7,Fatima El Amrani,f.elamrani@roc.nl
+20240359,Hannah Ferran,h.ferran@student.roc.nl,17,M,MBO niveau 3,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.936,0.769,43,7.6,6.3,Fatima El Amrani,f.elamrani@roc.nl
+20240360,Maria Mathurin,m.mathurin@student.roc.nl,20,V,MBO niveau 2,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.981,0.927,51,7.6,3.9,Anita Jansen,a.jansen@roc.nl
+20240361,Phileine Tammerijn,p.tammerijn@student.roc.nl,23,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.959,0.785,48,8.1,5.1,Fatima El Amrani,f.elamrani@roc.nl
+20240362,Ibrahim Elsenaar-de Keijser,i.elsenaar-dekeijser@student.roc.nl,19,M,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.923,0.846,45,6.9,8.0,Anita Jansen,a.jansen@roc.nl
+20240363,Eliza Potters,e.potters@student.roc.nl,23,V,HAVO,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.552,0.671,37,8.8,7.0,Jan de Vries,j.devries@roc.nl
+20240364,Tijmen Brands,t.brands@student.roc.nl,24,V,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.846,0.876,45,5.1,7.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240365,Florian van de Darnau-de Kok,f.vandedarnau-dekok@student.roc.nl,18,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.393,0.487,31,6.2,6.8,Jan de Vries,j.devries@roc.nl
+20240366,Jorn Postma,j.postma@student.roc.nl,16,M,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.338,0.535,33,5.6,6.0,Jan de Vries,j.devries@roc.nl
+20240367,Jesse Cosman,j.cosman@student.roc.nl,17,M,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.68,0.684,41,6.6,7.7,Anita Jansen,a.jansen@roc.nl
+20240368,Kiki van Allemanië,k.vanallemanië@student.roc.nl,16,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.645,0.75,39,7.3,5.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240369,Kyra Backer,k.backer@student.roc.nl,23,V,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.726,0.68,45,8.0,7.9,Anita Jansen,a.jansen@roc.nl
+20240370,Isabel Oda,i.oda@student.roc.nl,19,V,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.639,0.689,41,8.7,6.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240371,Tijmen Brievingh-Schagen,t.brievingh-schagen@student.roc.nl,19,V,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.463,0.508,38,6.8,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240372,Jason Oversteeg,j.oversteeg@student.roc.nl,20,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.806,0.867,46,7.8,7.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240373,Quinn Neuteboom-Maaswinkel,q.neuteboom-maaswinkel@student.roc.nl,17,V,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.771,0.841,49,3.4,8.1,Peter Smit,p.smit@roc.nl
+20240374,Emir van den Nuwenhuysen,e.vandennuwenhuysen@student.roc.nl,17,V,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.553,0.669,36,5.0,8.5,Jan de Vries,j.devries@roc.nl
+20240375,Daan de Marduras,d.demarduras@student.roc.nl,23,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.682,0.591,32,5.9,5.5,Jan de Vries,j.devries@roc.nl
+20240376,Kim Fortuyn,k.fortuyn@student.roc.nl,24,M,HAVO,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.717,0.717,44,7.0,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240377,Wessel Van Bragt,w.vanbragt@student.roc.nl,20,V,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.587,0.619,28,6.4,6.8,Jan de Vries,j.devries@roc.nl
+20240378,Quinty de la Fleche,q.delafleche@student.roc.nl,22,V,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.883,0.898,41,7.5,4.5,Jan de Vries,j.devries@roc.nl
+20240379,Tim van Haarlem,t.vanhaarlem@student.roc.nl,18,X,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.559,0.617,31,7.5,9.2,Peter Smit,p.smit@roc.nl
+20240380,Sil van der Avoirt,s.vanderavoirt@student.roc.nl,16,M,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.696,0.662,40,7.4,5.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240381,Lindsey Ariens,l.ariens@student.roc.nl,23,V,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.737,0.741,35,5.5,4.8,Jan de Vries,j.devries@roc.nl
+20240382,Féline le Guellec,f.leguellec@student.roc.nl,20,M,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.641,0.591,29,4.9,7.3,Peter Smit,p.smit@roc.nl
+20240383,Maaike Muijs,m.muijs@student.roc.nl,17,M,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.63,0.634,34,5.8,5.5,Anita Jansen,a.jansen@roc.nl
+20240384,Sophia Serra,s.serra@student.roc.nl,20,M,MBO niveau 3,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.858,0.768,35,5.3,5.6,Anita Jansen,a.jansen@roc.nl
+20240385,Elena Marchal,e.marchal@student.roc.nl,23,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.585,0.678,42,4.9,7.3,Peter Smit,p.smit@roc.nl
+20240386,Jonathan Jonkman,j.jonkman@student.roc.nl,16,V,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.62,0.709,29,8.2,5.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240387,Aron Doornhem,a.doornhem@student.roc.nl,19,M,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.745,0.73,48,7.3,7.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240388,Tycho Jansen,t.jansen@student.roc.nl,26,V,VMBO-K,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.446,0.5,20,6.1,7.6,Jan de Vries,j.devries@roc.nl
+20240389,Mohammed Vastenhouw,m.vastenhouw@student.roc.nl,20,M,VMBO-B,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.901,0.863,51,7.4,5.3,Peter Smit,p.smit@roc.nl
+20240390,Janne Huijs,j.huijs@student.roc.nl,17,V,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.517,0.654,42,6.9,7.3,Anita Jansen,a.jansen@roc.nl
+20240391,Ceylin Vink,c.vink@student.roc.nl,18,V,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.837,0.78,39,6.5,6.3,Peter Smit,p.smit@roc.nl
+20240392,Ceylin Manne,c.manne@student.roc.nl,25,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.868,0.861,54,8.2,5.1,Anita Jansen,a.jansen@roc.nl
+20240393,Annabel Ouwerkerk,a.ouwerkerk@student.roc.nl,20,M,VMBO-B,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.785,0.774,39,7.3,5.9,Anita Jansen,a.jansen@roc.nl
+20240394,Luca de Kale-Groen,l.dekale-groen@student.roc.nl,16,M,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.672,0.707,43,8.6,7.6,Fatima El Amrani,f.elamrani@roc.nl
+20240395,Myrthe van Geest,m.vangeest@student.roc.nl,27,M,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.581,0.662,38,6.0,4.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240396,Lukas van Gorp-Heyne,l.vangorp-heyne@student.roc.nl,20,M,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.867,0.902,54,5.0,7.2,Anita Jansen,a.jansen@roc.nl
+20240397,Anna van Kuijc van Malsen-van Daal,a.vankuijcvanmalsen-vandaal@student.roc.nl,20,M,VMBO-K,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.906,0.868,44,7.1,9.9,Peter Smit,p.smit@roc.nl
+20240398,Wessel van Metz,w.vanmetz@student.roc.nl,23,V,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.951,0.857,46,6.4,5.2,Jan de Vries,j.devries@roc.nl
+20240399,Aya van Gils,a.vangils@student.roc.nl,17,V,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.713,0.705,38,7.6,7.3,Peter Smit,p.smit@roc.nl
+20240400,Fem Schuylenborch,f.schuylenborch@student.roc.nl,23,M,VMBO-T,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.793,0.843,49,9.3,5.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240401,Jens Texier-Mahieu,j.texier-mahieu@student.roc.nl,20,V,VMBO-K,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.817,0.764,49,4.9,5.6,Fatima El Amrani,f.elamrani@roc.nl
+20240402,Julius van Emmelen,j.vanemmelen@student.roc.nl,16,V,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.734,0.587,34,4.9,6.0,Jan de Vries,j.devries@roc.nl
+20240403,Justin van den Velden,j.vandenvelden@student.roc.nl,19,M,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.934,0.661,47,6.5,6.2,Anita Jansen,a.jansen@roc.nl
+20240404,Mirte van de Noordmark,m.vandenoordmark@student.roc.nl,20,V,MBO niveau 2,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.648,0.632,38,6.9,7.5,Fatima El Amrani,f.elamrani@roc.nl
+20240405,Maxim Wolfsdr,m.wolfsdr@student.roc.nl,24,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.822,0.841,49,7.1,5.9,Jan de Vries,j.devries@roc.nl
+20240406,Ibrahim Merkx-van Bernicia,i.merkx-vanbernicia@student.roc.nl,18,V,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.497,0.555,36,6.8,9.9,Jan de Vries,j.devries@roc.nl
+20240407,Aaliyah Arent-van Asten,a.arent-vanasten@student.roc.nl,20,V,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.532,0.583,32,8.7,7.2,Jan de Vries,j.devries@roc.nl
+20240408,Mark van Rheineck,m.vanrheineck@student.roc.nl,19,V,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.921,0.836,47,9.4,8.1,Peter Smit,p.smit@roc.nl
+20240409,Lucy de Hoog,l.dehoog@student.roc.nl,22,M,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.787,0.685,29,4.9,4.7,Peter Smit,p.smit@roc.nl
+20240410,Noortje Heijmen,n.heijmen@student.roc.nl,20,M,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.791,0.712,38,6.3,7.9,Peter Smit,p.smit@roc.nl
+20240411,Jolijn de Jonge,j.dejonge@student.roc.nl,24,V,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.922,0.879,47,8.8,2.4,Peter Smit,p.smit@roc.nl
+20240412,Dana Doesburg,d.doesburg@student.roc.nl,16,M,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.564,0.592,36,6.1,8.0,Fatima El Amrani,f.elamrani@roc.nl
+20240413,Jari Scharroo-van Brunswijk,j.scharroo-vanbrunswijk@student.roc.nl,16,V,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.428,0.468,21,7.1,3.5,Jan de Vries,j.devries@roc.nl
+20240414,Kate Hofman,k.hofman@student.roc.nl,21,V,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.875,0.767,39,6.1,6.0,Anita Jansen,a.jansen@roc.nl
+20240415,Ties van Gemert,t.vangemert@student.roc.nl,23,M,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.69,0.64,24,5.3,6.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240416,Noor Ernst,n.ernst@student.roc.nl,21,V,HAVO,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.834,0.855,49,6.4,5.6,Anita Jansen,a.jansen@roc.nl
+20240417,Leah van de Leemput-van der Pluijm,l.vandeleemput-vanderpluijm@student.roc.nl,18,V,VMBO-K,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.79,0.746,38,5.4,5.5,Anita Jansen,a.jansen@roc.nl
+20240418,Imran van Voorhout,i.vanvoorhout@student.roc.nl,20,M,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.893,0.852,51,4.6,9.1,Jan de Vries,j.devries@roc.nl
+20240419,Jaylinn de Vos,j.devos@student.roc.nl,19,M,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.715,0.772,52,5.9,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240420,Indy VI,i.vi@student.roc.nl,25,M,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.628,0.598,33,7.1,4.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240421,Imke van Duvenvoirde,i.vanduvenvoirde@student.roc.nl,16,M,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.826,0.781,40,6.3,7.4,Peter Smit,p.smit@roc.nl
+20240422,Mathijs Nedermeijer,m.nedermeijer@student.roc.nl,18,V,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.709,0.504,27,4.9,6.8,Fatima El Amrani,f.elamrani@roc.nl
+20240423,Sven Mulder-Persijn,s.mulder-persijn@student.roc.nl,19,V,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.845,0.702,36,5.4,4.4,Anita Jansen,a.jansen@roc.nl
+20240424,Lot Cornelisz,l.cornelisz@student.roc.nl,24,V,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.819,0.72,36,7.4,6.2,Anita Jansen,a.jansen@roc.nl
+20240425,Zara Miltenburg,z.miltenburg@student.roc.nl,16,V,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.84,0.647,45,4.9,7.0,Fatima El Amrani,f.elamrani@roc.nl
+20240426,Lauren le Matelot-Moensendijk,l.lematelot-moensendijk@student.roc.nl,19,V,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.858,0.882,45,5.4,3.9,Anita Jansen,a.jansen@roc.nl
+20240427,Mathijs van de Coterlet,m.vandecoterlet@student.roc.nl,18,M,MBO niveau 2,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.758,0.813,42,8.0,6.2,Peter Smit,p.smit@roc.nl
+20240428,Olivier Huel,o.huel@student.roc.nl,18,X,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.752,0.712,37,6.6,6.5,Anita Jansen,a.jansen@roc.nl
+20240429,Fiene Overeem,f.overeem@student.roc.nl,16,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.964,0.851,50,5.4,6.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240430,Jan Demmendaal,j.demmendaal@student.roc.nl,18,M,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.774,0.745,26,8.2,8.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240431,Kyano Neuteboom,k.neuteboom@student.roc.nl,25,V,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.85,0.852,54,6.8,5.9,Fatima El Amrani,f.elamrani@roc.nl
+20240432,Olivia van Embden-Vrancken,o.vanembden-vrancken@student.roc.nl,20,X,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.758,0.735,41,6.8,3.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240433,Jim Voortman,j.voortman@student.roc.nl,18,M,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.731,0.766,42,5.7,6.4,Jan de Vries,j.devries@roc.nl
+20240434,Youssef de Groot,y.degroot@student.roc.nl,16,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.802,0.697,42,5.9,7.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240435,Megan Kortman,m.kortman@student.roc.nl,17,V,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.486,0.559,26,6.3,5.2,Anita Jansen,a.jansen@roc.nl
+20240436,Mia van de Klashorst,m.vandeklashorst@student.roc.nl,22,V,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.905,0.865,44,7.2,6.5,Jan de Vries,j.devries@roc.nl
+20240437,Milo van Limburg-Heijmen,m.vanlimburg-heijmen@student.roc.nl,22,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.745,0.736,37,6.4,3.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240438,Elin Dorsman,e.dorsman@student.roc.nl,21,V,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.547,0.679,45,4.4,7.1,Anita Jansen,a.jansen@roc.nl
+20240439,Hanna Wolters,h.wolters@student.roc.nl,16,M,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.859,0.783,40,7.1,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240440,Julian Hendriks,j.hendriks@student.roc.nl,23,M,VMBO-K,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.923,0.85,38,4.8,5.9,Anita Jansen,a.jansen@roc.nl
+20240441,Naud Nijman,n.nijman@student.roc.nl,18,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.532,0.543,29,7.5,6.3,Anita Jansen,a.jansen@roc.nl
+20240442,Nadia Overdijk,n.overdijk@student.roc.nl,20,M,HAVO,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.708,0.638,42,5.1,6.4,Peter Smit,p.smit@roc.nl
+20240443,Jet Gemen,j.gemen@student.roc.nl,26,M,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.746,0.712,44,4.5,9.9,Peter Smit,p.smit@roc.nl
+20240444,Mees van Ooste,m.vanooste@student.roc.nl,20,V,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.57,0.657,38,7.8,5.8,Peter Smit,p.smit@roc.nl
+20240445,Liza van 't Erve,l.van'terve@student.roc.nl,16,M,MBO niveau 2,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.437,0.474,25,5.8,7.4,Peter Smit,p.smit@roc.nl
+20240446,Dave Timmermans-Mallien,d.timmermans-mallien@student.roc.nl,16,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.918,0.737,44,7.9,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240447,Maja van Schevinghuizen,m.vanschevinghuizen@student.roc.nl,21,M,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.437,0.436,25,4.8,7.0,Anita Jansen,a.jansen@roc.nl
+20240448,Jay Kok,j.kok@student.roc.nl,21,M,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.819,0.78,41,9.7,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240449,Lola Mangel-de Gruijl,l.mangel-degruijl@student.roc.nl,21,M,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.678,0.687,36,7.4,8.0,Peter Smit,p.smit@roc.nl
+20240450,Evy Kosten-van Limburg,e.kosten-vanlimburg@student.roc.nl,22,V,HAVO,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.762,0.71,43,6.9,4.4,Fatima El Amrani,f.elamrani@roc.nl
+20240451,Fabiënne Cornelisz,f.cornelisz@student.roc.nl,19,M,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.793,0.787,41,7.0,6.6,Jan de Vries,j.devries@roc.nl
+20240452,Veerle van Herstal,v.vanherstal@student.roc.nl,22,V,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.519,0.594,29,7.6,7.4,Jan de Vries,j.devries@roc.nl
+20240453,Maja de Boer,m.deboer@student.roc.nl,20,M,HAVO,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.897,0.787,38,4.9,4.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240454,Lily Olykan,l.olykan@student.roc.nl,17,V,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.711,0.755,37,7.8,5.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240455,Sterre Zwijsen,s.zwijsen@student.roc.nl,17,V,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.634,0.673,32,7.2,4.4,Anita Jansen,a.jansen@roc.nl
+20240456,Jet ter Waarbeek,j.terwaarbeek@student.roc.nl,18,V,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.615,0.63,36,8.0,7.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240457,Noud Jurrijens-Die Bont,n.jurrijens-diebont@student.roc.nl,21,M,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.391,0.604,30,5.9,9.3,Anita Jansen,a.jansen@roc.nl
+20240458,Jason Cornelisz,j.cornelisz@student.roc.nl,23,V,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.957,0.873,56,5.7,6.1,Jan de Vries,j.devries@roc.nl
+20240459,Sienna van Kusen,s.vankusen@student.roc.nl,20,V,VMBO-B,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.828,0.751,39,7.1,3.8,Peter Smit,p.smit@roc.nl
+20240460,Jay Wendt,j.wendt@student.roc.nl,17,V,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.828,0.782,41,3.6,4.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240461,Mustafa Adriaensdr,m.adriaensdr@student.roc.nl,23,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.509,0.567,40,8.6,4.8,Anita Jansen,a.jansen@roc.nl
+20240462,Noortje Waardeloo-van Herstal,n.waardeloo-vanherstal@student.roc.nl,16,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.953,0.787,42,4.1,6.4,Anita Jansen,a.jansen@roc.nl
+20240463,Maurits Feltzer,m.feltzer@student.roc.nl,20,X,VMBO-K,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.84,0.819,47,8.3,7.2,Anita Jansen,a.jansen@roc.nl
+20240464,Mees Blonk,m.blonk@student.roc.nl,16,V,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.934,0.877,45,8.0,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240465,Olivia Wouters van Eijndhoven,o.woutersvaneijndhoven@student.roc.nl,16,X,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.668,0.617,35,6.8,8.4,Jan de Vries,j.devries@roc.nl
+20240466,Indy Spruyt,i.spruyt@student.roc.nl,28,V,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.638,0.711,36,6.3,4.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240467,Aylin van Olst,a.vanolst@student.roc.nl,21,V,MBO niveau 2,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.632,0.618,39,5.4,3.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240468,Charlotte de Roo,c.deroo@student.roc.nl,17,V,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.863,0.764,42,3.9,4.8,Jan de Vries,j.devries@roc.nl
+20240469,Amélie Ellis,a.ellis@student.roc.nl,19,M,MBO niveau 2,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.688,0.734,33,7.2,5.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240470,Luna Verbeek,l.verbeek@student.roc.nl,22,M,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.474,0.439,28,2.9,5.6,Anita Jansen,a.jansen@roc.nl
+20240471,Tirza Post,t.post@student.roc.nl,22,M,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.79,0.772,47,4.1,5.5,Peter Smit,p.smit@roc.nl
+20240472,David Bolkesteijn-Walsteijn,d.bolkesteijn-walsteijn@student.roc.nl,20,M,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.786,0.667,37,7.6,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240473,Melissa Mol,m.mol@student.roc.nl,16,M,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.566,0.53,28,4.8,8.4,Anita Jansen,a.jansen@roc.nl
+20240474,Tijmen Ponci,t.ponci@student.roc.nl,29,M,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.779,0.612,34,7.5,6.9,Fatima El Amrani,f.elamrani@roc.nl
+20240475,Sam Rijntjes-Chrodtrud,s.rijntjes-chrodtrud@student.roc.nl,20,V,MBO niveau 2,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.526,0.643,35,6.0,4.2,Peter Smit,p.smit@roc.nl
+20240476,Jill van der Kint,j.vanderkint@student.roc.nl,23,M,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.727,0.704,39,8.0,7.6,Jan de Vries,j.devries@roc.nl
+20240477,Noor Geneart,n.geneart@student.roc.nl,23,V,MBO niveau 2,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.333,0.537,25,6.6,4.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240478,Annabel van Orleans,a.vanorleans@student.roc.nl,20,V,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.622,0.585,32,8.0,5.5,Fatima El Amrani,f.elamrani@roc.nl
+20240479,Sanne van Dongen,s.vandongen@student.roc.nl,23,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.861,0.805,35,6.5,5.9,Anita Jansen,a.jansen@roc.nl
+20240480,Jonathan Langevoort,j.langevoort@student.roc.nl,18,M,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.631,0.609,31,7.2,8.0,Peter Smit,p.smit@roc.nl
+20240481,Nova de Keijser,n.dekeijser@student.roc.nl,19,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.568,0.619,37,5.7,7.5,Anita Jansen,a.jansen@roc.nl
+20240482,Isabella van Eck,i.vaneck@student.roc.nl,18,M,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.347,0.555,26,6.3,5.3,Peter Smit,p.smit@roc.nl
+20240483,Berat Zijlmans-van der Plas,b.zijlmans-vanderplas@student.roc.nl,19,M,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.818,0.83,43,5.3,7.4,Jan de Vries,j.devries@roc.nl
+20240484,Janna van de Darnau,j.vandedarnau@student.roc.nl,18,V,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.817,0.78,37,6.0,5.0,Fatima El Amrani,f.elamrani@roc.nl
+20240485,Luna Steenbakkers-Boddaugh,l.steenbakkers-boddaugh@student.roc.nl,24,V,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.42,0.434,17,6.1,8.4,Anita Jansen,a.jansen@roc.nl
+20240486,Linn van den Broek,l.vandenbroek@student.roc.nl,21,V,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.862,0.774,45,6.0,7.1,Peter Smit,p.smit@roc.nl
+20240487,Angelina van Salm-Thomas,a.vansalm-thomas@student.roc.nl,16,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.916,0.833,44,7.3,6.6,Fatima El Amrani,f.elamrani@roc.nl
+20240488,Bo Feltzer,b.feltzer@student.roc.nl,20,V,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.781,0.665,35,6.3,7.7,Jan de Vries,j.devries@roc.nl
+20240489,Liv Marchand,l.marchand@student.roc.nl,27,V,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.792,0.611,38,6.2,5.7,Jan de Vries,j.devries@roc.nl
+20240490,Hailey David,h.david@student.roc.nl,19,V,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.77,0.625,29,5.0,7.5,Fatima El Amrani,f.elamrani@roc.nl
+20240491,Nadia Segerszoen,n.segerszoen@student.roc.nl,20,V,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.514,0.438,32,6.7,8.4,Jan de Vries,j.devries@roc.nl
+20240492,Benjamin Knoers,b.knoers@student.roc.nl,22,V,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.38,0.587,40,6.9,5.9,Fatima El Amrani,f.elamrani@roc.nl
+20240493,Benjamin Driessen-Vastenhouw,b.driessen-vastenhouw@student.roc.nl,19,M,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.763,0.682,30,6.2,5.2,Peter Smit,p.smit@roc.nl
+20240494,Noëlle de la Fleche,n.delafleche@student.roc.nl,19,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.689,0.737,40,7.9,6.0,Anita Jansen,a.jansen@roc.nl
+20240495,Riley van Straaten,r.vanstraaten@student.roc.nl,19,M,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.673,0.777,36,5.0,7.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240496,Thom Boudewijns,t.boudewijns@student.roc.nl,18,M,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.527,0.617,33,5.7,7.3,Jan de Vries,j.devries@roc.nl
+20240497,Arie van Maasgouw,a.vanmaasgouw@student.roc.nl,16,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.933,0.803,55,6.7,7.9,Anita Jansen,a.jansen@roc.nl
+20240498,Sienna Wijland,s.wijland@student.roc.nl,18,M,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.385,0.471,25,5.9,6.7,Anita Jansen,a.jansen@roc.nl
+20240499,Teun van der Klijn,t.vanderklijn@student.roc.nl,19,V,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.926,0.751,50,6.6,6.7,Peter Smit,p.smit@roc.nl
+20240500,Lize de Vries-Verheuvel,l.devries-verheuvel@student.roc.nl,19,V,VMBO-K,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.921,0.844,49,5.7,8.6,Peter Smit,p.smit@roc.nl
+20240501,Daniel van Dongen,d.vandongen@student.roc.nl,19,M,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.815,0.771,38,7.1,6.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240502,Zoë Haack,z.haack@student.roc.nl,19,M,VMBO-K,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.618,0.494,32,6.8,6.7,Jan de Vries,j.devries@roc.nl
+20240503,Yinthe le Floch-Gemen,y.lefloch-gemen@student.roc.nl,23,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.668,0.727,34,5.6,7.9,Fatima El Amrani,f.elamrani@roc.nl
+20240504,Zoë Olykan,z.olykan@student.roc.nl,24,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.661,0.642,37,7.3,6.7,Jan de Vries,j.devries@roc.nl
+20240505,Ties Ernst,t.ernst@student.roc.nl,22,V,HAVO,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.321,0.576,35,3.1,4.9,Fatima El Amrani,f.elamrani@roc.nl
+20240506,Tijs Meeres,t.meeres@student.roc.nl,21,M,MBO niveau 2,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.766,0.706,35,8.2,7.0,Jan de Vries,j.devries@roc.nl
+20240507,Abel van der Laarse,a.vanderlaarse@student.roc.nl,21,V,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.751,0.786,50,7.4,9.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240508,Maya Elberts-Haselaar,m.elberts-haselaar@student.roc.nl,23,M,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.636,0.63,33,6.4,5.5,Peter Smit,p.smit@roc.nl
+20240509,Laurens Beourgeois,l.beourgeois@student.roc.nl,23,M,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.967,0.932,53,6.1,5.2,Fatima El Amrani,f.elamrani@roc.nl
+20240510,Inaya van der Heyden-de Graaf,i.vanderheyden-degraaf@student.roc.nl,21,M,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.672,0.749,48,7.7,5.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240511,Valerie van Leuven-Walter,v.vanleuven-walter@student.roc.nl,16,M,MBO niveau 2,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.697,0.691,43,5.1,6.1,Peter Smit,p.smit@roc.nl
+20240512,Ize Bosch,i.bosch@student.roc.nl,21,V,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.549,0.682,41,6.4,5.5,Jan de Vries,j.devries@roc.nl
+20240513,Ashley Palman,a.palman@student.roc.nl,22,M,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.91,0.811,46,5.2,5.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240514,Jonas Dircken,j.dircken@student.roc.nl,25,M,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.788,0.774,45,8.7,7.1,Peter Smit,p.smit@roc.nl
+20240515,Muhammed Timmermans,m.timmermans@student.roc.nl,18,X,MBO niveau 2,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.559,0.553,27,6.7,4.9,Anita Jansen,a.jansen@roc.nl
+20240516,Ivy Jacobi,i.jacobi@student.roc.nl,19,M,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.797,0.844,41,8.9,7.6,Fatima El Amrani,f.elamrani@roc.nl
+20240517,Daan Lether,d.lether@student.roc.nl,16,M,HAVO,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.74,0.74,43,6.9,4.6,Peter Smit,p.smit@roc.nl
+20240518,Amber Lelijveld,a.lelijveld@student.roc.nl,24,M,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.878,0.878,44,8.3,6.1,Jan de Vries,j.devries@roc.nl
+20240519,Chloë Knuf-de Vries,c.knuf-devries@student.roc.nl,17,V,VMBO-B,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.56,0.528,30,7.4,6.9,Anita Jansen,a.jansen@roc.nl
+20240520,Owen Janssen,o.janssen@student.roc.nl,21,M,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.506,0.618,39,7.6,4.8,Peter Smit,p.smit@roc.nl
+20240521,Dave Fiere,d.fiere@student.roc.nl,21,V,VMBO-T,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.597,0.664,43,5.9,7.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240522,Raf Kok,r.kok@student.roc.nl,21,M,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.881,0.87,49,3.8,9.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240523,Justin Wolters,j.wolters@student.roc.nl,19,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.72,0.662,49,9.3,8.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240524,Karlijn Stettyn,k.stettyn@student.roc.nl,23,M,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.843,0.687,40,5.6,4.3,Jan de Vries,j.devries@roc.nl
+20240525,Jip Buijs,j.buijs@student.roc.nl,22,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.183,0.408,23,6.8,6.1,Anita Jansen,a.jansen@roc.nl
+20240526,Riley Rutten-Verhoeven,r.rutten-verhoeven@student.roc.nl,20,V,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.472,0.617,45,4.3,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240527,Hanna Kuilenburg,h.kuilenburg@student.roc.nl,19,M,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.689,0.737,39,5.9,7.0,Peter Smit,p.smit@roc.nl
+20240528,Wout Hemma van Allemanië,w.hemmavanallemanië@student.roc.nl,18,V,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.723,0.649,41,7.5,5.2,Fatima El Amrani,f.elamrani@roc.nl
+20240529,Charlotte Helmerhorst,c.helmerhorst@student.roc.nl,19,V,VMBO-T,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.778,0.755,42,6.8,8.7,Jan de Vries,j.devries@roc.nl
+20240530,Elias Huurdeman,e.huurdeman@student.roc.nl,20,M,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.655,0.751,49,7.0,7.3,Peter Smit,p.smit@roc.nl
+20240531,Jurre Jacobs-Blom,j.jacobs-blom@student.roc.nl,22,M,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.918,0.762,36,7.1,5.6,Fatima El Amrani,f.elamrani@roc.nl
+20240532,Ize de Bruijn,i.debruijn@student.roc.nl,19,M,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.652,0.665,38,4.7,6.6,Jan de Vries,j.devries@roc.nl
+20240533,Florian Doorhof,f.doorhof@student.roc.nl,20,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.741,0.759,43,9.1,6.9,Anita Jansen,a.jansen@roc.nl
+20240534,Sara Charon,s.charon@student.roc.nl,19,M,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.835,0.822,43,4.9,6.3,Fatima El Amrani,f.elamrani@roc.nl
+20240535,Tirza Lorreijn,t.lorreijn@student.roc.nl,18,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.973,0.897,48,6.2,8.5,Peter Smit,p.smit@roc.nl
+20240536,Bibi van Bovene,b.vanbovene@student.roc.nl,27,M,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.75,0.708,45,7.0,7.5,Anita Jansen,a.jansen@roc.nl
+20240537,Maaike Kwaadland,m.kwaadland@student.roc.nl,22,M,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.673,0.707,46,5.4,5.8,Anita Jansen,a.jansen@roc.nl
+20240538,Milo Janse-Kosten,m.janse-kosten@student.roc.nl,18,X,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.874,0.863,41,7.3,3.6,Anita Jansen,a.jansen@roc.nl
+20240539,Dean van Gelder,d.vangelder@student.roc.nl,21,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.973,0.815,47,5.8,7.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240540,Willem van der Ploeg,w.vanderploeg@student.roc.nl,17,M,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.72,0.688,36,6.6,7.9,Jan de Vries,j.devries@roc.nl
+20240541,Luna Huisman-van Bergen,l.huisman-vanbergen@student.roc.nl,16,M,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.91,0.834,45,6.7,7.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240542,Ibrahim Verkade-Blom,i.verkade-blom@student.roc.nl,22,V,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.711,0.755,38,6.9,6.6,Jan de Vries,j.devries@roc.nl
+20240543,Morris Verheuvel-van Vlaanderen,m.verheuvel-vanvlaanderen@student.roc.nl,17,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.595,0.656,37,8.4,6.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240544,Leon Elsenaar-Jacobs,l.elsenaar-jacobs@student.roc.nl,20,V,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.833,0.744,41,6.4,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240545,Faye van Nimwegen,f.vannimwegen@student.roc.nl,22,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.852,0.713,40,7.5,8.2,Jan de Vries,j.devries@roc.nl
+20240546,Mika Die Bont-Hanegraaff,m.diebont-hanegraaff@student.roc.nl,20,M,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.845,0.72,46,6.3,8.0,Jan de Vries,j.devries@roc.nl
+20240547,Hugo van Luyssel,h.vanluyssel@student.roc.nl,16,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.713,0.771,48,6.8,5.3,Peter Smit,p.smit@roc.nl
+20240548,Aya Jacobi,a.jacobi@student.roc.nl,24,M,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.489,0.53,33,5.1,7.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240549,Amélie Westerbeek,a.westerbeek@student.roc.nl,20,V,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.407,0.541,25,5.6,3.2,Anita Jansen,a.jansen@roc.nl
+20240550,Yasmin Lamore-de Mol,y.lamore-demol@student.roc.nl,19,M,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.836,0.672,34,8.3,6.3,Anita Jansen,a.jansen@roc.nl
+20240551,Saar van Schevinghuizen,s.vanschevinghuizen@student.roc.nl,24,M,MBO niveau 2,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.749,0.824,36,7.5,4.7,Jan de Vries,j.devries@roc.nl
+20240552,Sami Dirksen,s.dirksen@student.roc.nl,19,M,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.288,0.518,38,7.8,6.7,Jan de Vries,j.devries@roc.nl
+20240553,Pippa Kof,p.kof@student.roc.nl,23,V,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.572,0.497,29,7.0,6.9,Peter Smit,p.smit@roc.nl
+20240554,Keano Jdotte-Post,k.jdotte-post@student.roc.nl,21,V,VMBO-B,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.879,0.686,38,7.6,4.7,Peter Smit,p.smit@roc.nl
+20240555,Bibi Vegt-Haengreve,b.vegt-haengreve@student.roc.nl,16,M,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.508,0.516,33,4.2,4.8,Jan de Vries,j.devries@roc.nl
+20240556,Amélie Fremie,a.fremie@student.roc.nl,23,V,VMBO-B,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.207,0.449,21,5.1,7.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240557,Annemijn Janssens,a.janssens@student.roc.nl,24,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.614,0.704,46,4.4,7.1,Fatima El Amrani,f.elamrani@roc.nl
+20240558,Valerie Ulrich,v.ulrich@student.roc.nl,20,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.666,0.637,33,8.7,5.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240559,Jasmijn van Rijthoven,j.vanrijthoven@student.roc.nl,16,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.668,0.744,44,8.6,6.6,Anita Jansen,a.jansen@roc.nl
+20240560,Ecrin Aarden,e.aarden@student.roc.nl,18,X,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.459,0.507,25,7.2,7.1,Anita Jansen,a.jansen@roc.nl
+20240561,Chloé Stoffelsz,c.stoffelsz@student.roc.nl,16,V,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.8,0.7,44,4.7,8.2,Peter Smit,p.smit@roc.nl
+20240562,Hidde van den Nyeuwenhuysen,h.vandennyeuwenhuysen@student.roc.nl,16,X,MBO niveau 2,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.638,0.564,38,5.0,7.4,Peter Smit,p.smit@roc.nl
+20240563,Jennifer Meyer,j.meyer@student.roc.nl,16,M,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.524,0.434,26,6.9,4.6,Fatima El Amrani,f.elamrani@roc.nl
+20240564,Aiden Lommert,a.lommert@student.roc.nl,19,V,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.825,0.726,41,7.1,8.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240565,Femke van den Nyeuwenhuysen,f.vandennyeuwenhuysen@student.roc.nl,17,M,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.176,0.483,30,6.7,4.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240566,Adriana de Ruiter-Pison,a.deruiter-pison@student.roc.nl,23,V,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.919,0.724,39,6.2,6.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240567,Finn Kuiper,f.kuiper@student.roc.nl,21,M,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.9,0.729,41,9.6,8.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240568,Benthe van den Berg,b.vandenberg@student.roc.nl,25,M,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.531,0.523,35,10.0,6.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240569,Laurens de Kale,l.dekale@student.roc.nl,19,M,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.498,0.509,33,7.8,5.3,Anita Jansen,a.jansen@roc.nl
+20240570,Bente van Ghoerle,b.vanghoerle@student.roc.nl,24,M,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.737,0.766,39,5.9,5.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240571,Ilse Kosten-Bruijne van der Veen,i.kosten-bruijnevanderveen@student.roc.nl,25,V,MBO niveau 2,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.923,0.691,36,5.0,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240572,Daan van Mil,d.vanmil@student.roc.nl,19,M,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.798,0.765,45,7.7,7.0,Peter Smit,p.smit@roc.nl
+20240573,Kyan Muller,k.muller@student.roc.nl,17,V,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.873,0.647,39,6.0,6.2,Anita Jansen,a.jansen@roc.nl
+20240574,Joëlle Haring,j.haring@student.roc.nl,20,M,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.81,0.861,51,4.6,6.9,Peter Smit,p.smit@roc.nl
+20240575,Nathan Kas,n.kas@student.roc.nl,18,V,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.783,0.75,50,5.9,8.1,Peter Smit,p.smit@roc.nl
+20240576,Juul van den Henst,j.vandenhenst@student.roc.nl,23,M,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.824,0.812,41,9.5,6.7,Jan de Vries,j.devries@roc.nl
+20240577,Romy van den Oever,r.vandenoever@student.roc.nl,18,V,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.448,0.546,36,5.9,3.5,Fatima El Amrani,f.elamrani@roc.nl
+20240578,Merle Latier,m.latier@student.roc.nl,16,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.935,0.676,36,5.5,7.9,Anita Jansen,a.jansen@roc.nl
+20240579,Demi Spies,d.spies@student.roc.nl,19,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.561,0.68,38,6.9,5.0,Peter Smit,p.smit@roc.nl
+20240580,Mees de Backer,m.debacker@student.roc.nl,16,V,VMBO-B,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.676,0.634,37,5.7,7.1,Fatima El Amrani,f.elamrani@roc.nl
+20240581,Mason Bos-Keltenie,m.bos-keltenie@student.roc.nl,19,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.296,0.377,18,6.4,7.3,Jan de Vries,j.devries@roc.nl
+20240582,Pim de Vroege,p.devroege@student.roc.nl,21,M,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.584,0.637,38,6.2,7.8,Anita Jansen,a.jansen@roc.nl
+20240583,Mia van Hoevel en van Zwindrecht,m.vanhoevelenvanzwindrecht@student.roc.nl,16,M,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.898,0.882,47,5.9,6.6,Jan de Vries,j.devries@roc.nl
+20240584,Fedde Muijs,f.muijs@student.roc.nl,16,M,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.744,0.676,38,6.5,6.1,Peter Smit,p.smit@roc.nl
+20240585,Jordy Lorreijn-van Ham,j.lorreijn-vanham@student.roc.nl,20,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.685,0.779,40,9.3,8.7,Jan de Vries,j.devries@roc.nl
+20240586,Jake Zuidweg,j.zuidweg@student.roc.nl,16,V,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.734,0.673,39,5.3,6.5,Fatima El Amrani,f.elamrani@roc.nl
+20240587,Jill Weijters-Segerszoen,j.weijters-segerszoen@student.roc.nl,18,M,VMBO-K,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.825,0.778,40,6.3,4.6,Jan de Vries,j.devries@roc.nl
+20240588,Mustafa van Bruchem-Levesque,m.vanbruchem-levesque@student.roc.nl,18,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.909,0.8,43,6.4,6.6,Anita Jansen,a.jansen@roc.nl
+20240589,Lara Huisman,l.huisman@student.roc.nl,17,V,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.68,0.641,33,7.1,6.2,Anita Jansen,a.jansen@roc.nl
+20240590,Alyssa Verwoert,a.verwoert@student.roc.nl,16,V,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.875,0.741,44,5.1,3.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240591,Ruben Spruyt,r.spruyt@student.roc.nl,24,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.938,0.8,49,7.6,7.0,Fatima El Amrani,f.elamrani@roc.nl
+20240592,Jasmijn Keltenie-Cadefau,j.keltenie-cadefau@student.roc.nl,19,V,MBO niveau 3,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.864,0.802,39,7.5,5.2,Jan de Vries,j.devries@roc.nl
+20240593,Elif Bouwhuisen,e.bouwhuisen@student.roc.nl,22,M,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.815,0.817,40,7.3,5.9,Anita Jansen,a.jansen@roc.nl
+20240594,Silke van Berkum,s.vanberkum@student.roc.nl,23,M,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.56,0.517,40,6.3,4.2,Peter Smit,p.smit@roc.nl
+20240595,Selina Vermeulen,s.vermeulen@student.roc.nl,21,M,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.849,0.712,37,6.6,6.5,Peter Smit,p.smit@roc.nl
+20240596,Aron van Jumiège,a.vanjumiège@student.roc.nl,17,M,HAVO,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.609,0.6,44,7.9,4.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240597,Lana Vandenbergh,l.vandenbergh@student.roc.nl,16,M,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.829,0.86,45,6.2,2.4,Fatima El Amrani,f.elamrani@roc.nl
+20240598,Demi Haack,d.haack@student.roc.nl,20,V,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.598,0.695,32,6.9,4.1,Peter Smit,p.smit@roc.nl
+20240599,Nadine Kwaadland-de Heer,n.kwaadland-deheer@student.roc.nl,19,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.39,0.469,26,7.7,7.6,Jan de Vries,j.devries@roc.nl
+20240600,Yfke van den Wittenboer,y.vandenwittenboer@student.roc.nl,18,M,VMBO-B,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.918,0.822,45,6.5,8.1,Anita Jansen,a.jansen@roc.nl
+20240601,Ivy Glasses,i.glasses@student.roc.nl,19,M,HAVO,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.661,0.597,38,8.4,5.7,Fatima El Amrani,f.elamrani@roc.nl
+20240602,Jort Broekhoven,j.broekhoven@student.roc.nl,16,M,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.634,0.7,41,6.6,5.7,Anita Jansen,a.jansen@roc.nl
+20240603,Puck Heribert van Laon,p.heribertvanlaon@student.roc.nl,18,M,MBO niveau 2,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.604,0.642,42,7.8,8.5,Peter Smit,p.smit@roc.nl
+20240604,Amir Vink,a.vink@student.roc.nl,21,X,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.755,0.695,39,7.2,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240605,Yfke Ferran-Doyle,y.ferran-doyle@student.roc.nl,20,M,VMBO-B,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.773,0.803,38,7.3,6.3,Jan de Vries,j.devries@roc.nl
+20240606,Annemijn Jansen,a.jansen@student.roc.nl,18,V,MBO niveau 2,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.945,0.847,54,7.6,7.3,Jan de Vries,j.devries@roc.nl
+20240607,Rosalie Merckx,r.merckx@student.roc.nl,18,V,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.811,0.716,44,7.4,7.8,Jan de Vries,j.devries@roc.nl
+20240608,Nisa van Grondelle-Bos,n.vangrondelle-bos@student.roc.nl,19,V,HAVO,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.561,0.664,43,5.7,3.9,Peter Smit,p.smit@roc.nl
+20240609,Maya van Lucel-Lensen,m.vanlucel-lensen@student.roc.nl,19,V,VMBO-B,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.766,0.674,45,7.3,6.2,Fatima El Amrani,f.elamrani@roc.nl
+20240610,Jill van Emmelen-van Orleans,j.vanemmelen-vanorleans@student.roc.nl,21,V,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.57,0.55,32,7.1,6.3,Anita Jansen,a.jansen@roc.nl
+20240611,Roan Schwartsbach,r.schwartsbach@student.roc.nl,16,M,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.321,0.533,32,6.4,4.1,Anita Jansen,a.jansen@roc.nl
+20240612,Tobias Haneberg,t.haneberg@student.roc.nl,18,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.794,0.825,47,6.4,8.5,Anita Jansen,a.jansen@roc.nl
+20240613,Muhammed Wouters,m.wouters@student.roc.nl,16,V,HAVO,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.797,0.516,25,6.2,2.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240614,Lot van Westfalen-Michielsen,l.vanwestfalen-michielsen@student.roc.nl,23,M,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.746,0.829,44,7.0,5.4,Fatima El Amrani,f.elamrani@roc.nl
+20240615,Adam Brands,a.brands@student.roc.nl,20,V,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.682,0.592,34,7.3,4.5,Fatima El Amrani,f.elamrani@roc.nl
+20240616,Brian Klerks,b.klerks@student.roc.nl,21,V,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.818,0.857,47,7.4,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240617,Lauren Wever,l.wever@student.roc.nl,19,M,VMBO-K,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.569,0.637,40,6.1,6.0,Anita Jansen,a.jansen@roc.nl
+20240618,Esmee Sterkman-Mathol,e.sterkman-mathol@student.roc.nl,18,V,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.815,0.74,40,5.4,6.3,Peter Smit,p.smit@roc.nl
+20240619,Jade Wright,j.wright@student.roc.nl,18,V,HAVO,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.63,0.757,44,7.4,6.5,Anita Jansen,a.jansen@roc.nl
+20240620,Loïs Smits-Rotteveel,l.smits-rotteveel@student.roc.nl,21,V,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.823,0.844,53,9.2,6.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240621,Mason Jerusalem-Furda,m.jerusalem-furda@student.roc.nl,21,M,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.907,0.826,54,6.6,6.3,Peter Smit,p.smit@roc.nl
+20240622,Maarten Blewanus,m.blewanus@student.roc.nl,16,M,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.395,0.586,32,5.8,6.6,Peter Smit,p.smit@roc.nl
+20240623,Maaike Dries,m.dries@student.roc.nl,17,V,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.4,0.405,24,8.0,6.2,Peter Smit,p.smit@roc.nl
+20240624,Gijs Groenendaal-Booden,g.groenendaal-booden@student.roc.nl,21,V,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.764,0.685,32,5.4,6.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240625,Elizabeth Chotzen,e.chotzen@student.roc.nl,18,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.597,0.423,23,4.4,6.2,Fatima El Amrani,f.elamrani@roc.nl
+20240626,Julius van Formbach,j.vanformbach@student.roc.nl,23,V,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.823,0.822,44,5.8,6.1,Anita Jansen,a.jansen@roc.nl
+20240627,Berend Wagenvoort-Honing,b.wagenvoort-honing@student.roc.nl,16,V,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.471,0.546,34,4.4,5.5,Anita Jansen,a.jansen@roc.nl
+20240628,Fenne van Metz,f.vanmetz@student.roc.nl,24,V,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.798,0.814,48,6.8,8.4,Peter Smit,p.smit@roc.nl
+20240629,Jake Aarden,j.aarden@student.roc.nl,22,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.872,0.874,46,7.2,6.3,Jan de Vries,j.devries@roc.nl
+20240630,Catharina Vergeer,c.vergeer@student.roc.nl,18,M,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.609,0.704,34,5.8,4.9,Jan de Vries,j.devries@roc.nl
+20240631,Eline Koret-van Tuijl,e.koret-vantuijl@student.roc.nl,24,X,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.535,0.565,27,6.6,7.6,Jan de Vries,j.devries@roc.nl
+20240632,Robin van Dongen,r.vandongen@student.roc.nl,16,V,MBO niveau 2,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.976,0.734,36,6.9,9.6,Jan de Vries,j.devries@roc.nl
+20240633,Nadia Wildschut,n.wildschut@student.roc.nl,21,V,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.192,0.41,27,5.8,3.7,Peter Smit,p.smit@roc.nl
+20240634,Mehmet Levesque-Meyer,m.levesque-meyer@student.roc.nl,16,M,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.8,0.781,40,5.6,4.9,Jan de Vries,j.devries@roc.nl
+20240635,Lara Dijkman-Tielemans,l.dijkman-tielemans@student.roc.nl,20,M,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.473,0.559,29,7.6,5.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240636,Tijmen van der Strigt,t.vanderstrigt@student.roc.nl,16,V,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.572,0.495,37,7.2,6.1,Anita Jansen,a.jansen@roc.nl
+20240637,Boaz van Bovenen,b.vanbovenen@student.roc.nl,16,V,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.693,0.746,38,6.4,10.0,Anita Jansen,a.jansen@roc.nl
+20240638,Jayson Lankle-de Haas,j.lankle-dehaas@student.roc.nl,17,V,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.658,0.626,32,6.5,3.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240639,Roos Verhoeven-Heere,r.verhoeven-heere@student.roc.nl,18,V,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.77,0.784,32,6.4,5.7,Anita Jansen,a.jansen@roc.nl
+20240640,Mila Krabbe,m.krabbe@student.roc.nl,18,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.83,0.707,53,6.2,6.9,Fatima El Amrani,f.elamrani@roc.nl
+20240641,Amy van Leuven,a.vanleuven@student.roc.nl,22,M,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.468,0.466,37,6.4,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240642,Aron Hazenveld-van Holland,a.hazenveld-vanholland@student.roc.nl,19,M,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.939,0.845,45,6.3,6.9,Peter Smit,p.smit@roc.nl
+20240643,Niek van den Brink,n.vandenbrink@student.roc.nl,16,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.591,0.507,34,6.0,5.9,Anita Jansen,a.jansen@roc.nl
+20240644,Megan van den Velden-van der Wal,m.vandenvelden-vanderwal@student.roc.nl,23,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.625,0.565,35,6.4,9.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240645,Mike van der Velde,m.vandervelde@student.roc.nl,16,V,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.622,0.628,34,6.0,7.8,Anita Jansen,a.jansen@roc.nl
+20240646,Floortje van der Pouw,f.vanderpouw@student.roc.nl,25,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.768,0.621,42,7.2,5.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240647,Esmée van der Sloot,e.vandersloot@student.roc.nl,22,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.806,0.67,31,5.9,5.8,Anita Jansen,a.jansen@roc.nl
+20240648,Sarah Koeman,s.koeman@student.roc.nl,18,M,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.762,0.596,38,7.1,6.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240649,Fenna van Luin-Schrant,f.vanluin-schrant@student.roc.nl,23,V,MBO niveau 3,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.903,0.863,47,6.0,5.4,Fatima El Amrani,f.elamrani@roc.nl
+20240650,Luka van Arnsberg,l.vanarnsberg@student.roc.nl,16,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.862,0.633,32,4.4,3.8,Peter Smit,p.smit@roc.nl
+20240651,Anouk Mosley-Perkins,a.mosley-perkins@student.roc.nl,19,V,VMBO-K,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.902,0.745,49,6.7,6.9,Anita Jansen,a.jansen@roc.nl
+20240652,Damian Slagmolen,d.slagmolen@student.roc.nl,18,M,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.627,0.456,26,5.7,3.9,Peter Smit,p.smit@roc.nl
+20240653,Rosalie van Luyssel,r.vanluyssel@student.roc.nl,22,V,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.708,0.715,32,5.4,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240654,Mads Recers,m.recers@student.roc.nl,18,M,VMBO-K,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.872,0.834,36,6.3,3.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240655,Jurre Kamp-Meyer,j.kamp-meyer@student.roc.nl,18,M,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.755,0.69,44,5.8,3.7,Jan de Vries,j.devries@roc.nl
+20240656,Seth de Man,s.deman@student.roc.nl,18,V,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.88,0.745,41,5.7,6.7,Anita Jansen,a.jansen@roc.nl
+20240657,"Helena Werl-Arnsberg, van","h.werl-arnsberg,van@student.roc.nl",18,V,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.757,0.629,39,7.0,6.1,Jan de Vries,j.devries@roc.nl
+20240658,Zoey van Luin,z.vanluin@student.roc.nl,21,M,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.779,0.761,37,8.8,6.5,Jan de Vries,j.devries@roc.nl
+20240659,Jenna Evers,j.evers@student.roc.nl,18,M,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.504,0.436,30,6.2,5.3,Anita Jansen,a.jansen@roc.nl
+20240660,Justin Lutterveld,j.lutterveld@student.roc.nl,22,M,MBO niveau 3,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.883,0.902,48,7.1,4.7,Anita Jansen,a.jansen@roc.nl
+20240661,Kyara Suijker-Pieters,k.suijker-pieters@student.roc.nl,24,M,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.844,0.714,48,4.1,6.5,Jan de Vries,j.devries@roc.nl
+20240662,Robin Puig,r.puig@student.roc.nl,24,M,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.658,0.679,43,7.5,4.8,Anita Jansen,a.jansen@roc.nl
+20240663,Elisabeth van Beaumont,e.vanbeaumont@student.roc.nl,21,V,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.559,0.654,33,7.6,3.0,Peter Smit,p.smit@roc.nl
+20240664,Riley Briere-Verbeek,r.briere-verbeek@student.roc.nl,25,M,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.857,0.625,35,6.7,7.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240665,Bastiaan Keltenie,b.keltenie@student.roc.nl,24,V,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.706,0.518,27,5.6,6.6,Fatima El Amrani,f.elamrani@roc.nl
+20240666,Tygo van Venrooy,t.vanvenrooy@student.roc.nl,21,V,VMBO-T,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.77,0.75,40,4.6,8.2,Anita Jansen,a.jansen@roc.nl
+20240667,Victoria Kortman,v.kortman@student.roc.nl,22,X,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.897,0.914,53,6.6,4.7,Anita Jansen,a.jansen@roc.nl
+20240668,Jill Bruijne van der Veen,j.bruijnevanderveen@student.roc.nl,23,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.712,0.59,35,8.1,5.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240669,Job Ehlert-Spaan,j.ehlert-spaan@student.roc.nl,24,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.978,0.787,46,9.0,7.0,Jan de Vries,j.devries@roc.nl
+20240670,Sofie van der Veiver,s.vanderveiver@student.roc.nl,16,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.807,0.844,39,7.6,6.0,Peter Smit,p.smit@roc.nl
+20240671,Floor Oude Heer,f.oudeheer@student.roc.nl,21,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.762,0.767,35,6.1,4.6,Anita Jansen,a.jansen@roc.nl
+20240672,Giel Fechant,g.fechant@student.roc.nl,18,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.653,0.73,35,7.9,7.9,Peter Smit,p.smit@roc.nl
+20240673,Mats de Graaf,m.degraaf@student.roc.nl,17,M,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.602,0.628,31,7.1,7.4,Peter Smit,p.smit@roc.nl
+20240674,Tirza Groote-Vandenbergh,t.groote-vandenbergh@student.roc.nl,17,M,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.895,0.669,33,6.8,4.2,Fatima El Amrani,f.elamrani@roc.nl
+20240675,Colin Brizee,c.brizee@student.roc.nl,19,V,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.785,0.624,26,6.5,4.5,Peter Smit,p.smit@roc.nl
+20240676,Bilal Coreth von und zu Coredo und Starkenberg,b.corethvonundzucoredoundstarkenberg@student.roc.nl,22,V,MBO niveau 2,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.726,0.675,42,7.4,6.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240677,Hanna Bleijenberg,h.bleijenberg@student.roc.nl,24,M,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.937,0.793,35,7.9,2.8,Fatima El Amrani,f.elamrani@roc.nl
+20240678,Lara van Opper-Lotharingen,l.vanopper-lotharingen@student.roc.nl,19,M,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.514,0.592,40,6.6,5.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240679,Jonas Spies,j.spies@student.roc.nl,18,M,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.677,0.526,26,5.5,4.7,Fatima El Amrani,f.elamrani@roc.nl
+20240680,Guus van Maasgouw-van der Mast,g.vanmaasgouw-vandermast@student.roc.nl,20,V,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.862,0.842,43,3.8,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240681,Wesley Nek,w.nek@student.roc.nl,22,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.459,0.62,36,8.1,7.7,Jan de Vries,j.devries@roc.nl
+20240682,Dylano de Bruin-Dennenberg,d.debruin-dennenberg@student.roc.nl,19,M,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.711,0.708,45,9.1,4.7,Jan de Vries,j.devries@roc.nl
+20240683,Finn van Beek-Moensendijk,f.vanbeek-moensendijk@student.roc.nl,22,V,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.441,0.422,21,5.9,8.3,Jan de Vries,j.devries@roc.nl
+20240684,Lukas van Nimwegen-Bouthoorn,l.vannimwegen-bouthoorn@student.roc.nl,19,V,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.308,0.324,28,5.7,5.8,Jan de Vries,j.devries@roc.nl
+20240685,David Lage,d.lage@student.roc.nl,19,V,MBO niveau 2,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.852,0.892,50,8.8,7.2,Jan de Vries,j.devries@roc.nl
+20240686,Nathan Govarts,n.govarts@student.roc.nl,19,V,MBO niveau 2,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.776,0.642,34,6.7,6.5,Peter Smit,p.smit@roc.nl
+20240687,Ceylin Rijks-van den Berg,c.rijks-vandenberg@student.roc.nl,17,V,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.625,0.604,36,4.9,7.6,Peter Smit,p.smit@roc.nl
+20240688,Sam Mulder-Lind,s.mulder-lind@student.roc.nl,16,V,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.537,0.648,37,3.5,6.0,Jan de Vries,j.devries@roc.nl
+20240689,Livia Michiels,l.michiels@student.roc.nl,24,M,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.332,0.257,24,7.9,6.2,Fatima El Amrani,f.elamrani@roc.nl
+20240690,Fabiënne Haring,f.haring@student.roc.nl,21,V,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.863,0.84,49,8.8,4.2,Jan de Vries,j.devries@roc.nl
+20240691,Milo Jacquot,m.jacquot@student.roc.nl,21,V,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.702,0.694,36,6.1,5.1,Fatima El Amrani,f.elamrani@roc.nl
+20240692,Bas van Breugel-Walter,b.vanbreugel-walter@student.roc.nl,22,M,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.839,0.759,37,9.0,7.5,Fatima El Amrani,f.elamrani@roc.nl
+20240693,Floortje Prins,f.prins@student.roc.nl,18,V,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.504,0.538,31,6.6,4.7,Fatima El Amrani,f.elamrani@roc.nl
+20240694,Wout van Poppel,w.vanpoppel@student.roc.nl,20,M,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.567,0.523,38,8.7,6.4,Peter Smit,p.smit@roc.nl
+20240695,Kyan van der Veiver,k.vanderveiver@student.roc.nl,21,V,VMBO-B,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.95,0.694,40,6.2,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240696,Dion van der Avoirt,d.vanderavoirt@student.roc.nl,16,V,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.699,0.654,34,5.8,8.0,Peter Smit,p.smit@roc.nl
+20240697,Rens van der Stael de Jonge-Lonen,r.vanderstaeldejonge-lonen@student.roc.nl,18,M,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.646,0.679,35,6.7,7.1,Jan de Vries,j.devries@roc.nl
+20240698,Maya de Graaf,m.degraaf@student.roc.nl,19,M,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.895,0.74,38,7.0,5.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240699,Bas van Wijland-Frankhuizen,b.vanwijland-frankhuizen@student.roc.nl,17,M,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.566,0.551,31,8.6,4.3,Fatima El Amrani,f.elamrani@roc.nl
+20240700,Elisa de Smit,e.desmit@student.roc.nl,21,M,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.841,0.82,40,8.0,5.6,Peter Smit,p.smit@roc.nl
+20240701,Fatima Wolffel-Postma,f.wolffel-postma@student.roc.nl,20,V,HAVO,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.545,0.643,35,5.0,6.6,Peter Smit,p.smit@roc.nl
+20240702,Adam Ellis-Ligtvoet,a.ellis-ligtvoet@student.roc.nl,23,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.884,0.843,41,7.1,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240703,Chloé van Ommeren,c.vanommeren@student.roc.nl,21,V,VMBO-B,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.85,0.804,43,6.0,5.8,Peter Smit,p.smit@roc.nl
+20240704,Elizabeth Recer,e.recer@student.roc.nl,18,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.92,0.839,56,6.4,4.9,Fatima El Amrani,f.elamrani@roc.nl
+20240705,Nina Kortman-Rijcken,n.kortman-rijcken@student.roc.nl,25,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.89,0.856,48,4.9,5.2,Anita Jansen,a.jansen@roc.nl
+20240706,Pleun van der Leek,p.vanderleek@student.roc.nl,19,V,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.935,0.818,47,6.2,3.3,Fatima El Amrani,f.elamrani@roc.nl
+20240707,Valentijn Jdotte,v.jdotte@student.roc.nl,20,X,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.68,0.718,46,6.1,6.7,Fatima El Amrani,f.elamrani@roc.nl
+20240708,Matthias van Haarlem-van der Wal,m.vanhaarlem-vanderwal@student.roc.nl,19,V,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.405,0.581,41,8.6,7.3,Jan de Vries,j.devries@roc.nl
+20240709,Rens Poncelet-Schenkel,r.poncelet-schenkel@student.roc.nl,19,M,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.826,0.871,39,5.3,5.5,Anita Jansen,a.jansen@roc.nl
+20240710,Tijs Houdijk,t.houdijk@student.roc.nl,19,M,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.649,0.468,26,5.2,7.5,Peter Smit,p.smit@roc.nl
+20240711,Meike Keltenie,m.keltenie@student.roc.nl,18,M,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.926,0.936,58,7.0,7.4,Anita Jansen,a.jansen@roc.nl
+20240712,Livia Aarden,l.aarden@student.roc.nl,20,V,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.536,0.427,28,5.5,6.1,Peter Smit,p.smit@roc.nl
+20240713,Isabella de Plantard,i.deplantard@student.roc.nl,21,V,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.738,0.728,44,7.5,5.6,Anita Jansen,a.jansen@roc.nl
+20240714,Ashley Otte,a.otte@student.roc.nl,18,V,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.779,0.813,39,5.1,7.8,Anita Jansen,a.jansen@roc.nl
+20240715,Aimée Huijzing,a.huijzing@student.roc.nl,18,V,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.784,0.816,40,7.9,5.7,Jan de Vries,j.devries@roc.nl
+20240716,Jenna van der Stael,j.vanderstael@student.roc.nl,18,M,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.814,0.703,40,6.3,6.9,Peter Smit,p.smit@roc.nl
+20240717,Daphne Merkx,d.merkx@student.roc.nl,16,V,VMBO-T,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.645,0.749,42,8.6,7.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240718,Lizzy van der Pol-van Ommeren,l.vanderpol-vanommeren@student.roc.nl,16,M,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.735,0.638,36,8.1,7.0,Fatima El Amrani,f.elamrani@roc.nl
+20240719,Vera Adriaensdr-van Laar,v.adriaensdr-vanlaar@student.roc.nl,22,V,MBO niveau 2,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.847,0.894,58,5.7,5.2,Anita Jansen,a.jansen@roc.nl
+20240720,Jet Cammel,j.cammel@student.roc.nl,19,M,MBO niveau 2,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.919,0.925,51,5.4,4.6,Jan de Vries,j.devries@roc.nl
+20240721,Aimée Zuidweg,a.zuidweg@student.roc.nl,17,X,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.63,0.662,42,5.3,6.8,Peter Smit,p.smit@roc.nl
+20240722,Maurits van Riet,m.vanriet@student.roc.nl,16,M,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.703,0.652,37,6.5,8.5,Fatima El Amrani,f.elamrani@roc.nl
+20240723,Isabella Vos-Schipper,i.vos-schipper@student.roc.nl,21,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.508,0.528,29,6.8,6.1,Anita Jansen,a.jansen@roc.nl
+20240724,Bryan Aalts,b.aalts@student.roc.nl,21,V,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.615,0.615,33,6.7,6.8,Jan de Vries,j.devries@roc.nl
+20240725,Dirk Jaceps,d.jaceps@student.roc.nl,21,V,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.858,0.785,46,7.1,7.1,Anita Jansen,a.jansen@roc.nl
+20240726,Yassin Zaal,y.zaal@student.roc.nl,22,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.807,0.821,41,8.2,7.5,Fatima El Amrani,f.elamrani@roc.nl
+20240727,Fatima van der Plas,f.vanderplas@student.roc.nl,18,V,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.632,0.53,32,7.2,5.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240728,Evy Robbrechts Bruijne,e.robbrechtsbruijne@student.roc.nl,17,M,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.784,0.525,36,7.2,5.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240729,Jayden Hoogers,j.hoogers@student.roc.nl,16,V,VMBO-K,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.734,0.782,37,7.4,7.2,Anita Jansen,a.jansen@roc.nl
+20240730,Elise Rek,e.rek@student.roc.nl,25,V,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.702,0.709,39,5.1,8.0,Jan de Vries,j.devries@roc.nl
+20240731,Jayda van Riet,j.vanriet@student.roc.nl,19,V,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.574,0.573,24,7.4,6.4,Fatima El Amrani,f.elamrani@roc.nl
+20240732,Aylin van Voorhout,a.vanvoorhout@student.roc.nl,17,V,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BBL,2024-09-01,0.915,0.771,39,5.8,6.7,Anita Jansen,a.jansen@roc.nl
+20240733,Jules Schilt,j.schilt@student.roc.nl,20,X,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.727,0.791,42,8.0,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240734,Cato Koster-Verharen,c.koster-verharen@student.roc.nl,25,X,VMBO-B,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.721,0.654,37,5.1,6.3,Jan de Vries,j.devries@roc.nl
+20240735,Stijn Jekel,s.jekel@student.roc.nl,18,M,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.694,0.781,43,7.0,6.0,Peter Smit,p.smit@roc.nl
+20240736,Luke Jacquot,l.jacquot@student.roc.nl,16,M,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.68,0.761,42,7.3,5.5,Jan de Vries,j.devries@roc.nl
+20240737,Merle van de Klashorst,m.vandeklashorst@student.roc.nl,16,M,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.848,0.684,37,5.9,6.2,Peter Smit,p.smit@roc.nl
+20240738,Juul Willemsen-Diesbergen,j.willemsen-diesbergen@student.roc.nl,22,M,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.642,0.657,29,6.9,4.7,Peter Smit,p.smit@roc.nl
+20240739,Kian van Dongen,k.vandongen@student.roc.nl,20,V,VMBO-B,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.891,0.887,42,6.0,4.4,Fatima El Amrani,f.elamrani@roc.nl
+20240740,Maarten VI,m.vi@student.roc.nl,17,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.877,0.749,48,8.3,4.0,Peter Smit,p.smit@roc.nl
+20240741,Philip Cadefau-Huijben,p.cadefau-huijben@student.roc.nl,18,X,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.917,0.763,46,8.2,6.3,Jan de Vries,j.devries@roc.nl
+20240742,Mark de Bruin,m.debruin@student.roc.nl,19,V,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.707,0.61,33,7.0,10.0,Fatima El Amrani,f.elamrani@roc.nl
+20240743,Quinty Slaetsdochter,q.slaetsdochter@student.roc.nl,17,V,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.798,0.85,43,7.1,7.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240744,Isabelle de Gratie,i.degratie@student.roc.nl,22,M,MBO niveau 3,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.697,0.626,32,8.4,7.6,Anita Jansen,a.jansen@roc.nl
+20240745,Zoey Sarneel,z.sarneel@student.roc.nl,16,M,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.912,0.72,40,6.9,3.9,Peter Smit,p.smit@roc.nl
+20240746,Kate Heere,k.heere@student.roc.nl,22,V,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.784,0.666,42,8.5,4.1,Peter Smit,p.smit@roc.nl
+20240747,Jayden van Dam,j.vandam@student.roc.nl,20,V,MBO niveau 3,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.794,0.777,48,8.1,5.1,Jan de Vries,j.devries@roc.nl
+20240748,Rosalie Mens,r.mens@student.roc.nl,20,V,VMBO-K,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.521,0.606,34,6.3,4.0,Fatima El Amrani,f.elamrani@roc.nl
+20240749,Annemijn de Grote-van Dijk,a.degrote-vandijk@student.roc.nl,18,M,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.819,0.752,40,9.6,6.1,Jan de Vries,j.devries@roc.nl
+20240750,Lizz Brisee-Maas,l.brisee-maas@student.roc.nl,17,V,MBO niveau 3,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.837,0.74,45,7.3,8.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240751,Jim Nek,j.nek@student.roc.nl,19,V,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.806,0.741,42,6.1,10.0,Anita Jansen,a.jansen@roc.nl
+20240752,Noah Hollander-Olykan,n.hollander-olykan@student.roc.nl,16,V,VMBO-B,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.543,0.586,36,7.9,6.3,Peter Smit,p.smit@roc.nl
+20240753,Jort Buijs-van Dongen,j.buijs-vandongen@student.roc.nl,22,M,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.932,0.793,38,6.3,6.1,Peter Smit,p.smit@roc.nl
+20240754,Ben Steenbakkers,b.steenbakkers@student.roc.nl,18,V,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.858,0.857,47,5.8,4.3,Anita Jansen,a.jansen@roc.nl
+20240755,Jordy Linschoten,j.linschoten@student.roc.nl,23,V,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.66,0.768,36,7.0,6.3,Anita Jansen,a.jansen@roc.nl
+20240756,Fleur van Venrooy-Holthuis,f.vanvenrooy-holthuis@student.roc.nl,21,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.928,0.822,52,6.5,8.1,Fatima El Amrani,f.elamrani@roc.nl
+20240757,Aylin Jekel-Gerritsen,a.jekel-gerritsen@student.roc.nl,18,M,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.775,0.751,42,9.8,8.6,Peter Smit,p.smit@roc.nl
+20240758,Finn Oemencs,f.oemencs@student.roc.nl,16,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.761,0.673,43,4.8,5.5,Mohammed Boukhari,m.boukhari@roc.nl
+20240759,Linde Becht,l.becht@student.roc.nl,17,M,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.749,0.805,37,6.1,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240760,Matthijs Geneart-Koster,m.geneart-koster@student.roc.nl,16,V,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.81,0.805,40,6.7,6.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240761,Stefan Bekbergen-Blewanus,s.bekbergen-blewanus@student.roc.nl,20,M,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.437,0.511,27,4.5,5.7,Jan de Vries,j.devries@roc.nl
+20240762,Nathan Verwoert,n.verwoert@student.roc.nl,21,V,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.769,0.736,38,6.9,5.6,Anita Jansen,a.jansen@roc.nl
+20240763,Bjorn van Goerle,b.vangoerle@student.roc.nl,20,V,MBO niveau 3,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.456,0.518,19,6.8,5.6,Anita Jansen,a.jansen@roc.nl
+20240764,Tobias van de Noordmark,t.vandenoordmark@student.roc.nl,19,M,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.9,0.837,43,5.4,5.5,Peter Smit,p.smit@roc.nl
+20240765,Yasmin Nollee-Verhaar,y.nollee-verhaar@student.roc.nl,21,M,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.805,0.745,48,7.8,3.6,Anita Jansen,a.jansen@roc.nl
+20240766,Tim Dircken,t.dircken@student.roc.nl,19,V,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.691,0.772,53,6.4,7.1,Peter Smit,p.smit@roc.nl
+20240767,Fien Dorsman,f.dorsman@student.roc.nl,16,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.88,0.848,37,6.0,5.0,Jan de Vries,j.devries@roc.nl
+20240768,Kai le Luc,k.leluc@student.roc.nl,18,V,HAVO,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.67,0.691,38,6.2,5.0,Anita Jansen,a.jansen@roc.nl
+20240769,Jules Jacobi-Westerbeek,j.jacobi-westerbeek@student.roc.nl,22,M,HAVO,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.552,0.648,37,5.6,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240770,Milou Welf,m.welf@student.roc.nl,22,V,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.678,0.678,47,6.2,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240771,Aiden de Leeuw,a.deleeuw@student.roc.nl,19,M,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.549,0.653,34,5.5,8.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240772,Victor Kamp,v.kamp@student.roc.nl,21,M,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.615,0.673,44,6.6,6.4,Anita Jansen,a.jansen@roc.nl
+20240773,Aaliyah Lonen,a.lonen@student.roc.nl,22,V,VMBO-B,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.809,0.838,43,6.9,8.0,Peter Smit,p.smit@roc.nl
+20240774,Britt van den Henst,b.vandenhenst@student.roc.nl,17,V,VMBO-T,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.866,0.776,45,5.7,6.8,Fatima El Amrani,f.elamrani@roc.nl
+20240775,Finn de Jode Vastraedsd,f.dejodevastraedsd@student.roc.nl,22,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.64,0.694,35,5.0,7.4,Anita Jansen,a.jansen@roc.nl
+20240776,Zakaria van Rooij-Korstman,z.vanrooij-korstman@student.roc.nl,22,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.871,0.764,43,7.1,7.0,Jan de Vries,j.devries@roc.nl
+20240777,Fleur Kallen,f.kallen@student.roc.nl,20,V,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.91,0.873,49,6.0,5.0,Jan de Vries,j.devries@roc.nl
+20240778,Sara van der Pouw,s.vanderpouw@student.roc.nl,22,V,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.691,0.59,43,5.7,3.7,Peter Smit,p.smit@roc.nl
+20240779,Ize Courtier,i.courtier@student.roc.nl,19,M,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.637,0.763,42,6.6,6.3,Jan de Vries,j.devries@roc.nl
+20240780,Fenna Molen,f.molen@student.roc.nl,19,V,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.824,0.756,31,7.2,6.4,Anita Jansen,a.jansen@roc.nl
+20240781,Noa Verharen-Hendrikse,n.verharen-hendrikse@student.roc.nl,20,M,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.909,0.82,46,6.0,5.5,Anita Jansen,a.jansen@roc.nl
+20240782,Lars Timmermans,l.timmermans@student.roc.nl,21,M,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.729,0.774,41,9.1,5.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240783,Yinthe Kwaadland,y.kwaadland@student.roc.nl,21,V,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.654,0.727,44,7.5,5.6,Jan de Vries,j.devries@roc.nl
+20240784,Senn Kleijse-Doesburg,s.kleijse-doesburg@student.roc.nl,22,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.745,0.774,44,5.2,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240785,Niels Woutersz,n.woutersz@student.roc.nl,16,V,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.624,0.679,38,7.7,6.4,Peter Smit,p.smit@roc.nl
+20240786,Nadine Miner,n.miner@student.roc.nl,21,V,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.733,0.804,43,7.7,6.0,Anita Jansen,a.jansen@roc.nl
+20240787,Jinthe Drysdale,j.drysdale@student.roc.nl,22,V,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.664,0.629,41,8.3,6.7,Fatima El Amrani,f.elamrani@roc.nl
+20240788,Cornelis Wigman,c.wigman@student.roc.nl,23,M,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.757,0.778,37,6.3,5.5,Peter Smit,p.smit@roc.nl
+20240789,Sylvie van Eck,s.vaneck@student.roc.nl,21,V,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.807,0.667,38,5.2,5.9,Anita Jansen,a.jansen@roc.nl
+20240790,Joey van 't Riet,j.van'triet@student.roc.nl,20,M,MBO niveau 2,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.911,0.855,50,6.5,7.9,Anita Jansen,a.jansen@roc.nl
+20240791,Arie Sam,a.sam@student.roc.nl,21,V,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.729,0.797,33,6.5,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240792,Lauren Kramer,l.kramer@student.roc.nl,25,V,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.776,0.651,33,5.7,6.1,Anita Jansen,a.jansen@roc.nl
+20240793,Jamie van den Nuwenhuijzen,j.vandennuwenhuijzen@student.roc.nl,24,V,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.823,0.662,44,7.7,5.2,Fatima El Amrani,f.elamrani@roc.nl
+20240794,Mohammed van Breugel,m.vanbreugel@student.roc.nl,17,M,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.731,0.768,41,5.9,5.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240795,Matthijs van de Klashorst-Arent,m.vandeklashorst-arent@student.roc.nl,17,M,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.508,0.634,35,8.4,6.5,Fatima El Amrani,f.elamrani@roc.nl
+20240796,Benjamin van den Broek-Pison,b.vandenbroek-pison@student.roc.nl,19,M,VMBO-K,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.673,0.735,38,7.9,3.9,Fatima El Amrani,f.elamrani@roc.nl
+20240797,Koen Smith-Bosch,k.smith-bosch@student.roc.nl,19,V,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.587,0.602,35,6.5,4.8,Anita Jansen,a.jansen@roc.nl
+20240798,Romy Mens,r.mens@student.roc.nl,20,V,VMBO-T,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.331,0.523,41,6.8,9.8,Anita Jansen,a.jansen@roc.nl
+20240799,Jaylinn Nek,j.nek@student.roc.nl,17,M,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.844,0.892,56,7.6,6.4,Fatima El Amrani,f.elamrani@roc.nl
+20240800,Stefan van de Ven-Steinmeiern,s.vandeven-steinmeiern@student.roc.nl,19,V,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.539,0.577,26,8.1,8.2,Jan de Vries,j.devries@roc.nl
+20240801,Nynke Moet,n.moet@student.roc.nl,17,M,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.794,0.804,51,5.3,7.3,Jan de Vries,j.devries@roc.nl
+20240802,Owen Broek,o.broek@student.roc.nl,17,V,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BBL,2024-09-01,0.609,0.58,44,8.4,5.5,Jan de Vries,j.devries@roc.nl
+20240803,Emily de Vos,e.devos@student.roc.nl,20,V,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.483,0.385,26,5.8,5.5,Peter Smit,p.smit@roc.nl
+20240804,Joris van Evelingen,j.vanevelingen@student.roc.nl,19,M,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.913,0.902,44,5.2,5.5,Jan de Vries,j.devries@roc.nl
+20240805,Ibrahim Lether-de Vos,i.lether-devos@student.roc.nl,17,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.612,0.687,31,6.5,7.4,Peter Smit,p.smit@roc.nl
+20240806,Bart Kok,b.kok@student.roc.nl,22,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.976,0.874,44,6.7,5.6,Fatima El Amrani,f.elamrani@roc.nl
+20240807,Dani Slagmolen,d.slagmolen@student.roc.nl,21,M,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.792,0.782,43,7.3,6.9,Peter Smit,p.smit@roc.nl
+20240808,Mees Stichter,m.stichter@student.roc.nl,18,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.955,0.82,44,4.9,6.3,Fatima El Amrani,f.elamrani@roc.nl
+20240809,Jesse Elsemulder-Schenk,j.elsemulder-schenk@student.roc.nl,20,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.39,0.561,35,5.5,5.3,Peter Smit,p.smit@roc.nl
+20240810,Evy Ketel-Marceron,e.ketel-marceron@student.roc.nl,20,V,MBO niveau 3,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.83,0.716,39,6.4,5.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240811,Olivia Mosley,o.mosley@student.roc.nl,16,M,MBO niveau 2,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.87,0.692,42,3.8,5.7,Peter Smit,p.smit@roc.nl
+20240812,Cato Tirie,c.tirie@student.roc.nl,17,V,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.733,0.508,24,5.8,6.2,Jan de Vries,j.devries@roc.nl
+20240813,Maryam Middelkoop,m.middelkoop@student.roc.nl,19,V,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.797,0.793,49,7.1,4.2,Fatima El Amrani,f.elamrani@roc.nl
+20240814,Victor Veenstra,v.veenstra@student.roc.nl,18,M,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.466,0.593,36,4.7,6.5,Fatima El Amrani,f.elamrani@roc.nl
+20240815,Vajèn Levesque,v.levesque@student.roc.nl,21,X,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.733,0.598,30,5.3,6.5,Peter Smit,p.smit@roc.nl
+20240816,Silke Beekman,s.beekman@student.roc.nl,19,M,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.762,0.737,44,8.0,5.4,Fatima El Amrani,f.elamrani@roc.nl
+20240817,Inaya Oosterhout,i.oosterhout@student.roc.nl,21,M,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.688,0.673,39,7.0,4.4,Anita Jansen,a.jansen@roc.nl
+20240818,Tycho Driessen,t.driessen@student.roc.nl,18,M,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.856,0.757,52,5.3,4.9,Fatima El Amrani,f.elamrani@roc.nl
+20240819,Nina Giselmeyer-Dachgeldt,n.giselmeyer-dachgeldt@student.roc.nl,16,M,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.753,0.644,45,8.2,5.1,Jan de Vries,j.devries@roc.nl
+20240820,Sven de Gruil,s.degruil@student.roc.nl,17,M,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.935,0.823,46,7.0,6.0,Jan de Vries,j.devries@roc.nl
+20240821,Hamza van Henegouwen,h.vanhenegouwen@student.roc.nl,22,M,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.367,0.47,26,8.1,5.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240822,Maartje Verharen-de Gruson,m.verharen-degruson@student.roc.nl,19,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.842,0.872,54,4.8,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240823,Megan Sam,m.sam@student.roc.nl,21,M,VMBO-K,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.64,0.678,39,4.1,6.0,Anita Jansen,a.jansen@roc.nl
+20240824,Veerle Bolkesteijn,v.bolkesteijn@student.roc.nl,24,M,VMBO-T,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.419,0.487,25,5.0,6.9,Peter Smit,p.smit@roc.nl
+20240825,Femke Sterkman-Korstman,f.sterkman-korstman@student.roc.nl,19,M,VMBO-K,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.886,0.764,47,6.2,4.3,Jan de Vries,j.devries@roc.nl
+20240826,Mirthe Huijzing,m.huijzing@student.roc.nl,21,V,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.66,0.708,36,8.7,6.0,Peter Smit,p.smit@roc.nl
+20240827,Sten Blokland,s.blokland@student.roc.nl,20,V,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.808,0.74,41,5.7,5.9,Peter Smit,p.smit@roc.nl
+20240828,Arthur Bernaards,a.bernaards@student.roc.nl,24,V,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.359,0.515,27,5.9,5.2,Jan de Vries,j.devries@roc.nl
+20240829,Frederique van Waas,f.vanwaas@student.roc.nl,18,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.887,0.851,37,5.8,7.2,Jan de Vries,j.devries@roc.nl
+20240830,Maurits Slagmolen-Uphuis,m.slagmolen-uphuis@student.roc.nl,17,M,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.533,0.452,32,6.8,8.4,Peter Smit,p.smit@roc.nl
+20240831,Kayleigh Ketting,k.ketting@student.roc.nl,18,V,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.428,0.643,30,6.4,6.5,Fatima El Amrani,f.elamrani@roc.nl
+20240832,Thijn Jaceps,t.jaceps@student.roc.nl,21,M,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.536,0.631,33,8.0,6.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240833,Merle Kleybrink,m.kleybrink@student.roc.nl,23,M,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.607,0.593,29,6.0,5.5,Fatima El Amrani,f.elamrani@roc.nl
+20240834,Elisabeth van der Stael,e.vanderstael@student.roc.nl,16,V,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.722,0.733,46,6.3,5.6,Peter Smit,p.smit@roc.nl
+20240835,Lex Sterkman,l.sterkman@student.roc.nl,22,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.625,0.63,25,5.1,5.7,Peter Smit,p.smit@roc.nl
+20240836,Boaz Glasses,b.glasses@student.roc.nl,19,V,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.426,0.629,40,6.3,7.4,Anita Jansen,a.jansen@roc.nl
+20240837,Jari de Ruiter,j.deruiter@student.roc.nl,19,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.727,0.664,38,7.9,6.1,Fatima El Amrani,f.elamrani@roc.nl
+20240838,Noa van Tours,n.vantours@student.roc.nl,18,M,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.602,0.736,44,5.8,5.6,Fatima El Amrani,f.elamrani@roc.nl
+20240839,Janna Bud-Kok,j.bud-kok@student.roc.nl,16,V,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.902,0.905,41,5.6,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240840,Jenna Sire-Michiels,j.sire-michiels@student.roc.nl,19,M,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.884,0.755,37,8.4,7.6,Anita Jansen,a.jansen@roc.nl
+20240841,Norah van de Plas,n.vandeplas@student.roc.nl,16,V,VMBO-T,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.636,0.601,32,8.4,7.6,Jan de Vries,j.devries@roc.nl
+20240842,Linn Klerks-de Smit,l.klerks-desmit@student.roc.nl,21,V,VMBO-K,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.974,0.902,50,6.5,6.0,Jan de Vries,j.devries@roc.nl
+20240843,Suus Lafleur-Woutersz,s.lafleur-woutersz@student.roc.nl,21,V,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.821,0.58,34,5.0,8.0,Anita Jansen,a.jansen@roc.nl
+20240844,Romy Hoelen-Jurrijens,r.hoelen-jurrijens@student.roc.nl,24,V,HAVO,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.902,0.817,46,7.4,8.4,Peter Smit,p.smit@roc.nl
+20240845,Rayan Ramaker-van Duyvenvoorde,r.ramaker-vanduyvenvoorde@student.roc.nl,23,V,MBO niveau 2,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.717,0.72,33,6.4,5.5,Fatima El Amrani,f.elamrani@roc.nl
+20240846,Lynn Bos,l.bos@student.roc.nl,16,V,HAVO,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.847,0.768,43,6.2,6.0,Anita Jansen,a.jansen@roc.nl
+20240847,Thom Ulrich-Oversteeg,t.ulrich-oversteeg@student.roc.nl,17,M,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.685,0.619,31,8.1,6.7,Anita Jansen,a.jansen@roc.nl
+20240848,Guus Kuijpers,g.kuijpers@student.roc.nl,19,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.619,0.696,40,6.8,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240849,Sophie Schuylenborch,s.schuylenborch@student.roc.nl,19,V,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.764,0.631,40,8.5,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240850,Milo van Noort,m.vannoort@student.roc.nl,24,V,MBO niveau 2,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.647,0.682,36,7.8,7.3,Peter Smit,p.smit@roc.nl
+20240851,Lauren Vergeer,l.vergeer@student.roc.nl,23,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.486,0.616,33,9.2,7.5,Jan de Vries,j.devries@roc.nl
+20240852,Lucy Vaessen-van Engelen,l.vaessen-vanengelen@student.roc.nl,18,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.604,0.661,39,6.7,6.5,Peter Smit,p.smit@roc.nl
+20240853,Berat van Venrooy,b.vanvenrooy@student.roc.nl,18,V,HAVO,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.781,0.672,32,6.9,3.6,Fatima El Amrani,f.elamrani@roc.nl
+20240854,Sander Kuijpers,s.kuijpers@student.roc.nl,20,V,MBO niveau 2,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.65,0.644,34,7.2,8.0,Jan de Vries,j.devries@roc.nl
+20240855,Siem Simons-Broeckx,s.simons-broeckx@student.roc.nl,23,M,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.584,0.683,30,6.2,4.7,Peter Smit,p.smit@roc.nl
+20240856,Olivia Wilcken,o.wilcken@student.roc.nl,18,M,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.642,0.765,42,7.0,5.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240857,Romy van der Heijden-van Ginkel,r.vanderheijden-vanginkel@student.roc.nl,17,V,HAVO,Economie,Commercieel medewerker,90111,2024-2025,3,BBL,2024-09-01,0.906,0.797,42,5.7,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240858,Jill van Gent,j.vangent@student.roc.nl,21,M,MBO niveau 3,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.839,0.772,52,6.8,7.7,Peter Smit,p.smit@roc.nl
+20240859,Naud van den Berg,n.vandenberg@student.roc.nl,16,V,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.923,0.912,49,6.6,8.0,Peter Smit,p.smit@roc.nl
+20240860,Owen van de Coterlet,o.vandecoterlet@student.roc.nl,21,M,HAVO,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.615,0.738,50,4.6,6.3,Peter Smit,p.smit@roc.nl
+20240861,"Tobias West-Francië, van","t.west-francië,van@student.roc.nl",17,V,MBO niveau 3,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.881,0.694,32,5.8,6.7,Peter Smit,p.smit@roc.nl
+20240862,Micha van Spreuwel-Geerling,m.vanspreuwel-geerling@student.roc.nl,18,M,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.855,0.834,54,6.9,7.8,Jan de Vries,j.devries@roc.nl
+20240863,Noortje Brands,n.brands@student.roc.nl,16,X,VMBO-K,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.903,0.886,48,6.6,8.9,Peter Smit,p.smit@roc.nl
+20240864,Emma de Marduras-Waltrade Walderade,e.demarduras-waltradewalderade@student.roc.nl,21,V,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.561,0.627,38,6.9,6.2,Fatima El Amrani,f.elamrani@roc.nl
+20240865,Nina Vandenbergh-Rek,n.vandenbergh-rek@student.roc.nl,22,M,HAVO,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.733,0.698,48,8.0,5.4,Peter Smit,p.smit@roc.nl
+20240866,Liam Perrono-Beernink,l.perrono-beernink@student.roc.nl,21,V,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.795,0.79,45,5.5,4.0,Jan de Vries,j.devries@roc.nl
+20240867,Sylvie Brandon,s.brandon@student.roc.nl,22,V,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.424,0.36,27,6.2,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240868,Sem Beijring,s.beijring@student.roc.nl,22,V,VMBO-K,Economie,Logistiek medewerker,90640,2024-2025,3,BBL,2024-09-01,0.628,0.56,39,8.9,5.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240869,Thijs Timmerman,t.timmerman@student.roc.nl,26,M,HAVO,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.818,0.763,40,8.5,4.0,Anita Jansen,a.jansen@roc.nl
+20240870,Aaliyah van den Bergh,a.vandenbergh@student.roc.nl,24,V,VMBO-B,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.427,0.468,25,5.2,6.8,Jan de Vries,j.devries@roc.nl
+20240871,Nisa Kort,n.kort@student.roc.nl,21,M,VMBO-K,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.409,0.601,39,6.7,4.6,Anita Jansen,a.jansen@roc.nl
+20240872,Danique de Jager,d.dejager@student.roc.nl,20,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.676,0.635,43,8.3,7.1,Peter Smit,p.smit@roc.nl
+20240873,Tijmen van Berkel,t.vanberkel@student.roc.nl,20,V,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.679,0.74,40,5.7,6.7,Fatima El Amrani,f.elamrani@roc.nl
+20240874,Oscar Mulders-Willemsen,o.mulders-willemsen@student.roc.nl,22,V,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.82,0.812,49,6.8,10.0,Anita Jansen,a.jansen@roc.nl
+20240875,Bram Vignon,b.vignon@student.roc.nl,17,M,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.462,0.576,30,6.4,4.6,Anita Jansen,a.jansen@roc.nl
+20240876,Ibrahim Butselaar,i.butselaar@student.roc.nl,22,V,HAVO,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.68,0.626,30,5.1,6.1,Jan de Vries,j.devries@roc.nl
+20240877,Joshua van den Nuwenhijsen,j.vandennuwenhijsen@student.roc.nl,20,M,VMBO-B,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.92,0.882,46,7.7,7.1,Jan de Vries,j.devries@roc.nl
+20240878,Lauren van der Linden-Verbruggen,l.vanderlinden-verbruggen@student.roc.nl,21,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.429,0.632,42,6.5,3.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240879,Amir Hexspoor,a.hexspoor@student.roc.nl,20,V,VMBO-B,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.789,0.642,31,7.2,7.0,Fatima El Amrani,f.elamrani@roc.nl
+20240880,Dex Spiker,d.spiker@student.roc.nl,19,V,HAVO,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.794,0.714,38,7.7,6.3,Jan de Vries,j.devries@roc.nl
+20240881,Merijn Claesner-Gervais,m.claesner-gervais@student.roc.nl,20,V,VMBO-K,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.727,0.736,37,9.6,7.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240882,Jennifer Jacobs,j.jacobs@student.roc.nl,22,V,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.91,0.882,40,7.3,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240883,Emir Broeders-de Vries,e.broeders-devries@student.roc.nl,19,M,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.836,0.77,46,6.6,7.3,Anita Jansen,a.jansen@roc.nl
+20240884,"Mathijs Bourgondië, van","m.bourgondië,van@student.roc.nl",23,M,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.862,0.629,38,5.5,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240885,Zeynep Vandenbergh,z.vandenbergh@student.roc.nl,16,M,MBO niveau 2,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.857,0.841,43,8.2,9.0,Jan de Vries,j.devries@roc.nl
+20240886,Valerie Chrodtrud-le Briel,v.chrodtrud-lebriel@student.roc.nl,18,M,VMBO-T,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.316,0.35,24,5.3,3.7,Jan de Vries,j.devries@roc.nl
+20240887,Senna le Guellec,s.leguellec@student.roc.nl,18,M,MBO niveau 3,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.856,0.811,46,5.1,7.1,Peter Smit,p.smit@roc.nl
+20240888,Angelina Schuurmans-van Brenen,a.schuurmans-vanbrenen@student.roc.nl,21,V,VMBO-T,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.845,0.676,38,5.5,7.3,Peter Smit,p.smit@roc.nl
+20240889,Micha Kremer,m.kremer@student.roc.nl,22,V,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.774,0.716,24,5.6,3.6,Anita Jansen,a.jansen@roc.nl
+20240890,Mara Neuzerling-Grondel,m.neuzerling-grondel@student.roc.nl,19,M,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.598,0.667,36,8.1,4.8,Anita Jansen,a.jansen@roc.nl
+20240891,Mohammed Lamore,m.lamore@student.roc.nl,17,X,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.759,0.809,46,5.9,8.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240892,Twan van Ooste-Barents,t.vanooste-barents@student.roc.nl,17,V,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BBL,2024-09-01,0.823,0.777,45,5.8,5.4,Anita Jansen,a.jansen@roc.nl
+20240893,Maryam Vial-de Haas,m.vial-dehaas@student.roc.nl,16,M,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.618,0.681,38,6.9,8.5,Anita Jansen,a.jansen@roc.nl
+20240894,Marit Massa,m.massa@student.roc.nl,16,V,VMBO-K,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.755,0.766,40,5.7,7.1,Fatima El Amrani,f.elamrani@roc.nl
+20240895,Ruben Bos,r.bos@student.roc.nl,20,V,VMBO-T,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.876,0.793,34,8.8,8.4,Peter Smit,p.smit@roc.nl
+20240896,Marit Risma,m.risma@student.roc.nl,20,M,MBO niveau 2,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BBL,2024-09-01,0.821,0.799,41,5.2,4.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240897,Pleun Brandon,p.brandon@student.roc.nl,23,X,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.742,0.632,30,6.0,5.8,Peter Smit,p.smit@roc.nl
+20240898,Aya van de Brink,a.vandebrink@student.roc.nl,16,V,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.39,0.587,35,5.5,9.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240899,Marinus van de Berg,m.vandeberg@student.roc.nl,16,X,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.803,0.703,47,6.5,8.1,Jan de Vries,j.devries@roc.nl
+20240900,Tom van Gemert,t.vangemert@student.roc.nl,18,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.545,0.575,30,8.3,7.2,Jan de Vries,j.devries@roc.nl
+20240901,Lauren van Soest-Krabbe,l.vansoest-krabbe@student.roc.nl,16,V,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.634,0.602,42,5.3,6.7,Peter Smit,p.smit@roc.nl
+20240902,Silke van Stralen,s.vanstralen@student.roc.nl,18,M,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.502,0.649,34,6.1,4.3,Jan de Vries,j.devries@roc.nl
+20240903,Ashley Adriaensdr,a.adriaensdr@student.roc.nl,19,V,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.93,0.949,45,5.9,6.8,Fatima El Amrani,f.elamrani@roc.nl
+20240904,Luca Willems van Lier,l.willemsvanlier@student.roc.nl,23,V,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.812,0.84,46,5.6,6.6,Anita Jansen,a.jansen@roc.nl
+20240905,Norah Wooning,n.wooning@student.roc.nl,16,M,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.615,0.563,34,5.4,7.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240906,Marijn Bakker,m.bakker@student.roc.nl,19,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.796,0.682,40,7.6,6.1,Fatima El Amrani,f.elamrani@roc.nl
+20240907,Mohammed Mulders-Vegt,m.mulders-vegt@student.roc.nl,19,V,VMBO-T,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.801,0.853,48,5.8,5.2,Anita Jansen,a.jansen@roc.nl
+20240908,Noor Friehus-Bos,n.friehus-bos@student.roc.nl,19,V,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.76,0.81,40,7.0,4.1,Jan de Vries,j.devries@roc.nl
+20240909,Faye Cammel-Diesbergen,f.cammel-diesbergen@student.roc.nl,20,V,VMBO-B,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.669,0.587,37,6.2,6.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240910,Quinty Schakelaar,q.schakelaar@student.roc.nl,18,M,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.693,0.765,44,4.2,8.5,Jan de Vries,j.devries@roc.nl
+20240911,Eliza Cornelisse,e.cornelisse@student.roc.nl,17,V,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.591,0.543,32,6.0,6.1,Anita Jansen,a.jansen@roc.nl
+20240912,Marinus Bernaards,m.bernaards@student.roc.nl,18,V,HAVO,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.922,0.9,47,6.2,8.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240913,Imke Hendricks,i.hendricks@student.roc.nl,21,V,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.722,0.744,44,6.4,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240914,Arie Geldens-den Haag,a.geldens-denhaag@student.roc.nl,20,M,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.684,0.772,41,4.8,5.3,Anita Jansen,a.jansen@roc.nl
+20240915,Michael van der Meer-van Engeland,m.vandermeer-vanengeland@student.roc.nl,18,M,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.89,0.836,50,8.9,6.8,Fatima El Amrani,f.elamrani@roc.nl
+20240916,Cornelia Jorlink,c.jorlink@student.roc.nl,18,M,MBO niveau 2,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.707,0.688,48,7.6,6.4,Anita Jansen,a.jansen@roc.nl
+20240917,Leah Muller,l.muller@student.roc.nl,17,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.77,0.733,42,7.9,6.8,Anita Jansen,a.jansen@roc.nl
+20240918,Bas van Wessex,b.vanwessex@student.roc.nl,23,V,VMBO-K,Techniek,Netwerkbeheerder,93200,2024-2025,4,BBL,2024-09-01,0.937,0.796,42,5.6,7.3,Anita Jansen,a.jansen@roc.nl
+20240919,Linde Kronenberg,l.kronenberg@student.roc.nl,18,M,MBO niveau 2,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.461,0.551,35,5.4,7.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240920,Adam Martel-de Jong,a.martel-dejong@student.roc.nl,25,V,VMBO-T,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.818,0.728,36,6.5,5.2,Fatima El Amrani,f.elamrani@roc.nl
+20240921,Giel van Hostaden,g.vanhostaden@student.roc.nl,25,M,VMBO-B,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.848,0.729,42,8.1,6.5,Jan de Vries,j.devries@roc.nl
+20240922,Sarah de Bruijn-Weyland,s.debruijn-weyland@student.roc.nl,17,M,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.506,0.451,30,6.8,6.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240923,Senn Dirksen,s.dirksen@student.roc.nl,23,V,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.436,0.491,34,5.0,7.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240924,Mirthe Vastenhouw,m.vastenhouw@student.roc.nl,19,V,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.8,0.669,29,8.3,6.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240925,Ian Bruggeman,i.bruggeman@student.roc.nl,23,V,MBO niveau 3,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.779,0.631,43,7.1,6.8,Fatima El Amrani,f.elamrani@roc.nl
+20240926,Esmée Hak,e.hak@student.roc.nl,25,M,HAVO,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.969,0.891,50,9.5,4.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240927,Ise Sarneel,i.sarneel@student.roc.nl,20,V,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BBL,2024-09-01,0.877,0.787,36,6.2,7.3,Jan de Vries,j.devries@roc.nl
+20240928,Dirk Rek,d.rek@student.roc.nl,22,M,VMBO-B,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.843,0.719,45,7.0,7.6,Anita Jansen,a.jansen@roc.nl
+20240929,Stella Heribert van Laon-Knoers,s.heribertvanlaon-knoers@student.roc.nl,16,X,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.498,0.434,29,8.0,6.1,Mohammed Boukhari,m.boukhari@roc.nl
+20240930,Esmee van Rooij,e.vanrooij@student.roc.nl,16,M,VMBO-B,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.869,0.82,48,6.9,6.7,Peter Smit,p.smit@roc.nl
+20240931,Jari de Vries,j.devries@student.roc.nl,16,V,VMBO-K,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.482,0.629,43,5.7,5.4,Peter Smit,p.smit@roc.nl
+20240932,Jolie Jeggij-Marchand,j.jeggij-marchand@student.roc.nl,19,M,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.885,0.873,42,6.7,6.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240933,Veerle Dachgelder,v.dachgelder@student.roc.nl,19,M,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.712,0.693,40,6.4,7.7,Fatima El Amrani,f.elamrani@roc.nl
+20240934,Maarten Vaessen,m.vaessen@student.roc.nl,19,V,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.819,0.83,35,7.7,4.3,Anita Jansen,a.jansen@roc.nl
+20240935,Senna van de Klashorst,s.vandeklashorst@student.roc.nl,18,M,VMBO-T,Zorg,Doktersassistent,34576,2024-2025,4,BBL,2024-09-01,0.801,0.864,43,7.0,5.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240936,Mette Westerbeek,m.westerbeek@student.roc.nl,20,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.506,0.46,34,6.4,4.9,Jan de Vries,j.devries@roc.nl
+20240937,Jim Dijkman,j.dijkman@student.roc.nl,16,M,MBO niveau 3,Techniek,Installatiemonteur,25480,2024-2025,2,BBL,2024-09-01,0.613,0.685,32,8.2,8.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240938,Sara Huijbrechts,s.huijbrechts@student.roc.nl,23,M,HAVO,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.529,0.608,34,7.7,5.0,Jan de Vries,j.devries@roc.nl
+20240939,Marit Meis,m.meis@student.roc.nl,16,V,MBO niveau 2,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.915,0.811,39,6.3,5.6,Peter Smit,p.smit@roc.nl
+20240940,Julian Chotzen,j.chotzen@student.roc.nl,23,M,VMBO-B,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.691,0.744,37,6.1,5.7,Anita Jansen,a.jansen@roc.nl
+20240941,Ivy van der Heiden,i.vanderheiden@student.roc.nl,18,M,VMBO-T,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.823,0.654,43,6.2,5.4,Peter Smit,p.smit@roc.nl
+20240942,Sanne van Dijk,s.vandijk@student.roc.nl,17,V,VMBO-T,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.609,0.723,37,7.8,7.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240943,Marinus Demmendaal-Rouwhorst,m.demmendaal-rouwhorst@student.roc.nl,21,V,VMBO-T,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.873,0.915,49,8.0,7.1,Fatima El Amrani,f.elamrani@roc.nl
+20240944,Xavi van Arnsberg-Haselaar,x.vanarnsberg-haselaar@student.roc.nl,16,X,VMBO-K,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.727,0.637,32,4.2,5.4,Fatima El Amrani,f.elamrani@roc.nl
+20240945,Collin Köster,c.köster@student.roc.nl,22,M,VMBO-B,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.917,0.756,42,6.9,6.1,Anita Jansen,a.jansen@roc.nl
+20240946,Quinten van der Flaas,q.vanderflaas@student.roc.nl,20,V,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.698,0.692,45,7.6,7.9,Anita Jansen,a.jansen@roc.nl
+20240947,Romy Huijs-Oversteeg,r.huijs-oversteeg@student.roc.nl,18,V,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.554,0.671,30,5.9,5.0,Fatima El Amrani,f.elamrani@roc.nl
+20240948,Ben Brumleve,b.brumleve@student.roc.nl,18,V,VMBO-K,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.876,0.871,48,6.1,6.2,Peter Smit,p.smit@roc.nl
+20240949,Linde Slagmolen,l.slagmolen@student.roc.nl,20,M,MBO niveau 3,Techniek,Elektrotechniek,25160,2024-2025,3,BOL,2024-09-01,0.888,0.761,29,8.2,6.8,Mohammed Boukhari,m.boukhari@roc.nl
+20240950,Liz Eckhardt,l.eckhardt@student.roc.nl,20,M,MBO niveau 3,Zorg,Helpende Zorg & Welzijn,92640,2024-2025,2,BOL,2024-09-01,0.792,0.838,41,6.2,6.9,Peter Smit,p.smit@roc.nl
+20240951,Fabiënne Hendriks,f.hendriks@student.roc.nl,23,M,HAVO,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.911,0.703,37,6.6,6.1,Fatima El Amrani,f.elamrani@roc.nl
+20240952,Yassin van de Biezenbos,y.vandebiezenbos@student.roc.nl,21,M,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.884,0.802,49,5.4,8.2,Peter Smit,p.smit@roc.nl
+20240953,Leon Kerkhof,l.kerkhof@student.roc.nl,18,M,MBO niveau 3,Economie,Logistiek medewerker,90640,2024-2025,3,BOL,2024-09-01,0.95,0.826,42,6.4,3.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240954,Arthur Passchiers-Verbruggen,a.passchiers-verbruggen@student.roc.nl,23,V,HAVO,Zorg,Verpleegkundige,99070,2024-2025,4,BOL,2024-09-01,0.243,0.52,31,8.4,6.5,Jan de Vries,j.devries@roc.nl
+20240955,Fleur Kallen,f.kallen@student.roc.nl,21,M,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.896,0.637,30,7.1,6.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240956,Johannes van den Nuwenhijsen,j.vandennuwenhijsen@student.roc.nl,19,V,MBO niveau 2,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.797,0.675,34,7.0,5.1,Peter Smit,p.smit@roc.nl
+20240957,Lars van 't Wel,l.van'twel@student.roc.nl,20,V,MBO niveau 3,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.685,0.785,49,7.0,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240958,Julie van der Stael,j.vanderstael@student.roc.nl,16,V,VMBO-K,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.89,0.813,44,7.0,7.4,Jan de Vries,j.devries@roc.nl
+20240959,Azra Uphus,a.uphus@student.roc.nl,19,M,VMBO-T,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.455,0.458,22,6.4,8.8,Jan de Vries,j.devries@roc.nl
+20240960,Charlotte Alpaidis,c.alpaidis@student.roc.nl,23,V,HAVO,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.863,0.812,50,5.2,3.9,Fatima El Amrani,f.elamrani@roc.nl
+20240961,Esther Schuurmans,e.schuurmans@student.roc.nl,18,V,MBO niveau 3,Groen,Dierverzorger,97730,2024-2025,3,BBL,2024-09-01,0.837,0.65,39,7.3,6.2,Anita Jansen,a.jansen@roc.nl
+20240962,Stijn Janse,s.janse@student.roc.nl,16,X,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BBL,2024-09-01,0.904,0.805,37,4.1,5.8,Fatima El Amrani,f.elamrani@roc.nl
+20240963,Bo van den Brink,b.vandenbrink@student.roc.nl,23,M,MBO niveau 2,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.933,0.85,55,5.8,3.5,Anita Jansen,a.jansen@roc.nl
+20240964,Lex van Ochten,l.vanochten@student.roc.nl,16,M,VMBO-T,Techniek,Installatiemonteur,25480,2024-2025,2,BOL,2024-09-01,0.745,0.639,35,6.0,5.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240965,Yasmin Kleibrink,y.kleibrink@student.roc.nl,18,V,HAVO,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BOL,2024-09-01,0.823,0.78,41,6.4,7.5,Jan de Vries,j.devries@roc.nl
+20240966,Ella Nek,e.nek@student.roc.nl,22,M,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.882,0.851,47,6.7,8.0,Fatima El Amrani,f.elamrani@roc.nl
+20240967,Ayoub Goudriaan,a.goudriaan@student.roc.nl,24,V,HAVO,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.695,0.76,40,4.3,8.2,Jan de Vries,j.devries@roc.nl
+20240968,Lola Helmerhorst-van Voorhout,l.helmerhorst-vanvoorhout@student.roc.nl,16,V,MBO niveau 2,Techniek,Netwerkbeheerder,93200,2024-2025,4,BOL,2024-09-01,0.741,0.777,43,7.3,8.4,Peter Smit,p.smit@roc.nl
+20240969,Jolie van Clootwijck,j.vanclootwijck@student.roc.nl,23,V,MBO niveau 3,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.76,0.814,41,7.1,8.6,Anita Jansen,a.jansen@roc.nl
+20240970,Daan Meeusen,d.meeusen@student.roc.nl,22,M,VMBO-T,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.907,0.868,41,8.5,5.0,Anita Jansen,a.jansen@roc.nl
+20240971,Rosalie van den Brink-Blonk,r.vandenbrink-blonk@student.roc.nl,25,V,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.779,0.797,50,7.2,3.6,Jan de Vries,j.devries@roc.nl
+20240972,Zeynep Kuijpers-van Schweinfurt,z.kuijpers-vanschweinfurt@student.roc.nl,19,M,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BOL,2024-09-01,0.83,0.646,37,8.4,9.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240973,Riley van Berkum,r.vanberkum@student.roc.nl,22,V,VMBO-B,Economie,Commercieel medewerker,90111,2024-2025,3,BOL,2024-09-01,0.89,0.84,46,7.2,5.9,Fatima El Amrani,f.elamrani@roc.nl
+20240974,Emma van den Hoek,e.vandenhoek@student.roc.nl,22,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.643,0.638,33,8.0,4.3,Mohammed Boukhari,m.boukhari@roc.nl
+20240975,Puk van Gils,p.vangils@student.roc.nl,17,V,MBO niveau 2,Zorg,Verzorgende IG,93500,2024-2025,3,BOL,2024-09-01,0.765,0.641,37,6.4,6.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240976,Dex die Witte,d.diewitte@student.roc.nl,16,V,MBO niveau 3,Zorg,Verpleegkundige,99070,2024-2025,4,BBL,2024-09-01,0.904,0.719,39,5.6,6.1,Jan de Vries,j.devries@roc.nl
+20240977,Mette van de Berg,m.vandeberg@student.roc.nl,16,M,VMBO-K,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.512,0.604,30,5.0,6.0,Fatima El Amrani,f.elamrani@roc.nl
+20240978,Max Thatcher,m.thatcher@student.roc.nl,20,M,VMBO-K,Groen,Dierverzorger,97730,2024-2025,3,BOL,2024-09-01,0.572,0.671,38,8.9,4.0,Peter Smit,p.smit@roc.nl
+20240979,Sem Blokland,s.blokland@student.roc.nl,22,M,VMBO-B,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.767,0.746,34,6.7,4.7,Peter Smit,p.smit@roc.nl
+20240980,Jolijn Uphaus,j.uphaus@student.roc.nl,23,M,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.601,0.71,37,4.9,5.6,Anita Jansen,a.jansen@roc.nl
+20240981,Ceylin van Verdun,c.vanverdun@student.roc.nl,23,M,VMBO-K,Groen,Medewerker voedsel,97590,2024-2025,2,BBL,2024-09-01,0.803,0.845,48,8.0,4.5,Anita Jansen,a.jansen@roc.nl
+20240982,Madelief Ansems,m.ansems@student.roc.nl,16,M,VMBO-T,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.609,0.466,20,4.9,5.5,Peter Smit,p.smit@roc.nl
+20240983,Dylano Winters,d.winters@student.roc.nl,18,M,VMBO-B,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.527,0.676,31,7.7,5.7,Mohammed Boukhari,m.boukhari@roc.nl
+20240984,Nynke Schipper,n.schipper@student.roc.nl,19,V,VMBO-K,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.823,0.786,52,7.1,7.3,Fatima El Amrani,f.elamrani@roc.nl
+20240985,Justin Brievingh,j.brievingh@student.roc.nl,16,M,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.672,0.66,47,5.7,4.9,Fatima El Amrani,f.elamrani@roc.nl
+20240986,Dylan van Boulogne,d.vanboulogne@student.roc.nl,16,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.476,0.518,33,6.6,4.3,Jan de Vries,j.devries@roc.nl
+20240987,Tara van den Assem-Loep,t.vandenassem-loep@student.roc.nl,17,M,HAVO,Techniek,Software Developer,25604,2024-2025,4,BOL,2024-09-01,0.603,0.49,30,7.1,7.3,Fatima El Amrani,f.elamrani@roc.nl
+20240988,Nikki de Bont,n.debont@student.roc.nl,22,V,VMBO-K,Economie,Manager handel,90202,2024-2025,4,BBL,2024-09-01,0.732,0.638,39,6.8,5.9,Peter Smit,p.smit@roc.nl
+20240989,Yara Dijkman,y.dijkman@student.roc.nl,19,M,VMBO-T,Techniek,Elektrotechniek,25160,2024-2025,3,BBL,2024-09-01,0.758,0.665,47,7.3,7.0,Fatima El Amrani,f.elamrani@roc.nl
+20240990,Jennifer Rijcken,j.rijcken@student.roc.nl,18,V,MBO niveau 2,Groen,Medewerker voedsel,97590,2024-2025,2,BOL,2024-09-01,0.761,0.71,51,7.6,5.0,Mohammed Boukhari,m.boukhari@roc.nl
+20240991,Valerie Ridder,v.ridder@student.roc.nl,19,M,MBO niveau 2,Dienstverlening,Kok,25185,2024-2025,2,BBL,2024-09-01,0.643,0.682,35,7.1,8.2,Mohammed Boukhari,m.boukhari@roc.nl
+20240992,Anouk Rotteveel,a.rotteveel@student.roc.nl,23,V,MBO niveau 3,Economie,Financieel administrateur,90370,2024-2025,4,BOL,2024-09-01,0.895,0.782,44,7.9,5.0,Anita Jansen,a.jansen@roc.nl
+20240993,Thomas Lucas-Keltenie,t.lucas-keltenie@student.roc.nl,17,X,HAVO,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.89,0.864,45,7.2,8.9,Jan de Vries,j.devries@roc.nl
+20240994,Yfke Vandenbergh,y.vandenbergh@student.roc.nl,17,V,VMBO-B,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.734,0.685,36,6.7,7.1,Fatima El Amrani,f.elamrani@roc.nl
+20240995,Ivy Serra,i.serra@student.roc.nl,20,M,VMBO-K,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.781,0.828,49,8.9,9.4,Mohammed Boukhari,m.boukhari@roc.nl
+20240996,Ceylin Keijzer,c.keijzer@student.roc.nl,16,V,MBO niveau 3,Zorg,Doktersassistent,34576,2024-2025,4,BOL,2024-09-01,0.758,0.722,46,7.4,4.6,Mohammed Boukhari,m.boukhari@roc.nl
+20240997,Livia Woutersz,l.woutersz@student.roc.nl,21,V,HAVO,Dienstverlening,Gastvrouw/-heer,90191,2024-2025,3,BOL,2024-09-01,0.635,0.693,38,5.9,5.4,Jan de Vries,j.devries@roc.nl
+20240998,Jason Uphuis,j.uphuis@student.roc.nl,16,M,VMBO-K,Groen,Tuin- en landschapsbeheer,97252,2024-2025,3,BBL,2024-09-01,0.784,0.611,37,6.2,4.9,Mohammed Boukhari,m.boukhari@roc.nl
+20240999,Mart Kruns,m.kruns@student.roc.nl,16,M,VMBO-K,Dienstverlening,Kapper,97460,2024-2025,3,BOL,2024-09-01,0.653,0.618,33,8.4,6.1,Peter Smit,p.smit@roc.nl
+20241000,Isis Wouters,i.wouters@student.roc.nl,23,V,VMBO-T,Dienstverlening,Kok,25185,2024-2025,2,BOL,2024-09-01,0.693,0.77,30,6.5,5.2,Peter Smit,p.smit@roc.nl

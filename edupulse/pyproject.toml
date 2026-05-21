@@ -1,0 +1,39 @@
+[tool.uv]
+cache-dir = "./.uv_cache"
+
+[project]
+name = "edupulse"
+version = "0.1.0"
+description = "EduClaw Sprint 1 — EduPulse Uitvalrisico Agent"
+authors = [
+    {name = "Ed de Feber", email = "ed.defeber@surf.nl"}
+]
+requires-python = ">=3.13"
+dependencies = [
+    "anthropic>=0.49.0",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "streamlit>=1.46.0",
+    "sqlalchemy>=2.0.0",
+    "pandas>=2.2.0",
+    "numpy>=2.0.0",
+    "scikit-learn>=1.5.0",
+    "xgboost>=2.1.0",
+    "shap>=0.46.0",
+    "faker>=30.0.0",
+    "joblib>=1.4.0",
+    "streamlit-extras>=1.4.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "httpx>=0.27.0",
+    "ruff>=0.15.10",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100

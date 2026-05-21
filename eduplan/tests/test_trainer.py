@@ -3,7 +3,7 @@
 import json
 import os
 import tempfile
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import numpy as np
 import pandas as pd
@@ -38,6 +38,7 @@ def _make_mocks(df: pd.DataFrame):
 @pytest.fixture(autouse=True)
 def mock_student_signal(monkeypatch):
     """Mock student-signal voor alle trainer-tests (snel + geen externe dependency)."""
+
     def fake_prepare(train_df, test_df, target_col, id_col):
         prepared, _ = _make_mocks(train_df)
         return prepared

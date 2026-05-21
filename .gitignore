@@ -199,3 +199,4 @@ cython_debug/
 
 # Windows Zone.Identifier metadata files
 *:Zone.Identifier
+.worktrees/

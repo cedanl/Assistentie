@@ -8,7 +8,6 @@
 #     "scikit-learn",
 #     "fastapi",
 #     "uvicorn",
-#     "openai",
 #     "requests",
 #     "plotly",
 #     "shap"

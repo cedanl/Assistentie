@@ -1,4 +1,3 @@
-# Home.py
 import streamlit as st
 
 title = "Home"

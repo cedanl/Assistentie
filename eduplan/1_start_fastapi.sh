@@ -3,71 +3,37 @@
 
 set -e
 
-# cd "$(dirname "$0")" # Ensure we're in the script's directory
-
-# #########################################################################################
-# THIS IS STRICTLY FORBIDDEN. TEMPORARILY STORED MY PERSONAL API KEY HERE FOR DEMO.
-# DO NOT DISTRIBUTE!!!!!!
-# export set OPENAI_API_KEY=ASK ED
-# #########################################################################################
-
-echo
 echo
 echo "##################################################################"
 echo "#                                                                #"
-echo "#             EduPlan FastAPI backend                           #"
+echo "#             EduPlan FastAPI backend                            #"
 echo "#                                                                #"
 echo "##################################################################"
 echo
 
-
-# Initialize uv project if not present
 if [ ! -f "pyproject.toml" ]; then
-  echo "Project EduPlan niet gevonden. Aanmaken..."
-  uv init
-  echo "Project EduPlan geinitialiseerd"
+  echo "[FOUT] pyproject.toml niet gevonden — draai dit script vanuit de eduplan/ map."
+  exit 1
 fi
 
-# Create virtual environment if not present
-if [ ! -d ".venv" ]; then
-  echo "Virtual environment niet gevonden. Aanmaken..."
-  uv venv
-  echo "Virtual environment aangemaakt"
-fi
-
-# Activate virtual environment
-echo "Activeren van de virtual environment"
-source .venv/bin/activate
-echo "Omgeving geactiveerd"
-
-# Install dependencies
 echo "Installeren van dependencies..."
-uv add -U -r requirements.txt
+uv sync
 
-# If you want to enforce .env presence, uncomment and adapt these warnings/checks
-# if [ ! -f .env ]; then
-#     echo "[WAARSCHUWING] .env bestand niet gevonden!"
-#     echo
-#     echo "Kopieer .env.example naar .env en voeg je OpenAI API key toe:"
-#     echo "    cp .env.example .env"
-#     echo
-#     read -p "Wil je doorgaan zonder .env bestand? (j/n): " continue
-#     if [[ ! "$continue" =~ ^[jJ]([aA])?$ ]]; then
-#         echo
-#         echo "[GESTOPT] Maak eerst een .env bestand aan."
-#         exit 1
-#     fi
-# fi
+# Laad .env zodat ANTHROPIC_API_KEY (en andere env vars) beschikbaar zijn voor de backend
+set -a
+[ -f .env ] && source .env
+set +a
+
+if [ -z "$ANTHROPIC_API_KEY" ]; then
+  echo
+  echo "[WAARSCHUWING] ANTHROPIC_API_KEY is niet gezet — LLM-endpoints (/summarize, /explain_risk, /map_columns) zullen falen."
+  echo "Zet de key in .env of exporteer deze in je shell, en herstart het script."
+  echo
+fi
 
 echo
 echo "[START] Starting EduPlan FastAPI Server met uvicorn..."
-echo
 echo "Druk op Ctrl+C om de app te stoppen."
 echo
 
-uvicorn --host "127.0.0.1" --port 8000 backend.main:app --reload
-RESULT=$?
-if [ $RESULT -ne 0 ]; then
-  echo
-  echo "[FOUT] Er is een fout opgetreden bij het starten van de app."
-fi
+uv run uvicorn --host 127.0.0.1 --port 8000 backend.main:app --reload

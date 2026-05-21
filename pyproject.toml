@@ -12,6 +12,7 @@ authors = [
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "anthropic>=0.43.0",
     "ruff>=0.15.10",
     "streamlit>=1.46.0",
 ]
