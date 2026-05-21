@@ -14,7 +14,6 @@ model:
   default_features_path: backend/model_features.json
   custom_features_path: backend/model_custom_features.json
   custom_imputer_path: backend/model_custom_imputer.joblib
-  custom_scaler_path: backend/model_custom_scaler.joblib
   min_training_rows: 30
 
 training:
@@ -34,7 +33,7 @@ shap:
   exclude_columns: [Studentnummer]
 
 llm:
-  model: gpt-4.1
+  model: claude-sonnet-4-6
 
 downloads:
   data_url: "https://raw.githubusercontent.com/cedanl/Uitnodigingsregel/main/data/raw/synth_data_pred.csv"

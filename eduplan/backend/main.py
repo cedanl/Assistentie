@@ -81,13 +81,13 @@ def _call_llm(
     text = response.content[0].text
     return (prefill + text) if prefill is not None else text
 
+
 # Modelpaden
 MODEL_DEFAULT_PATH = _cfg["model"]["default_path"]
 MODEL_CUSTOM_PATH = _cfg["model"]["custom_path"]
 MODEL_DEFAULT_FEATURES_PATH = _cfg["model"]["default_features_path"]
 MODEL_CUSTOM_FEATURES_PATH = _cfg["model"]["custom_features_path"]
 MODEL_CUSTOM_IMPUTER_PATH = _cfg["model"]["custom_imputer_path"]
-MODEL_CUSTOM_SCALER_PATH = _cfg["model"]["custom_scaler_path"]
 
 # Voorspellingsdrempels
 _THRESHOLD_HIGH = _cfg["prediction"]["risk_threshold_high"]
@@ -515,8 +515,10 @@ def rank_students(request: RankRequest):
     model, _ = _get_model(request.use_default_model)
     active_features = _get_features(request.use_default_model)
 
-    pred_df = pd.DataFrame(request.students).reindex(columns=active_features, fill_value=0)
-    pred_df = _apply_imputer(pred_df)
+    # Ontbrekende kolommen → NaN (niet 0), zodat de custom imputer ze daadwerkelijk
+    # kan invullen. Resterende NaN (geen imputer, of niet-gefitte kolommen) → 0.
+    pred_df = pd.DataFrame(request.students).reindex(columns=active_features)
+    pred_df = _apply_imputer(pred_df).fillna(0)
     scores = model.predict(pred_df.values).tolist()
 
     result = [
@@ -673,7 +675,6 @@ def train_model_endpoint(request: TrainRequest):
                 model_path=MODEL_CUSTOM_PATH,
                 features_path=MODEL_CUSTOM_FEATURES_PATH,
                 imputer_path=MODEL_CUSTOM_IMPUTER_PATH,
-                scaler_path=MODEL_CUSTOM_SCALER_PATH,
                 param_grid=request.rf_parameters,
             )
             _reload_model(MODEL_CUSTOM_PATH)
