@@ -58,7 +58,25 @@ python main.py  # requires ANTHROPIC_API_KEY
 
 ## Required Environment Variables
 
-- `ANTHROPIC_API_KEY` — used by the backend for LLM explanations (model set via the `ANTHROPIC_MODEL` constant in `backend/main.py`); also used by the standalone Claude agent CLI in `main.py`.
+- `ANTHROPIC_API_KEY` — used by the backend for LLM explanations (the model name is read from `config.yaml` → `llm.model` into the `ANTHROPIC_MODEL` constant in `backend/main.py`); also used by the standalone Claude agent CLI in `main.py`.
+
+## Configuration (`config.yaml`)
+
+`eduplan/config.yaml` is the single source of truth for all deployment-specific settings — paths, column names, thresholds, the LLM model name, and download URLs. Model *hyperparameters* for research live in [student-signal](https://github.com/cedanl/student-signal)'s own config; this file holds only what EduPlan needs to wire things together.
+
+It is loaded **once at import time** in `backend/main.py`, `backend/trainer.py`, and `shared/data_prep.py` via a `__file__`-relative path (`Path(__file__).parent.parent / "config.yaml"`), so resolution does not depend on the current working directory.
+
+| Section | Keys | Used by |
+|---------|------|---------|
+| `data` | `path`, `target_column`, `exclude_columns`, `id_column` | feature derivation (`_load_features`), trainer metadata-drop + id-column |
+| `model` | `default_path`, `custom_path`, `*_features_path`, `custom_imputer_path`, `min_training_rows` | model/feature/imputer loading; trainer row-count guard |
+| `training` | `rf_parameters` | fallback GridSearchCV grid when `/train_model` gets no `rf_parameters` |
+| `prediction` | `risk_threshold_high` (0.65), `risk_threshold_moderate` (0.35), `shap_quality_threshold` (0.01), `shap_top_factors` (5) | risk-level bands, SHAP data-quality cutoff, top-N factors |
+| `shap` | `exclude_columns` | features excluded from SHAP explanations (`SHAP_EXCLUDE`) |
+| `llm` | `model` | `ANTHROPIC_MODEL` (currently `claude-sonnet-4-6`) |
+| `downloads` | `data_url`, `model_url`, `raw_data_path` | `shared/data_prep.py` first-time download/build |
+
+When changing thresholds or paths, edit `config.yaml` — do **not** reintroduce hardcoded literals in the modules. New config keys must be added here and read via `_cfg[...]`.
 
 ## Architecture
 
@@ -86,11 +104,13 @@ Streamlit frontend (frontend/app.py)
 | `DELETE /reset_model` | — | Deletes `model_custom.joblib` + `model_custom_features.json` and resets active model to default |
 
 ### Backend (`backend/trainer.py`)
-Standalone training module. `train_model(df, dropout_col, model_path, features_path)` requires ≥ 30 training rows and is called by `/train_model` in a background thread via `threading.Thread`. It delegates to the [`student-signal`](https://github.com/cedanl/student-signal) CEDA library:
+Standalone training module. `train_model(df, dropout_col, model_path, features_path, imputer_path=None, param_grid=None)` requires ≥ `min_training_rows` (config, default 30) and is called by `/train_model` in a background thread via `threading.Thread`. It first drops the `data.exclude_columns` metadata (Naam/Opleiding/Klas/Mentor) so they aren't encoded as per-student dummies, then delegates to the [`student-signal`](https://github.com/cedanl/student-signal) CEDA library:
 - `student_signal.prepare()` — KNN-imputation, encoding, and scaling fitted on training data
-- `student_signal.modeling.train.train_random_forest()` — GridSearchCV over the provided (or default) `param_grid`
+- `student_signal.modeling.train.train_random_forest()` — GridSearchCV over the provided (or config) `param_grid`
 
-Saves the model to `model_path` and the post-`prepare()` feature list to `features_path` as JSON, and returns `tuple[RandomForestRegressor, list[str]]`. For `/train_model` this writes `model_custom.joblib` + `model_custom_features.json` to `backend/`.
+The custom model is trained on `prepared.train_df`, which is **unscaled** (student-signal keeps `train_df` and `train_df_scaled` separate) — so no scaler is applied at inference. Saves the model to `model_path` and the post-`prepare()` feature list to `features_path` (JSON), and returns `tuple[RandomForestRegressor, list[str]]`. When `imputer_path` is given it also fits and saves a separate inference `KNNImputer` on the numeric feature columns only (not including the target) so it can fill missing values at predict time. For `/train_model` this writes `model_custom.joblib` + `model_custom_features.json` + `model_custom_imputer.joblib` to `backend/`.
+
+`/rank_students` applies this imputer via `_apply_imputer`: incoming students are reindexed to the active features with **NaN** (not 0) for absent columns, the imputer fills the fitted numeric columns, and any residual NaN falls back to 0. When no custom imputer exists (default model) this is a no-op and missing columns just become 0.
 
 **Dual-model architecture:** At startup, `clf_default`/`explainer_default`/`features_default` are always loaded from `backend/model.joblib` + `backend/model_features.json`. If `model_custom.joblib` exists, `clf`/`explainer`/`features` (the active set) point to the custom model; otherwise they alias the defaults. `_get_model(use_default)` returns the `(clf, explainer)` pair; `_get_features(use_default)` returns the matching feature list. `_reload_model(path)` updates all three globals atomically. Features path is resolved via `_FEATURES_PATH: dict[str, str]`.
 
