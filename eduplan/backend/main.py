@@ -38,6 +38,7 @@ from pathlib import Path
 import joblib
 import pandas as pd
 import shap
+import yaml
 from anthropic import Anthropic
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -51,7 +52,11 @@ load_dotenv()
 app = FastAPI()
 
 client = Anthropic()
-ANTHROPIC_MODEL = "claude-sonnet-4-6"
+
+# Centrale deployment-configuratie (paden, kolomnamen, drempels, LLM-model).
+_cfg = yaml.safe_load((Path(__file__).parent.parent / "config.yaml").read_text())
+
+ANTHROPIC_MODEL = _cfg["llm"]["model"]
 
 
 def _call_llm(
@@ -78,10 +83,17 @@ def _call_llm(
 
 
 # Modelpaden
-MODEL_DEFAULT_PATH = "backend/model.joblib"
-MODEL_CUSTOM_PATH = "backend/model_custom.joblib"
-MODEL_DEFAULT_FEATURES_PATH = "backend/model_features.json"
-MODEL_CUSTOM_FEATURES_PATH = "backend/model_custom_features.json"
+MODEL_DEFAULT_PATH = _cfg["model"]["default_path"]
+MODEL_CUSTOM_PATH = _cfg["model"]["custom_path"]
+MODEL_DEFAULT_FEATURES_PATH = _cfg["model"]["default_features_path"]
+MODEL_CUSTOM_FEATURES_PATH = _cfg["model"]["custom_features_path"]
+MODEL_CUSTOM_IMPUTER_PATH = _cfg["model"]["custom_imputer_path"]
+
+# Voorspellingsdrempels
+_THRESHOLD_HIGH = _cfg["prediction"]["risk_threshold_high"]
+_THRESHOLD_MOD = _cfg["prediction"]["risk_threshold_moderate"]
+_SHAP_QUALITY = _cfg["prediction"]["shap_quality_threshold"]
+_SHAP_TOP_N = _cfg["prediction"]["shap_top_factors"]
 
 _FEATURES_PATH: dict[str, str] = {
     MODEL_DEFAULT_PATH: MODEL_DEFAULT_FEATURES_PATH,
@@ -94,8 +106,8 @@ def _load_features(path: str) -> list[str]:
     if Path(path).exists():
         with open(path) as f:
             return json.load(f)
-    _NON = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
-    return [c for c in pd.read_csv("shared/data.csv").columns if c not in _NON]
+    _NON = set(_cfg["data"]["exclude_columns"]) | {_cfg["data"]["target_column"]}
+    return [c for c in pd.read_csv(_cfg["data"]["path"]).columns if c not in _NON]
 
 
 # Features per model — dynamisch bepaald door student-signal bij training
@@ -113,13 +125,16 @@ explainer_default = shap.TreeExplainer(clf_default)
 if Path(MODEL_CUSTOM_PATH).exists():
     clf_custom = joblib.load(MODEL_CUSTOM_PATH)
     explainer_custom = shap.TreeExplainer(clf_custom)
+    imputer_custom = joblib.load(MODEL_CUSTOM_IMPUTER_PATH) if Path(MODEL_CUSTOM_IMPUTER_PATH).exists() else None
 else:
     clf_custom = clf_default
     explainer_custom = explainer_default
+    imputer_custom = None
 
 # Actief model
 clf = clf_custom
 explainer = explainer_custom
+imputer = imputer_custom
 
 
 def _get_model(use_default: bool) -> tuple[RandomForestRegressor, shap.TreeExplainer]:
@@ -148,14 +163,16 @@ _training = _TrainingState()
 
 
 def _reload_model(path: str | Path) -> None:
-    """Laad model, explainer en features opnieuw en vervang de globale referenties atomisch."""
-    global clf, explainer, features, features_custom
+    """Laad model, explainer, imputer en features opnieuw en vervang de globale referenties atomisch."""
+    global clf, explainer, imputer, features, features_custom
     new_clf = joblib.load(path)
     new_explainer = shap.TreeExplainer(new_clf)
     new_features = _load_features(_FEATURES_PATH[str(path)])
+    new_imputer = joblib.load(MODEL_CUSTOM_IMPUTER_PATH) if Path(MODEL_CUSTOM_IMPUTER_PATH).exists() else None
     # Python-naam-toewijzing is atomisch onder de GIL
     clf = new_clf
     explainer = new_explainer
+    imputer = new_imputer
     features = new_features
     features_custom = new_features
 
@@ -224,7 +241,7 @@ FEATURE_LABELS: dict[str, str] = {
 }
 
 # Features die geen inhoudelijke risicofactor zijn (niet opnemen in SHAP-toelichting)
-SHAP_EXCLUDE = {"Studentnummer"}
+SHAP_EXCLUDE = set(_cfg["shap"]["exclude_columns"])
 
 # Binaire features: (label_bij_waarde_1, label_bij_waarde_0)
 # Enkelvoudige bron zodat positief en negatief label altijd synchroon blijven.
@@ -348,6 +365,25 @@ def _factor_label(key: str, value: float) -> str:
     return f"{FEATURE_LABELS.get(key, key)}: {value}"
 
 
+def _apply_imputer(df: pd.DataFrame) -> pd.DataFrame:
+    """Pas de custom imputer toe op kolommen waarop hij gefitst is, indien beschikbaar.
+
+    De inferentie-imputer is gefitst op de post-encoding feature-kolommen (zonder
+    doelkolom). Dit werkt correct na reindex() naar active_features, omdat beide
+    dezelfde kolomnamen delen.
+    """
+    if imputer is None:
+        return df
+    fitted_cols = list(imputer.feature_names_in_)
+    missing = [c for c in fitted_cols if c not in df.columns]
+    if missing:
+        # Niet alle gefitte kolommen aanwezig — imputer kan niet worden toegepast.
+        return df
+    result = df.copy()
+    result[fitted_cols] = imputer.transform(df[fitted_cols])
+    return result
+
+
 def _student_to_df(student: dict, feat: list[str] | None = None) -> pd.DataFrame:
     """Zet een student-dict om naar een DataFrame met de verwachte featurekolommen."""
     f = feat if feat is not None else features
@@ -467,7 +503,7 @@ def predict_dropout(request: StudentData):
     model, _ = _get_model(request.use_default_model)
     X_pred = _student_to_df(request.student, _get_features(request.use_default_model))
     score = float(model.predict(X_pred.values)[0])
-    prediction = 1 if score >= 0.35 else 0
+    prediction = 1 if score >= _THRESHOLD_MOD else 0
     return {"probability": score, "prediction": prediction}
 
 
@@ -479,11 +515,14 @@ def rank_students(request: RankRequest):
     model, _ = _get_model(request.use_default_model)
     active_features = _get_features(request.use_default_model)
 
-    pred_df = pd.DataFrame(request.students).reindex(columns=active_features, fill_value=0)
+    # Ontbrekende kolommen → NaN (niet 0), zodat de custom imputer ze daadwerkelijk
+    # kan invullen. Resterende NaN (geen imputer, of niet-gefitte kolommen) → 0.
+    pred_df = pd.DataFrame(request.students).reindex(columns=active_features)
+    pred_df = _apply_imputer(pred_df).fillna(0)
     scores = model.predict(pred_df.values).tolist()
 
     result = [
-        {**student, "probability": float(score), "prediction": 1 if score >= 0.35 else 0}
+        {**student, "probability": float(score), "prediction": 1 if score >= _THRESHOLD_MOD else 0}
         for student, score in zip(request.students, scores)
     ]
     result.sort(key=lambda x: x["probability"], reverse=True)
@@ -496,10 +535,10 @@ def explain_risk(request: ExplainRequest):
     probability = request.probability
 
     # ── Risiconiveau ──────────────────────────────────────────────────────────
-    if probability >= 0.65:
+    if probability >= _THRESHOLD_HIGH:
         risico_niveau = "HOOG"
         urgentie = "directe actie vereist (deze week)"
-    elif probability >= 0.35:
+    elif probability >= _THRESHOLD_MOD:
         risico_niveau = "MATIG"
         urgentie = "actie aanbevolen binnen twee weken"
     else:
@@ -515,11 +554,11 @@ def explain_risk(request: ExplainRequest):
     fi = {
         k: v for k, v in zip(active_features, shap_vals[0].tolist()) if k not in SHAP_EXCLUDE and k not in imputed_set
     }
-    top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:5]
+    top_factors = sorted(fi.items(), key=lambda x: abs(x[1]), reverse=True)[:_SHAP_TOP_N]
 
     # Detecteer of alle SHAP-waarden nagenoeg nul zijn (geen informatieve factoren)
     max_shap = max((abs(v) for _, v in top_factors), default=0.0)
-    data_onvoldoende = max_shap < 0.01
+    data_onvoldoende = max_shap < _SHAP_QUALITY
 
     # ── Sectie 1: deterministisch risicoprofiel (geen LLM) ────────────────────
     sectie1 = _build_risicoprofiel_html(
@@ -635,6 +674,7 @@ def train_model_endpoint(request: TrainRequest):
                 dropout_col=request.dropout_column,
                 model_path=MODEL_CUSTOM_PATH,
                 features_path=MODEL_CUSTOM_FEATURES_PATH,
+                imputer_path=MODEL_CUSTOM_IMPUTER_PATH,
                 param_grid=request.rf_parameters,
             )
             _reload_model(MODEL_CUSTOM_PATH)

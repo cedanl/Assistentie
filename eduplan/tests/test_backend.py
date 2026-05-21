@@ -329,6 +329,43 @@ def test_rank_students_empty_list_returns_empty(client):
     assert resp.json() == []
 
 
+def test_rank_students_handles_missing_feature(client, demo_student):
+    """Een student met een ontbrekende feature crasht niet: kolom → NaN → 0-fallback."""
+    partial = demo_student.copy()
+    del partial["StudentAge"]
+    resp = client.post("/rank_students", json={"students": [partial]})
+    assert resp.status_code == 200
+    assert 0.0 <= resp.json()[0]["probability"] <= 1.0
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# _apply_imputer
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def test_apply_imputer_none_returns_unchanged(monkeypatch):
+    """Zonder custom imputer (default model) blijft de DataFrame ongewijzigd."""
+    import pandas as pd
+
+    monkeypatch.setattr(main_mod, "imputer", None)
+    df = pd.DataFrame([{"StudentAge": float("nan")}])
+    assert main_mod._apply_imputer(df) is df
+
+
+def test_apply_imputer_fills_nan(monkeypatch):
+    """Een gefitte imputer vult ontbrekende waarden (NaN) op de gefitte kolommen."""
+    import pandas as pd
+    from sklearn.impute import KNNImputer
+
+    train = pd.DataFrame({"StudentAge": [18.0, 20.0, 22.0, 24.0], "absence_unauthorized": [0.0, 1.0, 2.0, 3.0]})
+    imp = KNNImputer(n_neighbors=2).fit(train)
+    monkeypatch.setattr(main_mod, "imputer", imp)
+
+    df = pd.DataFrame([{"StudentAge": float("nan"), "absence_unauthorized": 1.0}])
+    out = main_mod._apply_imputer(df)
+    assert out["StudentAge"].notna().all()
+
+
 def test_train_model_endpoint_starts(client, demo_student):
     """Training start asynchroon; endpoint geeft direct 'started' of 'already_running' terug."""
     rows = [dict(demo_student, Dropout=float(i % 2)) for i in range(35)]
