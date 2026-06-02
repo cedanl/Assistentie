@@ -446,7 +446,7 @@ def _genereer_eduplan():
     # Sectie 1 én de streamende secties 2–4 staan in één witte kaart
     # (.st-key-eduplan-stream-card in MAIN_CSS), zodat de tekst meteen op wit
     # verschijnt i.p.v. op de roze pagina-achtergrond.
-    profiel_ph = None  # st.empty()-slot vóór de streamende tekst (binnen de kaart)
+    profiel_ph = None  # placeholder; echte st.empty()-slot wordt verderop binnen de kaart aangemaakt
     captured = {"section1": None, "final_html": None, "warning": None}
     exp = None
 
