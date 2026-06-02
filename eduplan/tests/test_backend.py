@@ -229,6 +229,68 @@ def test_explain_risk_laag_risico(client, demo_student, mock_anthropic):
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Endpoint — /explain_risk_stream (NDJSON streaming)
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _parse_ndjson(text: str) -> list[dict]:
+    import json
+
+    return [json.loads(line) for line in text.splitlines() if line.strip()]
+
+
+def test_explain_risk_stream_emits_section1_delta_and_final(client, demo_student, mock_anthropic_stream, monkeypatch):
+    """Stream stuurt eerst section1, dan delta's, dan final_html — en roept messages.stream aan."""
+    import numpy as np
+
+    # Forceer informatieve SHAP-waarden zodat het LLM (de stream) wordt aangeroepen
+    mock_exp = MagicMock()
+    shap_array = np.zeros((1, len(main_mod.features)))
+    shap_array[0, 1] = 0.5  # index 1 = StudentAge (index 0 = Studentnummer, uitgesloten)
+    mock_exp.shap_values.return_value = shap_array
+    monkeypatch.setattr(main_mod, "explainer", mock_exp)
+    monkeypatch.setattr(main_mod, "explainer_default", mock_exp)
+
+    payload = {
+        "student": demo_student,
+        "prediction": 1,
+        "probability": 0.70,
+        "imputed_columns": [],
+    }
+    resp = client.post("/explain_risk_stream", json=payload)
+    assert resp.status_code == 200
+
+    berichten = _parse_ndjson(resp.text)
+    soorten = [m["type"] for m in berichten]
+    assert soorten[0] == "section1"
+    assert "HOOG" in berichten[0]["html"]
+    assert "delta" in soorten
+    assert soorten[-1] == "final_html"
+    # De delta's vormen samen de (gemockte) LLM-uitvoer
+    deltas = "".join(m["text"] for m in berichten if m["type"] == "delta")
+    assert deltas == "Gemockte LLM-uitvoer"
+    assert mock_anthropic_stream.messages.stream.called
+
+
+def test_explain_risk_stream_data_onvoldoende_skips_llm(client, demo_student, mock_anthropic_stream):
+    """Bij volledig geïmputeerde data: section1 + warning, geen stream-aanroep."""
+    payload = {
+        "student": demo_student,
+        "prediction": 0,
+        "probability": 0.30,
+        "imputed_columns": features,  # alles geïmputeerd
+    }
+    resp = client.post("/explain_risk_stream", json=payload)
+    assert resp.status_code == 200
+
+    berichten = _parse_ndjson(resp.text)
+    soorten = [m["type"] for m in berichten]
+    assert soorten == ["section1", "warning"]
+    assert "Geen gepersonaliseerd advies" in berichten[1]["html"]
+    assert not mock_anthropic_stream.messages.stream.called
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Endpoints — LLM-afhankelijke endpoints
 # ─────────────────────────────────────────────────────────────────────────────
 

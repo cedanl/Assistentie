@@ -42,6 +42,7 @@ import yaml
 from anthropic import Anthropic
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from sklearn.ensemble import RandomForestRegressor
 
@@ -529,8 +530,24 @@ def rank_students(request: RankRequest):
     return result
 
 
-@app.post("/explain_risk")
-def explain_risk(request: ExplainRequest):
+# Getoond wanneer alle SHAP-waarden ~0 zijn: geen enkele kolom leverde informatie op,
+# dus gepersonaliseerd advies is niet mogelijk en het LLM wordt overgeslagen.
+_DATA_ONVOLDOENDE_HTML = (
+    "<br><b>⚠️ Geen gepersonaliseerd advies mogelijk</b><br>"
+    "De geüploade kolommen bevatten te weinig informatie die het model herkent. "
+    "Het model heeft geen variatie kunnen detecteren ten opzichte van de gemiddelde student. "
+    "Controleer of uw databestand de juiste kolommen bevat (zoals verzuim, leeftijd, "
+    "vooropleiding en aanmeldingshistorie) en upload opnieuw."
+)
+
+
+def _prepare_explanation(request: ExplainRequest) -> tuple[str, str | None]:
+    """Bouw Sectie 1 (deterministisch) en de LLM-prompt voor secties 2–4.
+
+    Gedeeld door `/explain_risk` (blokkerend) en `/explain_risk_stream` (streaming).
+    Geeft `(sectie1_html, prompt)` terug; `prompt` is None wanneer de data onvoldoende
+    is voor gepersonaliseerd advies (dan moet het LLM worden overgeslagen).
+    """
     student = request.student
     probability = request.probability
 
@@ -572,20 +589,8 @@ def explain_risk(request: ExplainRequest):
         data_onvoldoende=data_onvoldoende,
     )
 
-    # ── Sectie 2–4: LLM schrijft alleen begeleidingsadvies ───────────────────
-    # Als alle SHAP-waarden ~0 zijn, heeft geen enkele kolom informatie opgeleverd.
-    # In dat geval is gepersonaliseerd advies niet mogelijk.
     if data_onvoldoende:
-        return {
-            "explanation": sectie1
-            + (
-                "<br><b>⚠️ Geen gepersonaliseerd advies mogelijk</b><br>"
-                "De geüploade kolommen bevatten te weinig informatie die het model herkent. "
-                "Het model heeft geen variatie kunnen detecteren ten opzichte van de gemiddelde student. "
-                "Controleer of uw databestand de juiste kolommen bevat (zoals verzuim, leeftijd, "
-                "vooropleiding en aanmeldingshistorie) en upload opnieuw."
-            )
-        }
+        return sectie1, None
 
     # Het LLM krijgt UITSLUITEND de SHAP-factoren en het risiconiveau.
     # Binaire features worden ondubbelzinnig gelabeld (ja/nee) zodat het LLM
@@ -637,6 +642,17 @@ Maximaal 5 genummerde actiepunten, gesorteerd op urgentie.
 Maak expliciet onderscheid: déze week vs déze maand.
 """
 
+    return sectie1, prompt
+
+
+@app.post("/explain_risk")
+def explain_risk(request: ExplainRequest):
+    sectie1, prompt = _prepare_explanation(request)
+
+    # Als alle SHAP-waarden ~0 zijn, heeft geen enkele kolom informatie opgeleverd.
+    if prompt is None:
+        return {"explanation": sectie1 + _DATA_ONVOLDOENDE_HTML}
+
     sectie2_4 = _call_llm(prompt, max_tokens=2048, temperature=0.2)
 
     # Converteer markdown naar HTML zodat de frontend het correct kan renderen
@@ -644,6 +660,43 @@ Maak expliciet onderscheid: déze week vs déze maand.
 
     # Sectie 1 (deterministisch HTML) + sectie 2-4 (LLM) samenvoegen
     return {"explanation": sectie1 + sectie2_4_html}
+
+
+@app.post("/explain_risk_stream")
+def explain_risk_stream(request: ExplainRequest):
+    """Streamende variant van /explain_risk.
+
+    Stuurt NDJSON-regels zodat de frontend Sectie 1 direct kan tonen en de
+    begeleidingssecties token-voor-token kan laten verschijnen:
+      {"type":"section1","html": ...}      — direct, deterministisch
+      {"type":"warning","html": ...}       — bij onvoldoende data (geen LLM)
+      {"type":"delta","text": ...}         — ruwe markdown-chunk per LLM-delta
+      {"type":"final_html","html": ...}    — markdown→HTML van de volledige tekst
+    """
+    sectie1, prompt = _prepare_explanation(request)
+
+    def _gen():
+        yield json.dumps({"type": "section1", "html": sectie1}) + "\n"
+
+        if prompt is None:
+            yield json.dumps({"type": "warning", "html": _DATA_ONVOLDOENDE_HTML}) + "\n"
+            return
+
+        stukken: list[str] = []
+        with client.messages.stream(
+            model=ANTHROPIC_MODEL,
+            max_tokens=2048,
+            temperature=0.2,
+            messages=[{"role": "user", "content": prompt}],
+        ) as stream:
+            for tekst in stream.text_stream:
+                stukken.append(tekst)
+                yield json.dumps({"type": "delta", "text": tekst}) + "\n"
+
+        # Conversie markdown→HTML blijft de single source of truth in de backend.
+        yield json.dumps({"type": "final_html", "html": _markdown_to_html("".join(stukken))}) + "\n"
+
+    return StreamingResponse(_gen(), media_type="application/x-ndjson")
 
 
 @app.post("/feature_importance")
