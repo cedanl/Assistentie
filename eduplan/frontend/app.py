@@ -70,6 +70,9 @@ def _load_data() -> pd.DataFrame:
 
 NON_FEATURES = {"Dropout", "Naam", "Opleiding", "Klas", "Mentor"}
 
+# Eén plek voor host/poort van de FastAPI-backend (zie ./1_start_fastapi.sh).
+BACKEND_URL = "http://localhost:8000"
+
 
 # ─────────────────────────────────────────────
 # Session state
@@ -142,6 +145,24 @@ def _lees_bestand(uploaded_file) -> pd.DataFrame:
     return pd.read_csv(uploaded_file, sep=None, engine="python")
 
 
+def _map_columns(uploaded_columns: list[str], required_columns: list[str]) -> dict[str, str]:
+    """Vraag de backend om een LLM-koppeling {vereiste_kolom: geüploade_kolom}.
+
+    Degradeert stil naar een lege dict als de backend onbereikbaar is of een fout
+    geeft — auto-mapping is optioneel; ontbrekende kolommen worden daarna alsnog
+    met mediaanwaarden aangevuld.
+    """
+    try:
+        resp = requests.post(
+            f"{BACKEND_URL}/map_columns",
+            json={"uploaded_columns": uploaded_columns, "required_columns": required_columns},
+            timeout=30,
+        )
+        return resp.json().get("mapping", {})
+    except requests.RequestException:
+        return {}
+
+
 def _match_kolommen(
     new_df: pd.DataFrame,
 ) -> tuple[pd.DataFrame, dict[str, str], list[str]]:
@@ -171,19 +192,11 @@ def _match_kolommen(
 
         # LLM-koppeling voor resterende kolommen
         if nog_ontbrekend:
-            try:
-                vrije_kolommen = [c for c in new_df.columns if c not in rename_now]
-                resp = requests.post(
-                    "http://localhost:8000/map_columns",
-                    json={"uploaded_columns": vrije_kolommen, "required_columns": nog_ontbrekend},
-                    timeout=30,
-                )
-                for req, upl in resp.json().get("mapping", {}).items():
-                    if req in nog_ontbrekend and upl in new_df.columns and upl not in rename_now:
-                        rename_now[upl] = req
-                        hernoem_log[upl] = req
-            except Exception:
-                pass
+            vrije_kolommen = [c for c in new_df.columns if c not in rename_now]
+            for req, upl in _map_columns(vrije_kolommen, nog_ontbrekend).items():
+                if req in nog_ontbrekend and upl in new_df.columns and upl not in rename_now:
+                    rename_now[upl] = req
+                    hernoem_log[upl] = req
 
         if rename_now:
             new_df = new_df.rename(columns=rename_now)
@@ -250,17 +263,9 @@ def _verwerk_trainingsdata(uploaded_file) -> None:
                 }
                 _gevonden = next((c for c in new_df.columns if _norm_col(c) in _synoniemen), None)
                 if _gevonden is None:
-                    try:
-                        resp = requests.post(
-                            "http://localhost:8000/map_columns",
-                            json={"uploaded_columns": list(new_df.columns), "required_columns": ["Dropout"]},
-                            timeout=30,
-                        )
-                        _kandidaat = resp.json().get("mapping", {}).get("Dropout")
-                        if _kandidaat and _kandidaat in new_df.columns:
-                            _gevonden = _kandidaat
-                    except Exception:
-                        pass
+                    _kandidaat = _map_columns(list(new_df.columns), ["Dropout"]).get("Dropout")
+                    if _kandidaat and _kandidaat in new_df.columns:
+                        _gevonden = _kandidaat
                 if _gevonden:
                     new_df = new_df.rename(columns={_gevonden: "Dropout"})
 
@@ -367,7 +372,7 @@ def _build_word_doc(analyse: dict) -> BytesIO:
     return bio
 
 
-def _run_voorspelling(dff: pd.DataFrame):
+def _run_voorspelling(dff: pd.DataFrame) -> None:
     """Doe API-call voor alle studenten in dff; sla op in session_state."""
     opl = st.session_state.selected_opleiding
     klas = st.session_state.selected_klas
@@ -384,7 +389,7 @@ def _run_voorspelling(dff: pd.DataFrame):
 
     with st.spinner("Risico berekenen…"):
         resp = requests.post(
-            "http://localhost:8000/rank_students",
+            f"{BACKEND_URL}/rank_students",
             json={
                 "students": dff.to_dict(orient="records"),
                 "use_default_model": gebruik_default,
@@ -397,7 +402,7 @@ def _run_voorspelling(dff: pd.DataFrame):
         st.session_state.top_n = min(len(resultaten), 10)
 
 
-def _genereer_eduplan():
+def _genereer_eduplan() -> None:
     idx = st.session_state.geselecteerde_student
     risico = st.session_state.risicostudenten
     if not risico or idx >= len(risico):
@@ -424,7 +429,7 @@ def _genereer_eduplan():
         # mag het hoofd-EduPlan niet overschaduwen.
         try:
             resp = requests.post(
-                "http://localhost:8000/feature_importance",
+                f"{BACKEND_URL}/feature_importance",
                 json={
                     "student": row.to_dict(),
                     "use_default_model": gebruik_default,
@@ -468,7 +473,7 @@ def _genereer_eduplan():
 
     try:
         resp = requests.post(
-            "http://localhost:8000/explain_risk_stream",
+            f"{BACKEND_URL}/explain_risk_stream",
             json={
                 "student": row.to_dict(),
                 "prediction": result["prediction"],
@@ -506,7 +511,7 @@ def _genereer_eduplan():
     except requests.ConnectionError:
         exp = _error_html(
             "Backend niet bereikbaar",
-            "Geen verbinding met http://localhost:8000. Controleer of de FastAPI backend draait (./1_start_fastapi.sh).",
+            f"Geen verbinding met {BACKEND_URL}. Controleer of de FastAPI backend draait (./1_start_fastapi.sh).",
         )
     except requests.RequestException as e:
         exp = _error_html("Netwerkfout", str(e))
@@ -551,7 +556,7 @@ def _start_training() -> None:
         "dropout_column": "Dropout",
     }
     try:
-        resp = requests.post("http://localhost:8000/train_model", json=payload, timeout=10)
+        resp = requests.post(f"{BACKEND_URL}/train_model", json=payload, timeout=10)
         resultaat = resp.json().get("status")
         if resultaat in ("started", "already_running"):
             st.session_state.training_status = "training"
@@ -562,7 +567,7 @@ def _start_training() -> None:
 
 def _reset_model() -> None:
     try:
-        requests.delete("http://localhost:8000/reset_model", timeout=10)
+        requests.delete(f"{BACKEND_URL}/reset_model", timeout=10)
         st.session_state.training_status = "idle"
         st.session_state.training_message = ""
         st.session_state.model_is_custom = False
@@ -612,7 +617,7 @@ def _show_training_panel() -> None:
 
         # Eén statuscheck per render — geen blokkerende loop
         try:
-            data = requests.get("http://localhost:8000/train_status", timeout=5).json()
+            data = requests.get(f"{BACKEND_URL}/train_status", timeout=5).json()
         except Exception:
             data = {"status": "training"}
 
@@ -657,7 +662,7 @@ def _show_training_panel() -> None:
 # ─────────────────────────────────────────────
 
 
-def show_start_screen():
+def show_start_screen() -> None:
     st.markdown(START_CSS, unsafe_allow_html=True)
     st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
 
@@ -794,7 +799,7 @@ def show_start_screen():
 # ─────────────────────────────────────────────
 
 
-def _render_header():
+def _render_header() -> None:
     tab = st.session_state.actieve_tab
 
     col_ceda, col_terug, col_ur, col_ep = st.columns([3, 1.2, 2.2, 1.2])
@@ -832,7 +837,7 @@ def _render_header():
 # ─────────────────────────────────────────────
 
 
-def _render_card_header():
+def _render_card_header() -> None:
     opl = st.session_state.selected_opleiding
 
     if st.session_state.toon_zoekbalk:
@@ -908,7 +913,7 @@ def _render_card_header():
 # ─────────────────────────────────────────────
 
 
-def _render_banner():
+def _render_banner() -> None:
     risico = st.session_state.risicostudenten
 
     label = f"<u><b>{st.session_state.top_n}</b></u>" if risico else "···"
@@ -943,7 +948,7 @@ def _render_banner():
 # ─────────────────────────────────────────────
 
 
-def _render_barchart():
+def _render_barchart() -> None:
     risico = st.session_state.risicostudenten
 
     if not risico:
@@ -1003,7 +1008,7 @@ def _render_barchart():
 # ─────────────────────────────────────────────
 
 
-def _render_eduplan_sectie():
+def _render_eduplan_sectie() -> None:
     risico = st.session_state.risicostudenten
     top_n = st.session_state.top_n
 
@@ -1060,7 +1065,7 @@ def _render_eduplan_sectie():
         _render_eduplan_content()
 
 
-def _render_eduplan_content():
+def _render_eduplan_content() -> None:
     analyse = st.session_state.laatste_analyse
     naam = html.escape(analyse["naam"])
 
@@ -1108,7 +1113,7 @@ def _render_eduplan_content():
 # ─────────────────────────────────────────────
 
 
-def _render_footer():
+def _render_footer() -> None:
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
     st.markdown(
         """<hr style="border:none; border-top:2px solid rgba(0,0,0,0.32); margin:0 0 20px 0;">
@@ -1127,7 +1132,7 @@ def _render_footer():
 # ─────────────────────────────────────────────
 
 
-def show_main_screen():
+def show_main_screen() -> None:
     st.markdown(MAIN_CSS, unsafe_allow_html=True)
 
     _render_header()
