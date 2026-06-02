@@ -108,34 +108,27 @@ def _load_features(path: str) -> list[str]:
         with open(path) as f:
             return json.load(f)
     _NON = set(_cfg["data"]["exclude_columns"]) | {_cfg["data"]["target_column"]}
-    return [c for c in pd.read_csv(_cfg["data"]["path"]).columns if c not in _NON]
+    return [c for c in pd.read_csv(_cfg["data"]["path"], nrows=0).columns if c not in _NON]
 
 
 # Features per model — dynamisch bepaald door student-signal bij training
 features_default = _load_features(MODEL_DEFAULT_FEATURES_PATH)
-features_custom = (
-    _load_features(MODEL_CUSTOM_FEATURES_PATH) if Path(MODEL_CUSTOM_FEATURES_PATH).exists() else features_default
-)
-features = features_custom  # actieve feature-lijst
 
 # Standaardmodel — altijd geladen, gebruikt bij demo-data
 clf_default = joblib.load(MODEL_DEFAULT_PATH)
 explainer_default = shap.TreeExplainer(clf_default)
 
-# Instellingsmodel — geladen indien beschikbaar; anders alias op standaard
+# Actief model — instellingsmodel indien beschikbaar, anders alias op standaard
 if Path(MODEL_CUSTOM_PATH).exists():
-    clf_custom = joblib.load(MODEL_CUSTOM_PATH)
-    explainer_custom = shap.TreeExplainer(clf_custom)
-    imputer_custom = joblib.load(MODEL_CUSTOM_IMPUTER_PATH) if Path(MODEL_CUSTOM_IMPUTER_PATH).exists() else None
+    clf = joblib.load(MODEL_CUSTOM_PATH)
+    explainer = shap.TreeExplainer(clf)
+    imputer = joblib.load(MODEL_CUSTOM_IMPUTER_PATH) if Path(MODEL_CUSTOM_IMPUTER_PATH).exists() else None
+    features = _load_features(MODEL_CUSTOM_FEATURES_PATH)
 else:
-    clf_custom = clf_default
-    explainer_custom = explainer_default
-    imputer_custom = None
-
-# Actief model
-clf = clf_custom
-explainer = explainer_custom
-imputer = imputer_custom
+    clf = clf_default
+    explainer = explainer_default
+    imputer = None
+    features = features_default
 
 
 def _get_model(use_default: bool) -> tuple[RandomForestRegressor, shap.TreeExplainer]:
@@ -165,7 +158,7 @@ _training = _TrainingState()
 
 def _reload_model(path: str | Path) -> None:
     """Laad model, explainer, imputer en features opnieuw en vervang de globale referenties atomisch."""
-    global clf, explainer, imputer, features, features_custom
+    global clf, explainer, imputer, features
     new_clf = joblib.load(path)
     new_explainer = shap.TreeExplainer(new_clf)
     new_features = _load_features(_FEATURES_PATH[str(path)])
@@ -175,7 +168,6 @@ def _reload_model(path: str | Path) -> None:
     explainer = new_explainer
     imputer = new_imputer
     features = new_features
-    features_custom = new_features
 
 
 class StudentData(BaseModel):
