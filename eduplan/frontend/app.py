@@ -25,6 +25,7 @@
 # ─────────────────────────────────────────────
 
 import html
+import json
 import time
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
@@ -86,9 +87,9 @@ _defaults = {
     "laatste_analyse": None,
     "eduplan_genereren": False,
     "geselecteerde_student": 0,
-    "trainings_df": None,        # historische data met Dropout-kolom (voor training)
+    "trainings_df": None,  # historische data met Dropout-kolom (voor training)
     "trainings_filename": "",
-    "predictie_df": None,        # huidig cohort zonder Dropout (voor ranking)
+    "predictie_df": None,  # huidig cohort zonder Dropout (voor ranking)
     "predictie_filename": "",
     "gebruik_demo_data": True,
     "toon_alle_opleidingen": False,
@@ -220,8 +221,7 @@ def _feedback_upload(filename: str, n: int, hernoem_log: dict, vul_log: list) ->
         regels.append(f"**Kolommen automatisch gekoppeld:** {koppelingen}")
     if vul_log:
         regels.append(
-            "**Kolommen niet gevonden, aangevuld met standaardwaarden:** "
-            + ", ".join(f"`{c}`" for c in vul_log)
+            "**Kolommen niet gevonden, aangevuld met standaardwaarden:** " + ", ".join(f"`{c}`" for c in vul_log)
         )
     if hernoem_log or vul_log:
         st.info("\n\n".join(regels))
@@ -238,12 +238,17 @@ def _verwerk_trainingsdata(uploaded_file) -> None:
             # Detecteer uitvalkolom onder alternatieve naam
             if "Dropout" not in new_df.columns:
                 _synoniemen = {
-                    "dropout", "uitval", "uitgevallen", "uitgevalen", "isuitgevallen",
-                    "uitvalindicator", "uitval_indicator", "gestopt", "vroegtijdigverlaten",
+                    "dropout",
+                    "uitval",
+                    "uitgevallen",
+                    "uitgevalen",
+                    "isuitgevallen",
+                    "uitvalindicator",
+                    "uitval_indicator",
+                    "gestopt",
+                    "vroegtijdigverlaten",
                 }
-                _gevonden = next(
-                    (c for c in new_df.columns if _norm_col(c) in _synoniemen), None
-                )
+                _gevonden = next((c for c in new_df.columns if _norm_col(c) in _synoniemen), None)
                 if _gevonden is None:
                     try:
                         resp = requests.post(
@@ -400,110 +405,139 @@ def _genereer_eduplan():
     row, result = risico[idx]
     naam = row["Naam"]
 
-    with st.spinner(f"🕑 Bezig met genereren van het EduPlan voor {naam}…"):
-        gebruik_default = st.session_state.gebruik_demo_data
-        vul_log = st.session_state.get("vul_log", [])
-        vul_set = set(vul_log)
+    gebruik_default = st.session_state.gebruik_demo_data
+    vul_log = st.session_state.get("vul_log", [])
+    vul_set = set(vul_log)
 
-        def _error_html(title: str, detail: str) -> str:
-            return (
-                "<div style='border-left:4px solid #c0392b; background:#fdf3f1; "
-                "padding:14px 18px; border-radius:6px;'>"
-                f"<b style='color:#c0392b;'>⚠️ {html.escape(title)}</b><br>"
-                f"<span style='color:#444;'>{html.escape(detail)}</span>"
-                "</div>"
+    def _error_html(title: str, detail: str) -> str:
+        return (
+            "<div style='border-left:4px solid #c0392b; background:#fdf3f1; "
+            "padding:14px 18px; border-radius:6px;'>"
+            f"<b style='color:#c0392b;'>⚠️ {html.escape(title)}</b><br>"
+            f"<span style='color:#444;'>{html.escape(detail)}</span>"
+            "</div>"
+        )
+
+    def _fetch_fi():
+        # Stille fallback naar {}: feature importance voedt een ondersteunende
+        # bar chart die zelf gracefully omgaat met een lege dict. Een fout hier
+        # mag het hoofd-EduPlan niet overschaduwen.
+        try:
+            resp = requests.post(
+                "http://localhost:8000/feature_importance",
+                json={
+                    "student": row.to_dict(),
+                    "use_default_model": gebruik_default,
+                },
+                timeout=10,
             )
-
-        def _fetch_explain():
-            try:
-                resp = requests.post(
-                    "http://localhost:8000/explain_risk",
-                    json={
-                        "student": row.to_dict(),
-                        "prediction": result["prediction"],
-                        "probability": result["probability"],
-                        "use_default_model": gebruik_default,
-                        "imputed_columns": vul_log,
-                    },
-                    timeout=60,
-                )
-            except requests.Timeout:
-                return _error_html(
-                    "Time-out bij genereren EduPlan",
-                    "De backend reageerde niet binnen 60 seconden. Mogelijk is het LLM-model traag of de Anthropic API onbereikbaar.",
-                )
-            except requests.ConnectionError:
-                return _error_html(
-                    "Backend niet bereikbaar",
-                    "Geen verbinding met http://localhost:8000. Controleer of de FastAPI backend draait (./1_start_fastapi.sh).",
-                )
-            except requests.RequestException as e:
-                return _error_html("Netwerkfout", str(e))
-
             if resp.status_code != 200:
-                snippet = resp.text[:300] if resp.text else "(geen response body)"
-                return _error_html(
-                    f"Backend fout (HTTP {resp.status_code})",
-                    f"Het /explain_risk endpoint gaf een fout terug. Bekijk de backend-log voor details. Response: {snippet}",
-                )
-
-            try:
-                return resp.json()["explanation"]
-            except (ValueError, KeyError) as e:
-                return _error_html(
-                    "Onverwachte response van backend",
-                    f"De response bevatte geen geldige JSON met 'explanation' veld: {e}",
-                )
-
-        def _fetch_fi():
-            # Stille fallback naar {}: feature importance voedt een ondersteunende
-            # bar chart die zelf gracefully omgaat met een lege dict. Een fout hier
-            # mag het hoofd-EduPlan (van _fetch_explain) niet overschaduwen.
-            try:
-                resp = requests.post(
-                    "http://localhost:8000/feature_importance",
-                    json={
-                        "student": row.to_dict(),
-                        "use_default_model": gebruik_default,
-                    },
-                    timeout=10,
-                )
-                if resp.status_code != 200:
-                    return {}
-                return resp.json().get("feature_importance", {})
-            except (requests.RequestException, ValueError):
                 return {}
+            return resp.json().get("feature_importance", {})
+        except (requests.RequestException, ValueError):
+            return {}
 
-        with ThreadPoolExecutor(max_workers=2) as pool:
-            f_exp = pool.submit(_fetch_explain)
-            f_fi = pool.submit(_fetch_fi)
-            exp = f_exp.result()
-            fi_dict = f_fi.result()
+    # Feature importance loopt concurrent in een thread (geen st.* erin, dus veilig
+    # buiten de main-thread); de streaming-render hieronder MOET op de main thread.
+    pool = ThreadPoolExecutor(max_workers=1)
+    f_fi = pool.submit(_fetch_fi)
 
-        fi_str = ", ".join(f"{k}: {v:.2f}" for k, v in fi_dict.items()) if fi_dict else "Niet beschikbaar."
+    # Styled wrapper die overeenkomt met de definitieve render (_render_eduplan_content).
+    _WRAP = (
+        '<div style=\'font-family:"General Sans",sans-serif; font-size:15px; '
+        "line-height:1.85; background:white; border-radius:16px; padding:28px 32px;'>"
+    )
 
-        def _safe_value(col: str, cast_fn):
-            if col in vul_set or col not in row.index:
-                return "niet beschikbaar"
-            return cast_fn(row[col])
+    # ── Stream: Sectie 1 direct, secties 2–4 token-voor-token ─────────────────
+    profiel_ph = st.empty()  # reserveert een slot vóór de streamende tekst
+    captured = {"section1": None, "final_html": None, "warning": None}
+    exp = None
 
-        analyse = {
-            "naam": naam,
-            "opleiding": row.get("Opleiding", "—"),
-            "klas": row.get("Klas", "—"),
-            "mentor": row.get("Mentor", "—"),
-            "studentnummer": int(row["Studentnummer"]) if "Studentnummer" in row.index else "—",
-            "leeftijd": _safe_value("StudentAge", int),
-            "ongeoorloofd_verzuim": _safe_value("absence_unauthorized", float),
-            "geoorloofd_verzuim": _safe_value("absence_authorized", float),
-            "probability": result["probability"],
-            "explanation": exp,
-            "feature_importance": fi_str,
-            "feature_importance_dict": fi_dict,
-        }
-        analyse["docx"] = _build_word_doc(analyse)
-        st.session_state.laatste_analyse = analyse
-        st.session_state.eduplan_genereren = False
+    def _delta_gen():
+        for raw in resp.iter_lines(decode_unicode=True):
+            if not raw:
+                continue
+            msg = json.loads(raw)
+            soort = msg["type"]
+            if soort == "section1":
+                captured["section1"] = msg["html"]
+                profiel_ph.markdown(_WRAP + msg["html"] + "</div>", unsafe_allow_html=True)
+            elif soort == "warning":
+                captured["warning"] = msg["html"]
+            elif soort == "delta":
+                yield msg["text"]
+            elif soort == "final_html":
+                captured["final_html"] = msg["html"]
+
+    try:
+        resp = requests.post(
+            "http://localhost:8000/explain_risk_stream",
+            json={
+                "student": row.to_dict(),
+                "prediction": result["prediction"],
+                "probability": result["probability"],
+                "use_default_model": gebruik_default,
+                "imputed_columns": vul_log,
+            },
+            stream=True,
+            timeout=60,
+        )
+        if resp.status_code != 200:
+            snippet = resp.text[:300] if resp.text else "(geen response body)"
+            exp = _error_html(
+                f"Backend fout (HTTP {resp.status_code})",
+                f"Het /explain_risk_stream endpoint gaf een fout terug. Bekijk de backend-log voor details. Response: {snippet}",
+            )
+        else:
+            st.write_stream(_delta_gen())
+            if captured["warning"] is not None:
+                exp = (captured["section1"] or "") + captured["warning"]
+            elif captured["final_html"] is not None:
+                exp = (captured["section1"] or "") + captured["final_html"]
+            else:
+                exp = _error_html(
+                    "Onverwachte response van backend",
+                    "De stream eindigde zonder volledige begeleidingstekst (geen final_html).",
+                )
+    except requests.Timeout:
+        exp = _error_html(
+            "Time-out bij genereren EduPlan",
+            "De backend reageerde niet binnen 60 seconden. Mogelijk is het LLM-model traag of de Anthropic API onbereikbaar.",
+        )
+    except requests.ConnectionError:
+        exp = _error_html(
+            "Backend niet bereikbaar",
+            "Geen verbinding met http://localhost:8000. Controleer of de FastAPI backend draait (./1_start_fastapi.sh).",
+        )
+    except requests.RequestException as e:
+        exp = _error_html("Netwerkfout", str(e))
+
+    fi_dict = f_fi.result()
+    pool.shutdown()
+    fi_str = ", ".join(f"{k}: {v:.2f}" for k, v in fi_dict.items()) if fi_dict else "Niet beschikbaar."
+
+    def _safe_value(col: str, cast_fn):
+        if col in vul_set or col not in row.index:
+            return "niet beschikbaar"
+        return cast_fn(row[col])
+
+    analyse = {
+        "naam": naam,
+        "opleiding": row.get("Opleiding", "—"),
+        "klas": row.get("Klas", "—"),
+        "mentor": row.get("Mentor", "—"),
+        "studentnummer": int(row["Studentnummer"]) if "Studentnummer" in row.index else "—",
+        "leeftijd": _safe_value("StudentAge", int),
+        "ongeoorloofd_verzuim": _safe_value("absence_unauthorized", float),
+        "geoorloofd_verzuim": _safe_value("absence_authorized", float),
+        "probability": result["probability"],
+        "explanation": exp,
+        "feature_importance": fi_str,
+        "feature_importance_dict": fi_dict,
+    }
+    analyse["docx"] = _build_word_doc(analyse)
+    st.session_state.laatste_analyse = analyse
+    st.session_state.eduplan_genereren = False
 
 
 # ─────────────────────────────────────────────
@@ -658,7 +692,7 @@ def show_start_screen():
         # ── Upload 1: historische trainingsdata ──
         st.markdown(
             "<p style='font-size:0.9rem; font-weight:600; color:#555; margin-bottom:4px;"
-            "font-family:\"General Sans\",sans-serif;'>Historische data (voor modeltraining)</p>",
+            'font-family:"General Sans",sans-serif;\'>Historische data (voor modeltraining)</p>',
             unsafe_allow_html=True,
         )
         trainings_file = st.file_uploader(
@@ -678,7 +712,7 @@ def show_start_screen():
         # ── Upload 2: huidig cohort ──
         st.markdown(
             "<p style='font-size:0.9rem; font-weight:600; color:#555; margin-bottom:4px;"
-            "font-family:\"General Sans\",sans-serif;'>Huidig cohort (studenten om te ranken)</p>",
+            'font-family:"General Sans",sans-serif;\'>Huidig cohort (studenten om te ranken)</p>',
             unsafe_allow_html=True,
         )
         predictie_file = st.file_uploader(
@@ -1012,14 +1046,14 @@ def _render_eduplan_sectie():
     if st.session_state.eduplan_genereren:
         naam = html.escape(top[st.session_state.geselecteerde_student][0]["Naam"])
         st.markdown(
-            f"""<div style="background:{ROZE_LICHT}; border-radius:14px;
-                            padding:28px; text-align:center; margin-top:16px;
-                            font-family:'General Sans',sans-serif; color:#555;">
-                <span style="font-size:1.4rem;">↻</span>&nbsp;&nbsp;
-                Het EduPlan voor <b>{naam}</b> wordt gemaakt
+            f"""<div style="display:flex; align-items:center; margin-top:16px;
+                            font-family:'General Sans',sans-serif;">
+                <span style="font-size:28px; font-weight:700;">🚦</span>&nbsp;&nbsp;
+                <span style="font-size:2.0rem; font-weight:500;">EduPlan | {naam}</span>
             </div>""",
             unsafe_allow_html=True,
         )
+        # Sectie 1 verschijnt direct, secties 2–4 streamen live binnen deze functie.
         _genereer_eduplan()
         st.rerun()
 

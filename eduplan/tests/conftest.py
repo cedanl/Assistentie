@@ -38,3 +38,21 @@ def mock_anthropic(monkeypatch) -> MagicMock:
 
     monkeypatch.setattr(main_mod, "client", mock_client)
     return mock_client
+
+
+@pytest.fixture
+def mock_anthropic_stream(monkeypatch) -> MagicMock:
+    """Vervangt de Anthropic-client door een mock met streaming-ondersteuning.
+
+    `client.messages.stream(...)` is een context manager waarvan het object een
+    `text_stream` iterable van tekst-chunks heeft — de vorm die `/explain_risk_stream`
+    gebruikt (anders dan de `messages.create` van de `mock_anthropic`-fixture).
+    """
+    stream_obj = MagicMock()
+    stream_obj.text_stream = ["Gemockte ", "LLM-", "uitvoer"]
+    mock_client = MagicMock()
+    mock_client.messages.stream.return_value.__enter__.return_value = stream_obj
+    import backend.main as main_mod
+
+    monkeypatch.setattr(main_mod, "client", mock_client)
+    return mock_client
