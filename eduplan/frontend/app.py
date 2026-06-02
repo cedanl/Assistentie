@@ -442,14 +442,11 @@ def _genereer_eduplan():
     pool = ThreadPoolExecutor(max_workers=1)
     f_fi = pool.submit(_fetch_fi)
 
-    # Styled wrapper die overeenkomt met de definitieve render (_render_eduplan_content).
-    _WRAP = (
-        '<div style=\'font-family:"General Sans",sans-serif; font-size:15px; '
-        "line-height:1.85; background:white; border-radius:16px; padding:28px 32px;'>"
-    )
-
     # ── Stream: Sectie 1 direct, secties 2–4 token-voor-token ─────────────────
-    profiel_ph = st.empty()  # reserveert een slot vóór de streamende tekst
+    # Sectie 1 én de streamende secties 2–4 staan in één witte kaart
+    # (.st-key-eduplan-stream-card in MAIN_CSS), zodat de tekst meteen op wit
+    # verschijnt i.p.v. op de roze pagina-achtergrond.
+    profiel_ph = None  # st.empty()-slot vóór de streamende tekst (binnen de kaart)
     captured = {"section1": None, "final_html": None, "warning": None}
     exp = None
 
@@ -461,7 +458,7 @@ def _genereer_eduplan():
             soort = msg["type"]
             if soort == "section1":
                 captured["section1"] = msg["html"]
-                profiel_ph.markdown(_WRAP + msg["html"] + "</div>", unsafe_allow_html=True)
+                profiel_ph.markdown(msg["html"], unsafe_allow_html=True)
             elif soort == "warning":
                 captured["warning"] = msg["html"]
             elif soort == "delta":
@@ -489,7 +486,9 @@ def _genereer_eduplan():
                 f"Het /explain_risk_stream endpoint gaf een fout terug. Bekijk de backend-log voor details. Response: {snippet}",
             )
         else:
-            st.write_stream(_delta_gen())
+            with st.container(key="eduplan-stream-card"):
+                profiel_ph = st.empty()
+                st.write_stream(_delta_gen())
             if captured["warning"] is not None:
                 exp = (captured["section1"] or "") + captured["warning"]
             elif captured["final_html"] is not None:

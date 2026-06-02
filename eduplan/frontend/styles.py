@@ -232,5 +232,18 @@ div.student-sel div[data-testid="stSelectbox"] > div > div[data-baseweb="select"
 }
 [data-testid="stSlider"] div[data-testid="stTickBarMin"],
 [data-testid="stSlider"] div[data-testid="stTickBarMax"] { color: #c8785a !important; }
+
+/* ── EduPlan stream-kaart: witte achtergrond achter sectie 1 én de streamende
+      secties 2–4, zodat de tekst niet op de roze pagina-achtergrond landt ── */
+.st-key-eduplan-stream-card {
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 28px 32px !important;
+    font-family: 'General Sans', sans-serif !important;
+    font-size: 15px !important;
+    line-height: 1.85 !important;
+}
+.st-key-eduplan-stream-card p,
+.st-key-eduplan-stream-card li { line-height: 1.85 !important; }
 </style>
 """
